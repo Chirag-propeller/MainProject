@@ -46,13 +46,25 @@ const BatchCallForm: React.FC = () => {
       });
     }
   };
-  const CALL_URL = process.env.NEXT_PUBLIC_CALL_URL 
+  // const CALL_URL = process.env.NEXT_PUBLIC_CALL_URL 
+  const API_URL = 'http://20.81.150.170:8000/process-numbers/';
+  const API_KEY = 'supersecretapikey123';
+  
   const triggerFastApiCall = async (numbers: string[]) => {
     try {
-      // const response = await axios.post('http://localhost:8000/start-campaign', {
-      const response = await axios.post(`${CALL_URL}/start-campaign`, {
-        phoneNumbers: numbers, // adjust to match your FastAPI endpoint
-      });
+      const response = await axios.post(
+        API_URL,
+        {
+          phone_numbers: numbers, // match the expected payload
+        },
+        {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
+          },
+        }
+      );
   
       console.log('🚀 FastAPI response:', response.data);
       return response.data;
@@ -62,6 +74,7 @@ const BatchCallForm: React.FC = () => {
       throw error;
     }
   };
+  
   
 
   const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
