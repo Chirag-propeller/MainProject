@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     // Extract the _ids
     const linkIds = createdLinks.map(link => link._id)
-
+    
 
     // Step 3: Handle file uploads (multiple supported)
     const uploadedFiles = []
@@ -87,10 +87,16 @@ export async function POST(req: Request) {
       knowledgeBase,
       files: uploadedFiles,
     })
-  } catch (err) {
-    console.error('Upload error:', err)
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+  } catch (err: any) {
+    console.error('Upload error:', err?.message || err)
+    console.error('Full Error:', err)
+    return NextResponse.json({ error: err?.message || 'Upload failed' }, { status: 500 })
   }
+    
+  // catch (err) {
+  //   console.error('Upload error:', err)
+  //   return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+  // }
 }
 
 
