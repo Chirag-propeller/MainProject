@@ -159,7 +159,7 @@ const fetchLinks = async (url: string) => {
       onClose();
     } catch (err) {
       console.error("Error:", err);
-      alert("Something went wrong. Please try again.");
+      alert(`Something went wrong. Please try again. ${err}`);
     }
   };
   
