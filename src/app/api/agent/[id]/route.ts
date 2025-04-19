@@ -2,17 +2,23 @@ import { NextResponse, NextRequest  } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
 
+type ParamsType = {
+  params: { id: string };  // Ensure semicolon for proper type
+};
+
 // Define the function signature properly
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  { params }: ParamsType
+
+  // context: { params: { id: string } }
   // { params }: { params: { id: string } } 
 ) {
   
   await dbConnect();
 
-  const { id } = await context.params; // Now you can safely access id
-  // const { id } = params; // Now you can safely access id
+  // const { id } = await context.params; // Now you can safely access id
+  const { id } = params; // Now you can safely access id
 
   try {
     const agent = await Agent.findOne({ _id: id });
@@ -30,11 +36,14 @@ export async function GET(
 
 // PUT /api/agent/[id]
 export async function PUT(req: NextRequest, 
-  context: { params: { id: string } }) {
+  // context: { params: { id: string }}
+  { params }: ParamsType
+
+ ) {
   await dbConnect();
   // const id = await context.params.id;
   // const id = await context.params.id;
-  const { id } = await context.params;
+  const { id } = await params;
   const body = await req.json();
 
   try {
