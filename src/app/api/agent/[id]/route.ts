@@ -5,12 +5,13 @@ import Agent from '@/model/agent';
 // Define the function signature properly
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } } 
+  context: { params: { id: string } }
+  // { params }: { params: { id: string } } 
 ) {
   
   await dbConnect();
 
-  const { id } = await params; // Now you can safely access id
+  const { id } = await context.params; // Now you can safely access id
   // const { id } = params; // Now you can safely access id
 
   try {
@@ -28,11 +29,12 @@ export async function GET(
 
 
 // PUT /api/agent/[id]
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, 
+  context: { params: { id: string } }) {
   await dbConnect();
   // const id = await context.params.id;
   // const id = await context.params.id;
-  const { id } = await params;
+  const { id } = await context.params;
   const body = await req.json();
 
   try {
