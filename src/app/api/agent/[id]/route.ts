@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest  } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
 
 // Define the function signature properly
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } } 
 ) {
   
@@ -28,7 +28,7 @@ export async function GET(
 
 
 // PUT /api/agent/[id]
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   await dbConnect();
   // const id = await context.params.id;
   // const id = await context.params.id;
