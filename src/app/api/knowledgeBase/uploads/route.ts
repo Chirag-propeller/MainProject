@@ -53,10 +53,12 @@ export async function POST(req: Request) {
     const uploadedFiles = []
     for (const entry of formData.entries()) {
       const [key, value] = entry
-      if (key === 'file' && value instanceof File) {
+      // if (key === 'file' && value instanceof File)
+      if (key === 'file' && typeof(value) === "object")
+      {
         const arrayBuffer = await value.arrayBuffer()
         const buffer = Buffer.from(arrayBuffer)
-
+        console.log(buffer);
         const azureUrl = await uploadFileToAzure(buffer, value.name)
 
         const dbFile = await fileModel.create({
@@ -65,7 +67,6 @@ export async function POST(req: Request) {
           size: value.size,
           type: value.type,
           source: 'upload',
-        //   userId,
           knowledgeBaseId: knowledgeBase._id,
         })
 
