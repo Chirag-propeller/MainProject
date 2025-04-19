@@ -7,23 +7,28 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import InputForm from '@/components/phoneNumber/InputForm'
 import List from '@/components/phoneNumber/List'
+import Sidebar from '@/components/sidebar'
 
 
 
 const page = () => {
 
   return (
-    <div className=''>
-         <div className='flex justify-between'>
+    <div className='flex'>
+      <Sidebar/>
+        <div className="ml-64 p-6 w-full">
+        <div className='flex justify-between'>
           <p className='text-xl'> Campaign Calls </p>
           {/* <Button className='cursor-pointer' onClick={()=> setShowCreateNewAgent(true)}>+ Create Agent</Button> */}
-          <Link href="/createCampaign">
+          {/* src\app\dashboard\campaigns\createCampaign */}
+          <Link href="/dashboard/campaigns/createCampaign">
           <Button className='cursor-pointer' >Create Campaign</Button>
           </Link>
           
         </div>
         <div>
           <Table/>
+        </div>
         </div>
     </div>
   )

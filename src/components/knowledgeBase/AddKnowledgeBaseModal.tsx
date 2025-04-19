@@ -168,7 +168,7 @@ const fetchLinks = async (url: string) => {
 
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+    <div className='fixed inset-0 bg-gray-700/50 flex justify-center items-center z-50'>
       
       {showTextModal && (
           <TextInputModal

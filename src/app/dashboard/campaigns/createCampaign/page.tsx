@@ -48,7 +48,6 @@ const BatchCallForm: React.FC = () => {
   };
   // const CALL_URL = process.env.NEXT_PUBLIC_CALL_URL 
   // const API_URL = 'http://20.81.150.170:8000/process-numbers/';
-  // const API_URL = 'https://propalai.com/process-numbers/';
   const API_URL = 'https://numbersfetchfastapi-f4hba2arduckbmf8.eastus2-01.azurewebsites.net/process-numbers/';
   const API_KEY = 'supersecretapikey123';
   
