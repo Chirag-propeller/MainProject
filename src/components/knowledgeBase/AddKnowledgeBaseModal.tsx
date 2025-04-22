@@ -146,12 +146,14 @@ const fetchLinks = async (url: string) => {
     // console.log(selectedLinks)
     try {
       const response = await fetch('/api/knowledgeBase/uploads', {
+      // const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
   
       if (!response.ok) {
-        throw new Error('Failed to create knowledge base.');
+        const error = await response.json();
+        throw new Error(error?.error || 'Upload failed');
       }
   
       const data = await response.json();
@@ -159,7 +161,7 @@ const fetchLinks = async (url: string) => {
       onClose();
     } catch (err) {
       console.error("Error:", err);
-      alert("Something went wrong. Please try again.");
+      alert(`Something went wrong. Please try again. ${err}`);
     }
   };
   

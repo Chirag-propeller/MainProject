@@ -47,18 +47,16 @@ export async function POST(req: Request) {
 
     // Extract the _ids
     const linkIds = createdLinks.map(link => link._id)
-
+    
 
     // Step 3: Handle file uploads (multiple supported)
     const uploadedFiles = []
     for (const entry of formData.entries()) {
       const [key, value] = entry
-      // if (key === 'file' && value instanceof File) 
-      if (key === 'file' && typeof(value) === "object") 
-      {
+      if (key === 'file' && typeof(value) === "object") {
         const arrayBuffer = await value.arrayBuffer()
         const buffer = Buffer.from(arrayBuffer)
-
+        console.log(buffer);
         const azureUrl = await uploadFileToAzure(buffer, value.name)
 
         const dbFile = await fileModel.create({
@@ -67,7 +65,6 @@ export async function POST(req: Request) {
           size: value.size,
           type: value.type,
           source: 'upload',
-        //   userId,
           knowledgeBaseId: knowledgeBase._id,
         })
 
@@ -89,10 +86,16 @@ export async function POST(req: Request) {
       knowledgeBase,
       files: uploadedFiles,
     })
-  } catch (err) {
-    console.error('Upload error:', err)
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+  } catch (err: any) {
+    console.error('Upload error:', err?.message || err)
+    console.error('Full Error:', err)
+    return NextResponse.json({ error: err?.message || 'Upload failed' }, { status: 500 })
   }
+    
+  // catch (err) {
+  //   console.error('Upload error:', err)
+  //   return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+  // }
 }
 
 
