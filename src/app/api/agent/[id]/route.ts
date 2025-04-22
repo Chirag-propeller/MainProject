@@ -2,15 +2,18 @@ import { NextResponse, NextRequest  } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
 
-type ParamsType = {
-  params: { id: string };  // Ensure semicolon for proper type
+type Params = {
+  params: {
+    id: string;
+  };
 };
+
 
 // Define the function signature properly
 export async function GET(
   req: NextRequest,
-  // { params }: ParamsType
-  { params }: { params: { id: string } }
+  { params }: Params
+  // { params }: { params: { id: string } }
   // context: { params: { id: string } }
   // { params }: { params: { id: string } } 
 ) {
@@ -37,20 +40,20 @@ export async function GET(
 // PUT /api/agent/[id]
 export async function PUT(req: NextRequest, 
   // context: { params: { id: string }}
-  { params }: ParamsType
+  { params }: Params
 
  ) {
   await dbConnect();
   // const id = await context.params.id;
   // const id = await context.params.id;
-  const { id } = await params;
+  const { id } = params;
   const body = await req.json();
 
   try {
     const updatedAgent = await Agent.findOneAndUpdate(
       { _id: id },
       { ...body },
-      { new: true }
+      { new: true, runValidators: true  }
     );
 
     if (!updatedAgent) {
