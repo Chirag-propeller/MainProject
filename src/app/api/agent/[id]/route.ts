@@ -9,8 +9,8 @@ type ParamsType = {
 // Define the function signature properly
 export async function GET(
   req: NextRequest,
-  { params }: ParamsType
-
+  // { params }: ParamsType
+  { params }: { params: { id: string } }
   // context: { params: { id: string } }
   // { params }: { params: { id: string } } 
 ) {
