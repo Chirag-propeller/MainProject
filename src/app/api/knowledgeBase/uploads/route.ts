@@ -53,7 +53,9 @@ export async function POST(req: Request) {
     const uploadedFiles = []
     for (const entry of formData.entries()) {
       const [key, value] = entry
-      if (key === 'file' && value instanceof File) {
+      // if (key === 'file' && value instanceof File) 
+      if (key === 'file' && typeof(value) === "object") 
+      {
         const arrayBuffer = await value.arrayBuffer()
         const buffer = Buffer.from(arrayBuffer)
 

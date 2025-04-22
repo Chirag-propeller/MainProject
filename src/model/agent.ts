@@ -15,6 +15,7 @@ export interface IAgent extends Document {
   backgroundSound?: string;
   welcomeMessage?: string;
   knowledgeBaseAttached?: boolean;
+  knowledgeBase: mongoose.Types.ObjectId[];
   prompt?: string;
 }
 
@@ -32,6 +33,7 @@ const AgentSchema: Schema = new Schema({
   backgroundSound: { type: String },
   welcomeMessage: { type: String },
   knowledgeBaseAttached: { type: Boolean, default: false },
+  knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase' , default: []}],
   prompt: { type: String },
 }, {timestamps:true});
 

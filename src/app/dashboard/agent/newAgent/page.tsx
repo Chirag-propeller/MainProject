@@ -8,6 +8,8 @@ import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import ModalList from '@/components/agent/ModalList';
+import KnowledgeBaseList from '@/components/knowledgeBase/KnowledgeBaseList';
 
 interface TtsOptions {
   [key: string]: string[]; // Assuming each provider maps to an array of voices
@@ -23,6 +25,7 @@ const Main = () => {
   const router = useRouter();
   const { llmOptions, ttsOptions, sttOptions, loading } = useLLMConfig() as LLMConfig
 
+  const [isKnowledgeBaseModalListOpen, setIsKnowledgeBaseModalListOpen] = useState<boolean>(false);
   const providers = Object.keys(ttsOptions);
   const languages: string[] = Array.isArray(sttOptions) ? Array.from(sttOptions) : Object.values(sttOptions);
   const llm: string[] = Array.isArray(llmOptions) ? Array.from(llmOptions) : Object.values(llmOptions);
@@ -64,7 +67,7 @@ const Main = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [text, setText] = useState('');
   const [knowledgeBase, setKnowledgeBase] = useState(true);
-  const [isKnowledgeBaseList, setKnowledgeBaseList] = useState(true);
+  const [knowledgeBaseList, setKnowledgeBaseList] = useState<string[]>([]);
   const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
   const room = "test-room"
   
@@ -82,6 +85,7 @@ const Main = () => {
         selectedProvider,
         selectedVoice,
         roomName,
+        knowledgeBaseList,
       };
       console.log(data);
       const response = await axios.post(`${url}/sendData`,data); 
@@ -112,9 +116,6 @@ const Main = () => {
     }
   };
 
-  const onClickHandker = ()=> {
-    // sendData();
-  }
   const handleTestClick = async () => {
     // await getToken;
     const tokenData = await fetchToken();
@@ -136,6 +137,8 @@ const Main = () => {
       stt: selectedProvider,
       tts: selectedProvider,
       ttsVoiceName: selectedVoice,
+      knowledgeBase: knowledgeBaseList,
+      knowledgeBaseAttached: knowledgeBaseList.length > 0,
       ttsModel: selectedVoice, // or another var if different
       backgroundSound: "here we will store Background Sound",
       welcomeMessage: "This is temp Welcome Message", // or another var if different
@@ -204,7 +207,35 @@ const Main = () => {
           <div className='cursor-pointer' onClick={() => setKnowledgeBase(!knowledgeBase)}> 
             <h1 className='m-3 text-sm text-black hover:underline'>Knowledge Base</h1> 
           </div>
-          {
+          <div className='text-gray-500 m-2 mx-3 '>
+                <p className=' p-1  text-xs'> Add knowledge base to provide context to the agent.</p>
+                <Button variant="ghost" size="sm" className=' relative border-1 border-gray-300 rounded-none'
+                onClick={() => setIsKnowledgeBaseModalListOpen(true)}
+                >Add
+   
+                
+                </Button>
+                {isKnowledgeBaseModalListOpen && (
+                    <ModalList
+                      // setKnowledgeBaselist={setKnowledgeBaseList}
+                      setKnowledgeBaseList={setKnowledgeBaseList}
+                      isOpen={isKnowledgeBaseModalListOpen}
+                      onClose={() => setIsKnowledgeBaseModalListOpen(false)}
+                    />
+                  )}
+
+                <ul className='list-disc pl-5'>
+                {
+                  knowledgeBaseList.map((li) => (
+                    <li key={li} className='text-sm'>
+                       {li}
+                    </li>
+                  ))
+                }
+                </ul>
+              </div>
+
+          {/* {
             knowledgeBase && (
               <div className='text-gray-500 m-2 mx-3 '>
                 <p className=' p-1  text-xs'> Add knowledge base to provide context to the agent.</p>
@@ -215,7 +246,7 @@ const Main = () => {
                 </div>
               </div>
             )
-          }
+          } */}
         </div>
         <div className='w-[27vw] text-sm bg-white m-2 rounded-sm '> 
           <div className='flex justify-center'>

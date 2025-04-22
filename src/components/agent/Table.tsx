@@ -1,5 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 interface Agent {
   agentId: string;
@@ -10,6 +12,7 @@ interface Agent {
 }
 
 const AgentTable = () => {
+  const router = useRouter();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +35,7 @@ const AgentTable = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">Your Agents</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6 mt-7">Your Agents</h2>
 
       {loading ? (
         <p className="text-gray-600">Loading agents...</p>
@@ -50,7 +53,10 @@ const AgentTable = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {agents.map((agent, index) => (
-                <tr key={agent._id} className="hover:bg-gray-50 transition duration-150">
+                <tr key={agent._id} 
+                  onClick={() => router.push(`/dashboard/agent/${agent._id}/edit`)}
+                  className="hover:bg-gray-50 transition duration-150 cursor-pointer"
+                  >
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentId}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.llm || '-'}</td>
