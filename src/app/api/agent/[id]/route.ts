@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
 
-// Next.js 15 route handler signature
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+interface RouteParams {
+  params: {
+    id: string;
+  };
+}
+
+export async function GET(request: NextRequest, route: RouteParams) {
   await dbConnect();
-  const id = params.id;
+  const id = route.params.id;
   
   try {
     const agent = await Agent.findOne({ _id: id });
@@ -22,12 +24,9 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, route: RouteParams) {
   await dbConnect();
-  const id = params.id;
+  const id = route.params.id;
   const body = await request.json();
   
   try {
@@ -47,6 +46,56 @@ export async function PUT(
     return NextResponse.json({ message: 'Failed to update agent' }, { status: 500 });
   }
 }
+
+// import { NextRequest, NextResponse } from 'next/server';
+// import dbConnect from '@/lib/mongodb';
+// import Agent from '@/model/agent';
+
+// // Next.js 15 route handler signature
+// export async function GET(
+//   request: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   await dbConnect();
+//   const id = params.id;
+  
+//   try {
+//     const agent = await Agent.findOne({ _id: id });
+//     if (!agent) {
+//       return NextResponse.json({ message: 'Agent not found' }, { status: 404 });
+//     }
+//     return NextResponse.json(agent);
+//   } catch (error) {
+//     console.error('Error fetching agent:', error);
+//     return NextResponse.json({ message: 'Failed to fetch agent' }, { status: 500 });
+//   }
+// }
+
+// export async function PUT(
+//   request: NextRequest,
+//   { params }: { params: { id: string } }
+// ) {
+//   await dbConnect();
+//   const id = params.id;
+//   const body = await request.json();
+  
+//   try {
+//     const updatedAgent = await Agent.findOneAndUpdate(
+//       { _id: id },
+//       { ...body },
+//       { new: true, runValidators: true }
+//     );
+    
+//     if (!updatedAgent) {
+//       return NextResponse.json({ message: 'Agent not found' }, { status: 404 });
+//     }
+    
+//     return NextResponse.json({ success: true, data: updatedAgent });
+//   } catch (error) {
+//     console.error('Error updating agent:', error);
+//     return NextResponse.json({ message: 'Failed to update agent' }, { status: 500 });
+//   }
+// }
 
 // import { NextResponse, NextRequest } from 'next/server';
 // import dbConnect from '@/lib/mongodb';
