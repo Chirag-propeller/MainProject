@@ -2,15 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
-export async function GET(request: NextRequest, route: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   await dbConnect();
-  const id = route.params.id;
+  const { id } = await params;
   
   try {
     const agent = await Agent.findOne({ _id: id });
@@ -24,9 +21,12 @@ export async function GET(request: NextRequest, route: RouteParams) {
   }
 }
 
-export async function PUT(request: NextRequest, route: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   await dbConnect();
-  const id = route.params.id;
+  const { id } = await params;
   const body = await request.json();
   
   try {
