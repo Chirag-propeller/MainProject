@@ -31,7 +31,14 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+        env: # <-- ADD THIS `env:` SECTION HERE
+          NEXT_PUBLIC_AZURE_URL: ${{ secrets.NEXT_PUBLIC_AZURE_URL }}
+          NEXT_PUBLIC_CALL_URL: ${{ secrets.NEXT_PUBLIC_CALL_URL }}
+          NEXT_PUBLIC_LIVEKIT_URL: ${{ secrets.NEXT_PUBLIC_LIVEKIT_URL }}
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+          LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+          LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
