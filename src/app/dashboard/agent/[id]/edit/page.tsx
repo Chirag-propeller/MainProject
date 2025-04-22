@@ -24,7 +24,9 @@ interface LLMConfig {
 const Main = () => {
   const router = useRouter();
   const params = useParams();
-  const agentId = params.id; 
+  // const agentId = params.id; 
+  const agentId = params?.id as string;
+
   const { llmOptions, ttsOptions, sttOptions, loading } = useLLMConfig() as LLMConfig
 
   const providers = Object.keys(ttsOptions);
