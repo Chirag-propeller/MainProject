@@ -70,6 +70,8 @@ const Main = () => {
 
 
   const [token, setToken] = useState("");
+  const [agentName, setAgentName] = useState("");
+  const [agent, setAgent] = useState<any>();
   const [roomName, setRoomName] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [text, setText] = useState('');
@@ -92,7 +94,7 @@ const Main = () => {
           throw new Error('Failed to fetch agent details');
         }
         const agent = await res.json();
-        
+        setAgent(agent);
         // Pre-fill fields
         setText(agent.prompt || '');
         setSelectedLang(agent.inputLanguage || sttOptions[0]);
@@ -100,6 +102,7 @@ const Main = () => {
         setSelectedProvider(agent.stt || providers[0]);
         setSelectedVoice(agent.ttsVoiceName || voices[0]);
         setKnowledgeBaseList(agent.knowledgeBase || []);
+        setAgentName(agent.agentName );
       } catch (error) {
         console.error('Error fetching agent:', error);
       }
@@ -164,6 +167,7 @@ const Main = () => {
 
   const updateAgentHandler = async () => {
     const payload = {
+      agentName:agentName,
       prompt: text,
       llm: selectedLLM,
       inputLanguage: selectedLang,
@@ -173,8 +177,8 @@ const Main = () => {
       ttsModel: selectedVoice,
       knowledgeBase: knowledgeBaseList,
       knowledgeBaseAttached: knowledgeBaseList.length > 0,
-      backgroundSound: "updated background sound",
-      welcomeMessage: "updated welcome message",
+      backgroundSound: agent?.backgroundSound,
+      welcomeMessage: agent?.welcomeMessage,
     };
   
     const res = await fetch(`/api/agent/${agentId}`, {
@@ -239,8 +243,12 @@ const Main = () => {
           
           <Link href="/dashboard/agent">
           
-            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm ' variant="ghost">Back</Button>
+            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm ' variant="ghost" size="sm">Back</Button>
           </Link>
+          <input placeholder='Agent Name' className='border-gray-300 px-2 m-2 rounded-sm mt-3 border-1' value={agentName} onChange={(e) => setAgentName(e.target.value)}/>
+          </div>
+          <div className='flex mt-2'>
+
           <div className='mx-1 p-1'>
             <p className='text-xs mx-3  '> Language </p>
             <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} loading={loading} />

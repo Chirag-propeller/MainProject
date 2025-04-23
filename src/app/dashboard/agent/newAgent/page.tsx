@@ -63,6 +63,7 @@ const Main = () => {
 
 
   const [token, setToken] = useState("");
+  const [agentName, setAgentName] = useState("");
   const [roomName, setRoomName] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [text, setText] = useState('');
@@ -131,6 +132,7 @@ const Main = () => {
   const createAgentHandler = async () => {
 
     const payload = {
+      agentName: agentName,
       prompt: text,
       llm: selectedLLM,
       inputLanguage: selectedLang,
@@ -170,8 +172,11 @@ const Main = () => {
           
           <Link href="/dashboard/agent">
           
-            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm ' variant="ghost">Back</Button>
+            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm ' variant="ghost" size="sm">Back</Button>
           </Link>
+          <input placeholder='Agent Name' className='border-gray-300 px-2 m-2 rounded-sm mt-3 border-1' value={agentName} onChange={(e) => setAgentName(e.target.value)}/>
+          </div>
+          <div className='flex mt-2'>
           <div className='mx-1 p-1'>
             <p className='text-xs mx-3  '> Language </p>
             <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} loading={loading} />

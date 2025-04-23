@@ -8,7 +8,8 @@ interface Agent {
   llm?: string;
   prompt?: string;
   _id: string;
-  inputLanguage: string;
+  inputLanguage?: string;
+  agentName: string;
 }
 
 const AgentTable = () => {
@@ -46,7 +47,9 @@ const AgentTable = () => {
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">LLM Used</th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prompt</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Language</th>
               </tr>
@@ -59,6 +62,7 @@ const AgentTable = () => {
                   >
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentName}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.llm || '-'}</td>
                   <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{agent.prompt || '-'}</td>
                   <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{agent.inputLanguage || '-'}</td>
