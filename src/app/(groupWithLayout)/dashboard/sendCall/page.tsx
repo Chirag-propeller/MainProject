@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import AgentDetail from '@/components/throwCall/AgentDetail';
+import AgentDetail from '@/components/sendCall/AgentDetail';
 import axios from 'axios';
 // import { useRouter } from 'next/router';
 
@@ -114,7 +114,7 @@ export default function ContactForm() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Throw a Call</h2>
+      <h2 className="text-2xl font-bold mb-6">Send a Call</h2>
 
       <form
         onSubmit={handleSubmit}
