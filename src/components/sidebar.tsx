@@ -14,7 +14,7 @@ const navItemsMain = [
   { name: 'Phone Number', href: '/dashboard/phoneNumber', icon: PhoneCall },
   { name: 'Call History', href: '/dashboard/callHistory', icon: History },
   { name: 'Analytics', href: '/dashboard/analytics', icon: LineChart },
-  { name: 'Throw a Call', href: '/dashboard/throwCall', icon: PhoneCallIcon },
+  { name: 'Send a Call', href: '/dashboard/sendCall', icon: PhoneCallIcon },
 ];
 
 const navItemsTool = [
