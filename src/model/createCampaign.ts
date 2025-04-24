@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+import { ST } from 'next/dist/shared/lib/utils';
 
 const CampaignCallSchema = new mongoose.Schema({
   campaignCallName: {
@@ -10,6 +11,12 @@ const CampaignCallSchema = new mongoose.Schema({
     type: String,
     // required: true,
     // unique: true,
+  },
+  agentId: {
+    type: String,
+  },
+  noOfFollowUps: {
+    type: String,
   },
   fromNumber: {
     type: String,
@@ -37,6 +44,7 @@ const CampaignCallSchema = new mongoose.Schema({
   },
   recipients: [{ type: String,}],
   // userId{type: objectId}
+  outboundCallId: [{ type: Schema.Types.ObjectId, ref: 'outbound_call_data' , default: []}],
 }, {
   timestamps: true, // adds createdAt and updatedAt
 });

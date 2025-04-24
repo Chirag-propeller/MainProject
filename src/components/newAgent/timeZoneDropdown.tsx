@@ -7,26 +7,27 @@ import axios from 'axios';
 type TimeZoneDropdownProps = {
   selectedZone: string;
   setSelectedZone: (zone: string) => void;
+  timeZones: string[];
 };
 
 
-const TimeZoneDropdown: React.FC<TimeZoneDropdownProps> = ({selectedZone, setSelectedZone} ) => {
-  const [timeZones, setTimeZones] = useState<string[]>([]);
+const TimeZoneDropdown: React.FC<TimeZoneDropdownProps> = ({selectedZone, setSelectedZone, timeZones} ) => {
+  // const [timeZones, setTimeZones] = useState<string[]>([]);
   // const [selectedZone, setSelectedZone] = useState('');
 
-  useEffect(() => {
-    const fetchTimeZones = async () => {
-      try {
-        // const res = await axios.get('https://worldtimeapi.org/api/timezone');
-        const res = await axios.get('https://timeapi.io/api/timezone/availabletimezones');
-        setTimeZones(res.data);
-      } catch (error) {
-        console.error('Failed to fetch time zones:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchTimeZones = async () => {
+  //     try {
+  //       // const res = await axios.get('https://worldtimeapi.org/api/timezone');
+  //       const res = await axios.get('https://timeapi.io/api/timezone/availabletimezones');
+  //       setTimeZones(res.data);
+  //     } catch (error) {
+  //       console.error('Failed to fetch time zones:', error);
+  //     }
+  //   };
 
-    fetchTimeZones();
-  }, []);
+  //   fetchTimeZones();
+  // }, []);
 
   return (
     <div className="w-full max-w-md mx-auto p-4">

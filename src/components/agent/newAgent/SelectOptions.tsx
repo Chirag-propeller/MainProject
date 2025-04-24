@@ -4,7 +4,7 @@ interface SelectOptionsProps {
     options: string[]; // List of options
     selectedOption: string; // Current selected option
     setOption: React.Dispatch<React.SetStateAction<string>>; // Function to update the selected option
-    loading: boolean
+    loading?: boolean
   }
 
 const SelectOptions: React.FC<SelectOptionsProps> = ({options, selectedOption, setOption, loading}) => {
@@ -15,8 +15,8 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({options, selectedOption, s
             value={selectedOption}
             onChange={(e) => setOption(e.target.value)}
           >
-            {options?.map((option: any) => (
-              <option key={option} value={option} className='p-1'> {option} </option>
+            {options?.map((option: any, idx:any) => (
+              <option key={idx} value={option} className='p-1'> {option} </option>
             ))}
         </select>
     </div>
