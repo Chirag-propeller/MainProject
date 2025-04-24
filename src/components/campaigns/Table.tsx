@@ -7,6 +7,7 @@ interface Campaign {
   fromNumber?: string;
   callDate?: string;
   callTimezone?: string;
+  agentId?: string;
 }
 
 const AgentTable = () => {
@@ -42,10 +43,12 @@ const AgentTable = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Call Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Campaign Name</th>
+
+                {/* agentName, start date and time, from number */}
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time Zone</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
@@ -53,9 +56,9 @@ const AgentTable = () => {
                 <tr key={index} className="hover:bg-gray-50 transition duration-150">
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{compaign.campaignCallName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{compaign.fromNumber || '-'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{compaign.agentId || '-'}</td>
                   <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{compaign.callDate || '-'}</td>
-                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{compaign.callTimezone || '-'}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{compaign.fromNumber || '-'}</td>
                 </tr>
               ))}
               {campaigns.length === 0 && (

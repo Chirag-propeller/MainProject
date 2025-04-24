@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar } from 'lucide-react';
+import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon } from 'lucide-react';
 import SidebarLink from './sidebar/SidebarLink';
 
 const navItemsMain = [
@@ -14,6 +14,7 @@ const navItemsMain = [
   { name: 'Phone Number', href: '/dashboard/phoneNumber', icon: PhoneCall },
   { name: 'Call History', href: '/dashboard/callHistory', icon: History },
   { name: 'Analytics', href: '/dashboard/analytics', icon: LineChart },
+  { name: 'Send a Call', href: '/dashboard/sendCall', icon: PhoneCallIcon },
 ];
 
 const navItemsTool = [
