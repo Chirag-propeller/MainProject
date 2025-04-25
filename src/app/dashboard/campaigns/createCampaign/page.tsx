@@ -205,13 +205,12 @@ const BatchCallForm: React.FC = () => {
   const handleClicker = async (e: React.FormEvent) => {
     const transformedData = {
       campaignCallName: formData.campaignName,
+      agentId: formData.agent,
       fromNumber: formData.fromNumber,
       callTimezone: formData.timeZone,
       callScheduledOrNot: formData.sendOption === 'schedule',
       callDate: formData.sendOption === 'schedule' ? new Date(formData.scheduleDate) : null,
       recipients: extractedPhones,
-      // You can optionally add:
-      // campaignCallId: crypto.randomUUID() or something similar
     };
     e.preventDefault();
     if(extractedPhones.length === 0){
@@ -220,8 +219,9 @@ const BatchCallForm: React.FC = () => {
     }
     try {
       const res = await createCampaign(transformedData);
+      console.log(transformedData);
       setResponse(res);
-      console.log('✅ Campaign created:', res.data._id);
+      console.log('✅ Campaign created:', res);
       console.log(extractedPhones);
       await triggerFastApiCall(res.data._id); 
       console.log("Number send Successfully")
