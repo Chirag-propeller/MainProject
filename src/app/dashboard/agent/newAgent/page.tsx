@@ -21,11 +21,20 @@ interface LLMConfig {
   loading: boolean
 }
 
+interface KnowledgeBase {
+  _id: string;
+  name: string;
+  files: any[];
+  links: any[];
+  [key: string]: any;
+}
+
 const Main = () => {
   const router = useRouter();
   const { llmOptions, ttsOptions, sttOptions, loading } = useLLMConfig() as LLMConfig
 
   const [isKnowledgeBaseModalListOpen, setIsKnowledgeBaseModalListOpen] = useState<boolean>(false);
+  const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
   const providers = Object.keys(ttsOptions);
   const languages: string[] = Array.isArray(sttOptions) ? Array.from(sttOptions) : Object.values(sttOptions);
   const llm: string[] = Array.isArray(llmOptions) ? Array.from(llmOptions) : Object.values(llmOptions);
@@ -223,6 +232,9 @@ const Main = () => {
                 {isKnowledgeBaseModalListOpen && (
                     <ModalList
                       // setKnowledgeBaselist={setKnowledgeBaseList}
+                      knowledgeBases={knowledgeBases}
+                      setKnowledgeBases={setKnowledgeBases}
+                      
                       setKnowledgeBaseList={setKnowledgeBaseList}
                       isOpen={isKnowledgeBaseModalListOpen}
                       onClose={() => setIsKnowledgeBaseModalListOpen(false)}
@@ -231,11 +243,14 @@ const Main = () => {
 
                 <ul className='list-disc pl-5'>
                 {
-                  knowledgeBaseList.map((li) => (
-                    <li key={li} className='text-sm'>
-                       {li}
-                    </li>
-                  ))
+                  knowledgeBaseList.map((id) => {
+                    const kb = knowledgeBases.find(k => k._id === id);
+                    return (
+                      <li key={id} className='text-sm'>
+                        {kb?.name || 'Unknown'}
+                      </li>
+                    );
+                  })
                 }
                 </ul>
               </div>

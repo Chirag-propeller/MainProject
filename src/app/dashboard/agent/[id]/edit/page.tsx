@@ -23,6 +23,14 @@ interface LLMConfig {
   loading: boolean
 }
 
+interface KnowledgeBase {
+  _id: string;
+  name: string;
+  files: any[];
+  links: any[];
+  [key: string]: any;
+}
+
 const Main = () => {
   const router = useRouter();
   const params = useParams();
@@ -31,6 +39,7 @@ const Main = () => {
 
 
   const [isKnowledgeBaseModalListOpen, setIsKnowledgeBaseModalListOpen] = useState<boolean>(false);
+  const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
   const { llmOptions, ttsOptions, sttOptions, loading } = useLLMConfig() as LLMConfig
 
   const providers = Object.keys(ttsOptions);
@@ -107,8 +116,19 @@ const Main = () => {
         console.error('Error fetching agent:', error);
       }
     };
+
+    const fetchKnowledgeBases = async () => {
+      try {
+        const res = await fetch("/api/knowledgeBase/get", { method: "GET" });
+        const data = await res.json();
+        setKnowledgeBases(data.knowledgeBases);
+      } catch (err) {
+        console.error("Error fetching knowledge bases:", err);
+      }
+    };
   
     if (agentId) fetchAgent();
+    fetchKnowledgeBases();
   }, []);
   
 
@@ -294,6 +314,8 @@ const Main = () => {
                 {isKnowledgeBaseModalListOpen && (
                     <ModalList
                       // setKnowledgeBaselist={setKnowledgeBaseList}
+                      knowledgeBases={knowledgeBases}
+                      setKnowledgeBases={setKnowledgeBases}
                       setKnowledgeBaseList={setKnowledgeBaseList}
                       isOpen={isKnowledgeBaseModalListOpen}
                       onClose={() => setIsKnowledgeBaseModalListOpen(false)}
@@ -315,11 +337,15 @@ const Main = () => {
                 </div> */}
                 <ul className='list-disc pl-5'>
                 {
-                  knowledgeBaseList.map((li) => (
-                    <li key={li} className='text-sm'>
-                       {li}
+                  knowledgeBaseList.map((li) => {
+                    const kb = knowledgeBases.find(kb => kb._id === li)
+                    return (
+                      <li key={li} className='text-sm'>
+                      {kb?.name || 'Unknown'}
                     </li>
-                  ))
+                    )
+                  }
+                  )
                 }
                 </ul>
               </div>

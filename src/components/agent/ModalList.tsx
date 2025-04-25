@@ -14,11 +14,13 @@ interface KnowledgeBase {
 interface DropdownListProps {
   isOpen: boolean;
   setKnowledgeBaseList: (ids:string[])=>void;
+  setKnowledgeBases: (ids:KnowledgeBase[])=>void;
+  knowledgeBases: KnowledgeBase[];
   onClose: () => void;
 }
 
-const DropdownList: React.FC<DropdownListProps> = ({ isOpen,setKnowledgeBaseList, onClose }) => {
-  const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
+const DropdownList: React.FC<DropdownListProps> = ({ isOpen,setKnowledgeBaseList, onClose, setKnowledgeBases, knowledgeBases }) => {
+  
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
