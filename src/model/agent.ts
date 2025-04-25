@@ -22,7 +22,7 @@ export interface IAgent extends Document {
 const AgentSchema: Schema = new Schema({
   // userId : {}
   agentId: { type: String, required: true, unique: true },
-  agentName: { type: String, required: true , default: "Agent 1"},
+  agentName: { type: String, required: false , default: "Agent 1"},
   llm: { type: String },
   inputLanguage: { type: String },
   stt: { type: String },

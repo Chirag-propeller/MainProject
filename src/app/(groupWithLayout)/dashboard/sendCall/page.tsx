@@ -22,7 +22,7 @@ export default function ContactForm() {
     setFromAgent(agentId);
   
     // Find the full agent object
-    const agent = agentList.find((a:any) => a._id === agentId);
+    const agent = agentList.find((a:any) => a.agentId === agentId);
     setSelectedAgent(agent || null);
   };
 
@@ -67,7 +67,7 @@ export default function ContactForm() {
         API_URL,
         {
           // phone_numbers: numbers, 
-          agentId: selectedAgent._id,
+          agentId: selectedAgent.agentId,
           fromPhone: fromNumber,
           numberofFollowup: "0",
           campaignid: "",
@@ -165,7 +165,7 @@ export default function ContactForm() {
         >
             <option value="">Select agent</option>
             {agentList.map((agent:any) => (
-            <option key={agent._id} value={agent._id}>
+            <option key={agent._id} value={agent.agentId}>
                 {agent.agentName}
             </option>
             ))}

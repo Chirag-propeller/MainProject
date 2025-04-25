@@ -14,6 +14,7 @@ const CampaignCallSchema = new mongoose.Schema({
   },
   agentId: {
     type: String,
+    ref: 'Agent',
   },
   noOfFollowUps: {
     type: String,

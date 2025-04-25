@@ -1,7 +1,7 @@
 // utils/api.ts or directly inside a component
 export async function createCampaign(data: any) {
     try {
-        console.log("reached api.ts")
+        console.log("reached api.ts", data);
       const response = await fetch('/api/createCampaign/create', {
         method: 'POST',
         headers: {
