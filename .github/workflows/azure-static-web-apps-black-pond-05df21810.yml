@@ -44,6 +44,7 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} # Google OAuth credentials
           GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }} # Google OAuth credentials
           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }} # Token secret (JWT, etc.)
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
