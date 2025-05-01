@@ -197,14 +197,6 @@ const SignupAndVerifyPage = () => {
             </button>
           </>
         )}
-        {/* <button
-          onClick={() =>
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:3000/api/auth/google/callback&response_type=code&scope=openid%20email%20profile`
-          }
-          className="cursor-pointer bg-white border px-4 py-2 rounded text-black w-full"
-        >
-          Continue with Google
-        </button> */}
         <button
           type="button"
           onClick={() => {
