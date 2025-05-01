@@ -202,7 +202,7 @@ const SignupAndVerifyPage = () => {
           onClick={() => {
             if (googleLoading) return;
             setGoogleLoading(true);
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${window.location.origin}/api/auth/google/callback&response_type=code&scope=openid%20email%20profile`;
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=openid%20email%20profile`;
           }}
           className="flex items-center justify-center gap-3 w-full py-2 px-4 border border-gray-300 rounded-xl bg-white hover:bg-gray-100 transition-all text-sm font-medium text-gray-700 shadow-sm disabled:opacity-60 cursor-pointer"
           disabled={googleLoading}
