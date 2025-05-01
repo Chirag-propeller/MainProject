@@ -8,12 +8,14 @@ import { useState } from 'react'
 import InputForm from '@/components/phoneNumber/InputForm'
 import List from '@/components/phoneNumber/List'
 import Sidebar from '@/components/sidebar'
+import Footer from '@/components/Footer'
 
 
 
 const page = () => {
 
   return (
+    <>
     <div className='flex'>
       <Sidebar/>
         <div className="ml-64 p-6 w-full">
@@ -31,6 +33,8 @@ const page = () => {
         </div>
         </div>
     </div>
+    <Footer/>
+    </>
   )
 }
 

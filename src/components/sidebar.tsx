@@ -1,7 +1,6 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon } from 'lucide-react';
 import SidebarLink from './sidebar/SidebarLink';
 
@@ -37,7 +36,7 @@ const Sidebar = ()=> {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-[100vh] overflow-y-auto text-gray-600 p-4 pt-0 pb-5 fixed">
+    <aside className="w-64 h-[100vh] overflow-y-auto text-gray-600 p-4 pt-0 pb-10 fixed">
 
         <Link href='/dashboard'>
           <div className='fixed bg-white w-64 air-logo text-2xl pt-5 text-blue-600'>

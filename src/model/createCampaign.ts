@@ -44,7 +44,7 @@ const CampaignCallSchema = new mongoose.Schema({
     required: false,
   },
   recipients: [{ type: String,}],
-  // userId{type: objectId}
+  userId: {type: Schema.Types.ObjectId},
   outboundCallId: [{ type: Schema.Types.ObjectId, ref: 'outbound_call_data' , default: []}],
 }, {
   timestamps: true, // adds createdAt and updatedAt

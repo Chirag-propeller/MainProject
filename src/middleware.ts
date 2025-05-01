@@ -1,0 +1,43 @@
+// middleware.ts
+import { NextResponse, type NextRequest } from 'next/server'
+
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const token = request.cookies.get('token')?.value
+
+  // Define routes
+  const authRoutes = ['/login', '/signup']
+  const protectedRoutes = ['/dashboard']
+  const publicRoutes = ['/']
+
+  // Check route types
+  const isAuthRoute = authRoutes.includes(pathname)
+  const isProtectedRoute = protectedRoutes.some(route => 
+    pathname.startsWith(route)
+  )
+  const isPublicRoute = publicRoutes.includes(pathname)
+
+  // Redirect authenticated users from auth routes to dashboard
+  if (isAuthRoute && token) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
+  // Redirect unauthenticated users from protected routes to login
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  // Public routes are accessible to everyone
+  if (isPublicRoute) {
+    return NextResponse.next()
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+}

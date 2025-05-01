@@ -1,6 +1,7 @@
 "use client"
 import CreateNewAgent from '@/components/agent/CreateNewAgent'
 import Table from '@/components/agent/Table'
+import Footer from '@/components/Footer'
 import Sidebar from '@/components/sidebar'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -15,6 +16,7 @@ const page = () => {
 
 
   return (
+    <>
     <div className='flex'>
       {/* <div className='fixed flex justify-between bg-white  '> */}
       {/* <div className="fixed top-0 left-0 w-full bg-white p-4 flex justify-between"> */}
@@ -36,6 +38,8 @@ const page = () => {
         <Table/>
       </div>
     </div>
+    <Footer/>
+    </>
   )
 }
 

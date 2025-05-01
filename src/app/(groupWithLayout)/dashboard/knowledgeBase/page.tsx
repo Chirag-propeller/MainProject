@@ -21,6 +21,7 @@ const Page = () => {
         </div>
 
         <KnowledgeBaseList
+          showModal={showModal}
           onSelect={(kb) => setSelectedKB(kb)}
           selectedId={selectedKB?._id}
         />

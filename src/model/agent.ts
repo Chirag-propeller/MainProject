@@ -17,6 +17,7 @@ export interface IAgent extends Document {
   knowledgeBaseAttached?: boolean;
   knowledgeBase: mongoose.Types.ObjectId[];
   prompt?: string;
+  userId: mongoose.Types.ObjectId;
 }
 
 const AgentSchema: Schema = new Schema({
@@ -35,6 +36,7 @@ const AgentSchema: Schema = new Schema({
   knowledgeBaseAttached: { type: Boolean, default: false },
   knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase' , default: []}],
   prompt: { type: String },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 }, {timestamps:true});
 
 export default models.Agent || model<IAgent>('Agent', AgentSchema);

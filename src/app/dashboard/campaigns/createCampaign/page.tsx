@@ -9,8 +9,6 @@ import { createCampaign } from '@/utils/api'; // if you moved the function to ut
 import Papa from 'papaparse'; 
 import axios from 'axios';
 
-
-
 type Contact = {
   phonenumber: string;
   metadata: {
@@ -136,6 +134,7 @@ const BatchCallForm: React.FC = () => {
   const API_KEY = 'supersecretapikey123';
   
   const triggerFastApiCall = async ( campId : string ) => {
+
     try {
       const response = await axios.post(
         API_URL,
@@ -203,6 +202,17 @@ const BatchCallForm: React.FC = () => {
   const [response, setResponse] = useState<any>(null);
 
   const handleClicker = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form Data-- ", formData);
+    if (!formData.agent || formData.agent.trim() === "") {
+      alert("Please attach an Agent");
+      return;
+    }
+  
+    if (extractedPhones.length === 0) {
+      alert("Please Enter some Recepient List To Create Campaign");
+      return;
+    }
     const transformedData = {
       campaignCallName: formData.campaignName,
       agentId: formData.agent,
@@ -212,7 +222,7 @@ const BatchCallForm: React.FC = () => {
       callDate: formData.sendOption === 'schedule' ? new Date(formData.scheduleDate) : null,
       recipients: extractedPhones,
     };
-    e.preventDefault();
+    
     if(extractedPhones.length === 0){
       alert("Please Enter some Recepient List To Create Campaign")
       return;

@@ -7,7 +7,7 @@ import React from 'react'
 const Message = ({type, text}: {type: string, text: string}) => {
   return (
     <div>
-      <div className={`flex  ${type === 'agent' ? ' text-blue-400' : ' text-gray-600'}`}>
+      <div className={`flex justify-end ${type === 'agent' ? ' text-blue-400' : ' text-gray-600'}`}>
       <strong className="text-black"> 
         {type === 'agent' ? 'Agent: ' : 'User: '}
        </strong>
@@ -68,7 +68,7 @@ const SimpleVoiceAssistance = () => {
   
   return (
     <div className="flex flex-col justify-between w-full ">
-      <div className="overflow-hidden overflow-y-auto ref={messagesContainerRef}"> hi
+      <div className="overflow-hidden overflow-y-auto ref={messagesContainerRef}">
         {
           messages.map((message, index) => (
             <Message 

@@ -1,14 +1,16 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import knowledgeBaseModel from '@/model/knowledgeBase/knowledgeBase.model'
 import fileModel from '@/model/knowledgeBase/file.model'
 import linkModel from '@/model/knowledgeBase/link.model'
 import { uploadFileToAzure } from '@/lib/azure'
+import { getUserFromRequest } from '@/lib/auth'
+import User from '@/model/user/user.model'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     await dbConnect()
-
+    const user = await getUserFromRequest(req);
     const formData = await req.formData()
     const name = formData.get('name')?.toString() || 'Default Knowledge Base'
     // const userId = formData.get('userId')?.toString() || 'Admin01'
@@ -19,7 +21,7 @@ export async function POST(req: Request) {
     // Step 1: Create knowledge base
     const knowledgeBase = await knowledgeBaseModel.create({
       name,
-    //   userId,
+      userId:user.userId,
       sourceType: 'upload',
     })
 
@@ -71,7 +73,9 @@ export async function POST(req: Request) {
         uploadedFiles.push(dbFile)
       }
     }
+    await User.findByIdAndUpdate(user.userId, { $push: { phoneNumbers: knowledgeBase._id } });
 
+    // User.findByIdAndUpdate({_id: user.userId})
     // Step 4: Attach file IDs to knowledge base
     await knowledgeBaseModel.findByIdAndUpdate(knowledgeBase._id, {
       // $push: { files: { $each: uploadedFiles.map((f) => f._id) } },
@@ -80,7 +84,7 @@ export async function POST(req: Request) {
         links: { $each: linkIds }
       }
     })
-
+    
     return NextResponse.json({
       success: true,
       knowledgeBase,
