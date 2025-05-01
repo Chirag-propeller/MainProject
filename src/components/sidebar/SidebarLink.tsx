@@ -14,7 +14,7 @@ type SidebarLinkProps = {
     return (
       <Link
         href={href}
-        className={`flex group items-center gap-2 p-2 rounded  ${
+        className={`flex group items-center p-1 gap-2 rounded  ${
             isActive
             ? 'bg-blue-100 text-blue-700 font-semibold'
             : 'text-gray-600 hover:text-black'

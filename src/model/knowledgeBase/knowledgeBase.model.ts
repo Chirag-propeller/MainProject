@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IKnowledgeBase extends Document {
   name: string
-  userId?: mongoose.Types.ObjectId
+  userId: mongoose.Types.ObjectId
   files: mongoose.Types.ObjectId[]
   links: mongoose.Types.ObjectId[]
 }

@@ -90,36 +90,6 @@ const fetchLinks = async (url: string) => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [onClose, showCrawlModal, showLinksModal,showTextModal])
   
-  // const handleSave = async () => {
-  //   if (!kbName.trim()) {
-  //     alert("Please enter a knowledge base name.");
-  //     return;
-  //   }
-  
-  //   const formData = new FormData();
-  //   formData.append("name", kbName);
-  //   fileList.forEach((file) => formData.append("files", file));
-  //   selectedLinks.forEach((link) => formData.append("links", link));
-  
-  //   try {
-  //     const response = await fetch('/api/knowledgeBase/uploads', {
-  //       method: 'POST',
-  //       body: formData,
-  //     });
-  
-  //     if (!response.ok) {
-  //       throw new Error('Failed to create knowledge base.');
-  //     }
-  
-  //     const data = await response.json();
-  //     console.log("Knowledge Base Created:", data);
-  //     onClose();
-  //   } catch (err) {
-  //     console.error("Error:", err);
-  //     alert("Something went wrong. Please try again.");
-  //   }
-  // };
-  
   const handleSave = async () => {
     if (!kbName.trim()) {
       alert("Please enter a knowledge base name.");

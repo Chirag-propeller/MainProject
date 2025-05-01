@@ -18,7 +18,7 @@ interface Agent {
 }
 
 
-const AgentTable = () => {
+const CampaignTable = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [agent, setAgent] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,7 +84,7 @@ const AgentTable = () => {
               ))}
               {campaigns.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500">No agents found.</td>
+                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500">No Campaigns found.</td>
                 </tr>
               )}
             </tbody>
@@ -95,4 +95,4 @@ const AgentTable = () => {
   );
 };
 
-export default AgentTable;
+export default CampaignTable;

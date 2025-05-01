@@ -1,16 +1,18 @@
 // /src/app/api/knowledgeBase/route.ts
 import '@/model/knowledgeBase/file.model'
 import '@/model/knowledgeBase/link.model'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import dbConnect from '@/lib/mongodb'
 import knowledgeBaseModel from '@/model/knowledgeBase/knowledgeBase.model'
+import { getUserFromRequest } from '@/lib/auth'
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect()
+    const user = await getUserFromRequest(req);
 
-    const knowledgeBases = await knowledgeBaseModel.find()
+    const knowledgeBases = await knowledgeBaseModel.find({userId : user.userId})
     .populate({ path: 'files', strictPopulate: false })  // Add this
     .populate({ path: 'links', strictPopulate: false })
 

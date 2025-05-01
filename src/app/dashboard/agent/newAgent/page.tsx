@@ -139,9 +139,10 @@ const Main = () => {
   };
   
   const createAgentHandler = async () => {
-
+    
     const payload = {
-      agentName: agentName,
+      agentName: agentName.trim() === "" ? "Default Agent" : agentName,
+      // agentName: agentName,
       prompt: text,
       llm: selectedLLM,
       inputLanguage: selectedLang,

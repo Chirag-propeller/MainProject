@@ -33,10 +33,10 @@ const phoneNumberSchema = new mongoose.Schema({
     type: String,
     default: '', // Optional — could also use ref to Agent schema if needed
   },
-  id: {
-    type: String,
-    default: false,
-  },
+  userId: {
+    type: mongoose.Types.ObjectId,
+    ref: "User",
+  }
 }, {
   timestamps: true // Optional: adds createdAt and updatedAt
 });

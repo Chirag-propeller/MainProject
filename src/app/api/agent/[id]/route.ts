@@ -1,16 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Agent from '@/model/agent';
+import { getUserFromRequest } from '@/lib/auth';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const user = await getUserFromRequest(request);
   await dbConnect();
   const { id } = await params;
   
   try {
-    const agent = await Agent.findOne({ _id: id });
+    const agent = await Agent.findOne({ _id: id, userId: user.userId  });
     if (!agent) {
       return NextResponse.json({ message: 'Agent not found' }, { status: 404 });
     }
@@ -30,8 +32,9 @@ export async function PUT(
   const body = await request.json();
   
   try {
+    const user = await getUserFromRequest(request);
     const updatedAgent = await Agent.findOneAndUpdate(
-      { _id: id },
+      { _id: id ,  userId: user.userId },
       { ...body },
       { new: true, runValidators: true }
     );
