@@ -107,7 +107,7 @@ const SignupAndVerifyPage = () => {
 
     try {
       // Send OTP to verify
-      const response = await axios.post("/api/user/verify-otp", {...form, otp });
+      const response = await axios.post("/api/user/verifyOtp", {...form, otp });
       toast.success("Email verified successfully!", { id: "verify" });
       setIsVerified(true); // OTP verified successfully
 
