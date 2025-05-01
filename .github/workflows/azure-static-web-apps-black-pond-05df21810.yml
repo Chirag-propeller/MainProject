@@ -39,6 +39,11 @@ jobs:
           LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
           LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }} # ✅ Added Resend API Key
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} # Google OAuth credentials
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} # Google OAuth credentials
+          GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }} # Google OAuth credentials
+          TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }} # Token secret (JWT, etc.)
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
