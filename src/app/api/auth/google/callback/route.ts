@@ -59,7 +59,7 @@ export async function GET(req: NextRequest) {
     const token = jwt.sign(userTokenData, process.env.TOKEN_SECRET!, {expiresIn: "3d"});
 
     // const response = NextResponse.redirect(new URL("/dashboard", req.url));
-    const response = NextResponse.redirect(`${process.env.GOOGLE_REDIRECT_URI}/dashboard`);
+    const response = NextResponse.redirect(`${process.env.PAGE_REDIRECT_URI}/dashboard`);
 
     response.cookies.set("token", token, {
       httpOnly: true,
