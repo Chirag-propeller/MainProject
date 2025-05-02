@@ -93,7 +93,7 @@ const LoginPage = () => {
           <button
             type="button"
             onClick={() =>
-              window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=openid%20email%20profile`
+              window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&response_type=code&scope=openid%20email%20profile`
             }
             className="cursor-pointer px-4 py-2 border rounded-xl text-sm text-gray-700 hover:bg-gray-100 transition"
             disabled={loading}
