@@ -6,13 +6,15 @@ export async function POST() {
     const cookieStore = await cookies(); // ✅ no await needed in latest Next.js
     // cookieStore.delete("token");
     const response = NextResponse.json({ message: "Logout successful" }, { status: 200 });
-
+    const isProduction = process.env.NODE_ENV === 'production';
     response.cookies.set({
       name: "token",
       value: "",
       expires: new Date(0),
       httpOnly: true,
-      path: "/"
+      path: "/",
+      secure: isProduction, // Match the 'secure' value used during login
+      sameSite: 'lax',
     });
 
     return response;
