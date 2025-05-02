@@ -7,25 +7,26 @@ export async function POST() {
     // cookieStore.delete("token");
 
     const tokenBefore:any = cookieStore.get("token");
-
+    const isProduction = process.env.NODE_ENV === 'production';
     const response = NextResponse.json({
       message: "Logout attempted",
       tokenBeforeLogout: tokenBefore?.value,
       path: tokenBefore?.path,
       secure: tokenBefore?.secure,
+      isProduction:isProduction,
     });
 
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    response.cookies.set({
-      name: "token",
-      value: "",
-      expires: new Date(0),
-      httpOnly: true,
-      path: "/",
-      secure: isProduction,
-      sameSite: "lax",
-    });
+    
+    (await cookies()).set('token', '', { maxAge: 0 })
+    // response.cookies.set({
+    //   name: "token",
+    //   value: "",
+    //   expires: new Date(0),
+    //   httpOnly: true,
+    //   path: "/",
+    //   secure: isProduction,
+    //   sameSite: "lax",
+    // });
 
     return response;
     // const response = NextResponse.json({ message: "Logout successful" }, { status: 200 });
