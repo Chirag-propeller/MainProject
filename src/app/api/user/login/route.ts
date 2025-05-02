@@ -43,26 +43,26 @@ export async function POST(req : NextRequest){
         }
         const isProduction = process.env.NODE_ENV === 'production';
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {expiresIn: "3d"});
-        const cookieStore = await cookies()
-        cookieStore.set({
-          name: 'token',
-          value: token,
-          httpOnly: true,
-          path: '/',
-          secure: isProduction, 
-          sameSite: 'lax', 
-        })
+        // const cookieStore = await cookies()
+        // cookieStore.set({
+        //   name: 'token',
+        //   value: token,
+        //   httpOnly: true,
+        //   path: '/',
+        //   secure: isProduction, 
+        //   sameSite: 'lax', 
+        // })
 
         const response = NextResponse.json({message:"Login Successful", success: true}, {status: 200});
-        // response.cookies.set("token",token,
-        //     {
-        //         httpOnly: true,
-        //         path: "/",
-        //         secure: isProduction, 
-        //         sameSite: 'lax', 
-        //     },
+        response.cookies.set("token",token,
+            {
+                httpOnly: true,
+                path: "/",
+                secure: isProduction, 
+                sameSite: 'lax', 
+            },
 
-        // )
+        )
         return response;
     }catch(err:any){
         return NextResponse.json({error: err}, {status: 500})
