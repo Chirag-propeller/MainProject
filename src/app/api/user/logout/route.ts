@@ -5,19 +5,42 @@ export async function POST() {
   try {
     const cookieStore = await cookies(); // ✅ no await needed in latest Next.js
     // cookieStore.delete("token");
-    const response = NextResponse.json({ message: "Logout successful" }, { status: 200 });
+
+    const tokenBefore:any = cookieStore.get("token");
+
+    const response = NextResponse.json({
+      message: "Logout attempted",
+      tokenBeforeLogout: tokenBefore?.value,
+      path: tokenBefore?.path,
+      secure: tokenBefore?.secure,
+    });
+
     const isProduction = process.env.NODE_ENV === 'production';
+
     response.cookies.set({
       name: "token",
       value: "",
       expires: new Date(0),
       httpOnly: true,
       path: "/",
-      secure: isProduction, // Match the 'secure' value used during login
-      sameSite: 'lax',
+      secure: isProduction,
+      sameSite: "lax",
     });
 
     return response;
+    // const response = NextResponse.json({ message: "Logout successful" }, { status: 200 });
+    // const isProduction = process.env.NODE_ENV === 'production';
+    // response.cookies.set({
+    //   name: "token",
+    //   value: "",
+    //   expires: new Date(0),
+    //   httpOnly: true,
+    //   path: "/",
+    //   secure: isProduction, // Match the 'secure' value used during login
+    //   sameSite: 'lax',
+    // });
+
+    // return response;
   } catch (err: any) {
     return NextResponse.json({ error: err.message || "Internal Server Error" }, { status: 500 });
   }
