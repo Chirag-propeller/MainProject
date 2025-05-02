@@ -7,11 +7,28 @@ import { Button } from '../ui/button'
 
 const Logout = () => {
   const route = useRouter();
-    const handleClick= async ()=>{
-        const res = await axios.post("/api/user/logout");
-        console.log(res);
+    // const handleClick= async ()=>{
+    //     const res = await axios.post("/api/user/logout");
+    //     console.log(res);
+    //     route.push("/");
+    // }
+
+
+    const handleClick = async () => {
+      try {
+        const res = await axios.post(
+          "/api/user/logout",
+          {},
+          {
+            withCredentials: true, // ✅ Send the token cookie
+          }
+        );
+        console.log("Logout response:", res.data);
         route.push("/");
-    }
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+    };
   return (
     <Button onClick={handleClick} variant="danger" >Logout</Button>
     // <button onClick={handleClick}>Logout</button>

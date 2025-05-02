@@ -12,7 +12,7 @@ interface KnowledgeBase {
 }
 
 interface Props {
-  onSelect: (kb: KnowledgeBase) => void
+  onSelect: (kb: KnowledgeBase| null) => void
   selectedId?: string 
   showModal?: boolean
 }
@@ -51,6 +51,8 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
       const result = await res.json()
       if (result.success) {
         setKbs((prev) => prev.filter((kb) => kb._id !== id))
+        onSelect(null);
+        
       } else {
         alert(result.error || 'Delete failed')
       }
