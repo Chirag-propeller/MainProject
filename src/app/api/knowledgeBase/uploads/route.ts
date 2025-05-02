@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
         uploadedFiles.push(dbFile)
       }
     }
-    await User.findByIdAndUpdate(user.userId, { $push: { phoneNumbers: knowledgeBase._id } });
+    await User.findByIdAndUpdate(user.userId, { $push: { knowledgeBases: knowledgeBase._id } });
 
     // User.findByIdAndUpdate({_id: user.userId})
     // Step 4: Attach file IDs to knowledge base
