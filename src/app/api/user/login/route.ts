@@ -39,6 +39,7 @@ export async function POST(req : NextRequest){
             userId : user._id,
             email: user.email
         }
+        const isProduction = process.env.NODE_ENV === 'production';
 
         const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {expiresIn: "3d"});
         const response = NextResponse.json({message:"Login Successful", success: true}, {status: 200});
@@ -46,6 +47,8 @@ export async function POST(req : NextRequest){
             {
                 httpOnly: true,
                 path: "/",
+                secure: isProduction, 
+                sameSite: 'lax', 
             },
 
         )
