@@ -13,9 +13,15 @@ interface Props {
 }
 
 const KnowledgeBaseDetails: React.FC<Props> = ({ kb }) => {
+  console.log(kb);
   return (
     <div className='bg-white p-6 w-full h-full rounded shadow overflow-y-auto'>
-      <h2 className='text-2xl font-bold mb-4'>{kb.name}</h2>
+      <div className=' mb-4'>
+      <h2 className='text-2xl font-bold'>{kb.name}</h2>
+
+      </div>
+      
+      
 
       {kb.files?.length > 0 && (
         <div className='mb-4'>

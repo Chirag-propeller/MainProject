@@ -6,6 +6,7 @@ import InputField from "@/components/ui/inputField";
 import { useRouter } from "next/navigation"; // ✅ App Router
 import axios from "axios";
 import { toast } from "react-hot-toast"; // ✅ For showing notifications
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
   const [form, setForm] = useState({
@@ -42,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white p-10 rounded-2xl shadow-lg space-y-6"
@@ -78,8 +79,8 @@ const LoginPage = () => {
           disabled={loading}
           className={`w-full text-white text-lg font-medium py-2 rounded-xl transition-all duration-200 ${
             loading
-              ? "bg-blue-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              ? "bg-indigo-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700"
           }`}
         >
           {loading ? "Logging in..." : "Login"}
@@ -95,9 +96,10 @@ const LoginPage = () => {
             onClick={() =>
               window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&response_type=code&scope=openid%20email%20profile`
             }
-            className="cursor-pointer px-4 py-2 border rounded-xl text-sm text-gray-700 hover:bg-gray-100 transition"
+            className="cursor-pointer px-4 py-2 border rounded-xl text-sm text-gray-700 hover:bg-gray-100 transition flex items-center gap-2"
             disabled={loading}
           >
+            <FcGoogle className="text-lg" />
             Google
           </button>
         </div>

@@ -51,7 +51,7 @@ const AnimatedMessages: React.FC<AnimatedMessagesProps> = ({ messages }) => {
         <div
         key={message.id}
         className={cn(
-        "absolute z-30 transition-opacity duration-1000 ease-in-out hidden sm:block",
+        "absolute z-30 transition-opacity duration-3000 ease-in-out hidden sm:block",
         message.animation || ""
         )}
         style={{
@@ -62,9 +62,13 @@ const AnimatedMessages: React.FC<AnimatedMessagesProps> = ({ messages }) => {
         <div
         className={cn(
             "relative p-3 sm:p-4 max-w-[180px] sm:max-w-[280px] shadow-lg",
+            // message.isUser
+            // ? "glass-card rounded-2xl rounded-tr-sm text-white"
+            // : "bg-gradient-to-r from-decagon-primary to-decagon-secondary/70 rounded-2xl rounded-tl-sm text-white"
             message.isUser
-            ? "glass-card rounded-2xl rounded-tr-sm text-white"
-            : "bg-gradient-to-r from-decagon-primary to-decagon-secondary/70 rounded-2xl rounded-tl-sm text-white"
+            ? "bg-white/10 backdrop-blur-md text-white shadow-md rounded-2xl rounded-tr-sm"
+            : "bg-gradient-to-r from-decagon-primary to-decagon-secondary/70 text-white shadow-md rounded-2xl rounded-tl-sm"
+
         )}
         >
         {message.icon && (

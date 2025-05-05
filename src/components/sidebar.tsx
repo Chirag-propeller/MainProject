@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon } from 'lucide-react';
 import SidebarLink from './sidebar/SidebarLink';
+import Logo from './sidebar/Logo';
 
 const navItemsMain = [
-  { name: 'Home', href: '/dashboard', icon: Home },
+  // { name: 'Home', href: '/dashboard', icon: Home },
   // { name: 'Analysis', href: '/dashboard/analysis', icon: LineChart },
   { name: 'Agent', href: '/dashboard/agent', icon: Users },
   // { name: 'Contact', href: '/dashboard/contact', icon: Phone },
@@ -36,17 +37,23 @@ const Sidebar = ()=> {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-[100vh] overflow-y-auto text-gray-600 p-4 pt-0 pb-10 fixed">
+    <aside className="w-52 h-[100vh]  scroll overflow-y-auto text-gray-600 p-4 ps-0 pt-0 pb-10 fixed">
+    {/* <aside className="w-64 h-screen fixed left-0 top-0 bg-white text-gray-600"> */}
 
-        <Link href='/dashboard'>
-          <div className='fixed bg-white w-64 air-logo text-2xl pt-5 text-blue-600'>
-          proPAL AI
-              
+
+        <div className="w-48 bg-white fixed border-b border-gray-200">
+            <Link href="/dashboard/agent">
+              <Logo className="mx-auto" />
+            </Link>
           </div>
+        {/* <Link href='/dashboard/agent' className=''>
 
-        </Link>
-      <nav className="flex flex-col gap-4 ">
-        <h1 className='p-2 text-sm mt-4 pb-0 text-gray-500'> MAIN </h1>
+
+          <Logo className='mt-2'/>
+
+        </Link> */}
+      <nav className="flex flex-col gap-3 mt-3 ps-3 ">
+        <h1 className='p-2 text-sm  pb-0 text-gray-500'> MAIN </h1>
         {/* {navItems.map(item => (
           <Link
             key={item.href}

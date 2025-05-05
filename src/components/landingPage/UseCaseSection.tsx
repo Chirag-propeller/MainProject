@@ -95,12 +95,12 @@ const UseCaseSection: React.FC = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <Button
+          {/* <Button
             onClick={() => scrollToSection('testimonials')}
             className="bg-decagon-primary hover:bg-decagon-primary/90 text-white px-6 sm:px-8 py-5 sm:py-6 text-base font-medium rounded-md inline-flex items-center"
           >
             See Success Stories
-          </Button>
+          </Button> */}
         </div>
       </div>
 

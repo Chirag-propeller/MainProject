@@ -40,7 +40,7 @@ export interface Message {
         id: 2,
         text: "I can help you with that. What day works best for you?",
         isUser: false,
-        position: { top: "50%", left: "3rem" },
+        position: { top: "55%", left: "3rem" },
         animation: "animate-float-medium",
         icon: (
           <div className="bg-white rounded-full p-1 shadow-md">
@@ -64,7 +64,7 @@ export interface Message {
         id: 4,
         text: "Thursday afternoon would be great.",
         isUser: true,
-        position: { bottom: "10rem", right: "2rem" },
+        position: { bottom: "11rem", right: "2rem" },
         animation: "animate-float-medium",
       },
     ];
@@ -97,7 +97,7 @@ const HeroSection = () => {
 
           <div className="max-w-2xl space-y-6 md:space-y-10 relative z-10">
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight">
-              <span className="block font-black min-h-[3rem] md:min-h-[5rem] transition-opacity duration-500 mb-2 md:mb-4 text-decagon-dark">
+              <span className="block min-h-[3rem] md:min-h-[5rem] transition-opacity duration-500 mb-2 md:mb-4 text-decagon-dark">
                 {dynamicHeadlines[currentHeadlineIndex]}
               </span>
               <span className="block text-shimmer mt-1 md:mt-2">with Voice <br/> AI</span>

@@ -125,7 +125,7 @@ const SignupAndVerifyPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-white px-4">
       <form
         onSubmit={isOtpSent ? handleVerifyOtp : handleSubmit}
         className="w-full max-w-xl bg-white p-10 rounded-2xl shadow-lg space-y-6"
@@ -166,8 +166,8 @@ const SignupAndVerifyPage = () => {
               disabled={loading}
               className={`w-full text-white text-lg font-medium py-2 rounded-xl transition-all duration-200 cursor-pointer ${
                 loading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
               {loading ? "Creating..." : "Create Account"}
@@ -189,8 +189,8 @@ const SignupAndVerifyPage = () => {
               disabled={loading}
               className={`w-full text-white text-lg font-medium py-2 rounded-xl transition-all duration-200 ${
                 loading
-                  ? "bg-blue-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
+                  ? "bg-indigo-400 cursor-not-allowed"
+                  : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
               {loading ? "Verifying..." : "Verify OTP"}

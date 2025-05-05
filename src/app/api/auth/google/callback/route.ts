@@ -60,12 +60,12 @@ export async function GET(req: NextRequest) {
 
     // const response = NextResponse.redirect(new URL("/dashboard", req.url));
     const response = NextResponse.redirect(`${process.env.PAGE_REDIRECT_URI}/dashboard`);
-
+    const isProduction = process.env.NODE_ENV === 'production';
     response.cookies.set("token", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: "lax",
       path: "/",
+      secure: isProduction, 
+      sameSite: 'lax', 
     });
 
     return response;

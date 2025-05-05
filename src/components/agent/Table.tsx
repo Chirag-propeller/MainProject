@@ -86,7 +86,7 @@ const AgentTable = () => {
               {agents.map((agent, index) => (
                 <tr key={agent._id} 
                   onClick={() => router.push(`/dashboard/agent/${agent._id}/edit`)}
-                  className="hover:bg-gray-50 transition duration-150 cursor-pointer"
+                  className="hover:bg-gray-50 transition duration-150 cursor-pointer group"
                   >
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentId}</td>
@@ -100,7 +100,7 @@ const AgentTable = () => {
                     e.stopPropagation(); // prevent row click navigation
                     handleDelete(agent._id);
                   }} 
-                  className="text-red-700 cursor-pointer hover:text-red-800">
+                  className="text-gray-700 cursor-pointer group-hover:text-red-700">
                     <Trash2 className="w-4 h-4" />
                   </button>
 
