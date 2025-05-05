@@ -7,6 +7,7 @@ import AddKnowledgeBaseModal from '@/components/knowledgeBase/AddKnowledgeBaseMo
 import KnowledgeBaseDetails from '@/components/knowledgeBase/KnowledgeBaseDetails'
 import KnowledgeBaseList from '@/components/knowledgeBase/KnowledgeBaseList'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { Suspense } from 'react'
 
 
 const Page = () => {
@@ -36,6 +37,7 @@ const Page = () => {
     }, [searchParams])
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className='flex justify-between relative'>
       {/* Sidebar */}
       <div className='w-[30%] bg-gray-100 p-2 h-[90vh] rounded-md mx-2'>
@@ -66,6 +68,7 @@ const Page = () => {
         <AddKnowledgeBaseModal onClose={() => setShowModal(false)} />
       )}
     </div>
+    </Suspense>
   )
 }
 
