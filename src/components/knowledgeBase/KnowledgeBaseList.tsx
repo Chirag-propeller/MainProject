@@ -74,9 +74,9 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
             selectedId === kb._id ? 'bg-gray-300 font-semibold' : ''
           }`}
         >
-        <span onClick={() => onSelect(kb)} className=" w-full">{kb.name}</span>
-          <button onClick={() => deleteKnowledgeBase(kb._id)} className="text-red-600 ml-2 cursor-pointer">
-            <Trash2 size={16} />
+        <span onClick={() => onSelect(kb)} className=" w-full ">{kb.name}</span>
+          <button onClick={() => deleteKnowledgeBase(kb._id)} className="text-gray-600 ml-2 cursor-pointer hover:text-red-700">
+            <Trash2 size={12} />
           </button>
         </div>
       ))}

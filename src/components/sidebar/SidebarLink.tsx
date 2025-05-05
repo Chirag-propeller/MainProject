@@ -16,7 +16,7 @@ type SidebarLinkProps = {
         href={href}
         className={`flex group items-center p-1 gap-2 rounded  ${
             isActive
-            ? 'bg-blue-100 text-blue-700 font-semibold'
+            ? 'bg-indigo-100 text-indigo-700 font-semibold'
             : 'text-gray-600 hover:text-black'
   
         }`}
@@ -24,8 +24,8 @@ type SidebarLinkProps = {
         <Icon 
             className={`w-5 h-5 transition-colors ${
                 isActive
-                    ? 'text-blue-700'
-                    : 'text-gray-400 group-hover:text-blue-500'
+                    ? 'text-indigo-700'
+                    : 'text-gray-400 group-hover:text-indigo-500'
                 }`}
         />
         <span>{name}</span>

@@ -3,11 +3,18 @@ import { Trash2 } from 'lucide-react'; // Cleaner trash icon
 import React from 'react'
 import { useEffect, useState } from 'react';
 
+// interface Phone {
+//   phoneNumber : string;
+// }
+
 interface Phone {
-  phoneNumber : string;
+  phoneNumber: string;
+  name?: string;
+  createdAt?: string;
+  // Add other fields here
 }
 
-const List = ({ refreshTrigger, selectedPhoneNumber,setSelectedPhoneNumber }: { refreshTrigger: boolean , setSelectedPhoneNumber :  (phoneNumber: string) => void ,selectedPhoneNumber:string }) => {
+const List = ({ refreshTrigger, selectedPhoneNumber,setSelectedPhoneRecord }: { refreshTrigger: boolean ,  setSelectedPhoneRecord: (record: Phone|null) => void ,selectedPhoneNumber:string }) => {
 
   const [phoneNumber, setPhoneNumber] = useState<Phone[]>([])
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,7 +37,7 @@ const List = ({ refreshTrigger, selectedPhoneNumber,setSelectedPhoneNumber }: { 
       if (res.ok) {
         setPhoneNumber(prev => prev.filter(p => p.phoneNumber !== number));
         if (selectedPhoneNumber === number) {
-          setSelectedPhoneNumber('');
+          setSelectedPhoneRecord(null);
         }
       } else {
         const err = await res.json();
@@ -72,10 +79,12 @@ const List = ({ refreshTrigger, selectedPhoneNumber,setSelectedPhoneNumber }: { 
               className={`flex justify-between cursor-pointer p-1 rounded-sm ${
                 isActive ? 'bg-gray-300 font-bold' : 'hover:bg-gray-200'
               }`}
-              onClick={() => setSelectedPhoneNumber(phone.phoneNumber)}
+              onClick={() => setSelectedPhoneRecord(phone)}
+
+              // onClick={() => setSelectedPhoneNumber(phone.phoneNumber)}
             >
               <p>{phone.phoneNumber}</p>
-              <button onClick={(e) => handleDelete(phone.phoneNumber, e)} className="text-red-700 cursor-pointer hover:text-red-800">
+              <button onClick={(e) => handleDelete(phone.phoneNumber, e)} className="text-gray-700 cursor-pointer hover:text-red-800">
                 <Trash2 className="w-4 h-4" />
               </button>
 

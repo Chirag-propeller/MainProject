@@ -34,7 +34,6 @@ interface KnowledgeBase {
 const Main = () => {
   const router = useRouter();
   const params = useParams();
-  // const agentId = params.id; 
   const agentId = params?.id as string;
 
 
@@ -49,7 +48,6 @@ const Main = () => {
 
   const [selectedLang, setSelectedLang] = useState<string>(sttOptions[0])
   const [selectedLLM, setSelectedLLM] = useState<string>(llmOptions[0]);
-  const [selectedTtsProvider, setSelectedTtsProvider] = useState<string>(ttsProvider[0]);
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   
   const [selectedProvider, setSelectedProvider] = useState<string>(providers[0]); // Default to first provider
@@ -60,14 +58,13 @@ const Main = () => {
       setSelectedLLM(llmOptions[0]);
       setSelectedProvider(providers[0]);
       setVoices(ttsOptions[providers[0]]);
-      // console.log(selectedLLM, selectedLang,selectedProvider);
     }
   ,[llmOptions, ttsOptions, sttOptions, loading])
   useEffect(
-    ()=> {
-      if(voices)setSelectedVoice(voices[0]);
-    } 
-    ,[voices])
+    ()=>{
+      setVoices(ttsOptions[selectedProvider]);
+    }
+  , [selectedProvider])
   // Handle provider change
   const handleProviderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newProvider = event.target.value;
@@ -82,12 +79,10 @@ const Main = () => {
   const [agentName, setAgentName] = useState("");
   const [agent, setAgent] = useState<any>();
   const [roomName, setRoomName] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
   const [text, setText] = useState('');
   const [knowledgeBase, setKnowledgeBase] = useState(true);
   const [knowledgeBaseList, setKnowledgeBaseList] = useState<string[]>([]);
   const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
-  const room = "test-room"
   
 
   const url = process.env.NEXT_PUBLIC_AZURE_URL
@@ -103,6 +98,7 @@ const Main = () => {
           throw new Error('Failed to fetch agent details');
         }
         const agent = await res.json();
+        console.log(agent);
         setAgent(agent);
         // Pre-fill fields
         setText(agent.prompt || '');
@@ -217,42 +213,12 @@ const Main = () => {
   };
   
 
-  // const createAgentHandler = async () => {
-  //   const payload = {
-  //     prompt: text,
-  //     llm: selectedLLM,
-  //     inputLanguage: selectedLang,
-  //     stt: selectedProvider,
-  //     tts: selectedProvider,
-  //     ttsVoiceName: selectedVoice,
-  //     ttsModel: selectedVoice, // or another var if different
-  //     backgroundSound: "here we will store Background Sound",
-  //     welcomeMessage: "This is temp Welcome Message", // or another var if different
-  //     // roomName: roo
- 
-  //   };
-  
-
   useEffect(
     ()=>{
       console.log(knowledgeBaseList);
     }
     ,[knowledgeBaseList])
 
-  //   const res = await fetch('/api/agent/create', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(payload),
-  //   });
-
-  //   if (res.ok) {
-  //     const data = await res.json();
-  //     console.log('Agent created:', data);
-  //     router.push('/dashboard/agent'); // redirect to another page (e.g., success screen)
-  //   } else {
-  //     alert('Failed to create agent');
-  //   }
-  // };
 
   return (
     <div className='bg-gray-100 h-fit '>
@@ -321,20 +287,6 @@ const Main = () => {
                       onClose={() => setIsKnowledgeBaseModalListOpen(false)}
                     />
                   )}
-                {/* <div className='cursor-pointer inline-block text-black  border border-gray-300 p-2 rounded-sm px-3 text-sm'> 
-                  <div className='relative'>
-                  
-                    <button 
-                      onClick={() => setIsKnowledgeBaseModalListOpen(true)}
-                    >Add</button>
-                  </div>
-                  {isKnowledgeBaseModalListOpen && (
-                    <ModalList
-                      isOpen={isKnowledgeBaseModalListOpen}
-                      onClose={() => setIsKnowledgeBaseModalListOpen(false)}
-                    />
-                  )}
-                </div> */}
                 <ul className='list-disc pl-5'>
                 {
                   knowledgeBaseList.map((li) => {
@@ -378,9 +330,6 @@ const Main = () => {
         </div>
       </div>
         <div className=' flex justify-center '>
-          {/* <button className='white cursor-pointer border-1 p-1 px-10 rounded-sm border-gray-400 bg-white mb-5 m-2' onClick={createAgentHandler}>
-            Create Agent
-          </button> */}
 
           <button
             className="white cursor-pointer border-1 p-1 px-10 rounded-sm border-gray-400 bg-white mb-5 m-2"

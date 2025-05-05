@@ -1,10 +1,17 @@
 // middleware.ts
 import { NextResponse, type NextRequest } from 'next/server'
+// import { cookies } from 'next/headers'
 
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname } = request.nextUrl;
+  // const cookieStore = await cookies();
+  // const token1 = cookieStore.get('token')?.value;
   const token = request.cookies.get('token')?.value
+
+  if (pathname === '/dashboard' || pathname === '/dashboard/') {
+    return NextResponse.redirect(new URL('/dashboard/agent', request.url));
+  }
 
   // Define routes
   const authRoutes = ['/login', '/signup']
@@ -20,7 +27,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect authenticated users from auth routes to dashboard
   if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL('/dashboard/agent', request.url))
   }
 
   // Redirect unauthenticated users from protected routes to login

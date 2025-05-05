@@ -5,11 +5,9 @@ import FeatureSection from "@/components/landingPage/FeatureSection";
 import HeroSection from "@/components/landingPage/HeroSection";
 import LogoMarquee from "@/components/landingPage/LogoMarique";
 import Navbar  from "@/components/landingPage/NavBar";
-import TestimonialsSection from "@/components/landingPage/TestimonialsSection";
 import UseCaseSection from "@/components/landingPage/UseCaseSection";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
+import PricingSection from "@/components/landingPage/Pricing";
+
 
 export default function Home() {
   return (
@@ -24,6 +22,7 @@ export default function Home() {
           <TestimonialsSection/>
         </div> */}
       </div>
+      <PricingSection/>
       <CallToAction/>
       <Footer/>
 

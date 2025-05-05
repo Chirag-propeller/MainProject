@@ -11,6 +11,13 @@ const Footer: React.FC = () => {
   const deviceType = useDeviceType();
   const isMobile = deviceType === "mobile";
 
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <footer className="bg-white pt-12 md:pt-20 pb-8 border-t border-gray-100">
       <div className="container-custom pl-5">
@@ -29,15 +36,28 @@ const Footer: React.FC = () => {
           <div className="col-span-1">
             <h3 className="text-sm font-bold text-gray-900 uppercase mb-4">Product</h3>
             <ul className="space-y-2">
-              <li><Link href="/product/features" className="text-sm text-gray-600 hover:text-decagon-primary">Features</Link></li>
-              <li><Link href="/product/pricing" className="text-sm text-gray-600 hover:text-decagon-primary">Pricing</Link></li>
-              <li><Link href="/product/enterprise" className="text-sm text-gray-600 hover:text-decagon-primary">Enterprise</Link></li>
-              <li><Link href="/product/security" className="text-sm text-gray-600 hover:text-decagon-primary">Security</Link></li>
+
+              <button
+              onClick={() => scrollToSection("features")}
+              className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
+            >
+              Features
+            </button> 
+            <br/>
+            <button
+              onClick={() => scrollToSection("pricing")}
+              className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
+            >
+              Pricing
+            </button>
+              {/* <li><Link href="/product/pricing" className="text-sm text-gray-600 hover:text-decagon-primary">Pricing</Link></li> */}
+              {/* <li><Link href="/product/enterprise" className="text-sm text-gray-600 hover:text-decagon-primary">Enterprise</Link></li>
+              <li><Link href="/product/security" className="text-sm text-gray-600 hover:text-decagon-primary">Security</Link></li> */}
             </ul>
           </div>
 
           {/* Resources */}
-          <div className="col-span-1">
+          {/* <div className="col-span-1">
             <h3 className="text-sm font-bold text-gray-900 uppercase mb-4">Resources</h3>
             <ul className="space-y-2">
               <li><Link href="/resources/documentation" className="text-sm text-gray-600 hover:text-decagon-primary">Documentation</Link></li>
@@ -45,16 +65,16 @@ const Footer: React.FC = () => {
               <li><Link href="/resources/blog" className="text-sm text-gray-600 hover:text-decagon-primary">Blog</Link></li>
               <li><Link href="/resources/case-studies" className="text-sm text-gray-600 hover:text-decagon-primary">Case Studies</Link></li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Company */}
           <div className="col-span-1">
             <h3 className="text-sm font-bold text-gray-900 uppercase mb-4">Company</h3>
             <ul className="space-y-2">
               <li><Link href="/company/about" className="text-sm text-gray-600 hover:text-decagon-primary">About</Link></li>
-              <li><Link href="/company/careers" className="text-sm text-gray-600 hover:text-decagon-primary">Careers</Link></li>
+              {/* <li><Link href="/company/careers" className="text-sm text-gray-600 hover:text-decagon-primary">Careers</Link></li> */}
               <li><Link href="/company/contact" className="text-sm text-gray-600 hover:text-decagon-primary">Contact</Link></li>
-              <li><Link href="/company/partners" className="text-sm text-gray-600 hover:text-decagon-primary">Partners</Link></li>
+              {/* <li><Link href="/company/partners" className="text-sm text-gray-600 hover:text-decagon-primary">Partners</Link></li> */}
             </ul>
           </div>
 
@@ -64,8 +84,8 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li><Link href="/legal/privacy" className="text-sm text-gray-600 hover:text-decagon-primary">Privacy</Link></li>
               <li><Link href="/legal/terms" className="text-sm text-gray-600 hover:text-decagon-primary">Terms</Link></li>
-              <li><Link href="/legal/gdpr" className="text-sm text-gray-600 hover:text-decagon-primary">GDPR</Link></li>
-              <li><Link href="/legal/compliance" className="text-sm text-gray-600 hover:text-decagon-primary">Compliance</Link></li>
+              {/* <li><Link href="/legal/gdpr" className="text-sm text-gray-600 hover:text-decagon-primary">GDPR</Link></li> */}
+              {/* <li><Link href="/legal/compliance" className="text-sm text-gray-600 hover:text-decagon-primary">Compliance</Link></li> */}
             </ul>
           </div>
         </div>

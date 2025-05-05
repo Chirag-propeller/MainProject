@@ -82,7 +82,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-white px-4">
       <form
         onSubmit={
           step === "email"
@@ -147,7 +147,7 @@ const ForgotPasswordPage = () => {
           type="submit"
           disabled={loading}
           className={`w-full text-white text-lg font-medium py-2 rounded-xl transition-all duration-200 ${
-            loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+            loading ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
           }`}
         >
           {loading

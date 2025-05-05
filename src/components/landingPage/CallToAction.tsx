@@ -1,15 +1,57 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 // import { Button } from '@/components/ui/button';
 import { Send, ArrowRight } from 'lucide-react';
 import { useDeviceType } from '@/hooks/useDeviceType';
 import { Button } from './Button';
+import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
 // import { useIsMobile } from '@/hooks/use-mobile';
 
 const CallToAction: React.FC = () => {
   const deviceType = useDeviceType();
   const isMobile = deviceType === "mobile";
+  // const emailInput = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState('');
+  const [validEmail, setValidEmail] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  // const buttonClickHandler = () => {
+  //   setSubmitted(true);
+  //   if(email === ''){
+  //     toast.error('Please enter your email');
+  //     // setSubmitted(false);
+  //     return;
+  //   }
+  //   toast.success('Email sent successfully');
+  // };
+  const buttonClickHandler = () => {
+    setSubmitted(true);
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+    if (email.trim() === '') {
+      toast.error('Please enter your email');
+      setValidEmail(false);
+      return;
+    }
+  
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address');
+      setValidEmail(false);
+      return;
+    }
+    setValidEmail(true);
+    toast.success('Email sent successfully');
+    // proceed with API or further logic
+  };
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSubmitted(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [submitted]);
 
   return (
     <section
@@ -38,13 +80,27 @@ const CallToAction: React.FC = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full h-12 md:h-14 pl-4 pr-12 rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
+                // className="w-full h-12 md:h-14 pl-4 pr-12 rounded-lg border border-white/20 bg-white/10 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
+                className={cn(
+                  "w-full h-12 md:h-14 pl-4 pr-12 rounded-lg border bg-white/10 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 backdrop-blur-sm transition-all duration-300",
+                  submitted && !validEmail
+                    ? "border-white/60 focus:ring-white/60 shadow-[0_0_0_2px_rgba(255,255,255,0.4)] animate-shake"
+                    : "border-white/20 focus:ring-white/50"
+                )}
+                             
+                // className={cn(
+                //   "w-full h-12 md:h-14 pl-4 pr-12 rounded-lg border bg-white/10 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 backdrop-blur-sm transition-all duration-300",
+                //   submitted && !email
+                //     ? "border-white/60 focus:ring-white/60 shadow-[0_0_0_2px_rgba(255,255,255,0.4)]"
+                //     : "border-white/20 focus:ring-white/50"
+                // )}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <Send className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/70" />
             </div>
             <Button 
-            // className='text-green-500'
-            // className="w-full sm:w-auto bg-white hover:bg-white/90 text-green-500 px-6 py-5 md:py-6 text-base md:text-lg font-medium rounded-lg transition-all"
+            onClick={buttonClickHandler}
             >
               Get a demo
               <ArrowRight className="ml-2 h-5 w-5" />

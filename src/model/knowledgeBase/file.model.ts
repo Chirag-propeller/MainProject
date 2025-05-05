@@ -8,6 +8,7 @@ export interface IFile extends Document {
     type: string
     source: 'upload' | 'text'
     knowledgeBaseId: mongoose.Types.ObjectId
+    userId: mongoose.Types.ObjectId
   }
   
   const FileSchema = new Schema<IFile>(
@@ -19,8 +20,10 @@ export interface IFile extends Document {
       type: { type: String },
       source: { type: String, enum: ['upload', 'text'], default: 'upload' },
       knowledgeBaseId: { type: Schema.Types.ObjectId, ref: 'KnowledgeBase' },
+      userId: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     { timestamps: true }
+
   )
   
   export default mongoose.models.File ||
