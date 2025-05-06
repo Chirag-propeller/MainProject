@@ -70,6 +70,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import InputForm from '@/components/phoneNumber/InputForm';
 import List from '@/components/phoneNumber/List';
+import { Suspense } from 'react'
 
 interface Phone {
   phoneNumber: string;
@@ -104,6 +105,7 @@ const Page = () => {
   }, [selectedPhoneNumber]);
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="flex justify-between">
       <div className="w-[30%] bg-gray-100 p-2 h-[90vh] rounded-md mx-2">
         <div className="flex justify-between">
@@ -156,6 +158,7 @@ const Page = () => {
 
       {showInputForm && <InputForm onClose={handleModalClose} />}
     </div>
+    </Suspense>
   );
 };
 
