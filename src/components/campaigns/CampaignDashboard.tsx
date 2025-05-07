@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import CampaignHeader from './CampaignHeader';
 import CampaignTabs from './CampaignTabs';
-import CampaignDetails from './CampaignDetails';
+import CampaignDetails from './right/CampaignDetails';
 import CampaignForm from './CampaignForm';
 import { Campaign, Agent } from './types';
 import { fetchCampaigns, fetchAgents, deleteCampaign } from './api';
+import { createCampaign } from '@/utils/api';
 import { usePathname } from 'next/navigation';
 
 const CampaignDashboard: React.FC = () => {
@@ -71,6 +72,28 @@ const CampaignDashboard: React.FC = () => {
     }
   };
 
+  // Handle creation of a new campaign and activate it
+  const handleCreateCampaign = async () => {
+    const transformedData = {
+      campaignCallName: 'Untitled Campaign',
+      agentId: "",
+      fromNumber: "",
+      callTimezone: "",
+      callScheduledOrNot: true,
+      callDate: null,
+      status: 'draft',
+    };
+    try {
+      const newCampaign = await createCampaign(transformedData);
+      console.log(newCampaign.data);
+      setCampaigns(prev => [newCampaign.data, ...prev]);
+      setSelectedCampaign(newCampaign.data);
+    } catch (err: any) {
+      console.error('❌ Error creating campaign:', err);
+      alert('Failed to create campaign');
+    }
+  };
+
   return (
     <div className="flex h-[calc(100vh-80px)]" style={{ height: 'calc(100vh - 80px)' }}>
       {/* Campaigns list section (25-40% width) */}
@@ -78,8 +101,7 @@ const CampaignDashboard: React.FC = () => {
         <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100">
           <CampaignHeader 
             title="Campaigns"
-            createButtonLink="/dashboard/campaigns/createCampaign"
-            createButtonText="+ Create"
+            onCreate={handleCreateCampaign}
           />
         </div>
 

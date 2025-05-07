@@ -176,9 +176,9 @@ const CampaignForm: React.FC = () => {
   
   const [response, setResponse] = useState<any>(null);
 
-  const handleCreateCampaign = async (status: 'ongoing' | 'draft') => {
+  const handleCreateCampaign = async (status: 'ongoing' | 'draft',  redirect = true) => {
     // Check if agent is selected
-    if (!formData.agent || formData.agent.trim() === "") {
+    if (status === 'ongoing' && (!formData.agent || formData.agent.trim() === "")) {
       alert("Please attach an Agent");
       return;
     }
@@ -208,8 +208,9 @@ const CampaignForm: React.FC = () => {
       if (status === 'ongoing' && extractedPhones.length > 0) {
         await triggerFastApiCall(res.data._id);
       }
-      
-      router.push('/dashboard/campaigns');
+      if (redirect) {
+        router.push('/dashboard/campaigns');
+      }
     } catch (err: any) {
       console.error('❌ Error:', err);
       setResponse({ error: err.message || 'Something went wrong' });
@@ -384,11 +385,11 @@ const CampaignForm: React.FC = () => {
                 className="hidden"
               />
             </label>
-            {extractedPhones.length > 0 && (
+            {/* {extractedPhones.length > 0 && (
               <div className="mt-2 text-sm text-gray-600">
                 {extractedPhones.length} phone numbers extracted
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Follow-up Options */}
