@@ -1,26 +1,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-
 interface CampaignHeaderProps {
   title: string;
-  createButtonLink: string;
-  createButtonText: string;
+  onCreate: () => Promise<void>;
 }
 
-const CampaignHeader: React.FC<CampaignHeaderProps> = ({
-  title,
-  createButtonLink,
-  createButtonText
-}) => {
+const CampaignHeader: React.FC<CampaignHeaderProps> = ({ title, onCreate }) => {
   return (
     <div className="flex justify-between items-center mb-4">
       <h1 className="text-xl font-semibold">{title}</h1>
-      <Link href={createButtonLink}>
-        <Button className="cursor-pointer text-sm px-3 py-1 h-8">
-          {createButtonText}
-        </Button>
-      </Link>
+      <Button variant="default" onClick={onCreate}>
+        Create
+      </Button>
     </div>
   );
 };
