@@ -30,7 +30,7 @@ const PricingSection = ()=> {
   
           {/* Middle Featured Card */}
           <PricingCard
-            featured
+            // featured
             title="Starter"
             price="$19"
             per="/mo"

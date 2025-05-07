@@ -27,6 +27,11 @@ const CampaignCallSchema = new mongoose.Schema({
     type: String,
     required: false, 
   },
+  status: {
+    type: String,
+    enum: ['ongoing', 'completed', 'draft'],
+    default: 'ongoing',
+  },
   callDate: {
     type: Date,
     required: false,
