@@ -19,6 +19,10 @@ const CampaignCallSchema = new mongoose.Schema({
   noOfFollowUps: {
     type: String,
   },
+  concurrentCalls: {
+    type: Number,
+    default: 0,
+  },
   fromNumber: {
     type: String,
     // required: true,
