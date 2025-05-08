@@ -8,7 +8,7 @@ interface CampaignGeneralProps {
 }
 
 const CampaignGeneral: React.FC<CampaignGeneralProps> = ({ campaign, agents }) => {
-  const agentName = agents.find(a => a.agentId === campaign.agentId)?.agentName || 'No Agent Attached';
+  const agentName = agents.find(a => a._id === campaign.agentId)?.agentName || 'No Agent Attached';
   return (
     <div className="space-y-4">
       <div>

@@ -13,6 +13,7 @@ interface CampaignTabsProps {
   setSelectedCampaign: (campaign: Campaign) => void;
   deleteLoading: string | null;
   onDeleteCampaign: (id: string) => void;
+  setNewCampaign: (newCampaign: boolean) => void;
 }
 
 const CampaignTabs: React.FC<CampaignTabsProps> = ({
@@ -23,7 +24,8 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
   selectedCampaign,
   setSelectedCampaign,
   deleteLoading,
-  onDeleteCampaign
+  onDeleteCampaign,
+  setNewCampaign
 }) => {
   // Filter campaigns based on active tab
   const filteredCampaigns = campaigns.filter(campaign => {
@@ -74,6 +76,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
               setSelectedCampaign={setSelectedCampaign}
               deleteLoading={deleteLoading}
               onDeleteCampaign={onDeleteCampaign}
+              setNewCampaign={setNewCampaign}
             />
           </TabsContent>
 
@@ -86,6 +89,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
               setSelectedCampaign={setSelectedCampaign}
               deleteLoading={deleteLoading}
               onDeleteCampaign={onDeleteCampaign}
+              setNewCampaign={setNewCampaign}
             />
           </TabsContent>
 
@@ -98,6 +102,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
               setSelectedCampaign={setSelectedCampaign}
               deleteLoading={deleteLoading}
               onDeleteCampaign={onDeleteCampaign}
+              setNewCampaign={setNewCampaign}
             />
           </TabsContent>
 
@@ -110,6 +115,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
               setSelectedCampaign={setSelectedCampaign}
               deleteLoading={deleteLoading}
               onDeleteCampaign={onDeleteCampaign}
+              setNewCampaign={setNewCampaign}
             />
           </TabsContent>
         </div>
@@ -127,6 +133,7 @@ interface CampaignListProps {
   setSelectedCampaign: (campaign: Campaign) => void;
   deleteLoading: string | null;
   onDeleteCampaign: (id: string) => void;
+  setNewCampaign: (newCampaign: boolean) => void;
 }
 
 const CampaignList: React.FC<CampaignListProps> = ({
@@ -136,7 +143,8 @@ const CampaignList: React.FC<CampaignListProps> = ({
   selectedCampaign,
   setSelectedCampaign,
   deleteLoading,
-  onDeleteCampaign
+  onDeleteCampaign,
+  setNewCampaign
 }) => {
   if (loading) {
     return <div className="text-center py-8">Loading campaigns...</div>;
@@ -156,6 +164,7 @@ const CampaignList: React.FC<CampaignListProps> = ({
           onSelect={setSelectedCampaign}
           onDelete={onDeleteCampaign}
           isDeleting={deleteLoading}
+          setNewCampaign={setNewCampaign}
         />
       ))}
     </div>
