@@ -36,7 +36,7 @@ const AgentTable = () => {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this agent?')) return;
+    if (!confirm('Are you sure you want to delete this agent? This action cannot be undone.')) return;
   
     try {
       const res = await fetch('/api/agent/delete', {
@@ -85,7 +85,7 @@ const AgentTable = () => {
             <tbody className="bg-white divide-y divide-gray-100">
               {agents.map((agent, index) => (
                 <tr key={agent._id} 
-                  onClick={() => router.push(`/dashboard/agent/${agent._id}/edit`)}
+                  // onClick={() => router.push(`/dashboard/agent/${agent._id}/edit`)}
                   className="hover:bg-gray-50 transition duration-150 cursor-pointer group"
                   >
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>

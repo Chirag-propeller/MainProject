@@ -34,6 +34,8 @@ export interface UserDocument extends Document {
   campigns: mongoose.Types.ObjectId[];
   otp?: string;
   otpExpiry?: Date;
+  credits: mongoose.Types.Decimal128;
+  creditsUsed: mongoose.Types.Decimal128;
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -65,20 +67,25 @@ const userSchema = new Schema<UserDocument>(
     campigns: [{ type: Schema.Types.ObjectId, ref: 'CampaignCall' , default: []}],
     phoneNumbers:  [{ type: Schema.Types.ObjectId, ref: 'PhoneNumber' , default: []}],
     knowledgeBases:  [{ type: Schema.Types.ObjectId, ref: 'PhoneNumber' , default: []}],
+    credits: { type: mongoose.Schema.Types.Decimal128, default: 0 },    
+    creditsUsed: { type: mongoose.Schema.Types.Decimal128, default: 0 },
   },
   { timestamps: true }
 );
 
-// userSchema.pre('save', function(next) {
-//   // Convert email to lowercase before saving
-//   if (this.isModified('email')) {
-//     this.email = this.email.toLowerCase();
-//   }
-//   next();
-// });
-
-// userSchema.index({ email: 1 }, { unique: true, collation: { locale: 'en', strength: 2 } });
-
+userSchema.pre('save', function (next) {
+  if (this.isModified('credits')) {
+    this.credits = mongoose.Types.Decimal128.fromString(
+      parseFloat(this.credits.toString()).toFixed(3)
+    );
+  }
+  if (this.isModified('creditsUsed')) {
+    this.creditsUsed = mongoose.Types.Decimal128.fromString(
+      parseFloat(this.creditsUsed.toString()).toFixed(3)
+    );
+  }
+  next();
+});
 
 // Prevent model overwrite in dev (Next.js hot-reloading)
 const User: Model<UserDocument> = mongoose.models.User || mongoose.model("User", userSchema);

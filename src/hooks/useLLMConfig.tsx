@@ -10,11 +10,13 @@ interface LLMConfig {
   ttsOptions: TtsOptions;
   sttOptions: string[];
   loading: boolean;
+  ttsLanguageOptions: string[];
 }
 
 export default function useLLMConfig(): LLMConfig {
   const [llmOptions, setLLMOptions] = useState<string[]>([]);
   const [ttsOptions, setTTSOptions] = useState<TtsOptions>({});
+  const [ttsLanguageOptions, setTTSLanguageOptions] = useState<string[]>([]);
   const [sttOptions, setSTTOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,6 +30,7 @@ export default function useLLMConfig(): LLMConfig {
         setLLMOptions(data.llm_models || []);
         setTTSOptions(data.tts_providers || {});
         setSTTOptions(data.stt_languages || []);
+        setTTSLanguageOptions(data.tts_languages || []);
       } catch (error) {
         console.error("Error loading config:", error);
       } finally {
@@ -38,5 +41,5 @@ export default function useLLMConfig(): LLMConfig {
     fetchConfig();
   }, []);
 
-  return { llmOptions, ttsOptions, sttOptions, loading };
+  return { llmOptions, ttsOptions, sttOptions, loading, ttsLanguageOptions };
 }

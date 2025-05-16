@@ -39,7 +39,7 @@ const PrivacyPolicyPage = () => {
         <li>Biometric identifiers</li>
         <li>Any information relating to the above, collected for providing a service</li>
       </ul>
-      <p className="mb-4">We will obtain explicit consent before collecting or using any SPDI.</p>
+      <p className="mb-4">We will <strong> obtain explicit consent </strong>before collecting or using any SPDI.</p>
 
       <h3 className="font-semibold mt-4">c. Usage and Device Data</h3>
       <ul className="list-disc list-inside mb-4">
@@ -57,15 +57,16 @@ const PrivacyPolicyPage = () => {
       <h3 className="font-semibold mt-4">e. Cookies & Tracking Technologies</h3>
       <p className="mb-2">We use:</p>
       <ul className="list-disc list-inside mb-4">
-        <li>Session Cookies (platform functionality)</li>
-        <li>Preference Cookies (remember settings)</li>
-        <li>Analytics Cookies (usage patterns)</li>
-        <li>Security Cookies</li>
-        <li>Advertising Cookies (where applicable)</li>
+        <li><strong>Session Cookies </strong>(platform functionality)</li>
+        <li><strong>Preference Cookies </strong>(remember settings)</li>
+        <li><strong>Analytics Cookies </strong>(usage patterns)</li>
+        <li><strong>Security Cookies </strong></li>
+        <li><strong>Advertising Cookies </strong>(where applicable)</li>
       </ul>
       <p className="mb-4">You may disable cookies in your browser; however, some features may become unavailable.</p>
 
       <h2 className="text-xl font-semibold mt-8 mb-2">2. How We Use Your Information</h2>
+      <p className="mb-2">We use your information to:</p>
       <ul className="list-disc list-inside mb-4">
         <li>Deliver and maintain services</li>
         <li>Provide customer support</li>
@@ -83,7 +84,7 @@ const PrivacyPolicyPage = () => {
       </p>
 
       <h2 className="text-xl font-semibold mt-8 mb-2">4. Disclosure of Information</h2>
-      <p className="mb-2">We do not sell your data. We may share it:</p>
+      <p className="mb-2">We do<strong> not sell</strong> your data. We may share it:</p>
       <ul className="list-disc list-inside mb-4">
         <li>With trusted service providers under confidentiality agreements</li>
         <li>To enforce terms of service</li>
@@ -101,6 +102,7 @@ const PrivacyPolicyPage = () => {
       </p>
 
       <h2 className="text-xl font-semibold mt-8 mb-2">6. Data Retention</h2>
+      <p className="mb-2">We retain data as long as:</p>
       <ul className="list-disc list-inside mb-4">
         <li>Required to deliver our services</li>
         <li>Necessary for legal, regulatory, or tax purposes</li>
@@ -131,9 +133,9 @@ const PrivacyPolicyPage = () => {
       <p className="mb-4">
         As per Rule 5(9), we have appointed a Grievance Officer:
         <br />
-        Name: [To be added]<br />
-        Email: <a href="mailto:grievance@propalai.com" className="text-blue-600 underline">grievance@propalai.com</a><br />
-        Phone: [To be added]
+        Name: Ashish Chandra<br />
+        Email: <a href="mailto:support@propalai.com" className="text-blue-600 underline">support@propalai.com</a><br />
+        Phone:+919021342078
         <br />
         Complaints will be addressed within 30 days of receipt.
       </p>

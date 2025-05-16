@@ -48,6 +48,16 @@ export default function ContactForm() {
   const API_KEY = 'supersecretapikey123';
   
   const triggerFastApiCall = async () => {
+    const user = await axios.get('/api/user/getCurrentUser');
+    console.log(user);
+    const credits = parseFloat(user.data?.credits?.$numberDecimal) || 0;
+    const creditsUsed = parseFloat(user.data?.creditsUsed?.$numberDecimal) || 0;  
+    // const credits = user.data?.credits || 0 ;
+    // const creditsUsed = user.data?.creditsUsed || 0;
+    if(credits - creditsUsed <= 0){
+      alert("You have no credits left");
+      return;
+    }
     try {
       const response = await axios.post(
         API_URL,

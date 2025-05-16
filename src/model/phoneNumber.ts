@@ -4,7 +4,7 @@ const phoneNumberSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   terminationUri: {
     type: String,
