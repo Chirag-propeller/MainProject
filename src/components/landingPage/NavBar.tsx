@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "./Button";
 import Logo from "./Logo";
@@ -15,6 +15,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,7 @@ const Navbar = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
+    router.push(`/#${id}`);
     const el = document.getElementById(id);
     if (el) {
       setMobileMenuOpen(false);
@@ -44,10 +46,16 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-8">
           <div className="relative group">
-            <button className="flex items-center text-sm font-medium text-gray-700 hover:text-decagon-primary transition">
+            <button
+                onClick={() => scrollToSection("use-cases")}
+                className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
+              >
+                Use Cases
+              </button>
+            {/* <button className="flex items-center text-sm font-medium text-gray-700 hover:text-decagon-primary transition">
               Platform <ChevronDown className="ml-1 h-4 w-4" />
-            </button>
-            <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+            </button> */}
+            {/* <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
               <button
                 onClick={() => scrollToSection("features")}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -66,12 +74,12 @@ const Navbar = () => {
               >
                 Success Stories
               </button>
-            </div>
+            </div> */}
           </div>
 
           <button
             onClick={() => scrollToSection("features")}
-            className="text-sm font-medium text-gray-700 hover:text-decagon-primary"
+            className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
           >
             Features
           </button>

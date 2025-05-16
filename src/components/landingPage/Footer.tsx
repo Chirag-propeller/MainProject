@@ -71,9 +71,9 @@ const Footer: React.FC = () => {
           <div className="col-span-1">
             <h3 className="text-sm font-bold text-gray-900 uppercase mb-4">Company</h3>
             <ul className="space-y-2">
-              <li><Link href="/company/about" className="text-sm text-gray-600 hover:text-decagon-primary">About</Link></li>
+              <li><Link href="/about" className="text-sm text-gray-600 hover:text-decagon-primary">About</Link></li>
               {/* <li><Link href="/company/careers" className="text-sm text-gray-600 hover:text-decagon-primary">Careers</Link></li> */}
-              <li><Link href="/company/contact" className="text-sm text-gray-600 hover:text-decagon-primary">Contact</Link></li>
+              <li><Link href="/about#contact-us" className="text-sm text-gray-600 hover:text-decagon-primary">Contact</Link></li>
               {/* <li><Link href="/company/partners" className="text-sm text-gray-600 hover:text-decagon-primary">Partners</Link></li> */}
             </ul>
           </div>

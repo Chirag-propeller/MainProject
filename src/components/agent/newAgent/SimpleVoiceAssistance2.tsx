@@ -7,7 +7,7 @@ import React from 'react'
 const Message = ({type, text}: {type: string, text: string}) => {
   return (
     <div>
-      <div className={`flex justify-end ${type === 'agent' ? ' text-blue-400' : ' text-gray-600'}`}>
+      <div className={`flex justify-start ${type === 'agent' ? ' text-blue-400' : ' text-gray-600'}`}>
       <strong className="text-black"> 
         {type === 'agent' ? 'Agent: ' : 'User: '}
        </strong>

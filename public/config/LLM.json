@@ -1,12 +1,194 @@
-{
-    
+{    
     "llm_models":  ["OpenAI", "Groq", "Cerebras"],
     "tts_providers": {
-      "OpenAi": ["Onyx", "Shimmer"],
-      "Cartesia": ["Indian Woman", "Zia"],
-      "Polly" : ["Kajal"],
-      "ElevenLabs" : ["Aria"] 
+      "Polly-Standard" : {
+        "English-IN":{
+          "Female":["Aditi","Raveena"]
+        },
+        "Hindi":{
+          "Female":["Aditi","Raveena"]
+        },
+        "Arabic":{
+          "Female":["Zeina"]
+        },
+        "English-UK":{
+          "Female":["Amy","Emma" ],
+          "Male":["Brian"]
+        },
+        "English-US":{
+          "Female":["Ivy","Joanna","Kendra","Kimberly","Salli"],
+          "Male":["Joey","Kevin"]
+        }
+      },
+      "Polly-Neural" : {
+        "English-IN":{
+          "Female":["Kajal"]
+        },
+        "Hindi":{
+          "Female":["Kajal"]
+        },
+        "Arabic":{
+          "Female":["Hala","Zayd"]
+        },
+        "English-US":{
+          "Female":["Amy","Emma"],
+          "Male":["Brian","Arthur"]
+        },
+        "English-UK":{
+          "Female":["Joanna","Kendra","Kimberly","Salli","Ruth", "Danielle"],
+          "Male":["Gregory","Stephen","Joey", "Matthew","Stephen"]
+        }
+      },
+      "Polly-Generative" : {
+        "English-IN":{
+          "Female":["Kajal"]
+        }, 
+        "Hindi":{
+          "Female":["Kajal"]
+        },
+        "English-BR":{
+          "Female":["Amy"]
+        },
+        "English-US":{
+          "Female":["Danielle","Joanna","Matthew","Ruth","Stephen"]
+        }
+      },
+      "ElevenLabs": {
+        "English-IN": {
+          "Female": ["Anika", "Riya"],
+          "Male": ["Krishna"]
+        },
+        "Hindi": {
+          "Female": ["Anika", "Riya"],
+          "Male": ["Krishna"]
+        },
+        "English-US": {
+          "Female": [
+            "Rachel", "Aria", "Domi", "Sarah", "Laura",
+            "Emily", "Elli", "River", "Matilda", "Jessica"
+          ],
+          "Male": [
+            "Edward", "Drew", "Clyde", "Paul", "Dave",
+            "Roger", "Fin", "Antoni", "Thomas", "Charlie",
+            "Callum", "Patrick", "Harry", "Joseph", "Jeremy"
+          ],
+          "English-UK":{
+            "Female":["Rachel","Aria","Domi","Sarah","Laura","Emily","Elli","River","Matilda","Jessica"],
+            "Male":["Edward","Drew","Clyde","Paul","Dave","Roger","Fin","Antoni","Thomas","Charlie","Callum","Patrick","Harry","Joseph","Jeremy"]
+          }
+        }        
+      },
+      "OpenAI": {
+        "English-US": {
+          "Female": ["Alloy", "Ballad", "Coral", "Nova", "Sage", "Shimmer"],
+          "Male": ["Ash", "Echo", "Fable", "Onyx", "Verse"]
+        },
+        "English-UK": {
+          "Female": ["Alloy", "Ballad", "Coral", "Nova", "Sage", "Shimmer"],
+          "Male": ["Ash", "Echo", "Fable", "Onyx", "Verse"]
+        },
+        "English-IN": {
+          "Female": ["Alloy", "Ballad", "Coral", "Nova", "Sage", "Shimmer"],
+          "Male": ["Ash", "Echo", "Fable", "Onyx", "Verse"]
+        },
+        "Hindi": {
+          "Female": ["Alloy", "Ballad", "Coral", "Nova", "Sage", "Shimmer"],
+          "Male": ["Ash", "Echo", "Fable", "Onyx", "Verse"]
+        }
+      },
+      "Google-Chirp3-HD": {
+          "Marathi": {
+            "Female": ["Achernar"],
+            "Male": ["Achird"]
+          },
+          "Hindi": {
+            "Female": ["Aoede"],
+            "Male": ["Alnilam"]
+          },
+          "English-US": {
+            "Female": ["Achernar"],
+            "Male": ["Achird"]
+          },
+          "English-UK": {
+            "Female": ["Achernar"],
+            "Male": ["Achird"]
+          },
+          "English-IN": {
+            "Female": ["Achernar"],
+            "Male": ["Achird"]
+          }
+        },
+        "Google-Neural2": {
+          "Hindi": {
+            "Female": ["A"],
+            "Male": ["B"]
+          },
+          "English-US": {
+            "Female": ["C"],
+            "Male": ["A"]
+          },
+          "English-UK": {
+            "Female": ["A"],
+            "Male": ["B"]
+          },
+          "English-IN": {
+            "Female": ["A"],
+            "Male": ["B"]
+          }
+        },
+        "Google-Wavenet": {
+          "Marathi": {
+            "Female": ["A"],
+            "Male": ["B"]
+          },
+          "English-US": {
+            "Male": ["A", "B"]
+          },
+          "English-UK": {
+            "Female": ["C"],
+            "Male": ["B"]
+          },
+          "English-IN": {
+            "Female": ["A"],
+            "Male": ["B"]
+          }
+        },
+        "Google-Standard": {
+          "Marathi": {
+            "Female": ["A"],
+            "Male": ["B"]
+          },
+          "Hindi": {
+            "Female": ["A"],
+            "Male": ["B"]
+          },
+          "English-US": {
+            "Female": ["C"],
+            "Male": ["B"]
+          },
+          "English-IN": {
+            "Female": ["D"],
+            "Male": ["C"]
+          }
+        },      
+      "Cartesia": {
+        "English-US": {
+          "Female": [
+            "Indian Lady", "Pooja", "Anu", "Janvi", "Priya", "Kiara",
+            "Sophie", "Savannah", "Brooke", "Zia"
+          ],
+          "Male": ["Griffin"]
+        },
+        "English-IN": {
+          "Female": ["Charvi", "Parvati"],
+          "Male": ["Mehul", "Ishan", "Mihir"]
+        },
+        "Hindi": {
+          "Female": ["Charvi", "Parvati"],
+          "Male": ["Mehul", "Ishan", "Mihir"]
+        }
+      }
     },
-    "stt_languages": ["English", "Hindi"]
+    "stt_languages": ["English-US", "English-UK", "English-IN", "Hindi"],
+    "tts_languages": ["English-US", "English-UK", "English-IN", "Arabic", "Hindi", "Marathi"]
 }
-  

@@ -16,6 +16,7 @@ const CallToAction: React.FC = () => {
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   // const buttonClickHandler = () => {
   //   setSubmitted(true);
   //   if(email === ''){
@@ -41,8 +42,23 @@ const CallToAction: React.FC = () => {
       setValidEmail(false);
       return;
     }
+    try {
+      const sendEmail = async () => {
+        const response = await fetch('/api/landingPage/cta', {
+          method: 'POST',
+          body: JSON.stringify({ email }),
+        });
+      };
+      sendEmail();
+    } catch (error) {
+      toast.error('Email not sent');
+    }
+
+      
     setValidEmail(true);
-    toast.success('Email sent successfully');
+    setIsClicked(true);
+    setEmail('');
+    // toast.success('Email sent successfully');
     // proceed with API or further logic
   };
   
@@ -108,7 +124,16 @@ const CallToAction: React.FC = () => {
           </div>
 
           <p className="text-white/80 text-sm mt-4">No credit card required. Free consultation.</p>
+          {isClicked && (
+          <div className="mt-6">
+            <p className="text-white  text-xl  ">
+              We have received your request. We will get back to you soon.
+            </p>
+          </div>
+        )}
         </div>
+
+        
       </div>
     </section>
   );

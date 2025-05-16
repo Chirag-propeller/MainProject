@@ -9,7 +9,7 @@ type SidebarLinkProps = {
   
   const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
     const pathname = usePathname();
-    const isActive = pathname === href;
+    const isActive = pathname?.includes(href);
   
     return (
       <Link

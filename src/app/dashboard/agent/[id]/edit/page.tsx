@@ -50,6 +50,8 @@ const Main = () => {
   const [selectedLLM, setSelectedLLM] = useState<string>(llmOptions[0]);
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   
+  const [gender, setGender] = useState<string>("Male");
+  const [selectedTtsLanguage, setSelectedTtsLanguage] = useState<string>("English-US");
   const [selectedProvider, setSelectedProvider] = useState<string>(providers[0]); // Default to first provider
   const [voices, setVoices] = useState<string[]>(ttsOptions[selectedProvider]); // Default voices
   useEffect (
@@ -101,6 +103,8 @@ const Main = () => {
         console.log(agent);
         setAgent(agent);
         // Pre-fill fields
+        setGender(agent.gender || "Male");
+        setSelectedTtsLanguage(agent.ttsLanguage || "English-US");
         setText(agent.prompt || '');
         setSelectedLang(agent.inputLanguage || sttOptions[0]);
         setSelectedLLM(agent.llm || llmOptions[0]);
@@ -170,6 +174,14 @@ const Main = () => {
   };
 
   const handleTestClick = async () => {
+    const user = await axios.get('/api/user/getCurrentUser');
+    // console.log(user);
+    const credits = user.data?.credits || 0 ;
+    const creditsUsed = user.data?.creditsUsed || 0;
+    if(credits - creditsUsed <= 0){
+      alert("You have no credits left");
+      return;
+    }
     // await getToken;
     const tokenData = await fetchToken();
     if (tokenData) {

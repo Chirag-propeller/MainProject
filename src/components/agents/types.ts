@@ -1,0 +1,24 @@
+import mongoose from 'mongoose';
+
+
+export interface Agent {
+  _id: string;
+  agentId: string;
+  agentName: string;
+  createdAt: string;
+  llm?: string;
+  inputLanguage?: string;
+  stt?: string;
+  tts?: string;
+  ttsLanguage?: string;
+  ttsVoiceName?: string;
+  ttsModel?: string;
+  prompt?: string;
+  gender?: string;
+  userId: string;
+  speed?: number;
+  backgroundSound?: string;
+  welcomeMessage?: string;
+  knowledgeBaseAttached?: boolean;
+  knowledgeBase: mongoose.Types.ObjectId[];
+} 
