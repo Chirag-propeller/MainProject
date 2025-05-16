@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation';
 
 const CampaignDashboard: React.FC = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [newCampaign, setNewCampaign] = useState<boolean>(false);
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
@@ -82,12 +83,15 @@ const CampaignDashboard: React.FC = () => {
       callScheduledOrNot: true,
       callDate: null,
       status: 'draft',
+      concurrentCalls: 0,
     };
     try {
       const newCampaign = await createCampaign(transformedData);
       console.log(newCampaign.data);
+      setNewCampaign(true);
       setCampaigns(prev => [newCampaign.data, ...prev]);
       setSelectedCampaign(newCampaign.data);
+      
     } catch (err: any) {
       console.error('❌ Error creating campaign:', err);
       alert('Failed to create campaign');
@@ -102,6 +106,7 @@ const CampaignDashboard: React.FC = () => {
           <CampaignHeader 
             title="Campaigns"
             onCreate={handleCreateCampaign}
+            
           />
         </div>
 
@@ -115,6 +120,7 @@ const CampaignDashboard: React.FC = () => {
             setSelectedCampaign={setSelectedCampaign}
             deleteLoading={deleteLoading}
             onDeleteCampaign={handleDeleteCampaign}
+            setNewCampaign={setNewCampaign}
           />
         </div>
       </div>
@@ -127,6 +133,8 @@ const CampaignDashboard: React.FC = () => {
           <CampaignDetails 
             campaign={selectedCampaign}
             agents={agents}
+            newCampaign={newCampaign}
+            setSelectedCampaign={setSelectedCampaign}
           />
         ) : (
           <div className="h-full flex items-center justify-center text-gray-500">

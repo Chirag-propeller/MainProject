@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const user = await getUserFromRequest(req);
     const newCampaign = await createCampaign.create({
       userId:  user.userId,
-    campaignCallId: body.campaignCallId || randomUUID(),
+      campaignCallId: body.campaignCallId || randomUUID(),
       ...body,
     });
     await User.findByIdAndUpdate(user.userId, { $push: { campigns: newCampaign._id } });

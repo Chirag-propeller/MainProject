@@ -9,16 +9,22 @@ import SelectOptions from '@/components/agent/newAgent/SelectOptions';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ModalList from '@/components/agent/ModalList';
-import KnowledgeBaseList from '@/components/knowledgeBase/KnowledgeBaseList';
+import { getUserFromRequest } from '@/lib/auth';
 
 interface TtsOptions {
-  [key: string]: string[]; // Assuming each provider maps to an array of voices
+  [provider: string]: {
+    [language: string]: {
+      [gender: string]: string[]
+    }
+  }
+  // [key: string]: string[]; // Assuming each provider maps to an array of voices
 }
 interface LLMConfig {
   llmOptions: string[];
   ttsOptions: TtsOptions;
   sttOptions: string[];
-  loading: boolean
+  loading: boolean,
+  ttsLanguageOptions: string[]
 }
 
 interface KnowledgeBase {
@@ -31,43 +37,63 @@ interface KnowledgeBase {
 
 const Main = () => {
   const router = useRouter();
-  const { llmOptions, ttsOptions, sttOptions, loading } = useLLMConfig() as LLMConfig
+  const { llmOptions, ttsOptions, sttOptions, loading, ttsLanguageOptions } = useLLMConfig() as unknown as LLMConfig
 
   const [isKnowledgeBaseModalListOpen, setIsKnowledgeBaseModalListOpen] = useState<boolean>(false);
   const [knowledgeBases, setKnowledgeBases] = useState<KnowledgeBase[]>([]);
   const providers = Object.keys(ttsOptions);
   const languages: string[] = Array.isArray(sttOptions) ? Array.from(sttOptions) : Object.values(sttOptions);
   const llm: string[] = Array.isArray(llmOptions) ? Array.from(llmOptions) : Object.values(llmOptions);
+  const ttsLanguages: string[] = Array.isArray(ttsLanguageOptions) ? Array.from(ttsLanguageOptions) : Object.values(ttsLanguageOptions);
   const ttsProvider = Object.keys(ttsOptions);
-
+  const [gender, setGender] = useState<string>("Male");
   const [selectedLang, setSelectedLang] = useState<string>(sttOptions[0])
   const [selectedLLM, setSelectedLLM] = useState<string>(llmOptions[0]);
+  const [selectedTtsLanguage, setSelectedTtsLanguage] = useState<string>("English-US");
   const [selectedTtsProvider, setSelectedTtsProvider] = useState<string>(ttsProvider[0]);
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   
   const [selectedProvider, setSelectedProvider] = useState<string>(providers[0]); // Default to first provider
-  const [voices, setVoices] = useState<string[]>(ttsOptions[selectedProvider]); // Default voices
+  const [voices, setVoices] = useState<string[]>([]); // Default voices
+
+  
+
   useEffect (
     ()=>{
       setSelectedLang(sttOptions[0]);
       setSelectedLLM(llmOptions[0]);
       setSelectedProvider(providers[0]);
-      setVoices(ttsOptions[providers[0]]);
+      // setVoices(ttsOptions[selectedProvider][selectedTtsLanguage][gender]);
+      setSelectedTtsLanguage(ttsLanguageOptions[0]);
       // console.log(selectedLLM, selectedLang,selectedProvider);
     }
-  ,[llmOptions, ttsOptions, sttOptions, loading])
+  ,[llmOptions, ttsOptions, sttOptions, loading, ttsLanguageOptions])
   useEffect(
     ()=> {
-      if(voices)setSelectedVoice(voices[0]);
+      if (voices.length > 0) {
+        setSelectedVoice(voices[0]);
+      } else {
+        setSelectedVoice("");
+      }
     } 
     ,[voices])
+
+    useEffect(() => {
+      const updateVoices = () => {
+        const providerVoices = ttsOptions[selectedProvider];
+        if (providerVoices && providerVoices[selectedTtsLanguage] && providerVoices[selectedTtsLanguage][gender]) {
+          setVoices(providerVoices[selectedTtsLanguage][gender]);
+        } else {
+          setVoices([]);
+        }
+      };
+      updateVoices();
+    }, [selectedProvider, selectedTtsLanguage, gender, ttsOptions]);
+    
   // Handle provider change
   const handleProviderChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newProvider = event.target.value;
     setSelectedProvider(newProvider);
-    setVoices(ttsOptions[newProvider]); // Update voices dropdown
-    setSelectedVoice(voices[0]);
-    console.log(voices, selectedVoice);
   };
 
 
@@ -127,6 +153,18 @@ const Main = () => {
   };
 
   const handleTestClick = async () => {
+    const user = await axios.get('/api/user/getCurrentUser');
+    // console.log(user);
+    const credits = parseFloat(user.data?.credits?.$numberDecimal) || 0;
+    const creditsUsed = parseFloat(user.data?.creditsUsed?.$numberDecimal) || 0;
+    // const credits = user.data?.credits || 0 ;
+    // const creditsUsed = user.data?.creditsUsed || 0;
+    if(credits - creditsUsed <= 0){
+      alert("You have no credits left");
+      return;
+    }
+    // console.log(user);
+
     // await getToken;
     const tokenData = await fetchToken();
     if (tokenData) {
@@ -142,7 +180,8 @@ const Main = () => {
     
     const payload = {
       agentName: agentName.trim() === "" ? "Default Agent" : agentName,
-      // agentName: agentName,
+      gender: gender,
+      ttsLanguage: selectedTtsLanguage,
       prompt: text,
       llm: selectedLLM,
       inputLanguage: selectedLang,
@@ -186,30 +225,38 @@ const Main = () => {
           </Link>
           <input placeholder='Agent Name' className='border-gray-300 px-2 m-2 rounded-sm mt-3 border-1' value={agentName} onChange={(e) => setAgentName(e.target.value)}/>
           </div>
-          <div className='flex mt-2'>
-          <div className='mx-1 p-1'>
-            <p className='text-xs mx-3  '> Language </p>
-            <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} loading={loading} />
-          </div>
-          <div className='mx-1 p-1'>
-            <p className='text-xs mx-3  '> LLM </p>
-            <SelectOptions options={llm} selectedOption={selectedLLM} setOption={setSelectedLLM} loading={loading} />
-          </div>
-          <div className='mx-1 p-1'>
-            <p className='text-xs mx-3  '> TTS Provider </p>
-            <select className='p-1 m-1 rounded-full  text-sm bg-gray-100 border border-gray-300 ' value={selectedProvider} onChange={handleProviderChange}>
-                {providers.map((provider) => (
-                  <option key={provider} value={provider} className='p-1'>
-                    {provider}
-                  </option>
-                ))}
-            </select>
-          </div>
+          <div className='flex mt-2 flex-wrap'>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3  '> Language </p>
+              <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} loading={loading} />
+            </div>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3  '> LLM </p>
+              <SelectOptions options={llm} selectedOption={selectedLLM} setOption={setSelectedLLM} loading={loading} />
+            </div>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3  '> TTS Provider </p>
+              <select className='p-1 m-1 rounded-full  text-sm bg-gray-100 border border-gray-300 ' value={selectedProvider} onChange={handleProviderChange}>
+                  {providers.map((provider) => (
+                    <option key={provider} value={provider} className='p-1'>
+                      {provider}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3 '> Gender </p>
+              <SelectOptions  options={["Male", "Female"]} selectedOption={gender} setOption={setGender} loading={loading} />
+            </div>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3 '> TTS Language </p>
+              <SelectOptions options={ttsLanguages} selectedOption={selectedTtsLanguage} setOption={setSelectedTtsLanguage} loading={loading} />
+            </div>
+            <div className='mx-1 p-1'>
+              <p className='text-xs mx-3 '> Select Voices </p>
+              <SelectOptions options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} loading={loading} />
+            </div>
 
-          <div className='mx-1 p-1'>
-            <p className='text-xs mx-3 '> Select Voices </p>
-            <SelectOptions options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} loading={loading} />
-          </div>
           </div>
           <textarea 
             className='p-2 m-3 rounded-md w-[95%] text-sm border border-gray-300 h-[50vh]'
