@@ -10,6 +10,7 @@ interface CampaignCardProps {
   onSelect: (campaign: Campaign) => void;
   onDelete: (id: string) => void;
   isDeleting: string | null;
+  setNewCampaign: (newCampaign: boolean) => void;
 }
 
 const CampaignCard: React.FC<CampaignCardProps> = ({
@@ -17,7 +18,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   isSelected,
   onSelect,
   onDelete,
-  isDeleting
+  isDeleting,
+  setNewCampaign
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -29,11 +31,15 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
     completed: 'bg-green-600 text-white',
     draft: 'bg-gray-600 text-white'
   };
+  const handleClick = () => {
+    onSelect(campaign);
+    setNewCampaign(false);
+  }
   
   return (
     <Card 
       className={`mb-1 hover:shadow-sm transition-shadow cursor-pointer ${isSelected ? 'border-indigo-600 bg-indigo-50 border-2' : ''}`}
-      onClick={() => onSelect(campaign)}
+      onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

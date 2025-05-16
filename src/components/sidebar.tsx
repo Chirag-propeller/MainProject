@@ -1,20 +1,23 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon } from 'lucide-react';
+import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon, CreditCard } from 'lucide-react';
 import SidebarLink from './sidebar/SidebarLink';
 import Logo from './sidebar/Logo';
 
 const navItemsMain = [
   // { name: 'Home', href: '/dashboard', icon: Home },
   // { name: 'Analysis', href: '/dashboard/analysis', icon: LineChart },
-  { name: 'Agent', href: '/dashboard/agent', icon: Users },
+  // { name: 'Agent', href: '/dashboard/agent', icon: Users },
+  { name: 'Agents', href: '/dashboard/agents', icon: Users },
   // { name: 'Contact', href: '/dashboard/contact', icon: Phone },
   { name: 'Knowledge Base', href: '/dashboard/knowledgeBase', icon: File },
   { name: 'Phone Number', href: '/dashboard/phoneNumber', icon: PhoneCall },
   { name: 'Call History', href: '/dashboard/callHistory', icon: History },
+  { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartBar },
   { name: 'Analytics', href: '/dashboard/analytics', icon: LineChart },
   { name: 'Send a Call', href: '/dashboard/sendCall', icon: PhoneCallIcon },
+  { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
 ];
 
 const navItemsTool = [
@@ -37,7 +40,7 @@ const Sidebar = ()=> {
   const pathname = usePathname();
 
   return (
-    <aside className="w-52 h-[100vh]  scroll overflow-y-auto text-gray-600 p-4 ps-0 pt-0 pb-10 fixed">
+    <aside className="w-53 h-[100vh]  scroll overflow-y-auto text-gray-600 p-4 ps-0 pt-0 pb-10 fixed border-r border-gray-200">
     {/* <aside className="w-64 h-screen fixed left-0 top-0 bg-white text-gray-600"> */}
 
 

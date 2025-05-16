@@ -11,13 +11,13 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({options, selectedOption, s
   return (
     <div>
         <select 
-            className='p-1 m-1 rounded-full  text-sm bg-gray-100 border border-gray-300 '
+            className='p-1.5  rounded-lg w-full text-sm bg-gray-100 border border-gray-300 '
             value={selectedOption}
             onChange={(e) => setOption(e.target.value)}
           >
-            {options?.map((option: any, idx:any) => (
+            {options.length > 0 ? options?.map((option: any, idx:any) => (
               <option key={idx} value={option} className='p-1'> {option} </option>
-            ))}
+            )) : <option value="">No options available</option>}
         </select>
     </div>
   )

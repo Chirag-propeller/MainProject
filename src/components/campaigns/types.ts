@@ -6,6 +6,15 @@ export interface Campaign {
   createdAt: string;
   fromNumber?: string;
   agentId?: string;
+  concurrentCalls?: number;
+  sendOption?: string;
+  scheduleDate?: string;
+  timeZone?: string;
+  recipientsFile?: File | null;
+  recipients?: string[];
+  followUp?: string;
+  noOfFollowUps?: string;
+  
 }
 
 export interface Agent {
