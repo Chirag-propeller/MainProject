@@ -16,11 +16,8 @@ interface CampaignDetailsProps {
   agents: Agent[];
   newCampaign : boolean;
   setSelectedCampaign: (campaign: Campaign) => void;
-  newCampaign : boolean;
-  setSelectedCampaign: (campaign: Campaign) => void;
 }
 
-const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, newCampaign, setSelectedCampaign }) => {
 const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, newCampaign, setSelectedCampaign }) => {
   const agentName = agents.find(a => a.agentId === campaign.agentId)?.agentName || 'No Agent Attached';
   const [isEditing, setIsEditing] = useState(false);
@@ -150,7 +147,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
                   <Edit2
                   className="ml-0.5 h-2.5 top-0 cursor-pointer text-gray-500 hover:text-gray-700"
                   onClick={() => setIsTitleEditing(true)}
-                  onClick={() => setIsTitleEditing(true)}
                 />
                 )
               }
@@ -164,10 +160,8 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
         <div className="flex space-x-2 gap-1">
           <Button
             onClick={handleEditAndSave}
-            onClick={handleEditAndSave}
             variant="secondary"
             size="sm"
-            disabled={isLoading}
             disabled={isLoading}
           >
             {isEditing ? (isLoading ? 'Saving...' : 'Save') : 'Edit'}
