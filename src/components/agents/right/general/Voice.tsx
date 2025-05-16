@@ -77,6 +77,13 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
         };
         updateVoices();
       }, [selectedProvider, language, gender, ttsOptions]);
+      useEffect(() => {
+        if (voices.length > 0) {
+          setSelectedVoice(prev => voices.includes(prev) ? prev : voices[0]);
+        }
+        console.log(selectedVoice)
+      }, [voices]);
+      
     
     // const [selectedLang, setSelectedLang] = useState<string>(ttsOptions[0])
     // useEffect(
