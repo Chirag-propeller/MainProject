@@ -45,14 +45,13 @@ const Transcriber = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) 
     const languages: string[] = Array.isArray(sttOptions) ? Array.from(sttOptions) : Object.values(sttOptions);
     const [selectedLang, setSelectedLang] = useState<string>(agent.stt || sttOptions[0])
 
-    useEffect(() => {
-        setSelectedLang(languages[0])
-    }, [languages])
+    // useEffect(() => {
+    //     setSelectedLang(languages[0])
+    // }, [languages])
 
     useEffect(() => {
         setAgent({...agent, stt: selectedLang})
     }, [selectedLang])
-
   return (
     <div className='border border-gray-600 rounded-lg'>
         <header className='cursor-pointer bg-gray-200 p-2'
