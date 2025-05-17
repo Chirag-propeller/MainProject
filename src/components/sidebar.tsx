@@ -18,13 +18,15 @@ const navItemsMain = [
   { name: 'Analytics', href: '/dashboard/analytics', icon: LineChart },
   { name: 'Send a Call', href: '/dashboard/sendCall', icon: PhoneCallIcon },
   { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
-];
-
-const navItemsTool = [
   { name: 'Campaigns', href: '/dashboard/campaigns', icon: Folder },
   { name: 'Integration', href: '/dashboard/integration', icon: Headphones },
-  { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartArea },
 ];
+
+// const navItemsTool = [
+//   { name: 'Campaigns', href: '/dashboard/campaigns', icon: Folder },
+//   { name: 'Integration', href: '/dashboard/integration', icon: Headphones },
+//   { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartArea },
+// ];
 
 // const navItems = [
 //   { name: 'Home', href: '/dashboard' },
@@ -40,7 +42,7 @@ const Sidebar = ()=> {
   const pathname = usePathname();
 
   return (
-    <aside className="w-53 h-[100vh]  scroll overflow-y-auto text-gray-600 p-4 ps-0 pt-0 pb-10 fixed border-r border-gray-200">
+    <aside className="w-52 h-[100vh]  scroll overflow-y-auto text-gray-600 p-4 ps-0 pt-0 pb-10 fixed border-r border-gray-200">
     {/* <aside className="w-64 h-screen fixed left-0 top-0 bg-white text-gray-600"> */}
 
 
@@ -55,8 +57,8 @@ const Sidebar = ()=> {
           <Logo className='mt-2'/>
 
         </Link> */}
-      <nav className="flex flex-col gap-3 mt-3 ps-3 ">
-        <h1 className='p-2 text-sm  pb-0 text-gray-500'> MAIN </h1>
+      <nav className="flex flex-col gap-1 mt-3 ps-3 pt-10">
+        {/* <h1 className='p-2 text-sm  pb-0 text-gray-500'> MAIN </h1> */}
         {/* {navItems.map(item => (
           <Link
             key={item.href}
@@ -78,15 +80,15 @@ const Sidebar = ()=> {
             icon={item.icon}
           />
         ))}
-        <h1 className='p-2 text-sm mt-4 pb-0 text-gray-500'> TOOLS </h1>
-        {navItemsTool.map(item => (
+        {/* <h1 className='p-2 text-sm mt-4 pb-0 text-gray-500'> TOOLS </h1> */}
+        {/* {navItemsTool.map(item => (
           <SidebarLink
             key={item.href}
             href={item.href}
             name={item.name}
             icon={item.icon}
           />
-        ))}
+        ))} */}
       </nav>
     </aside>
   );

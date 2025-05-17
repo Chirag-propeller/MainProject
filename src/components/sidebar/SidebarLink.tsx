@@ -16,13 +16,13 @@ type SidebarLinkProps = {
         href={href}
         className={`flex group items-center p-1 gap-2 rounded  ${
             isActive
-            ? 'bg-indigo-100 text-indigo-700 font-semibold'
+            ? 'bg-indigo-100 text-indigo-700'
             : 'text-gray-600 hover:text-black'
   
         }`}
       >
         <Icon 
-            className={`w-5 h-5 transition-colors ${
+            className={`w-4 h-4 transition-colors ${
                 isActive
                     ? 'text-indigo-700'
                     : 'text-gray-400 group-hover:text-indigo-500'
