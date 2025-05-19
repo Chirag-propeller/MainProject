@@ -141,7 +141,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
           ) : (
             <div className="flex items-center">
               <h2 className="text-xl font-semibold">{campaign.campaignCallName}</h2>
-              <h2 className="text-xl font-semibold">{campaign.campaignCallName}</h2>
               {
                 isEditing && (
                   <Edit2
@@ -154,7 +153,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
             </div>
           )}
           <p className="text-sm text-gray-500 mt-1">ID: {campaign._id}</p>
-          <p className="text-sm text-gray-500 mt-1">ID: {campaign._id}</p>
         </div>
         {/* Action buttons */}
         <div className="flex space-x-2 gap-1">
@@ -164,7 +162,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
             size="sm"
             disabled={isLoading}
           >
-            {isEditing ? (isLoading ? 'Saving...' : 'Save') : 'Edit'}
             {isEditing ? (isLoading ? 'Saving...' : 'Save') : 'Edit'}
           </Button>
           {
@@ -210,7 +207,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       }
 
       {/* Hidden button for programmatic triggering of save */}
-      <button id="campaign-save-button" className="hidden" />
+      {/* <button id="campaign-save-button" className="hidden" />
       {
         !isEditing && (
           <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
@@ -225,10 +222,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
           ))}
         </div>
         )
-      }
+      } */}
 
       {/* Edit tab */}
-      {
+      {/* {
         isEditing && (
           <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
           <button
@@ -240,7 +237,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
               </button>
           </div>
         )
-      }
+      } */}
 
       {/* Hidden button for programmatic triggering of save */}
       <button id="campaign-save-button" className="hidden" />
@@ -250,7 +247,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
         {activeTab === 'general' && <CampaignGeneral campaign={campaign} agents={agents} />}
         {activeTab === 'analytics' && <CampaignAnalytics campaign={campaign} agents={agents} />}
         {activeTab === 'data' && <CampaignData campaign={campaign} />}
-        {activeTab === 'edit' && <EditForm campaign={campaign} onSave={handleFormSave} />}
         {activeTab === 'edit' && <EditForm campaign={campaign} onSave={handleFormSave} />}
       </div>
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} campaign={campaign}  />}

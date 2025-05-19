@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     <div className=''>
     <div className="flex">
       <Sidebar/>
-      <main className="ml-52 p-1 w-full">{children}</main>
+      <main className="ml-52 w-full">{children}</main>
       
       </div>
       <Footer/>

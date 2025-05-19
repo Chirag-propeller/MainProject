@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import AgentGeneralTab from './AgentGeneralTab';
 import AgentPromptTab from './AgentPromptTab';
 import { useRouter } from 'next/navigation';
+import Test from './Test';
+import { Play } from 'lucide-react';
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -49,31 +51,45 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
 
   const handleTest = () => {
     setIsTesting(true);
-    setActiveTab('conversations'); // Navigate to conversations tab for testing
+  };
+  
+  const handleCloseTest = () => {
+    setIsTesting(false);
   };
 
   return (
-    <div className="flex flex-col bg-white rounded-lg border border-slate-200 h-full ">
+    <div className="flex flex-col bg-white rounded-lg border border-t-0 border-gray-200 h-full ">
       {/* Header with agent name, ID and buttons */}
       <div className="flex justify-between items-start p-4 pb-1">
         <div className="flex flex-col">
-          <h2 className="text-xl font-semibold">{agent.agentName}</h2>
+          <h2 className="text-2xl font-semibold">{agent.agentName}</h2>
           <p className="text-xs text-gray-500 mb-1 ">ID: {agent._id}</p>
         </div>
         <div className="flex space-x-2 gap-1">
           <Button 
             variant="secondary" 
-            size="sm"
+            size="md"
             onClick={handleUpdate}
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 border-gray-300'
           >
             Update
           </Button>
+          {/* <Button 
+            variant="secondary" 
+            size="md"
+            onClick={handleUpdate}
+            className='border-gray-300 px-10 rounded-[4px]  border-1'
+          >
+            Update
+          </Button> */}
           <Button 
             variant="default" 
-            size="sm"
+            size="md"
             onClick={handleTest}
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 '
           >
             Test
+            <Play className=' pl-1 w-4 h-4 ml-0.5' />
           </Button>
         </div>
       </div>
@@ -114,36 +130,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
         
         {activeTab === 'conversations' && (
           <div className="text-center py-10 text-gray-500">
-            {isTesting ? (
-              <div>
-                <p className="mb-4">Test your agent with a conversation</p>
-                <div className="border rounded-md p-4 bg-gray-50 mx-auto max-w-lg">
-                  <div className="flex flex-col space-y-3 mb-4">
-                    <div className="bg-blue-100 text-blue-800 p-2 rounded-md self-start max-w-[80%]">
-                      Hello! How can I help you today?
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <input
-                      type="text"
-                      placeholder="Type your message..."
-                      className="flex-1 p-2 border rounded-l-md focus:outline-none"
-                    />
-                    <Button className="rounded-l-none">Send</Button>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="mt-4"
-                    onClick={() => setIsTesting(false)}
-                  >
-                    End Test
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              "Conversations history will be displayed here"
-            )}
+            "Conversations history will be displayed here"
           </div>
         )}
         
@@ -152,7 +139,11 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
             Analytics dashboard will be displayed here
           </div>
         )}
+
       </div>
+
+      {/* Test Modal */}
+      <Test isOpen={isTesting} onClose={handleCloseTest} agent={agent} />
     </div>
   );
 };

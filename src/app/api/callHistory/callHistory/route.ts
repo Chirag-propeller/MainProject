@@ -1,13 +1,18 @@
 import CallHistory from "@/model/call/callHistory.model";
 import dbConnect from "@/lib/mongodb";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import OutBoundCall from "@/model/call/outBoundCall";
-
-export async function GET() {
+import {  getUserFromRequest } from "@/lib/auth";
+import mongoose from "mongoose";
+export async function GET(req : NextRequest) {
     await dbConnect();
     try {
-        // const data = await CallHistory.find({}).limit(100);
-        const data = await OutBoundCall.find({}).limit(250);
+        const user = await getUserFromRequest(req);
+        console.log(user);
+        // const data = await CallHistory.find({}).limit(100);\
+        const userId =  new mongoose.Types.ObjectId(user.userId)
+        const data = await OutBoundCall.find({user_id: userId});
+
         return NextResponse.json({
             success: true,
             data

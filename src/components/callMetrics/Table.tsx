@@ -1,91 +1,3 @@
-// // app/components/CallAnalysisTable.tsx
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import CallAnalysisCell from "./Cell";
-// import { CALL_ANALYSIS_FIELD_LABELS } from "@/lib/callAnalysisFieldMap";
-
-// const FIELDS_TO_DISPLAY = [
-//   "status",
-//   "language",
-//   "callQualityScore",
-//   "sentiment",
-//   "scriptAdherenceScore",
-//   // "violations",
-//   "callDisposition",
-//   "AIConfidenceScore",
-//   "complianceRiskScore",
-//   // "reviewerComments"
-//   // ✅ Add/remove keys you want here
-// ];
-
-// export default function CallAnalysisTable() {
-//   const [callData, setCallData] = useState<any[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     fetch("/api/callHistory/callHistory")
-//       .then((res) => res.json())
-//       .then((data) => {
-//         const mappedData = data.data.map((item: any) => item.call_analysis);
-//         setCallData(mappedData);
-//         setLoading(false);
-//       });
-//   }, []);
-
-//   return (
-//     <div className="w-[70vw] mx-auto overflow-hidden">
-//       {loading ? (
-//         <p className="text-gray-600">Loading call analysis...</p>
-//       ) : (
-//         <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-xl border border-gray-200">
-//           <table className="min-w-full divide-y divide-gray-200 text-sm">
-//             <thead className="bg-gray-50">
-//               <tr>
-//                 <th className="sticky top-0 bg-gray-50 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-//                   S.No
-//                 </th>
-//                 {FIELDS_TO_DISPLAY.map((key) => (
-//                   <th
-//                     key={key}
-//                     className="sticky top-0 bg-gray-50 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
-//                   >
-//                     {CALL_ANALYSIS_FIELD_LABELS[key] ||
-//                       key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-//                   </th>
-//                 ))}
-//               </tr>
-//             </thead>
-//             <tbody className="bg-white divide-y divide-gray-100">
-//               {callData.map((call, index) => (
-//                 <tr key={index} className="hover:bg-gray-50 transition duration-150">
-//                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">
-//                     {index + 1}
-//                   </td>
-//                   {FIELDS_TO_DISPLAY.map((key) => (
-//                     <CallAnalysisCell key={key} value={call?.[key]} field={key} />
-//                   ))}
-//                 </tr>
-//               ))}
-//               {callData.length === 0 && (
-//                 <tr>
-//                   <td
-//                     colSpan={FIELDS_TO_DISPLAY.length + 1}
-//                     className="px-6 py-4 text-center text-gray-500"
-//                   >
-//                     No call analysis data found.
-//                   </td>
-//                 </tr>
-//               )}
-//             </tbody>
-//           </table>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-
 
 // app/components/CallAnalysisTable.tsx
 "use client";
@@ -93,20 +5,29 @@
 import { useEffect, useState } from "react";
 import CallAnalysisCell from "./Cell";
 import { CALL_ANALYSIS_FIELD_LABELS } from "@/lib/callAnalysisFieldMap";
+import { format, parse } from "date-fns";
+import SideBarCell from "./SideBarCell";
+import { Cross, X } from "lucide-react";
 
 const FIELDS_TO_DISPLAY = [
   "status",
   "language",
   "sentiment",
-  "callQualityScore",
-  "scriptAdherenceScore",
-  "AIConfidenceScore",
+  "call_quality_score",
+  "script_adherence_score",
+  "ai_confidence_score",
 ];
 
-export default function CallAnalysisTable() {
+export default function CallAnalysisTable({customiseField}: {customiseField: string[]}) {
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCall, setSelectedCall] = useState<any | null>(null);
+
+  function formatDateTime(dateStr: string): string {
+    const parsed = parse(dateStr, "yyyy-MM-dd HH:mm", new Date());
+    return format(parsed, "hh:mm a - dd MMM, yyyy");
+  }
+  
 
   useEffect(() => {
     fetch("/api/callHistory/callHistory")
@@ -114,10 +35,65 @@ export default function CallAnalysisTable() {
       .then((data) => {
         // const mappedData = data.data.map((item: any) => {item.call_analysis && item.call_analysis });
         console.log(data.data)
+        // const mappedData = data.data
+        // .filter((item: any) => item.call_analysis)
+        // .map((item: any) => ({  
+        //   started_at: item.started_at,
+        //   status: item.status,
+        //   agent: item?.metadata?.agentid,
+
+          
+        // }))
         const mappedData = data.data
         .filter((item: any) => item.call_analysis)
-        .map((item: any) => item.call_analysis);
-        console.log(mappedData)
+        .map((item: any) => {
+          const callAnalysis = item.call_analysis || {};
+          const metadata = item.metadata || {};
+  
+          return {
+            // Root-level
+            id: item._id,
+            started_at: formatDateTime(item.started_at),
+            phonenumber: item.phonenumber,
+            room_name: item.room_name,
+            user_id: item.user_id,
+  
+            // Metadata
+            agent: metadata.agentid,
+            fromPhone: metadata.fromPhone,
+            numberoffollowup: metadata.numberoffollowup,
+            total_followup_count: metadata.total_followup_count,
+  
+            // Call Analysis
+            status: callAnalysis.STATUS,
+            language: callAnalysis.LANGUAGE,
+            call_quality_score: callAnalysis.CALL_QUALITY_SCORE,
+            sentiment: callAnalysis.SENTIMENT,
+            script_adherence_score: callAnalysis.SCRIPT_ADHERENCE_SCORE,
+            call_disposition: callAnalysis.CALL_DISPOSITION,
+            call_transfer: callAnalysis.CALL_TRANSFER,
+            escalation_flag: callAnalysis.ESCALATION_FLAG,
+            ai_confidence_score: callAnalysis.AI_CONFIDENCE_SCORE,
+            nlp_error_rate: callAnalysis.NLP_ERROR_RATE,
+            intent_detected: callAnalysis.INTENT_DETECTED,
+            intent_success_rate: callAnalysis.INTENT_SUCCESS_RATE,
+            average_intent_turn: callAnalysis.AVERAGE_INTENT_TURN,
+            lead_score: callAnalysis.LEAD_SCORE,
+            conversion_flag: callAnalysis.CONVERSION_FLAG,
+            upsell_flag: callAnalysis.UPSELL_FLAG,
+            cross_sell_flag: callAnalysis.CROSS_SELL_FLAG,
+            survey_score: callAnalysis.SURVEY_SCORE,
+            compliance_risk_score: callAnalysis.COMPLIANCE_RISK_SCORE,
+            keyword_alert_count: callAnalysis.KEYWORD_ALERT_COUNT,
+            pci_dss_sensitive_data_detected: callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
+            gdpr_data_request: callAnalysis.GDPR_DATA_REQUEST,
+            customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
+            interruption_count: callAnalysis.INTERRUPTION_COUNT,
+            reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
+          };
+        });
+        // .map((item: any) => item.call_analysis);
+        console.log("mappedData", mappedData);
         setCallData(mappedData);
         setLoading(false);
       });
@@ -128,7 +104,7 @@ export default function CallAnalysisTable() {
   };
 
   return (
-    <div className="w-[70vw] mx-auto overflow-hidden relative">
+    <div className="w-full max-w-[80vw] mx-auto overflow-hidden relative">
       {loading ? (
         <p className="text-gray-600">Loading call analysis...</p>
       ) : (
@@ -137,13 +113,13 @@ export default function CallAnalysisTable() {
             <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="sticky top-0 bg-gray-50 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
                     S.No
                   </th>
-                  {FIELDS_TO_DISPLAY.map((key) => (
+                  {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="sticky top-0 bg-gray-50 z-10 px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
+                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-left text-xs font-medium text-gray-500 tracking-wider"
                     >
                       {CALL_ANALYSIS_FIELD_LABELS[key] ||
                         key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -151,18 +127,18 @@ export default function CallAnalysisTable() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
+              <tbody className="bg-white divide-y text-sm divide-gray-100">
                 {callData.map((call, index) => (
                   <tr
                     key={index}
                     className="hover:bg-gray-50 cursor-pointer transition duration-150"
                     onClick={() => handleRowClick(call)}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">
+                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium">
                       {index + 1}
                     </td>
-                    {FIELDS_TO_DISPLAY.map((key) => (
-                      <CallAnalysisCell key={key} value={call?.[key]} field={key} />
+                    {customiseField.map((key) => (
+                      <CallAnalysisCell  key={key} value={call?.[key]} field={key} />
                     ))}
                   </tr>
                 ))}
@@ -181,16 +157,81 @@ export default function CallAnalysisTable() {
           </div>
 
           {selectedCall && (
-            <div className="fixed top-0 right-0 h-full w-[400px] bg-white shadow-lg border-l z-50 p-4 overflow-y-auto">
-              <button
-                onClick={() => setSelectedCall(null)}
-                className="text-gray-500 hover:text-gray-700 mb-4"
-              >
-                Close
-              </button>
+            <div className="fixed top-0 right-0 h-full w-[54%] bg-white shadow-lg border-l border-gray-200 z-50 overflow-y-auto ">
+              <div className="px-2 p-1 flex justify-between border-b border-gray-200 sticky top-0 bg-white">
+                <div className="flex flex-col gap-0">
+                  <h2 className="text-md font-semibold">{selectedCall.started_at}</h2>
+                  <h2 className="text-xs text-gray-600">Call ID: {selectedCall.id}</h2>
+                  </div>
+                  <button
+                  onClick={() => setSelectedCall(null)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
 
-              <h2 className="text-xl font-semibold mb-2">Call Details</h2>
-              <div className="text-sm text-gray-700 space-y-2">
+              <div className="">
+                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
+                <div className="flex justify-between">
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
+                    <SideBarCell title="Agent" value={selectedCall.agent}/>
+                    <SideBarCell title="From Phone Number" value={selectedCall.phonenumber}/>
+                    <SideBarCell title="To Phone Number" value={selectedCall.phonenumber}/>
+                    <SideBarCell title="Average Latency" value={selectedCall.latency || "N/A"}/>
+
+                  </div>
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
+                    <SideBarCell title="Call Duration" value={selectedCall.call_duration || "N/A"}/>
+                    <SideBarCell title="Call Status" value={selectedCall.status || "N/A"}/>
+                    <SideBarCell title="Direction" value={selectedCall.direction || "N/A"}/>
+                    <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count || "N/A"}/>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+              <div className="">
+                <h1 className="text-sm  p-4 py-1 "> Call Recording</h1>
+              </div>
+
+              <div className=""> 
+                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Agent Performance</h1>
+                <div className="flex justify-between">
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
+                    <SideBarCell title="Call Quality Score" value={selectedCall.call_quality_score || "N/A"}/>
+                    <SideBarCell title="Script Adherence Score" value={selectedCall.script_adherence_score || "N/A"}/>
+                    <SideBarCell title="Interruption Count" value={selectedCall.interruption_count || "N/A"}/>
+                    <SideBarCell title="Violations" value={selectedCall.violations|| "N/A"}/>
+                    <SideBarCell title="Call Disposition" value={selectedCall.call_disposition || "N/A"}/>
+                  </div>
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
+                    <SideBarCell title="Goal Completion" value={selectedCall.goal_completion || "N/A"}/>
+                    <SideBarCell title="Sentiment" value={selectedCall.sentiment || "N/A"}/>
+                    <SideBarCell title="NLP Error Rate" value={selectedCall.nlp_error_rate || "N/A"}/>
+                    <SideBarCell title="Intent Success Rate" value={selectedCall.intent_success_rate || "N/A"}/>
+                    <SideBarCell title="Escalation Flag" value={selectedCall.escalation_flag || "N/A"}/>
+                  </div>
+                </div>
+              </div>
+
+              <div className="">
+                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Compliance</h1>
+                <div className="flex justify-between">
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
+                    <SideBarCell title="Compliance Risk Score" value={selectedCall.compliance_risk_score || "N/A"}/>
+                    <SideBarCell title="Keyword Alert Count" value={selectedCall.keyword_alert_count || "N/A"}/>
+                  </div>
+                    <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
+                    <SideBarCell title="PCI DSS Sensitive Data Detected" value={selectedCall.pci_dss_sensitive_data_detected || "N/A"}/>
+                    <SideBarCell title="GDPR Data Request" value={selectedCall.gdpr_data_request || "N/A"}/>
+                  </div>
+                </div>
+              </div>
+              
+
+              {/* <h2 className="text-xl font-semibold mb-2">Call Details</h2> */}
+              {/* <div className="text-sm text-gray-700 space-y-2">
                 {Object.entries(selectedCall).map(([key, value]) => (
                   <div key={key}>
                     <strong>{CALL_ANALYSIS_FIELD_LABELS[key] || key}:</strong>{" "}
@@ -199,7 +240,7 @@ export default function CallAnalysisTable() {
                       : value?.toString() ?? "-"}
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
           )}
         </>

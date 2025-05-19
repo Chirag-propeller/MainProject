@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Agent } from '@/components/agents/types'
 import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
-
+import { Triangle, Speaker, Music, Speech  } from 'lucide-react';
 interface TtsOptions {
     [provider: string]: {
       [language: string]: {
@@ -107,13 +107,25 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
 
 
   return (
-    <div className='border border-gray-600 rounded-lg'>
-        <header className='cursor-pointer bg-gray-200 p-2'
+    <div className='border border-gray-200 rounded-lg'>
+        <header className='cursor-pointer bg-gray-100 p-2'
          onClick={() => {
             setIsOpen(!isOpen)
          }}
         >
-            <h2 className='text-lg font-semibold'>Voice</h2>
+            <div className='flex justify-between'>
+                <div className='flex gap-2'>
+                    <Speech className='w-3.5 h-3.5 text-gray-900 self-center' />
+                    {/* <Music className='w-4 h-4 text-gray-900 self-center' /> */}
+                    {/* <Speaker className='w-4 h-4 text-gray-900 self-center' /> */}
+                    <h2 className='text-md text-gray-900'>Voice</h2>
+                </div>
+
+                <Triangle className={`w-3 h-3  self-center 
+                ${isOpen ? "rotate-180" : "rotate-90"}
+                `} 
+                style={{ fill: "lightgray" }} />
+            </div>
         </header>
         {isOpen && (
             <div className='p-2 flex flex-row flex-wrap gap-2 w-full bg-gray-50 '>
