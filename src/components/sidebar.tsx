@@ -14,7 +14,7 @@ const navItemsMain = [
   { name: 'Knowledge Base', href: '/dashboard/knowledgeBase', icon: File },
   { name: 'Phone Number', href: '/dashboard/phoneNumber', icon: PhoneCall },
   { name: 'Call History', href: '/dashboard/callHistory', icon: History },
-  { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartBar },
+  // { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartBar },
   { name: 'Analytics', href: '/dashboard/analytics', icon: LineChart },
   { name: 'Send a Call', href: '/dashboard/sendCall', icon: PhoneCallIcon },
   { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },

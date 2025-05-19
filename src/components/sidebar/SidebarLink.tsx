@@ -28,7 +28,7 @@ type SidebarLinkProps = {
                     : 'text-gray-400 group-hover:text-indigo-500'
                 }`}
         />
-        <span>{name}</span>
+        <span className='text-md'>{name}</span>
       </Link>
     );
   };

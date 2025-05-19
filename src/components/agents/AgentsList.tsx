@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Agent } from './types';
 import { createAgent, deleteAgent } from './api';
 import { Button } from '@/components/ui/button';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Users } from 'lucide-react';
 
 // Simple agent card component for the list
 const AgentListItem = ({ 
@@ -26,7 +26,7 @@ const AgentListItem = ({
       <div className="flex justify-between items-start ">
         <div>
           <h3 className="text-xs text-gray-900">{agent.agentName}</h3>
-          <p className="text-[10px] overflow-hidden text-ellipsis w-32 text-gray-600 mt-1 text-nowrap">ID: {agent._id}</p>
+          {/* <p className="text-[10px] overflow-hidden text-ellipsis w-32 text-gray-600 mt-1 text-nowrap">ID: {agent._id}</p> */}
           <p className="text-[10px] text-gray-600 mt-0.5">
             Created At: {agent.createdAt ? new Date(agent.createdAt).toLocaleDateString() : 'Unknown'}
           </p>
@@ -156,13 +156,18 @@ const AgentsList = ({ agents, selectedId, setAgents }: { agents: Agent[], select
   };
 
   return (
-    <div className="w-full border-r border-gray-200 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+    <div className="w-full border-gray-200 border-t-0 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
       {/* Header with title and create button */}
-      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100 flex justify-between items-center">
-        <h1 className="text-lg font-medium">Agents</h1>
+      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+        <div className='flex gap-1.5'>
+          <Users className='w-3.5 h-3.5  self-center text-indigo-600' />
+          <h1 className="text-lg  self-center text-indigo-600">Agents</h1>
+        </div>
+
         <Button 
           onClick={handleCreateAgent}
           disabled={loading}
+          className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 '
         >
           {loading ? 'Creating...' : 'Create'}
         </Button>

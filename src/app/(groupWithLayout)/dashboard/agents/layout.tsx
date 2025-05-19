@@ -50,7 +50,7 @@ export default function AgentsLayout({
       </div>
       
       {/* Main content area (75% width) */}
-      <div className="w-3/4 p-1 overflow-auto">
+      <div className="w-3/4 overflow-auto">
         {children}
       </div>
     </div>
