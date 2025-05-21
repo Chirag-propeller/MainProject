@@ -1,13 +1,17 @@
-
 // app/components/CallAnalysisTable.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import CallAnalysisCell from "./Cell";
 import { CALL_ANALYSIS_FIELD_LABELS } from "@/lib/callAnalysisFieldMap";
-import { format, parse } from "date-fns";
+import { format, parse, isAfter, isBefore, startOfDay } from "date-fns";
 import SideBarCell from "./SideBarCell";
 import { Cross, X } from "lucide-react";
+import TranscriptBox from "../callHistory/Transcript";
+import axios from "axios";
+import { FilterState } from "../callHistory/topBar/Filter";
+import { Agent } from "../agents/types";
+import { DateRangeFilter } from "../callHistory/topBar/DateFilter";
 
 const FIELDS_TO_DISPLAY = [
   "status",
@@ -18,7 +22,17 @@ const FIELDS_TO_DISPLAY = [
   "ai_confidence_score",
 ];
 
-export default function CallAnalysisTable({customiseField}: {customiseField: string[]}) {
+export default function CallAnalysisTable({
+  customiseField, 
+  filters, 
+  agentOptions, 
+  dateRange
+}: {
+  customiseField: string[], 
+  filters: FilterState, 
+  agentOptions: Agent[],
+  dateRange: DateRangeFilter
+}) {
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCall, setSelectedCall] = useState<any | null>(null);
@@ -28,88 +42,107 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
     return format(parsed, "hh:mm a - dd MMM, yyyy");
   }
   
+  function parseApiDate(dateStr: string): Date {
+    return parse(dateStr, "yyyy-MM-dd HH:mm", new Date());
+  }
 
   useEffect(() => {
-    fetch("/api/callHistory/callHistory")
-      .then((res) => res.json())
-      .then((data) => {
-        // const mappedData = data.data.map((item: any) => {item.call_analysis && item.call_analysis });
-        console.log(data.data)
-        // const mappedData = data.data
-        // .filter((item: any) => item.call_analysis)
-        // .map((item: any) => ({  
-        //   started_at: item.started_at,
-        //   status: item.status,
-        //   agent: item?.metadata?.agentid,
-
-          
-        // }))
-        const mappedData = data.data
-        .filter((item: any) => item.call_analysis)
-        .map((item: any) => {
-          const callAnalysis = item.call_analysis || {};
-          const metadata = item.metadata || {};
-  
-          return {
-            // Root-level
-            id: item._id,
-            started_at: formatDateTime(item.started_at),
-            phonenumber: item.phonenumber,
-            room_name: item.room_name,
-            user_id: item.user_id,
-  
-            // Metadata
-            agent: metadata.agentid,
-            fromPhone: metadata.fromPhone,
-            numberoffollowup: metadata.numberoffollowup,
-            total_followup_count: metadata.total_followup_count,
-  
-            // Call Analysis
-            status: callAnalysis.STATUS,
-            language: callAnalysis.LANGUAGE,
-            call_quality_score: callAnalysis.CALL_QUALITY_SCORE,
-            sentiment: callAnalysis.SENTIMENT,
-            script_adherence_score: callAnalysis.SCRIPT_ADHERENCE_SCORE,
-            call_disposition: callAnalysis.CALL_DISPOSITION,
-            call_transfer: callAnalysis.CALL_TRANSFER,
-            escalation_flag: callAnalysis.ESCALATION_FLAG,
-            ai_confidence_score: callAnalysis.AI_CONFIDENCE_SCORE,
-            nlp_error_rate: callAnalysis.NLP_ERROR_RATE,
-            intent_detected: callAnalysis.INTENT_DETECTED,
-            intent_success_rate: callAnalysis.INTENT_SUCCESS_RATE,
-            average_intent_turn: callAnalysis.AVERAGE_INTENT_TURN,
-            lead_score: callAnalysis.LEAD_SCORE,
-            conversion_flag: callAnalysis.CONVERSION_FLAG,
-            upsell_flag: callAnalysis.UPSELL_FLAG,
-            cross_sell_flag: callAnalysis.CROSS_SELL_FLAG,
-            survey_score: callAnalysis.SURVEY_SCORE,
-            compliance_risk_score: callAnalysis.COMPLIANCE_RISK_SCORE,
-            keyword_alert_count: callAnalysis.KEYWORD_ALERT_COUNT,
-            pci_dss_sensitive_data_detected: callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
-            gdpr_data_request: callAnalysis.GDPR_DATA_REQUEST,
-            customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
-            interruption_count: callAnalysis.INTERRUPTION_COUNT,
-            reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
-          };
-        });
-        // .map((item: any) => item.call_analysis);
-        console.log("mappedData", mappedData);
-        setCallData(mappedData);
-        setLoading(false);
+    const fetchData = async () => {
+      const data = await axios.post("/api/callHistory/callHistory", {
+        filters: filters,
+        dateRange: dateRange
       });
-  }, []);
+      console.log(data.data);
+      let mappedData = data.data.data
+      .filter((item: any) => item.call_analysis)
+      .map((item: any) => {
+        const callAnalysis = item.call_analysis || {};
+        const metadata = item.metadata || {};
+        const parsedDate = parseApiDate(item.started_at);
+
+        return {
+          // Root-level
+          id: item._id,
+          rawDate: parsedDate, // Store the raw date for filtering
+          started_at: formatDateTime(item.started_at),
+          phonenumber: item.phonenumber,
+          room_name: item.room_name,
+          user_id: item.user_id,
+
+          // Metadata
+          agent: metadata.agentid,
+          fromPhone: metadata.fromPhone,
+          numberoffollowup: metadata.numberoffollowup,
+          total_followup_count: metadata.total_followup_count,
+
+          // Call Analysis
+          status: callAnalysis.STATUS,
+          language: callAnalysis.LANGUAGE,
+          call_quality_score: callAnalysis.CALL_QUALITY_SCORE,
+          sentiment: callAnalysis.SENTIMENT,
+          script_adherence_score: callAnalysis.SCRIPT_ADHERENCE_SCORE,
+          call_disposition: callAnalysis.CALL_DISPOSITION,
+          call_transfer: callAnalysis.CALL_TRANSFER,
+          escalation_flag: callAnalysis.ESCALATION_FLAG,
+          ai_confidence_score: callAnalysis.AI_CONFIDENCE_SCORE,
+          nlp_error_rate: callAnalysis.NLP_ERROR_RATE,
+          intent_detected: callAnalysis.INTENT_DETECTED,
+          intent_success_rate: callAnalysis.INTENT_SUCCESS_RATE,
+          average_intent_turn: callAnalysis.AVERAGE_INTENT_TURN,
+          lead_score: callAnalysis.LEAD_SCORE,
+          conversion_flag: callAnalysis.CONVERSION_FLAG,
+          upsell_flag: callAnalysis.UPSELL_FLAG,
+          cross_sell_flag: callAnalysis.CROSS_SELL_FLAG,
+          survey_score: callAnalysis.SURVEY_SCORE,
+          compliance_risk_score: callAnalysis.COMPLIANCE_RISK_SCORE,
+          keyword_alert_count: callAnalysis.KEYWORD_ALERT_COUNT,
+          pci_dss_sensitive_data_detected: callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
+          gdpr_data_request: callAnalysis.GDPR_DATA_REQUEST,
+          customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
+          interruption_count: callAnalysis.INTERRUPTION_COUNT,
+          reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
+          
+          transcript: item.call_transcript,
+        };
+      });
+
+      // Apply date range filter if set
+      // if (dateRange.startDate || dateRange.endDate) {
+      //   mappedData = mappedData.filter((item: any) => {
+      //     const date = item.rawDate;
+      //     console.log("date", date);
+          
+      //     if (dateRange.startDate && dateRange.endDate) {
+      //       return isAfter(date, startOfDay(dateRange.startDate)) && 
+      //              isBefore(date, startOfDay(dateRange.endDate));
+      //     } else if (dateRange.startDate) {
+      //       return isAfter(date, startOfDay(dateRange.startDate));
+      //     } else if (dateRange.endDate) {
+      //       return isBefore(date, startOfDay(dateRange.endDate));
+      //     }
+          
+      //     return true;
+      //   });
+      // }
+
+      console.log("mappedData", mappedData);
+      setCallData(mappedData);
+      setLoading(false);
+    };
+    fetchData();
+  }, [filters, agentOptions, dateRange]);
 
   const handleRowClick = (call: any) => {
     setSelectedCall(call);
   };
 
   return (
-    <div className="w-full max-w-[80vw] mx-auto overflow-hidden relative">
+    <div className="w-full max-w-[80vw]  overflow-hidden relative">
       {loading ? (
         <p className="text-gray-600">Loading call analysis...</p>
       ) : (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-xl border border-gray-200">
+          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
               <thead className="bg-gray-50">
                 <tr>
@@ -119,7 +152,7 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                   {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-left text-xs font-medium text-gray-500 tracking-wider"
+                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-left text-xs font-medium text-gray-500 tracking-wider text-nowrap"
                     >
                       {CALL_ANALYSIS_FIELD_LABELS[key] ||
                         key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -145,7 +178,7 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                 {callData.length === 0 && (
                   <tr>
                     <td
-                      colSpan={FIELDS_TO_DISPLAY.length + 1}
+                      colSpan={customiseField.length + 1}
                       className="px-6 py-4 text-center text-gray-500"
                     >
                       No call analysis data found.
@@ -162,10 +195,10 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                 <div className="flex flex-col gap-0">
                   <h2 className="text-md font-semibold">{selectedCall.started_at}</h2>
                   <h2 className="text-xs text-gray-600">Call ID: {selectedCall.id}</h2>
-                  </div>
-                  <button
+                </div>
+                <button
                   onClick={() => setSelectedCall(null)}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-gray-700 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -179,7 +212,6 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                     <SideBarCell title="From Phone Number" value={selectedCall.phonenumber}/>
                     <SideBarCell title="To Phone Number" value={selectedCall.phonenumber}/>
                     <SideBarCell title="Average Latency" value={selectedCall.latency || "N/A"}/>
-
                   </div>
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
                     <SideBarCell title="Call Duration" value={selectedCall.call_duration || "N/A"}/>
@@ -187,13 +219,12 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                     <SideBarCell title="Direction" value={selectedCall.direction || "N/A"}/>
                     <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count || "N/A"}/>
                   </div>
-                  
-                  
                 </div>
               </div>
-              <div className="">
-                <h1 className="text-sm  p-4 py-1 "> Call Recording</h1>
-              </div>
+              
+              {/* <div className="">
+                <h1 className="text-xs  p-4 py-1 "> Call Recording</h1>
+              </div> */}
 
               <div className=""> 
                 <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Agent Performance</h1>
@@ -222,25 +253,17 @@ export default function CallAnalysisTable({customiseField}: {customiseField: str
                     <SideBarCell title="Compliance Risk Score" value={selectedCall.compliance_risk_score || "N/A"}/>
                     <SideBarCell title="Keyword Alert Count" value={selectedCall.keyword_alert_count || "N/A"}/>
                   </div>
-                    <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
+                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
                     <SideBarCell title="PCI DSS Sensitive Data Detected" value={selectedCall.pci_dss_sensitive_data_detected || "N/A"}/>
                     <SideBarCell title="GDPR Data Request" value={selectedCall.gdpr_data_request || "N/A"}/>
                   </div>
                 </div>
               </div>
-              
 
-              {/* <h2 className="text-xl font-semibold mb-2">Call Details</h2> */}
-              {/* <div className="text-sm text-gray-700 space-y-2">
-                {Object.entries(selectedCall).map(([key, value]) => (
-                  <div key={key}>
-                    <strong>{CALL_ANALYSIS_FIELD_LABELS[key] || key}:</strong>{" "}
-                    {typeof value === "object" && value !== null
-                      ? JSON.stringify(value)
-                      : value?.toString() ?? "-"}
-                  </div>
-                ))}
-              </div> */}
+              <div className="">
+                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Transcript</h1>
+                <TranscriptBox transcript={selectedCall.transcript} />
+              </div>
             </div>
           )}
         </>

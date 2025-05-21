@@ -30,7 +30,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { CALL_ANALYSIS_FIELD_LABELS } from "@/lib/callAnalysisFieldMap";
-
+import { ChevronDown } from 'lucide-react';
 interface CustomiseFieldProps {
   customiseField: string[];
   setCustomiseField: (field: string[]) => void;
@@ -72,8 +72,14 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
 
   return (
     <div ref={dropdownRef} className='relative inline-block' >
-      <button onClick={toggleDropdown} className='px-4 py-2'>
-        Customise Fields ▾
+      <button onClick={toggleDropdown} 
+              className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors  ${
+                isOpen 
+                  ? 'bg-indigo-100 text-indigo-700'
+                  : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200'
+              }`}
+      >
+        Custom Fields <ChevronDown className='w-3.5 h-3.5  self-center text-indigo-600' />
       </button>
       {isOpen && (
         <div

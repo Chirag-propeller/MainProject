@@ -242,7 +242,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
   return (
     <div 
     // className="w-full h-screen">
-    className="w-[1000px] h-[450px] cursor-pointer mx-auto ">
+    className="w-[1000px] h-[450px] cursor-pointer ">
       <ReactFlow
         className='!cursor-pointer'
             nodeTypes={nodeTypes}

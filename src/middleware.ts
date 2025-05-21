@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value
 
   if (pathname === '/dashboard' || pathname === '/dashboard/') {
-    return NextResponse.redirect(new URL('/dashboard/agent', request.url));
+    return NextResponse.redirect(new URL('/dashboard/agents', request.url));
   }
 
   // Define routes

@@ -1,6 +1,7 @@
 // app/lib/callAnalysisFieldMap.ts
 
 export const CALL_ANALYSIS_FIELD_LABELS: Record<string, string> = {
+    started_at: "Start Time and Date",
     status: "Call Status",
     language: "Language",
     call_quality_score: "Call Quality Score",
