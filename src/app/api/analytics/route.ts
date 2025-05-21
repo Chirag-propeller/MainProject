@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 try {
   const temp = await req.json(); 
   const user = await getUserFromRequest(req);
-
+  console.log("temp",temp);
   const data = temp.data;
   const matchConditions: Record<string, any> = {
     // call_analysis: { $exists: true, $ne: null },
@@ -28,9 +28,15 @@ try {
   if(data){
     console.log("data end date",data.endDate);
     if (data?.startDate && data?.endDate) {
+      const start = new Date(data?.startDate);
+      start.setHours(0, 0, 0, 0); // Start of day (local)
+    
+      const end = new Date(data?.endDate);
+      end.setHours(23, 59, 59, 999); // End of day (local)
+      
       matchConditions.started_at_date = {
-        $gte: new Date(data?.startDate),
-        $lte: new Date(data?.endDate),
+        $gte: start,
+        $lte: end,
       };
     }
   }

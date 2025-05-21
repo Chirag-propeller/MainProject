@@ -2,10 +2,16 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
+import DateFilter from '../ui/DateFilter';
+
+export type DateRangeFilter = {
+  startDate: Date | null;
+  endDate: Date | null;
+};
 
 export default function Filters({ onChange}: { onChange: (filters: any) => void,}) {
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  const [dateRange, setDateRange] = useState<DateRangeFilter>({startDate: null, endDate: null});
+  // const [startDate, endDate] = dateRange;
   const [agentId, setAgentId] = useState("");
 
   const handleFilterChange = (newRange: any, agent: any) => {
@@ -13,12 +19,13 @@ export default function Filters({ onChange}: { onChange: (filters: any) => void,
     const [start, end] = newRange;
 
     const startDateISO = start?.toISOString();
+
   
     // Set end to 23:59:59.999 to include the full end date
     const endOfDay = new Date(end);
     endOfDay.setHours(23, 59, 59, 999);
     const endDateISO = endOfDay.toISOString();
-  
+
     console.log("startDateISO", startDateISO);
     console.log("endDateISO", endDateISO);
   
@@ -34,8 +41,9 @@ export default function Filters({ onChange}: { onChange: (filters: any) => void,
   };
 
   return (
-    <div className="flex gap-4 p-4 items-center">
-      <DatePicker
+    <div className="flex gap-4 items-center">
+      <DateFilter dateRange={dateRange} setDateRange={onChange} />
+      {/* <DatePicker
         selectsRange
         startDate={startDate}
         endDate={endDate}
@@ -46,7 +54,7 @@ export default function Filters({ onChange}: { onChange: (filters: any) => void,
         isClearable
         placeholderText="Select a date range"
         className="border px-3 py-2 rounded-md"
-      />
+      /> */}
 
       {/* <select
         value={agentId}

@@ -33,9 +33,14 @@ export async function POST(req: NextRequest) {
       if(data.filters){
         const { startDate, endDate } = data.filters;
         if (startDate && endDate) {
+            const start = new Date(startDate);
+            start.setHours(0, 0, 0, 0); // Start of day (local)
+          
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999); // End of day (local)
             match.started_at_date = {
-              $gte: new Date(startDate),
-              $lte: new Date(endDate),
+              $gte: start,
+              $lte: end,
             };
           }
     }
