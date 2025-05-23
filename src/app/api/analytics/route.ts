@@ -19,14 +19,15 @@ export async function POST(req: NextRequest) {
 try {
   const temp = await req.json(); 
   const user = await getUserFromRequest(req);
-  console.log("temp",temp);
+  // console.log("temp",temp);
   const data = temp.data;
   const matchConditions: Record<string, any> = {
-    // call_analysis: { $exists: true, $ne: null },
+    call_analysis: { $exists: true, $ne: null },
   };
   // console.log("analytics data",data)
   if(data){
-    console.log("data end date",data.endDate);
+    // console.log("data end date",data.endDate);
+
     if (data?.startDate && data?.endDate) {
       const start = new Date(data?.startDate);
       start.setHours(0, 0, 0, 0); // Start of day (local)
@@ -40,7 +41,18 @@ try {
       };
     }
   }
-  console.log("matchConditions analytics",matchConditions);
+  if (data.agent && data.agent.length > 0) {
+    matchConditions["metadata.agentid"] = { $in: data.agent };
+  }
+
+  // Call status is inside call_analysis.STATUS
+  if (data.status && data.status.length > 0) {
+    matchConditions["call_analysis.STATUS"] = { $in: data.status };
+  }
+  if (data.sentiment && data.sentiment.length > 0) {
+    matchConditions["call_analysis.SENTIMENT"] = { $in: data.sentiment };
+  }
+  // console.log("matchConditions analytics",matchConditions);
   const pipeline = [
     {
       $match: { user_id: new mongoose.Types.ObjectId(user.userId) }

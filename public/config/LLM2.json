@@ -1,0 +1,978 @@
+{    
+    "llm_models":  ["OpenAI", "Groq", "Cerebras"],
+    "providers": [
+        {
+            "name": "AWS",
+            "value": "AWS",
+            "models": [
+                {
+                    "name": "Polly-Generative",
+                    "value": "Polly-Generative",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Danielle", "value": "Danielle" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Ruth", "value": "Ruth" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Matthew", "value": "Matthew" },
+                                        { "name": "Stephen", "value": "Stephen" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Polly-Neural",
+                    "value": "Polly-Neural",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" },
+                                        { "name": "Emma", "value": "Emma" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Brian", "value": "Brian" },
+                                        { "name": "Arthur", "value": "Arthur" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Danielle", "value": "Danielle" },
+                                        { "name": "Ivy", "value": "Ivy" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Kendra", "value": "Kendra" },
+                                        { "name": "Kimberly", "value": "Kimberly" },
+                                        { "name": "Salli", "value": "Salli" },
+                                        { "name": "Ruth", "value": "Ruth" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Gregory", "value": "Gregory" },
+                                        { "name": "Joey", "value": "Joey" },
+                                        { "name": "Justin", "value": "Justin" },
+                                        { "name": "Kevin", "value": "Kevin" },
+                                        { "name": "Matthew", "value": "Matthew" },
+                                        { "name": "Stephen", "value": "Stephen" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Polly-Standard",
+                    "value": "Polly-Standard",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" },
+                                        { "name": "Emma", "value": "Emma" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Brian", "value": "Brian" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aditi", "value": "Aditi" },
+                                        { "name": "Raveena", "value": "Raveena" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Ivy", "value": "Ivy" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Kendra", "value": "Kendra" },
+                                        { "name": "Kimberly", "value": "Kimberly" },
+                                        { "name": "Salli", "value": "Salli" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Joey", "value": "Joey" },
+                                        { "name": "Kevin", "value": "Kevin" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aditi", "value": "Aditi" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "AWS",
+            "value": "AWS",
+            "models": [
+                {
+                    "name": "Polly-Generative",
+                    "value": "Polly-Generative",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Danielle", "value": "Danielle" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Ruth", "value": "Ruth" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Matthew", "value": "Matthew" },
+                                        { "name": "Stephen", "value": "Stephen" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Polly-Neural",
+                    "value": "Polly-Neural",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" },
+                                        { "name": "Emma", "value": "Emma" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Brian", "value": "Brian" },
+                                        { "name": "Arthur", "value": "Arthur" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Danielle", "value": "Danielle" },
+                                        { "name": "Ivy", "value": "Ivy" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Kendra", "value": "Kendra" },
+                                        { "name": "Kimberly", "value": "Kimberly" },
+                                        { "name": "Salli", "value": "Salli" },
+                                        { "name": "Ruth", "value": "Ruth" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Gregory", "value": "Gregory" },
+                                        { "name": "Joey", "value": "Joey" },
+                                        { "name": "Justin", "value": "Justin" },
+                                        { "name": "Kevin", "value": "Kevin" },
+                                        { "name": "Matthew", "value": "Matthew" },
+                                        { "name": "Stephen", "value": "Stephen" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Kajal", "value": "Kajal" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Polly-Standard",
+                    "value": "Polly-Standard",
+                    "languages": [
+                        {
+                            "name": "English (British)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Amy", "value": "Amy" },
+                                        { "name": "Emma", "value": "Emma" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Brian", "value": "Brian" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (Indian)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aditi", "value": "Aditi" },
+                                        { "name": "Raveena", "value": "Raveena" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Ivy", "value": "Ivy" },
+                                        { "name": "Joanna", "value": "Joanna" },
+                                        { "name": "Kendra", "value": "Kendra" },
+                                        { "name": "Kimberly", "value": "Kimberly" },
+                                        { "name": "Salli", "value": "Salli" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Joey", "value": "Joey" },
+                                        { "name": "Kevin", "value": "Kevin" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aditi", "value": "Aditi" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Google",
+            "value": "Google",
+            "models": [
+                {
+                    "name": "Chirp3-HD",
+                    "value": "Chirp3-HD",
+                    "languages": [
+                        {
+                            "name": "English (India)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Achernar", "value": "en-IN-Chirp3-HD-Achernar" },
+                                        { "name": "Aoede", "value": "en-IN-Chirp3-HD-Aoede" },
+                                        { "name": "Autonoe", "value": "en-IN-Chirp3-HD-Autonoe" },
+                                        { "name": "Callirrhoe", "value": "en-IN-Chirp3-HD-Callirrhoe" },
+                                        { "name": "Despina", "value": "en-IN-Chirp3-HD-Despina" },
+                                        { "name": "Erinome", "value": "en-IN-Chirp3-HD-Erinome" },
+                                        { "name": "Gacrux", "value": "en-IN-Chirp3-HD-Gacrux" },
+                                        { "name": "Kore", "value": "en-IN-Chirp3-HD-Kore" },
+                                        { "name": "Laomedeia", "value": "en-IN-Chirp3-HD-Laomedeia" },
+                                        { "name": "Leda", "value": "en-IN-Chirp3-HD-Leda" },
+                                        { "name": "Pulcherrima", "value": "en-IN-Chirp3-HD-Pulcherrima" },
+                                        { "name": "Sulafat", "value": "en-IN-Chirp3-HD-Sulafat" },
+                                        { "name": "Vindemiatrix", "value": "en-IN-Chirp3-HD-Vindemiatrix" },
+                                        { "name": "Zephyr", "value": "en-IN-Chirp3-HD-Zephyr" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Achird", "value": "en-IN-Chirp3-HD-Achird" },
+                                        { "name": "Algenib", "value": "en-IN-Chirp3-HD-Algenib" },
+                                        { "name": "Algieba", "value": "en-IN-Chirp3-HD-Algieba" },
+                                        { "name": "Alnilam", "value": "en-IN-Chirp3-HD-Alnilam" },
+                                        { "name": "Charon", "value": "en-IN-Chirp3-HD-Charon" },
+                                        { "name": "Enceladus", "value": "en-IN-Chirp3-HD-Enceladus" },
+                                        { "name": "Fenrir", "value": "en-IN-Chirp3-HD-Fenrir" },
+                                        { "name": "Iapetus", "value": "en-IN-Chirp3-HD-Iapetus" },
+                                        { "name": "Orus", "value": "en-IN-Chirp3-HD-Orus" },
+                                        { "name": "Puck", "value": "en-IN-Chirp3-HD-Puck" },
+                                        { "name": "Rasalgethi", "value": "en-IN-Chirp3-HD-Rasalgethi" },
+                                        { "name": "Sadachbia", "value": "en-IN-Chirp3-HD-Sadachbia" },
+                                        { "name": "Sadaltager", "value": "en-IN-Chirp3-HD-Sadaltager" },
+                                        { "name": "Schedar", "value": "en-IN-Chirp3-HD-Schedar" },
+                                        { "name": "Umbriel", "value": "en-IN-Chirp3-HD-Umbriel" },
+                                        { "name": "Zubenelgenubi", "value": "en-IN-Chirp3-HD-Zubenelgenubi" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (UK)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Achernar", "value": "en-GB-Chirp3-HD-Achernar" },
+                                        { "name": "Aoede", "value": "en-GB-Chirp3-HD-Aoede" },
+                                        { "name": "Autonoe", "value": "en-GB-Chirp3-HD-Autonoe" },
+                                        { "name": "Callirrhoe", "value": "en-GB-Chirp3-HD-Callirrhoe" },
+                                        { "name": "Despina", "value": "en-GB-Chirp3-HD-Despina" },
+                                        { "name": "Erinome", "value": "en-GB-Chirp3-HD-Erinome" },
+                                        { "name": "Gacrux", "value": "en-GB-Chirp3-HD-Gacrux" },
+                                        { "name": "Kore", "value": "en-GB-Chirp3-HD-Kore" },
+                                        { "name": "Laomedeia", "value": "en-GB-Chirp3-HD-Laomedeia" },
+                                        { "name": "Leda", "value": "en-GB-Chirp3-HD-Leda" },
+                                        { "name": "Pulcherrima", "value": "en-GB-Chirp3-HD-Pulcherrima" },
+                                        { "name": "Sulafat", "value": "en-GB-Chirp3-HD-Sulafat" },
+                                        { "name": "Vindemiatrix", "value": "en-GB-Chirp3-HD-Vindemiatrix" },
+                                        { "name": "Zephyr", "value": "en-GB-Chirp3-HD-Zephyr" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Achird", "value": "en-GB-Chirp3-HD-Achird" },
+                                        { "name": "Algenib", "value": "en-GB-Chirp3-HD-Algenib" },
+                                        { "name": "Algieba", "value": "en-GB-Chirp3-HD-Algieba" },
+                                        { "name": "Alnilam", "value": "en-GB-Chirp3-HD-Alnilam" },
+                                        { "name": "Charon", "value": "en-GB-Chirp3-HD-Charon" },
+                                        { "name": "Enceladus", "value": "en-GB-Chirp3-HD-Enceladus" },
+                                        { "name": "Fenrir", "value": "en-GB-Chirp3-HD-Fenrir" },
+                                        { "name": "Iapetus", "value": "en-GB-Chirp3-HD-Iapetus" },
+                                        { "name": "Orus", "value": "en-GB-Chirp3-HD-Orus" },
+                                        { "name": "Puck", "value": "en-GB-Chirp3-HD-Puck" },
+                                        { "name": "Rasalgethi", "value": "en-GB-Chirp3-HD-Rasalgethi" },
+                                        { "name": "Sadachbia", "value": "en-GB-Chirp3-HD-Sadachbia" },
+                                        { "name": "Sadaltager", "value": "en-GB-Chirp3-HD-Sadaltager" },
+                                        { "name": "Schedar", "value": "en-GB-Chirp3-HD-Schedar" },
+                                        { "name": "Umbriel", "value": "en-GB-Chirp3-HD-Umbriel" },
+                                        { "name": "Zubenelgenubi", "value": "en-GB-Chirp3-HD-Zubenelgenubi" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Achernar", "value": "en-US-Chirp3-HD-Achernar" },
+                                        { "name": "Aoede", "value": "en-US-Chirp3-HD-Aoede" },
+                                        { "name": "Autonoe", "value": "en-US-Chirp3-HD-Autonoe" },
+                                        { "name": "Callirrhoe", "value": "en-US-Chirp3-HD-Callirrhoe" },
+                                        { "name": "Despina", "value": "en-US-Chirp3-HD-Despina" },
+                                        { "name": "Erinome", "value": "en-US-Chirp3-HD-Erinome" },
+                                        { "name": "Gacrux", "value": "en-US-Chirp3-HD-Gacrux" },
+                                        { "name": "Kore", "value": "en-US-Chirp3-HD-Kore" },
+                                        { "name": "Laomedeia", "value": "en-US-Chirp3-HD-Laomedeia" },
+                                        { "name": "Leda", "value": "en-US-Chirp3-HD-Leda" },
+                                        { "name": "Pulcherrima", "value": "en-US-Chirp3-HD-Pulcherrima" },
+                                        { "name": "Sulafat", "value": "en-US-Chirp3-HD-Sulafat" },
+                                        { "name": "Vindemiatrix", "value": "en-US-Chirp3-HD-Vindemiatrix" },
+                                        { "name": "Zephyr", "value": "en-US-Chirp3-HD-Zephyr" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Achird", "value": "en-US-Chirp3-HD-Achird" },
+                                        { "name": "Algenib", "value": "en-US-Chirp3-HD-Algenib" },
+                                        { "name": "Algieba", "value": "en-US-Chirp3-HD-Algieba" },
+                                        { "name": "Alnilam", "value": "en-US-Chirp3-HD-Alnilam" },
+                                        { "name": "Charon", "value": "en-US-Chirp3-HD-Charon" },
+                                        { "name": "Enceladus", "value": "en-US-Chirp3-HD-Enceladus" },
+                                        { "name": "Fenrir", "value": "en-US-Chirp3-HD-Fenrir" },
+                                        { "name": "Iapetus", "value": "en-US-Chirp3-HD-Iapetus" },
+                                        { "name": "Orus", "value": "en-US-Chirp3-HD-Orus" },
+                                        { "name": "Puck", "value": "en-US-Chirp3-HD-Puck" },
+                                        { "name": "Rasalgethi", "value": "en-US-Chirp3-HD-Rasalgethi" },
+                                        { "name": "Sadachbia", "value": "en-US-Chirp3-HD-Sadachbia" },
+                                        { "name": "Sadaltager", "value": "en-US-Chirp3-HD-Sadaltager" },
+                                        { "name": "Schedar", "value": "en-US-Chirp3-HD-Schedar" },
+                                        { "name": "Umbriel", "value": "en-US-Chirp3-HD-Umbriel" },
+                                        { "name": "Zubenelgenubi", "value": "en-US-Chirp3-HD-Zubenelgenubi" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Achernar", "value": "hi-IN-Chirp3-HD-Achernar" },
+                                        { "name": "Aoede", "value": "hi-IN-Chirp3-HD-Aoede" },
+                                        { "name": "Autonoe", "value": "hi-IN-Chirp3-HD-Autonoe" },
+                                        { "name": "Callirrhoe", "value": "hi-IN-Chirp3-HD-Callirrhoe" },
+                                        { "name": "Despina", "value": "hi-IN-Chirp3-HD-Despina" },
+                                        { "name": "Erinome", "value": "hi-IN-Chirp3-HD-Erinome" },
+                                        { "name": "Gacrux", "value": "hi-IN-Chirp3-HD-Gacrux" },
+                                        { "name": "Kore", "value": "hi-IN-Chirp3-HD-Kore" },
+                                        { "name": "Laomedeia", "value": "hi-IN-Chirp3-HD-Laomedeia" },
+                                        { "name": "Leda", "value": "hi-IN-Chirp3-HD-Leda" },
+                                        { "name": "Pulcherrima", "value": "hi-IN-Chirp3-HD-Pulcherrima" },
+                                        { "name": "Sulafat", "value": "hi-IN-Chirp3-HD-Sulafat" },
+                                        { "name": "Vindemiatrix", "value": "hi-IN-Chirp3-HD-Vindemiatrix" },
+                                        { "name": "Zephyr", "value": "hi-IN-Chirp3-HD-Zephyr" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Achird", "value": "hi-IN-Chirp3-HD-Achird" },
+                                        { "name": "Algenib", "value": "hi-IN-Chirp3-HD-Algenib" },
+                                        { "name": "Algieba", "value": "hi-IN-Chirp3-HD-Algieba" },
+                                        { "name": "Alnilam", "value": "hi-IN-Chirp3-HD-Alnilam" },
+                                        { "name": "Charon", "value": "hi-IN-Chirp3-HD-Charon" },
+                                        { "name": "Enceladus", "value": "hi-IN-Chirp3-HD-Enceladus" },
+                                        { "name": "Fenrir", "value": "hi-IN-Chirp3-HD-Fenrir" },
+                                        { "name": "Iapetus", "value": "hi-IN-Chirp3-HD-Iapetus" },
+                                        { "name": "Orus", "value": "hi-IN-Chirp3-HD-Orus" },
+                                        { "name": "Puck", "value": "hi-IN-Chirp3-HD-Puck" },
+                                        { "name": "Rasalgethi", "value": "hi-IN-Chirp3-HD-Rasalgethi" },
+                                        { "name": "Sadachbia", "value": "hi-IN-Chirp3-HD-Sadachbia" },
+                                        { "name": "Sadaltager", "value": "hi-IN-Chirp3-HD-Sadaltager" },
+                                        { "name": "Schedar", "value": "hi-IN-Chirp3-HD-Schedar" },
+                                        { "name": "Umbriel", "value": "hi-IN-Chirp3-HD-Umbriel" },
+                                        { "name": "Zubenelgenubi", "value": "hi-IN-Chirp3-HD-Zubenelgenubi" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Neural2",
+                    "value": "Neural2",
+                    "languages": [
+                        {
+                            "name": "English (India)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Neural2-A", "value": "en-IN-Neural2-A" },
+                                        { "name": "Neural2-D", "value": "en-IN-Neural2-D" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Neural2-B", "value": "en-IN-Neural2-B" },
+                                        { "name": "Neural2-C", "value": "en-IN-Neural2-C" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (UK)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Neural2-A", "value": "en-GB-Neural2-A" },
+                                        { "name": "Neural2-C", "value": "en-GB-Neural2-C" },
+                                        { "name": "Neural2-F", "value": "en-GB-Neural2-F" },
+                                        { "name": "Neural2-N", "value": "en-GB-Neural2-N" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Neural2-B", "value": "en-GB-Neural2-B" },
+                                        { "name": "Neural2-D", "value": "en-GB-Neural2-D" },
+                                        { "name": "Neural2-O", "value": "en-GB-Neural2-O" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Neural2-C", "value": "en-US-Neural2-C" },
+                                        { "name": "Neural2-E", "value": "en-US-Neural2-E" },
+                                        { "name": "Neural2-F", "value": "en-US-Neural2-F" },
+                                        { "name": "Neural2-G", "value": "en-US-Neural2-G" },
+                                        { "name": "Neural2-H", "value": "en-US-Neural2-H" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Neural2-A", "value": "en-US-Neural2-A" },
+                                        { "name": "Neural2-D", "value": "en-US-Neural2-D" },
+                                        { "name": "Neural2-I", "value": "en-US-Neural2-I" },
+                                        { "name": "Neural2-J", "value": "en-US-Neural2-J" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Neural2-A", "value": "hi-IN-Neural2-A" },
+                                        { "name": "Neural2-D", "value": "hi-IN-Neural2-D" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Neural2-B", "value": "hi-IN-Neural2-B" },
+                                        { "name": "Neural2-C", "value": "hi-IN-Neural2-C" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Standard",
+                    "value": "Standard",
+                    "languages": [
+                        {
+                            "name": "English (India)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Standard-A", "value": "en-IN-Standard-A" },
+                                        { "name": "Standard-D", "value": "en-IN-Standard-D" },
+                                        { "name": "Standard-E", "value": "en-IN-Standard-E" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Standard-B", "value": "en-IN-Standard-B" },
+                                        { "name": "Standard-C", "value": "en-IN-Standard-C" },
+                                        { "name": "Standard-F", "value": "en-IN-Standard-F" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (UK)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Standard-A", "value": "en-GB-Standard-A" },
+                                        { "name": "Standard-C", "value": "en-GB-Standard-C" },
+                                        { "name": "Standard-F", "value": "en-GB-Standard-F" },
+                                        { "name": "Standard-N", "value": "en-GB-Standard-N" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Standard-B", "value": "en-GB-Standard-B" },
+                                        { "name": "Standard-D", "value": "en-GB-Standard-D" },
+                                        { "name": "Standard-O", "value": "en-GB-Standard-O" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Standard-C", "value": "en-US-Standard-C" },
+                                        { "name": "Standard-E", "value": "en-US-Standard-E" },
+                                        { "name": "Standard-F", "value": "en-US-Standard-F" },
+                                        { "name": "Standard-G", "value": "en-US-Standard-G" },
+                                        { "name": "Standard-H", "value": "en-US-Standard-H" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Standard-A", "value": "en-US-Standard-A" },
+                                        { "name": "Standard-B", "value": "en-US-Standard-B" },
+                                        { "name": "Standard-D", "value": "en-US-Standard-D" },
+                                        { "name": "Standard-I", "value": "en-US-Standard-I" },
+                                        { "name": "Standard-J", "value": "en-US-Standard-J" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Standard-A", "value": "hi-IN-Standard-A" },
+                                        { "name": "Standard-D", "value": "hi-IN-Standard-D" },
+                                        { "name": "Standard-E", "value": "hi-IN-Standard-E" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Standard-B", "value": "hi-IN-Standard-B" },
+                                        { "name": "Standard-C", "value": "hi-IN-Standard-C" },
+                                        { "name": "Standard-F", "value": "hi-IN-Standard-F" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Wavenet",
+                    "value": "Wavenet",
+                    "languages": [
+                        {
+                            "name": "English (India)",
+                            "value": "en-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Wavenet-A", "value": "en-IN-Wavenet-A" },
+                                        { "name": "Wavenet-D", "value": "en-IN-Wavenet-D" },
+                                        { "name": "Wavenet-E", "value": "en-IN-Wavenet-E" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Wavenet-B", "value": "en-IN-Wavenet-B" },
+                                        { "name": "Wavenet-C", "value": "en-IN-Wavenet-C" },
+                                        { "name": "Wavenet-F", "value": "en-IN-Wavenet-F" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (UK)",
+                            "value": "en-GB",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Wavenet-A", "value": "en-GB-Wavenet-A" },
+                                        { "name": "Wavenet-C", "value": "en-GB-Wavenet-C" },
+                                        { "name": "Wavenet-F", "value": "en-GB-Wavenet-F" },
+                                        { "name": "Wavenet-N", "value": "en-GB-Wavenet-N" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Wavenet-B", "value": "en-GB-Wavenet-B" },
+                                        { "name": "Wavenet-D", "value": "en-GB-Wavenet-D" },
+                                        { "name": "Wavenet-O", "value": "en-GB-Wavenet-O" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "English (US)",
+                            "value": "en-US",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Wavenet-C", "value": "en-US-Wavenet-C" },
+                                        { "name": "Wavenet-E", "value": "en-US-Wavenet-E" },
+                                        { "name": "Wavenet-F", "value": "en-US-Wavenet-F" },
+                                        { "name": "Wavenet-G", "value": "en-US-Wavenet-G" },
+                                        { "name": "Wavenet-H", "value": "en-US-Wavenet-H" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Wavenet-A", "value": "en-US-Wavenet-A" },
+                                        { "name": "Wavenet-B", "value": "en-US-Wavenet-B" },
+                                        { "name": "Wavenet-D", "value": "en-US-Wavenet-D" },
+                                        { "name": "Wavenet-I", "value": "en-US-Wavenet-I" },
+                                        { "name": "Wavenet-J", "value": "en-US-Wavenet-J" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Wavenet-A", "value": "hi-IN-Wavenet-A" },
+                                        { "name": "Wavenet-D", "value": "hi-IN-Wavenet-D" },
+                                        { "name": "Wavenet-E", "value": "hi-IN-Wavenet-E" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Wavenet-B", "value": "hi-IN-Wavenet-B" },
+                                        { "name": "Wavenet-C", "value": "hi-IN-Wavenet-C" },
+                                        { "name": "Wavenet-F", "value": "hi-IN-Wavenet-F" }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+            
+    "stt_languages": ["English-US", "English-UK", "English-IN", "Hindi", "Multilingual(English & Hindi)"],
+    "tts_languages": ["English-US", "English-UK", "English-IN", "Arabic", "Hindi", "Marathi"]
+}

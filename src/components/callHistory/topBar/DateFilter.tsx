@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Calendar, CalendarIcon, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { format, addMonths, startOfMonth, endOfMonth, isEqual, isBefore, isAfter, isSameMonth, parse, startOfDay, endOfDay } from 'date-fns';
+import { Calendar, CalendarIcon, ChevronLeft, ChevronRight, X, Clock } from 'lucide-react';
+import { format, addMonths, startOfMonth, endOfMonth, isEqual, isBefore, isAfter, isSameMonth, parse, startOfDay, endOfDay, sub } from 'date-fns';
 
 export type DateRangeFilter = {
   startDate: Date | null;
@@ -74,6 +74,52 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
           endDate: selectedDate
         });
       }
+    }
+  };
+
+  // Time period presets
+  const applyTimePreset = (preset: string) => {
+    const now = new Date();
+    let startDate: Date | null = null;
+    let endDate: Date | null = new Date();
+
+    switch (preset) {
+      case 'today':
+        startDate = new Date(now);
+        startDate.setHours(0, 0, 0, 0);
+        break;
+      // case 'thisYear': 
+      //   startDate = new Date(now);
+      //   startDate.setHours(0, 0, 0, 0);
+      //   startDate = sub(startDate, { days: 1 });
+      //   endDate = new Date(startDate);
+      //   break;
+      case '7days':
+        startDate = sub(new Date(now), { days: 7 });
+        break;
+      case '30days':
+        startDate = sub(new Date(now), { days: 30 });
+        break;
+      case 'thisMonth':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        break;
+      case 'lastMonth':
+        startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+        break;
+      case 'thisYear':
+        startDate = new Date(now.getFullYear(), 0, 1);
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        break;
+      default:
+        break;
+    }
+
+    if (startDate) {
+      setTempDateRange({
+        startDate,
+        endDate
+      });
     }
   };
 
@@ -180,7 +226,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[640px]">
+        <div className="absolute top-full left-0 mt-2 bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[800px]">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-medium text-gray-700">Select Date Range</h3>
             {tempDateRange.startDate && (
@@ -192,95 +238,145 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
           </div>
 
           <div className="flex gap-4">
-            {/* First month */}
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-2">
-                <button 
-                  onClick={prevMonth}
-                  className="p-1 rounded-full hover:bg-gray-100"
-                >
-                  <ChevronLeft size={16} className="text-gray-600" />
-                </button>
-                <h4 className="text-sm font-medium text-gray-700">
-                  {format(currentMonth, 'MMMM yyyy')}
-                </h4>
-                <div className="w-6"></div> {/* Spacer for alignment */}
+            {/* Time period presets */}
+            <div className="w-[160px] border-r pr-4">
+              <div className="flex items-center gap-1 mb-3">
+                <Clock size={14} className="text-gray-500" />
+                <h4 className="text-sm font-medium text-gray-700">Time Periods</h4>
               </div>
-              
-              <div className="grid grid-cols-7 gap-1">
-                {/* Day headers */}
-                {dayNames.map(day => (
-                  <div 
-                    key={day} 
-                    className="text-xs text-center text-gray-500 py-1 font-medium"
-                  >
-                    {day}
-                  </div>
-                ))}
-                
-                {/* Calendar days */}
-                {buildCalendar(currentMonth).map((date, i) => (
-                  <div 
-                    key={i}
-                    className={`
-                      relative text-center p-1 text-sm ${!date ? '' : 'cursor-pointer hover:bg-gray-50'}
-                      ${date && isStartDate(date) ? 'bg-indigo-600 text-white rounded-l-md' : ''}
-                      ${date && isEndDate(date) ? 'bg-indigo-600 text-white rounded-r-md' : ''}
-                      ${date && isDateInRange(date) ? 'bg-indigo-100' : ''}
-                    `}
-                    onClick={() => date && handleDateClick(date)}
-                    onMouseEnter={() => date && handleMouseEnter(date)}
-                    onMouseLeave={() => date && handleMouseLeave()}
-                  >
-                    {date ? date.getDate() : ''}
-                  </div>
-                ))}
+              <div className="flex flex-col gap-2">
+                <button 
+                  onClick={() => applyTimePreset('today')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  Today
+                </button>
+
+                <button 
+                  onClick={() => applyTimePreset('7days')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  Last 7 Days
+                </button>
+                <button 
+                  onClick={() => applyTimePreset('30days')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  Last 30 Days
+                </button>
+                <button 
+                  onClick={() => applyTimePreset('thisMonth')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  This Month
+                </button>
+                <button 
+                  onClick={() => applyTimePreset('lastMonth')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  Last Month
+                </button>
+                <button 
+                  onClick={() => applyTimePreset('thisYear')}
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                >
+                  This Year
+                </button>
               </div>
             </div>
-            
-            {/* Second month */}
-            <div className="flex-1">
-              <div className="flex justify-between items-center mb-2">
-                <div className="w-6"></div> {/* Spacer for alignment */}
-                <h4 className="text-sm font-medium text-gray-700">
-                  {format(addMonths(currentMonth, 1), 'MMMM yyyy')}
-                </h4>
-                <button 
-                  onClick={nextMonth}
-                  className="p-1 rounded-full hover:bg-gray-100"
-                >
-                  <ChevronRight size={16} className="text-gray-600" />
-                </button>
+
+            {/* Calendar display */}
+            <div className="flex flex-1 gap-4">
+              {/* First month */}
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-2">
+                  <button 
+                    onClick={prevMonth}
+                    className="p-1 rounded-full hover:bg-gray-100"
+                  >
+                    <ChevronLeft size={16} className="text-gray-600" />
+                  </button>
+                  <h4 className="text-sm font-medium text-gray-700">
+                    {format(currentMonth, 'MMMM yyyy')}
+                  </h4>
+                  <div className="w-6"></div> {/* Spacer for alignment */}
+                </div>
+                
+                <div className="grid grid-cols-7 gap-1">
+                  {/* Day headers */}
+                  {dayNames.map(day => (
+                    <div 
+                      key={day} 
+                      className="text-xs text-center text-gray-500 py-1 font-medium"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                  
+                  {/* Calendar days */}
+                  {buildCalendar(currentMonth).map((date, i) => (
+                    <div 
+                      key={i}
+                      className={`
+                        relative text-center p-1 text-sm ${!date ? '' : 'cursor-pointer hover:bg-gray-50'}
+                        ${date && isStartDate(date) ? 'bg-indigo-600 text-white rounded-l-md' : ''}
+                        ${date && isEndDate(date) ? 'bg-indigo-600 text-white rounded-r-md' : ''}
+                        ${date && isDateInRange(date) ? 'bg-indigo-100' : ''}
+                      `}
+                      onClick={() => date && handleDateClick(date)}
+                      onMouseEnter={() => date && handleMouseEnter(date)}
+                      onMouseLeave={() => date && handleMouseLeave()}
+                    >
+                      {date ? date.getDate() : ''}
+                    </div>
+                  ))}
+                </div>
               </div>
               
-              <div className="grid grid-cols-7 gap-1">
-                {/* Day headers */}
-                {dayNames.map(day => (
-                  <div 
-                    key={day} 
-                    className="text-xs text-center text-gray-500 py-1 font-medium"
+              {/* Second month */}
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-2">
+                  <div className="w-6"></div> {/* Spacer for alignment */}
+                  <h4 className="text-sm font-medium text-gray-700">
+                    {format(addMonths(currentMonth, 1), 'MMMM yyyy')}
+                  </h4>
+                  <button 
+                    onClick={nextMonth}
+                    className="p-1 rounded-full hover:bg-gray-100"
                   >
-                    {day}
-                  </div>
-                ))}
+                    <ChevronRight size={16} className="text-gray-600" />
+                  </button>
+                </div>
                 
-                {/* Calendar days */}
-                {buildCalendar(addMonths(currentMonth, 1)).map((date, i) => (
-                  <div 
-                    key={i}
-                    className={`
-                      relative text-center p-1 text-sm ${!date ? '' : 'cursor-pointer hover:bg-gray-50'}
-                      ${date && isStartDate(date) ? 'bg-indigo-600 text-white rounded-l-md' : ''}
-                      ${date && isEndDate(date) ? 'bg-indigo-600 text-white rounded-r-md' : ''}
-                      ${date && isDateInRange(date) ? 'bg-indigo-100' : ''}
-                    `}
-                    onClick={() => date && handleDateClick(date)}
-                    onMouseEnter={() => date && handleMouseEnter(date)}
-                    onMouseLeave={() => date && handleMouseLeave()}
-                  >
-                    {date ? date.getDate() : ''}
-                  </div>
-                ))}
+                <div className="grid grid-cols-7 gap-1">
+                  {/* Day headers */}
+                  {dayNames.map(day => (
+                    <div 
+                      key={day} 
+                      className="text-xs text-center text-gray-500 py-1 font-medium"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                  
+                  {/* Calendar days */}
+                  {buildCalendar(addMonths(currentMonth, 1)).map((date, i) => (
+                    <div 
+                      key={i}
+                      className={`
+                        relative text-center p-1 text-sm ${!date ? '' : 'cursor-pointer hover:bg-gray-50'}
+                        ${date && isStartDate(date) ? 'bg-indigo-600 text-white rounded-l-md' : ''}
+                        ${date && isEndDate(date) ? 'bg-indigo-600 text-white rounded-r-md' : ''}
+                        ${date && isDateInRange(date) ? 'bg-indigo-100' : ''}
+                      `}
+                      onClick={() => date && handleDateClick(date)}
+                      onMouseEnter={() => date && handleMouseEnter(date)}
+                      onMouseLeave={() => date && handleMouseLeave()}
+                    >
+                      {date ? date.getDate() : ''}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
