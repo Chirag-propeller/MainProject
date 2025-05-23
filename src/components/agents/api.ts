@@ -4,6 +4,7 @@ import { Agent } from './types';
 interface AgentPayload {
   agentName: string;
   llm?: string;
+  llmModel?: string;
   inputLanguage?: string;
   stt?: string;
   tts?: string;
@@ -41,6 +42,7 @@ export const fetchAgentById = async (id: string): Promise<Agent | null> => {
     }
     
     const data = await res.json();
+    console.log("data", data);
     return data;
   } catch (err) {
     console.error(`Failed to fetch agent with ID ${id}:`, err);

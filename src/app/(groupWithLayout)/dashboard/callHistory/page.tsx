@@ -46,6 +46,7 @@ const page = () => {
     }
     fetchAgents()
   }, [])
+  
 
   // You could implement the filtering logic here or pass the filters to the Table component
 

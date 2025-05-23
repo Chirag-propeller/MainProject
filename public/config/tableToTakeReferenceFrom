@@ -1,0 +1,29 @@
+Provider	Model
+Open AI	gpt-4.1
+Open AI	gpt-4.1-mini
+Open AI	gpt-4.1-nano
+Open AI	gpt-4.5-preview
+Open AI	gpt-4o
+Open AI	gpt-4o-mini
+Open AI	o1
+Open AI	o1-pro
+Open AI	o3
+Open AI	o1-mini
+Open AI	gpt-image-1
+Cerebras	Llama 4 Scout
+Cerebras	Llama 3.1 8B
+Cerebras	Llama 3.3 70B
+Cerebras	Qwen 3 32B
+Cerebras	Deepseek R1 Distill Llama 70B
+Groq	Llama 4 Scout (17Bx16E)
+Groq	Llama 4 Maverick (17Bx128E)
+Groq	Llama Guard 4 12B 128k
+Groq	DeepSeek R1 Distill Llama 70B
+Groq	Qwen QwQ 32B (Preview) 128k
+Groq	Mistral Saba 24B
+Groq	Llama 3.3 70B Versatile 128k
+Groq	Llama 3.1 8B Instant 128k
+Groq	Llama 3 70B 8k
+Groq	Llama 3 8B 8k
+Groq	Gemma 2 9B 8k
+Groq	Llama Guard 3 8B 8k
