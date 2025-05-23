@@ -224,21 +224,47 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
     return null;
   }
   const url = process.env.NEXT_PUBLIC_AZURE_URL;
+
+  // llm?: string;
+  // llmModel?: string;
+  // inputLanguage?: string;
+  // stt?: string;
+  // tts?: string;
+  // ttsVoiceName?: string;
+  // ttsModel?: string;
+  // speed?: number;
+  // backgroundSound?: string;
+  // welcomeMessage?: string;
+  // knowledgeBaseAttached?: boolean;
+  // knowledgeBase?: any[];
+  // prompt?: string;
+  // userId?: string;
+  // gender?: string;
+  // ttsLanguage?: string;
   const sendData = async (roomName: string) => {
     try {
       const data = {
-        text: agent.prompt,     
         selectedLLM: agent.llm,
-        selectedLang: agent.inputLanguage,
-        selectedProvider: agent.tts,
-        selectedVoice: agent.ttsVoiceName,
+        selectedLLMModel: agent.llmModel,
+        selectedInputLang: agent.inputLanguage,
+        selectedStt : agent.stt,
+        selectedTts : agent.tts,
+        selectedTtsModel : agent.ttsModel,
+        selectedTtsVoice : agent.ttsVoiceName,
+        selectedSpeed : agent.speed,
+        selectedBackgroundSound : agent.backgroundSound,
+        selectedWelcomeMessage : agent.welcomeMessage,
+        selectedKnowledgeBase : agent.knowledgeBaseAttached,
+        selectedPrompt : agent.prompt,
+        selectedUserId : agent.userId,
+        selectedGender : agent.gender,
+        selectedTtsLanguage : agent.ttsLanguage,     
         roomName,
-        knowledgeBaseList: agent.knowledgeBase,
       };
       console.log(data);
       const response = await axios.post(`${url}/sendData`,data); 
       // Assuming the server sends a response
-    //   console.log(text);
+      // console.log(text);
       // alert("Update Successful");
     } catch (error) {
       alert("Something went wrong")

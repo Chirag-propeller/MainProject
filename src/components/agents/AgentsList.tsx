@@ -88,18 +88,19 @@ const AgentsList = ({ agents, selectedId, setAgents }: { agents: Agent[], select
       const newAgent = await createAgent({ 
         agentName: 'New Agent',
         llm: "OpenAI",
+        llmModel: "gpt-4o-mini",
         inputLanguage: "English-US",
         stt: "Deepgram",
-        tts: "Polly-Standard",
-        ttsVoiceName: "Joey",
-        ttsModel: "Polly-Standard",
+        tts: "AWS",
+        ttsVoiceName: "Amy",
+        ttsModel: "Polly-Generative",
         speed: 1,
         welcomeMessage: "Hi",
         knowledgeBaseAttached: false,
         knowledgeBase: [],
         prompt: "You are a helpful assistant",
-        gender: "Male",
-        ttsLanguage: "English-US"
+        gender: "Female",
+        ttsLanguage: "en-GB"
     });
       // Navigate to the new agent page
       setAgents([newAgent.data, ...agents]);

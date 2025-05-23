@@ -3,108 +3,191 @@ import { Agent } from '@/components/agents/types'
 import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
 import { Triangle, Speaker, Music, Speech  } from 'lucide-react';
-interface TtsOptions {
-    [provider: string]: {
-      [language: string]: {
-        [gender: string]: string[]
-      }
-    }
-    // [key: string]: string[]; // Assuming each provider maps to an array of voices
-  }
+import SelectionDropdown from '@/components/agents/SelectionDropdown';
+
+interface TtsProvider {
+  name: string;
+  value: string;
+  models: TtsModel[];
+}
+
+interface TtsModel {
+  name: string;
+  value: string;
+  languages: TtsLanguage[];
+}
+
+interface TtsLanguage {
+  name: string;
+  value: string;
+  gender: TtsGender[];
+}
+
+interface TtsGender {
+  name: string;
+  value: string;
+  voices: TtsVoice[];
+}
+
+interface TtsVoice {
+  name: string;
+  value: string;
+}
 
 interface LLMConfig {
-    ttsOptions: TtsOptions;
+    ttsOptions: TtsProvider[];
     ttsLanguageOptions: string[];
-}
-
-const ModelLeft = ({providers, selectedProvider, setSelectedProvider}: {providers: string[], selectedProvider: string, setSelectedProvider: React.Dispatch<React.SetStateAction<string>>}) => {
-    return (
-        <div className='w-1/2 my-3'>
-            <div className='flex flex-col gap-2 mb-3'>
-                <label htmlFor='firstMessage'>First Message</label>
-                <input id='firstMessage' type='text' className='w-full p-1 rounded-md border border-gray-300 text-sm px-2' />
-            </div>
-            <div className='flex flex-col gap-2'>
-                <label htmlFor='systemPrompt'>System Prompt</label>
-                <textarea id='systemPrompt' className='w-full p-2 rounded-md border border-gray-300' rows={7}/>
-            </div>
-        </div>
-    )
-}
-
-const ModelRight = ({languages, selectedLang, setSelectedLang}: {languages: string[], selectedLang: string, setSelectedLang: React.Dispatch<React.SetStateAction<string>>}) => {
-    return (
-        <div className='w-1/4'>
-            <div className='flex flex-col gap-2 mx-1'>
-                <div className='mx-1 p-1'>
-                <label className='mx-1  '> Language </label>
-                <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} />
-            </div>
-            <div className='flex flex-col gap-2'>
-                <label htmlFor='temperature' className='mx-1'>Temperature</label>
-                <input id='temperature' type='number' className='w-full p-1 rounded-md border border-gray-300 text-sm px-2' />
-            </div>
-            </div>
-        </div>
-    )
 }
 
 const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => void}) => {
     const genders = ["Male", "Female"]
     const { ttsOptions , ttsLanguageOptions} = useLLMConfig() as unknown as LLMConfig
-    const providers = Object.keys(ttsOptions);
-    const ttsLanguages: string[] = Array.isArray(ttsLanguageOptions) ? Array.from(ttsLanguageOptions) : Object.values(ttsLanguageOptions);
-    const [selectedProvider, setSelectedProvider] = useState<string>(agent.tts || "Celebras"); 
-    const [gender, setGender] = useState<string>(agent.gender || "male");
-    const [language, setLanguage] = useState<string>(agent.ttsLanguage || "English-US");
-    const [voices, setVoices] = useState<string[]>([]);
-    // const [voices, setVoices] = useState<string[]>(ttsOptions[selectedProvider]);
-    const [selectedVoice, setSelectedVoice] = useState<string>(agent.ttsVoiceName || voices[0]);
-    const [isOpen, setIsOpen] = useState(false)
-    useEffect(() => {
-        console.log(voices)
-        console.log(ttsOptions)
-        // console.log(ttsOptions[selectedProvider])
-        // console.log(ttsOptions[selectedProvider][language])
-        // console.log("ttsOptions[selectedProvider][language][gender]",ttsOptions[selectedProvider][language][gender])
-        const updateVoices = () => {
-          const providerVoices = ttsOptions[selectedProvider];
-          if (providerVoices && providerVoices[language] && providerVoices[language][gender]) {
-            setVoices(providerVoices[language][gender]);
-          } else {
-            setVoices([]);
-          }
-        };
-        updateVoices();
-      }, [selectedProvider, language, gender, ttsOptions]);
-      useEffect(() => {
-        if (voices.length > 0) {
-          setSelectedVoice(prev => voices.includes(prev) ? prev : voices[0]);
-        }
-        console.log(selectedVoice)
-      }, [voices]);
-      
     
-    // const [selectedLang, setSelectedLang] = useState<string>(ttsOptions[0])
-    // useEffect(
-    //     ()=>{
-    //       setVoices(ttsOptions[selectedProvider][language][gender])
-    //     }
-    //   , )
+    // Get providers list
+    const providers = Array.isArray(ttsOptions) ? ttsOptions.map((provider: TtsProvider) => ({
+        name: provider.name,
+        value: provider.value
+    })) : [];
 
+    // State variables with defaults from agent or fallback values
+    const [selectedProvider, setSelectedProvider] = useState<string>(agent.tts || (providers.length > 0 ? providers[0].value : "")); 
+    const [models, setModels] = useState<{name: string, value: string}[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string>(agent.ttsModel || "");
+    const [availableLanguages, setAvailableLanguages] = useState<{name: string, value: string}[]>([]);
+    const [language, setLanguage] = useState<string>(agent.ttsLanguage || "");
+    const [availableGenders, setAvailableGenders] = useState<string[]>([]);
+    const [gender, setGender] = useState<string>(agent.gender || "");
+    const [voices, setVoices] = useState<{name: string, value: string}[]>([]);
+    const [selectedVoice, setSelectedVoice] = useState<string>(agent.ttsVoiceName || "");
+    const [isOpen, setIsOpen] = useState(false)
+
+    // Effect 1: Update models when provider changes
+    useEffect(() => {
+        if (selectedProvider && Array.isArray(ttsOptions)) {
+            const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+            if (provider && provider.models) {
+                const modelOptions = provider.models.map((model: TtsModel) => ({
+                    name: model.name,
+                    value: model.value
+                }));
+                setModels(modelOptions);
+                
+                // If agent has a saved model that exists in new provider, keep it; otherwise use first available
+                if (agent.ttsModel && modelOptions.some(m => m.value === agent.ttsModel)) {
+                    setSelectedModel(agent.ttsModel);
+                } else if (modelOptions.length > 0) {
+                    setSelectedModel(modelOptions[0].value);
+                }
+            } else {
+                setModels([]);
+                setSelectedModel("");
+            }
+        }
+    }, [selectedProvider, ttsOptions, agent.ttsModel]);
+
+    // Effect 2: Update languages when provider or model changes
+    useEffect(() => {
+        if (selectedProvider && selectedModel && Array.isArray(ttsOptions)) {
+            const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+            if (provider) {
+                const model = provider.models?.find((m: TtsModel) => m.value === selectedModel);
+                if (model && model.languages) {
+                    const languageOptions = model.languages.map((lang: TtsLanguage) => ({
+                        name: lang.name,
+                        value: lang.value
+                    }));
+                    setAvailableLanguages(languageOptions);
+                    
+                    // If agent has a saved language that exists in new model, keep it; otherwise use first available
+                    if (agent.ttsLanguage && languageOptions.some(l => l.value === agent.ttsLanguage)) {
+                        setLanguage(agent.ttsLanguage);
+                    } else if (languageOptions.length > 0) {
+                        setLanguage(languageOptions[0].value);
+                    }
+                } else {
+                    setAvailableLanguages([]);
+                    setLanguage("");
+                }
+            }
+        }
+    }, [selectedProvider, selectedModel, ttsOptions, agent.ttsLanguage]);
+
+    // Effect 3: Update genders when provider, model, or language changes
+    useEffect(() => {
+        if (selectedProvider && selectedModel && language && Array.isArray(ttsOptions)) {
+            const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+            if (provider) {
+                const model = provider.models?.find((m: TtsModel) => m.value === selectedModel);
+                if (model) {
+                    const languageObj = model.languages?.find((l: TtsLanguage) => l.value === language);
+                    if (languageObj && languageObj.gender) {
+                        const genderOptions = languageObj.gender.map((g: TtsGender) => g.value);
+                        setAvailableGenders(genderOptions);
+                        
+                        // If agent has a saved gender that exists, keep it; otherwise use first available
+                        if (agent.gender && genderOptions.includes(agent.gender)) {
+                            setGender(agent.gender);
+                        } else if (genderOptions.length > 0) {
+                            setGender(genderOptions[0]);
+                        }
+                    } else {
+                        setAvailableGenders([]);
+                        setGender("");
+                    }
+                }
+            }
+        }
+    }, [selectedProvider, selectedModel, language, ttsOptions, agent.gender]);
+
+    // Effect 4: Update voices when provider, model, language, or gender changes
+    useEffect(() => {
+        if (selectedProvider && selectedModel && language && gender && Array.isArray(ttsOptions)) {
+            const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+            if (provider) {
+                const model = provider.models?.find((m: TtsModel) => m.value === selectedModel);
+                if (model) {
+                    const languageObj = model.languages?.find((l: TtsLanguage) => l.value === language);
+                    if (languageObj) {
+                        const genderObj = languageObj.gender?.find((g: TtsGender) => g.value === gender);
+                        if (genderObj && genderObj.voices) {
+                            setVoices(genderObj.voices);
+                            
+                            // If agent has a saved voice that exists, keep it; otherwise use first available
+                            if (agent.ttsVoiceName && genderObj.voices.some(v => v.value === agent.ttsVoiceName)) {
+                                setSelectedVoice(agent.ttsVoiceName);
+                            } else if (genderObj.voices.length > 0) {
+                                setSelectedVoice(genderObj.voices[0].value);
+                            }
+                        } else {
+                            setVoices([]);
+                            setSelectedVoice("");
+                        }
+                    }
+                }
+            }
+        }
+    }, [selectedProvider, selectedModel, language, gender, ttsOptions, agent.ttsVoiceName]);
+
+    // Update agent when selections change
     useEffect(() => {
         setAgent({...agent, tts: selectedProvider})
     }, [selectedProvider])
+    
+    useEffect(() => {
+        setAgent({...agent, ttsModel: selectedModel})
+    }, [selectedModel])
+    
     useEffect(() => {
         setAgent({...agent, gender: gender})
     }, [gender])
+    
     useEffect(() => {
         setAgent({...agent, ttsLanguage: language})
     }, [language])
+    
     useEffect(() => {
         setAgent({...agent, ttsVoiceName: selectedVoice})
     }, [selectedVoice])
-
 
   return (
     <div className='border border-gray-200 rounded-lg'>
@@ -132,25 +215,31 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
                     <label className='mx-1  '> Provider </label>
-                    <SelectOptions options={providers} selectedOption={selectedProvider} setOption={setSelectedProvider} />
+                    <SelectionDropdown options={providers} selectedOption={selectedProvider} setOption={setSelectedProvider} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Gender </label>
-                    <SelectOptions options={genders} selectedOption={gender} setOption={setGender} />
+                    <label className='mx-1  '> Model </label>
+                    <SelectionDropdown options={models} selectedOption={selectedModel} setOption={setSelectedModel} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
                     <label className='mx-1  '> Language </label>
-                    <SelectOptions options={ttsLanguages} selectedOption={language} setOption={setLanguage} />
+                    <SelectionDropdown options={availableLanguages} selectedOption={language} setOption={setLanguage} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
+                    <label className='mx-1  '> Gender </label>
+                    <SelectOptions options={availableGenders} selectedOption={gender} setOption={setGender} />
+                    </div>
+                </div>
+                <div className='flex flex-col gap-2 mx-1 w-9/11'>
+                    <div className='mx-1 p-1'>
                     <label className='mx-1  '> Voice </label>
-                    <SelectOptions options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} />
+                    <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} />
                     </div>
                 </div>
             </div>

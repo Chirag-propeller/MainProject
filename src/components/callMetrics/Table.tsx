@@ -101,6 +101,7 @@ export default function CallAnalysisTable({
           customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
           interruption_count: callAnalysis.INTERRUPTION_COUNT,
           reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
+          cost: item.cost,
           
           transcript: item.call_transcript,
         };

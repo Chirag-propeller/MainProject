@@ -1,104 +1,3 @@
-// import CallHistory from "@/model/call/callHistory.model";
-// import dbConnect from "@/lib/mongodb";
-// import { NextResponse, NextRequest } from "next/server";
-// import OutBoundCall from "@/model/call/outBoundCall";
-// import {  getUserFromRequest } from "@/lib/auth";
-// import mongoose from "mongoose";
-// export async function POST(req : NextRequest) {
-//     await dbConnect();
-//     try {
-//         const user = await getUserFromRequest(req);
-//         console.log(user);
-//         const { filters } = await req.json();
-//         console.log(filters);
-//         // const data = await CallHistory.find({}).limit(100);\
-//         const userId =  new mongoose.Types.ObjectId(user.userId)
-//         const data = await OutBoundCall.find({user_id: userId});
-
-//         return NextResponse.json({
-//             success: true,
-//             data
-//         }, {status: 200})
-//     } catch (error : any) {
-//         return NextResponse.json({
-//             success: false,
-//             message: error.message
-//         }, {status: 500})
-//     }
-// }
-
-
-// import CallHistory from "@/model/call/callHistory.model";
-// import dbConnect from "@/lib/mongodb";
-// import { NextResponse, NextRequest } from "next/server";
-// import OutBoundCall from "@/model/call/outBoundCall";
-// import { getUserFromRequest } from "@/lib/auth";
-// import mongoose from "mongoose";
-
-// export async function POST(req: NextRequest) {
-//   await dbConnect();
-//   try {
-//     const user = await getUserFromRequest(req);
-//     const { filters } = await req.json();
-//     console.log(filters);
-
-//     const userId = new mongoose.Types.ObjectId(user.userId);
-
-//     // Build the pipeline
-//     const pipeline: any[] = [
-//       {
-//         $match: {
-//           user_id: userId,
-//         },
-//       },
-//     ];
-
-//     // Apply filters dynamically
-//     if (filters.agent && filters.agent.length > 0) {
-//       pipeline.push({
-//         $match: {
-//           agent_id: { $in: filters.agent },
-//         },
-//       });
-//     }
-
-//     if (filters.status && filters.status.length > 0) {
-//       pipeline.push({
-//         $match: {
-//           status: { $in: filters.status },
-//         },
-//       });
-//     }
-
-//     if (filters.sentiment && filters.sentiment.length > 0) {
-//       pipeline.push({
-//         $match: {
-//           sentiment: { $in: filters.sentiment },
-//         },
-//       });
-//     }
-
-//     const data = await OutBoundCall.aggregate(pipeline);
-
-//     return NextResponse.json(
-//       {
-//         success: true,
-//         data,
-//       },
-//       { status: 200 }
-//     );
-//   } catch (error: any) {
-//     return NextResponse.json(
-//       {
-//         success: false,
-//         message: error.message,
-//       },
-//       { status: 500 }
-//     );
-//   }
-// }
-
-
 import dbConnect from "@/lib/mongodb";
 import { NextResponse, NextRequest } from "next/server";
 import OutBoundCall from "@/model/call/outBoundCall";
@@ -167,6 +66,35 @@ export async function POST(req: NextRequest) {
       },
       },
       { $match: matchStage },
+      
+      // Lookup to join with AggregatedMetrics collection
+      {
+        $lookup: {
+          from: "aggregated_metrics", // collection name in MongoDB
+          localField: "room_name", // field from OutBoundCall
+          foreignField: "_id", // field from AggregatedMetrics  
+          as: "costMetrics" // output array field
+        }
+      },
+      
+      // Add cost field from the joined data
+      {
+        $addFields: {
+          cost: {
+            $ifNull: [
+              { $arrayElemAt: ["$costMetrics.total_cost", 0] }, // Get total_cost from first matching document
+              0 // default value if no match or total_cost is null
+            ]
+          }
+        }
+      },
+      
+      // Remove the temporary costMetrics array to clean up the output
+      {
+        $project: {
+          costMetrics: 0
+        }
+      }
 
       // You can add sorting, pagination, projection, etc. here
     ];

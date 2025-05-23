@@ -19,6 +19,7 @@ export default function AgentDetailsPage() {
       try {
         // This is a new function we need to add to the API
         const agentData = await fetchAgentById(agentId);
+        console.log("agentData --  --- ", agentData);
         setAgent(agentData);
       } catch (error) {
         console.error('Failed to load agent:', error);
