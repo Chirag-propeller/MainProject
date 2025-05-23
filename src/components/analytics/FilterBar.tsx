@@ -1,77 +1,91 @@
-// components/Filters.tsx
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
-import DateFilter from '../ui/DateFilter';
+// components/analytics/FilterBar.tsx
+import React, { useState, useEffect, useCallback } from 'react';
+import DateFilter, { DateRangeFilter } from '@/components/callHistory/topBar/DateFilter';
+import Filter, { FilterState } from '@/components/callHistory/topBar/Filter';
+import { Clock, Calendar } from 'lucide-react';
+import { sub } from 'date-fns';
 
-export type DateRangeFilter = {
-  startDate: Date | null;
-  endDate: Date | null;
-};
+// Sample filter options
+const statusOptions = [
+  { label: 'Connected', value: 'connected' },
+  { label: 'Not Connected', value: 'not_connected' },
+];
 
-export default function Filters({ onChange}: { onChange: (filters: any) => void,}) {
-  const [dateRange, setDateRange] = useState<DateRangeFilter>({startDate: null, endDate: null});
-  // const [startDate, endDate] = dateRange;
-  const [agentId, setAgentId] = useState("");
+const sentimentOptions = [
+  { label: 'Positive', value: 'positive' },
+  { label: 'Neutral', value: 'neutral' },
+  { label: 'Negative', value: 'negative' },
+];
 
-  const handleFilterChange = (newRange: any, agent: any) => {
-    console.log("newRange",newRange);
-    const [start, end] = newRange;
+interface FilterBarProps {
+  onChange: (filters: any) => void;
+}
 
-    const startDateISO = start?.toISOString();
+const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
+  const [agentOptions, setAgentOptions] = useState([]);
+  const [dateRange, setDateRange] = useState<DateRangeFilter>({
+    startDate: null,
+    endDate: null
+  });
+  const [filters, setFilters] = useState<FilterState>({
+    agent: [],
+    status: [],
+    sentiment: [],
+  });
 
-  
-    // Set end to 23:59:59.999 to include the full end date
-    const endOfDay = new Date(end);
-    endOfDay.setHours(23, 59, 59, 999);
-    const endDateISO = endOfDay.toISOString();
+  // Fetch agents
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const response = await fetch('/api/agents/get');
+        const agents = await response.json();
+        setAgentOptions(agents);
+      } catch (error) {
+        console.error('Error fetching agents:', error);
+      }
+    };
+    fetchAgents();
+  }, []);
 
-    console.log("startDateISO", startDateISO);
-    console.log("endDateISO", endDateISO);
-  
-    onChange({
-      startDate: startDateISO,
-      endDate: endDateISO,
-    });
-    console.log("onChange",startDateISO,endDateISO);
-    // onChange({
-    //   startDate: newRange[0]?.toISOString(),
-    //   endDate: newRange[1]?.toISOString(),
-    // });
-  };
+  // Update parent component when filters change - with memoization to prevent infinite loops
+  const updateParentFilters = useCallback(() => {
+    let endDateFormatted = null;
+    if (dateRange.endDate) {
+      // Create a new Date instance to avoid mutating the original
+      const endDate = new Date(dateRange.endDate.getTime());
+      endDate.setHours(23, 59, 59, 999);
+      endDateFormatted = endDate.toISOString();
+    }
+
+    const updatedFilters = {
+      ...filters,
+      startDate: dateRange.startDate?.toISOString() || null,
+      endDate: endDateFormatted,
+    };
+    onChange(updatedFilters);
+  }, [filters, dateRange, onChange]);
+
+  useEffect(() => {
+    updateParentFilters();
+  }, [updateParentFilters]);
 
   return (
-    <div className="flex gap-4 items-center">
-      <DateFilter dateRange={dateRange} setDateRange={onChange} />
-      {/* <DatePicker
-        selectsRange
-        startDate={startDate}
-        endDate={endDate}
-        onChange={(update: any) => {
-          setDateRange(update);
-          handleFilterChange(update, agentId);
-        }}
-        isClearable
-        placeholderText="Select a date range"
-        className="border px-3 py-2 rounded-md"
-      /> */}
-
-      {/* <select
-        value={agentId}
-        onChange={(e) => {
-          const newAgentId = e.target.value;
-          setAgentId(newAgentId);
-          handleFilterChange(dateRange, newAgentId);
-        }}
-        className="border px-3 py-2 rounded-md"
-      >
-        <option value="">All Agents</option>
-        {agents.map((agent) => (
-          <option key={agent._id} value={agent._id}>
-            {agent.name}
-          </option>
-        ))}
-      </select> */}
+    <div className="flex flex-col gap-2 w-full mb-4">
+      <div className="flex flex-wrap gap-2 items-center">
+        <DateFilter
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+        />
+        <Filter 
+          filters={filters}
+          setFilters={setFilters}
+          agentOptions={agentOptions}
+          statusOptions={statusOptions}
+          sentimentOptions={sentimentOptions}
+        />
+      </div>
     </div>
   );
-}
+};
+
+export default Filters;

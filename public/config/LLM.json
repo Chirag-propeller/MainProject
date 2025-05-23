@@ -3,8 +3,9 @@
     "tts_providers": {
       "Polly-Standard" : {
         "English-IN":{
-          "Female":["Aditi","Raveena"]
-        },
+          "Female":["Aditi","Raveena"],
+          "Language-Code":"en-IN"
+        },        
         "Hindi":{
           "Female":["Aditi","Raveena"]
         },
@@ -98,8 +99,8 @@
       },
       "Google-Chirp3-HD": {
           "Marathi": {
-            "Female": ["Achernar"],
-            "Male": ["Achird"]
+            "Female": [{"Name":"Achernar","Id":"mr-IN"}],
+            "Male": [{"Name":"Achird","Id":"mr-IN"}]
           },
           "Hindi": {
             "Female": ["Aoede"],
@@ -189,6 +190,6 @@
         }
       }
     },
-    "stt_languages": ["English-US", "English-UK", "English-IN", "Hindi"],
+    "stt_languages": ["English-US", "English-UK", "English-IN", "Hindi", "Multilingual(English & Hindi)"],
     "tts_languages": ["English-US", "English-UK", "English-IN", "Arabic", "Hindi", "Marathi"]
 }

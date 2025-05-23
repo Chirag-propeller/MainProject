@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
   try {
     const user = await getUserFromRequest(req);
     const { filters, dateRange } = await req.json();
-    console.log(dateRange);
+    // console.log(dateRange);
 
     const userId = new mongoose.Types.ObjectId(user.userId);
 
@@ -153,6 +153,7 @@ export async function POST(req: NextRequest) {
     if (filters.sentiment && filters.sentiment.length > 0) {
       matchStage["call_analysis.SENTIMENT"] = { $in: filters.sentiment };
     }
+    // console.log("matchStage",matchStage);
 
     const pipeline = [
       {
