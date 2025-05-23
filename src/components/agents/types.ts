@@ -7,6 +7,7 @@ export interface Agent {
   agentName: string;
   createdAt: string;
   llm?: string;
+  llmModel?: string;
   inputLanguage?: string;
   stt?: string;
   tts?: string;

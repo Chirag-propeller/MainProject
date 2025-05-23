@@ -5,8 +5,20 @@ interface TtsOptions {
   [key: string]: string[]; // Each provider has an array of voice options
 }
 
+interface LLMProvider {
+  name: string;
+  value: string;
+  models: LLMModel[];
+}
+
+interface LLMModel {
+  name: string;
+  value: string;
+}
+
 interface LLMConfig {
   llmOptions: string[];
+  llmProviders: LLMProvider[];
   ttsOptions: TtsOptions;
   sttOptions: string[];
   loading: boolean;
@@ -15,6 +27,7 @@ interface LLMConfig {
 
 export default function useLLMConfig(): LLMConfig {
   const [llmOptions, setLLMOptions] = useState<string[]>([]);
+  const [llmProviders, setLLMProviders] = useState<LLMProvider[]>([]);
   const [ttsOptions, setTTSOptions] = useState<TtsOptions>({});
   const [ttsLanguageOptions, setTTSLanguageOptions] = useState<string[]>([]);
   const [sttOptions, setSTTOptions] = useState<string[]>([]);
@@ -23,12 +36,15 @@ export default function useLLMConfig(): LLMConfig {
   useEffect(() => {
     async function fetchConfig() {
       try {
-        const response = await fetch("/config/LLM.json");
+        // const response = await fetch("/config/LLM.json");
+        const response = await fetch("/config/LLM1.json");
         const data = await response.json();
 
         // Ensure data structure matches expected types
         setLLMOptions(data.llm_models || []);
-        setTTSOptions(data.tts_providers || {});
+        setLLMProviders(data.llm_providers || []);
+        // setTTSOptions(data.tts_providers || {});
+        setTTSOptions(data.providers || {});
         setSTTOptions(data.stt_languages || []);
         setTTSLanguageOptions(data.tts_languages || []);
       } catch (error) {
@@ -41,5 +57,5 @@ export default function useLLMConfig(): LLMConfig {
     fetchConfig();
   }, []);
 
-  return { llmOptions, ttsOptions, sttOptions, loading, ttsLanguageOptions };
+  return { llmOptions, llmProviders, ttsOptions, sttOptions, loading, ttsLanguageOptions };
 }
