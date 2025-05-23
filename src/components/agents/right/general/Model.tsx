@@ -2,10 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { Agent } from '@/components/agents/types'
 import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
+import SelectionDropdown from '@/components/agents/SelectionDropdown';
 import { Brain, Triangle } from 'lucide-react';
+
+interface LLMProvider {
+  name: string;
+  value: string;
+  models: LLMModel[];
+}
+
+interface LLMModel {
+  name: string;
+  value: string;
+}
 
 interface LLMConfig {
     llmOptions: string[];
+    llmProviders: LLMProvider[];
 }
 
 const ModelLeft = ({firstMessage, setFirstMessage, systemPrompt, setSystemPrompt}: {firstMessage: string, setFirstMessage: React.Dispatch<React.SetStateAction<string>>, systemPrompt: string, setSystemPrompt: React.Dispatch<React.SetStateAction<string>>}) => {
@@ -23,35 +36,127 @@ const ModelLeft = ({firstMessage, setFirstMessage, systemPrompt, setSystemPrompt
     )
 }
 
-const ModelRight = ({llm, selectedLLM, setSelectedLLM}: {llm: string[], selectedLLM: string, setSelectedLLM: React.Dispatch<React.SetStateAction<string>>}) => {
+const ModelRight = ({
+    llmProviders, 
+    selectedProvider, 
+    setSelectedProvider, 
+    models, 
+    selectedModel, 
+    setSelectedModel
+}: {
+    llmProviders: {name: string, value: string}[], 
+    selectedProvider: string, 
+    setSelectedProvider: React.Dispatch<React.SetStateAction<string>>,
+    models: {name: string, value: string}[],
+    selectedModel: string,
+    setSelectedModel: React.Dispatch<React.SetStateAction<string>>
+}) => {
     return (
         <div className='w-1/4'>
             <div className='flex flex-col gap-2 mx-1'>
                 <div className='mx-1 p-1'>
-                <label className='m-1 p-1'> LLM </label>
-                <SelectOptions options={llm} selectedOption={selectedLLM} setOption={setSelectedLLM} />
-            </div>
-            {/* <div className='flex flex-col gap-2'>
-                <label htmlFor='temperature' className='mx-1'>Temperature</label>
-                <input id='temperature' type='number' className='w-full p-1 rounded-md border border-gray-300 text-sm px-2' />
-            </div> */}
+                    <label className='m-1 p-1'> LLM Provider </label>
+                    <SelectionDropdown options={llmProviders} selectedOption={selectedProvider} setOption={setSelectedProvider} />
+                </div>
+                <div className='mx-1 p-1'>
+                    <label className='m-1 p-1'> LLM Model </label>
+                    <SelectionDropdown options={models} selectedOption={selectedModel} setOption={setSelectedModel} />
+                </div>
+                {/* <div className='flex flex-col gap-2'>
+                    <label htmlFor='temperature' className='mx-1'>Temperature</label>
+                    <input id='temperature' type='number' className='w-full p-1 rounded-md border border-gray-300 text-sm px-2' />
+                </div> */}
             </div>
         </div>
     )
 }
 
 const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void}) => {
-    const { llmOptions } = useLLMConfig() as LLMConfig
+    // console.log("agent", agent);
+    const { llmOptions, llmProviders } = useLLMConfig() as LLMConfig
     const [isOpen, setIsOpen] = useState(false)
-    const llm: string[] = Array.isArray(llmOptions) ? Array.from(llmOptions) : Object.values(llmOptions);
-    const [selectedLLM, setSelectedLLM] = useState<string>(agent.llm || llmOptions[0]);
+    
+    // Get providers list
+    const providers = Array.isArray(llmProviders) ? llmProviders.map((provider: LLMProvider) => ({
+        name: provider.name,
+        value: provider.value
+    })) : [];
+
+    // State variables with defaults from agent or fallback values
+    const [selectedProvider, setSelectedProvider] = useState<string>(agent.llm || "");
+    const [models, setModels] = useState<{name: string, value: string}[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string>(agent.llmModel || "");
     const [temperature, setTemperature] = useState<number>(1);
     const [firstMessage, setFirstMessage] = useState<string>(agent.welcomeMessage || "");
     const [systemPrompt, setSystemPrompt] = useState<string>(agent.prompt || "");
 
+    // Effect 1: Update models when provider changes (similar to Voice.tsx Effect 1)
     useEffect(() => {
-        setAgent({...agent, llm: selectedLLM})
-    }, [selectedLLM])
+
+        
+        if (selectedProvider && Array.isArray(llmProviders)) {
+            const provider = llmProviders.find((p: LLMProvider) => p.value === selectedProvider);
+            console.log("provider without if", provider);
+
+            if (provider && provider.models) {
+                console.log("provider", provider);
+                const modelOptions = provider.models.map((model: LLMModel) => ({
+                    name: model.name,
+                    value: model.value
+                }));
+                setModels(modelOptions);
+                
+                // If agent has a saved model that exists in new provider, keep it; otherwise use first available
+                if (agent.llmModel && modelOptions.some(m => m.value === agent.llmModel)) {
+                    setSelectedModel(agent.llmModel);
+                } else if (modelOptions.length > 0) {
+                    setSelectedModel(modelOptions[0].value);
+                }
+            } 
+            // else {
+            //     console.log("no models found");
+            //     setModels([]);
+            //     setSelectedModel("");
+            // }
+        }
+    }, [selectedProvider, llmProviders, agent.llmModel]);
+
+    // Effect 2: Handle initial provider selection when llmProviders loads
+    useEffect(() => {
+        if (Array.isArray(llmProviders) && llmProviders.length > 0) {
+            // If agent has a saved provider that exists, use it; otherwise use first available
+            if (agent.llm && llmProviders.some(p => p.value === agent.llm)) {
+                setSelectedProvider(agent.llm);
+            } else if (llmProviders.length > 0) {
+                setSelectedProvider(llmProviders[0].value);
+            }
+        }
+    }, [llmProviders, agent.llm]);
+
+    // Effect 3: Handle initial model selection when agent data loads
+    useEffect(() => {
+        if (agent.llmModel && models.length > 0 && models.some(m => m.value === agent.llmModel)) {
+            setSelectedModel(agent.llmModel);
+        }
+    }, [agent.llmModel, models]);
+
+    // Effect 4: Initialize form fields from agent data
+    useEffect(() => {
+        setFirstMessage(agent.welcomeMessage || "");
+    }, [agent.welcomeMessage]);
+
+    useEffect(() => {
+        setSystemPrompt(agent.prompt || "");
+    }, [agent.prompt]);
+
+    // Update agent when selections change
+    useEffect(() => {
+        setAgent({...agent, llm: selectedProvider})
+    }, [selectedProvider])
+
+    useEffect(() => {
+        setAgent({...agent, llmModel: selectedModel})
+    }, [selectedModel])
 
     // useEffect(() => {
     //     setAgent({...agent, temperature: temperature})
@@ -64,6 +169,7 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
     useEffect(() => {
         setAgent({...agent, prompt: systemPrompt})
     }, [systemPrompt])
+
     // useEffect(() => {
     //     setSelectedLLM(llm[0])
     // }, [llm])
@@ -99,7 +205,7 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
         {isOpen && (
             <div className='p-2 flex gap-2  '>
                 <ModelLeft firstMessage={firstMessage} setFirstMessage={setFirstMessage} systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt}/>
-                <ModelRight llm={llm} selectedLLM={selectedLLM} setSelectedLLM={setSelectedLLM}/>
+                <ModelRight llmProviders={providers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} models={models} selectedModel={selectedModel} setSelectedModel={setSelectedModel}/>
             </div>
         )}
     </div>

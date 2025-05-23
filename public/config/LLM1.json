@@ -1,231 +1,54 @@
 {    
     "llm_models":  ["OpenAI", "Groq", "Cerebras"],
-    "providers": [
+    "llm_providers": [
         {
-            "name": "AWS",
-            "value": "AWS",
+            "name": "OpenAI",
+            "value": "OpenAI",
             "models": [
-                {
-                    "name": "Polly-Generative",
-                    "value": "Polly-Generative",
-                    "languages": [
-                        {
-                            "name": "English (British)",
-                            "value": "en-GB",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Amy", "value": "Amy" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (Indian)",
-                            "value": "en-IN",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Kajal", "value": "Kajal" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Danielle", "value": "Danielle" },
-                                        { "name": "Joanna", "value": "Joanna" },
-                                        { "name": "Ruth", "value": "Ruth" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Matthew", "value": "Matthew" },
-                                        { "name": "Stephen", "value": "Stephen" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Polly-Neural",
-                    "value": "Polly-Neural",
-                    "languages": [
-                        {
-                            "name": "English (British)",
-                            "value": "en-GB",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Amy", "value": "Amy" },
-                                        { "name": "Emma", "value": "Emma" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Brian", "value": "Brian" },
-                                        { "name": "Arthur", "value": "Arthur" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (Indian)",
-                            "value": "en-IN",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Kajal", "value": "Kajal" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Danielle", "value": "Danielle" },
-                                        { "name": "Ivy", "value": "Ivy" },
-                                        { "name": "Joanna", "value": "Joanna" },
-                                        { "name": "Kendra", "value": "Kendra" },
-                                        { "name": "Kimberly", "value": "Kimberly" },
-                                        { "name": "Salli", "value": "Salli" },
-                                        { "name": "Ruth", "value": "Ruth" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Gregory", "value": "Gregory" },
-                                        { "name": "Joey", "value": "Joey" },
-                                        { "name": "Justin", "value": "Justin" },
-                                        { "name": "Kevin", "value": "Kevin" },
-                                        { "name": "Matthew", "value": "Matthew" },
-                                        { "name": "Stephen", "value": "Stephen" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Hindi (India)",
-                            "value": "hi-IN",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Kajal", "value": "Kajal" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Polly-Standard",
-                    "value": "Polly-Standard",
-                    "languages": [
-                        {
-                            "name": "English (British)",
-                            "value": "en-GB",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Amy", "value": "Amy" },
-                                        { "name": "Emma", "value": "Emma" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Brian", "value": "Brian" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (Indian)",
-                            "value": "en-IN",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Aditi", "value": "Aditi" },
-                                        { "name": "Raveena", "value": "Raveena" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Ivy", "value": "Ivy" },
-                                        { "name": "Joanna", "value": "Joanna" },
-                                        { "name": "Kendra", "value": "Kendra" },
-                                        { "name": "Kimberly", "value": "Kimberly" },
-                                        { "name": "Salli", "value": "Salli" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Joey", "value": "Joey" },
-                                        { "name": "Kevin", "value": "Kevin" }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "name": "Hindi (India)",
-                            "value": "hi-IN",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Aditi", "value": "Aditi" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
+                { "name": "GPT-4.1", "value": "gpt-4.1" },
+                { "name": "GPT-4.1 Mini", "value": "gpt-4.1-mini" },
+                { "name": "GPT-4.1 Nano", "value": "gpt-4.1-nano" },
+                { "name": "GPT-4.5 Preview", "value": "gpt-4.5-preview" },
+                { "name": "GPT-4o", "value": "gpt-4o" },
+                { "name": "GPT-4o Mini", "value": "gpt-4o-mini" },
+                { "name": "O1", "value": "o1" },
+                { "name": "O1 Pro", "value": "o1-pro" },
+                { "name": "O3", "value": "o3" },
+                { "name": "O1 Mini", "value": "o1-mini" },
+                { "name": "GPT Image 1", "value": "gpt-image-1" }
             ]
         },
+        {
+            "name": "Cerebras",
+            "value": "Cerebras",
+            "models": [
+                { "name": "Llama 4 Scout", "value": "llama-4-scout" },
+                { "name": "Llama 3.1 8B", "value": "llama-3.1-8b" },
+                { "name": "Llama 3.3 70B", "value": "llama-3.3-70b" },
+                { "name": "Qwen 3 32B", "value": "qwen-3-32b" },
+                { "name": "Deepseek R1 Distill Llama 70B", "value": "deepseek-r1-distill-llama-70b" }
+            ]
+        },
+        {
+            "name": "Groq",
+            "value": "Groq",
+            "models": [
+                { "name": "Llama 4 Scout (17Bx16E)", "value": "llama-4-scout-17bx16e" },
+                { "name": "Llama 4 Maverick (17Bx128E)", "value": "llama-4-maverick-17bx128e" },
+                { "name": "Llama Guard 4 12B 128k", "value": "llama-guard-4-12b-128k" },
+                { "name": "DeepSeek R1 Distill Llama 70B", "value": "deepseek-r1-distill-llama-70b" },
+                { "name": "Qwen QwQ 32B (Preview) 128k", "value": "qwen-qwq-32b-preview-128k" },
+                { "name": "Mistral Saba 24B", "value": "mistral-saba-24b" },
+                { "name": "Llama 3.3 70B Versatile 128k", "value": "llama-3.3-70b-versatile-128k" },
+                { "name": "Llama 3.1 8B Instant 128k", "value": "llama-3.1-8b-instant-128k" },
+                { "name": "Llama 3 70B 8k", "value": "llama-3-70b-8k" },
+                { "name": "Llama 3 8B 8k", "value": "llama-3-8b-8k" },
+                { "name": "Gemma 2 9B 8k", "value": "gemma-2-9b-8k" },
+                { "name": "Llama Guard 3 8B 8k", "value": "llama-guard-3-8b-8k" }
+            ]
+        }
+    ],
+    "providers": [
         {
             "name": "AWS",
             "value": "AWS",
