@@ -50,8 +50,8 @@
     ],
     "providers": [
         {
-            "name": "OpenAI",
-            "value": "OpenAI",
+            "name": "AWS",
+            "value": "AWS",
             "models": [
                 {
                     "name": "Polly-Generative",
