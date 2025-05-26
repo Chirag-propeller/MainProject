@@ -33,7 +33,7 @@ const PhoneFormModal: React.FC<PhoneFormModalProps> = ({ onClose }) => {
     e.preventDefault();
     const payload = {
       phoneNumber,
-      terminationUri: terminationURI, // ✅ Fix here
+      terminationUri: terminationURI, 
       sipTrunkUserName: sipUsername,
       sipTrunkPassword: sipPassword,
       nickname,

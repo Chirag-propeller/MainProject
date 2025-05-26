@@ -18,6 +18,9 @@ const phoneNumberSchema = new mongoose.Schema({
     type: String,
     default: '', // Optional
   },
+  sipOutboundTrunkId: {
+    type: String,
+  },
   nickname: {
     type: String,
     default: '', // Optional

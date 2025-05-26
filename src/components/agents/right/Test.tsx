@@ -1,174 +1,3 @@
-// import React, { useEffect, useRef } from 'react';
-
-// interface TestProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-// }
-
-// const Test: React.FC<TestProps> = ({ isOpen, onClose }) => {
-//   const modalRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     // Add body overflow hidden when modal is open
-//     if (isOpen) {
-//       document.body.style.overflow = 'hidden';
-//     }
-
-//     // Handle click outside to close modal
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-//         onClose();
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleClickOutside);
-    
-//     return () => {
-//       document.body.style.overflow = '';
-//       document.removeEventListener('mousedown', handleClickOutside);
-//     };
-//   }, [isOpen, onClose]);
-
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm">
-//         <div 
-//             ref={modalRef}
-//             style={{ transitionDuration: '1s' }} // or '3s' for slower
-//             className={`fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg transform transition-transform ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-//             >
-
-//       {/* <div 
-//         ref={modalRef}
-//         className={`fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg transform transition-transform duration-1000 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
-//       > */}
-//         <div className="h-full overflow-auto p-6">
-//           <div className="flex justify-between items-center mb-6">
-//             <h2 className="text-xl font-semibold">Test Agent</h2>
-//             <button 
-//               onClick={onClose}
-//               className="p-2 rounded-full hover:bg-gray-100"
-//             >
-//               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-//               </svg>
-//             </button>
-//           </div>
-          
-//           <div className="flex flex-col space-y-3 mb-4">
-//             <div className="bg-blue-100 text-blue-800 p-3 rounded-md self-start max-w-[80%]">
-//               Hello! How can I help you today?
-//             </div>
-//           </div>
-          
-//           <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
-//             <div className="flex">
-//               <input
-//                 type="text"
-//                 placeholder="Type your message..."
-//                 className="flex-1 p-2 border rounded-l-md focus:outline-none"
-//               />
-//               <button className="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700">
-//                 Send
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Test;
-
-
-
-// import React, { useEffect, useRef } from 'react';
-
-// interface TestProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-// }
-
-// const Test: React.FC<TestProps> = ({ isOpen, onClose }) => {
-//   const modalRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     // Add body overflow hidden when modal is open
-//     if (isOpen) {
-//       document.body.style.overflow = 'hidden';
-//     }
-
-//     // Handle click outside to close modal
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-//         onClose();
-//       }
-//     };
-
-//     document.addEventListener('mousedown', handleClickOutside);
-    
-//     return () => {
-//       document.body.style.overflow = '';
-//       document.removeEventListener('mousedown', handleClickOutside);
-//     };
-//   }, [isOpen, onClose]);
-
-//   // Render the component regardless of isOpen state
-//   // but use opacity and pointer-events to hide it when closed
-//   return (
-//     <div 
-//       className={`fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-500 ${
-//         isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-//       }`}
-//     >
-//       <div 
-//         ref={modalRef}
-//         className={`fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg transform transition-transform duration-300 ease-out ${
-//           isOpen ? 'translate-x-0' : 'translate-x-full'
-//         }`}
-//       >
-//         <div className="h-full overflow-auto p-6">
-//           <div className="flex justify-between items-center mb-6">
-//             <h2 className="text-xl font-semibold">Test Agent</h2>
-//             <button 
-//               onClick={onClose}
-//               className="p-2 rounded-full hover:bg-gray-100"
-//             >
-//               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-//                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-//               </svg>
-//             </button>
-//           </div>
-          
-//           <div className="flex flex-col space-y-3 mb-4">
-//             <div className="bg-blue-100 text-blue-800 p-3 rounded-md self-start max-w-[80%]">
-//               Hello! How can I help you today?
-//             </div>
-//           </div>
-          
-//           <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t">
-//             <div className="flex">
-//               <input
-//                 type="text"
-//                 placeholder="Type your message..."
-//                 className="flex-1 p-2 border rounded-l-md focus:outline-none"
-//               />
-//               <button className="bg-indigo-600 text-white px-4 py-2 rounded-r-md hover:bg-indigo-700">
-//                 Send
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Test;
-
-
 import VoiceAssistant from '@/components/agent/newAgent/VoiceAssistant';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
@@ -241,43 +70,64 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   // userId?: string;
   // gender?: string;
   // ttsLanguage?: string;
-  const sendData = async (roomName: string) => {
-    try {
-      const data = {
-        selectedLLM: agent.llm,
-        selectedLLMModel: agent.llmModel,
-        selectedInputLang: agent.inputLanguage,
-        selectedStt : agent.stt,
-        selectedTts : agent.tts,
-        selectedTtsModel : agent.ttsModel,
-        selectedTtsVoice : agent.ttsVoiceName,
-        selectedSpeed : agent.speed,
-        selectedBackgroundSound : agent.backgroundSound,
-        selectedWelcomeMessage : agent.welcomeMessage,
-        selectedKnowledgeBase : agent.knowledgeBaseAttached,
-        selectedPrompt : agent.prompt,
-        selectedUserId : agent.userId,
-        selectedGender : agent.gender,
-        selectedTtsLanguage : agent.ttsLanguage,     
-        roomName,
-      };
-      console.log(data);
-      const response = await axios.post(`${url}/sendData`,data); 
-      // Assuming the server sends a response
-      // console.log(text);
-      // alert("Update Successful");
-    } catch (error) {
-      alert("Something went wrong")
-      console.error("Error sending data:", error);
+  // const sendData = async (roomName: string) => {
+  //   try {
+  //     const data = {
+  //       selectedLLM: agent.llm,
+  //       selectedLLMModel: agent.llmModel,
+  //       selectedInputLang: agent.inputLanguage,
+  //       selectedStt : agent.stt,
+  //       selectedTts : agent.tts,
+  //       selectedTtsModel : agent.ttsModel,
+  //       selectedTtsVoice : agent.ttsVoiceName,
+  //       selectedSpeed : agent.speed,
+  //       selectedBackgroundSound : agent.backgroundSound,
+  //       selectedWelcomeMessage : agent.welcomeMessage,
+  //       selectedKnowledgeBase : agent.knowledgeBaseAttached,
+  //       selectedPrompt : agent.prompt,
+  //       selectedUserId : agent.userId,
+  //       selectedGender : agent.gender,
+  //       selectedTtsLanguage : agent.ttsLanguage,     
+  //       roomName,
+  //     };
+  //     console.log(data);
+  //     const response = await axios.post(`${url}/sendData`,data); 
+  //     // Assuming the server sends a response
+  //     // console.log(text);
+  //     // alert("Update Successful");
+  //   } catch (error) {
+  //     alert("Something went wrong")
+  //     console.error("Error sending data:", error);
       
-    }
-  };
+  //   }
+  // };
+  
   const fetchToken = async () => {
     try {
+      const dataToSend = {
+        llm: agent.llm,
+        llmModel: agent.llmModel,
+        inputLanguage: agent.inputLanguage,
+        stt : agent.stt,
+        tts : agent.tts,
+        ttsModel : agent.ttsModel,
+        ttsVoiceName : agent.ttsVoiceName,
+        speed : agent.speed,
+        backgroundSound : agent.backgroundSound,
+        welcomeMessage : agent.welcomeMessage,
+        knowledgeBaseAttached : agent.knowledgeBaseAttached,
+        prompt : agent.prompt,
+        userId : agent.userId,
+        gender : agent.gender,
+        ttsLanguage : agent.ttsLanguage,     
+        roomName,
+      };
+      console.log(dataToSend);
       console.log("run");
-      const response = await fetch(`${url}/getToken`);
+      const response = await axios.post(`${url}/getToken`, dataToSend);
+      // const response = await fetch(`${url}/getToken`);
       // console.log("Url ->", url);
-      const data = await response.json();
+      const data = response.data;
       return{
         roomName: data.room_name,
         token: data.token
@@ -307,7 +157,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
     if (tokenData) {
       setRoomName(tokenData.roomName);
       setToken(tokenData.token);
-      await sendData(tokenData.roomName);
+      // await sendData(tokenData.roomName);
       setShowVoiceAssistant(true);
     }
     
