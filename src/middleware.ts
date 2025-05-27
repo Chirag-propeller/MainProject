@@ -2,6 +2,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 // import jwt from 'jsonwebtoken';
 import { jwtVerify } from 'jose'
+import { cookies } from "next/headers";
 // import { cookies } from 'next/headers'
 
 
@@ -36,9 +37,9 @@ export async function middleware(request: NextRequest) {
     } catch (error) {
       console.log("error", error);
       // Token is invalid, remove it
-      const response = NextResponse.redirect(new URL('/login', request.url));
-      response.cookies.delete('token');
-      return response;
+      
+      (await cookies()).set('token', '', { maxAge: 0 })
+      return NextResponse.redirect(new URL('/login', request.url))
     }
   }
 
