@@ -74,16 +74,29 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
                 
                 // If agent has a saved model that exists in new provider, keep it; otherwise use first available
                 if (agent.ttsModel && modelOptions.some(m => m.value === agent.ttsModel)) {
+                    console.log("agent.ttsModel", agent.ttsModel);
                     setSelectedModel(agent.ttsModel);
                 } else if (modelOptions.length > 0) {
+                    console.log("modelOptions", modelOptions[0].value);
                     setSelectedModel(modelOptions[0].value);
                 }
-            } else {
-                setModels([]);
-                setSelectedModel("");
-            }
+            } 
+            // else {
+            //     setModels([]);
+            //     setSelectedModel("");
+            // }
         }
-    }, [selectedProvider, ttsOptions, agent.ttsModel]);
+    }, [selectedProvider, ttsOptions]);
+    // useEffect(() => {
+    //     const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+    //     const modelOptions = provider?.models.map((model: TtsModel) => ({
+    //         name: model.name,
+    //         value: model.value
+    //     }));
+    //     if(modelOptions && modelOptions.length > 0) {
+    //         setSelectedModel(modelOptions[0].value);
+    //     }
+    // }, [selectedProvider])
 
     // Effect 2: Update languages when provider or model changes
     useEffect(() => {

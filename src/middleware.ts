@@ -1,9 +1,11 @@
 // middleware.ts
 import { NextResponse, type NextRequest } from 'next/server'
+// import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose'
 // import { cookies } from 'next/headers'
 
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   // const cookieStore = await cookies();
   // const token1 = cookieStore.get('token')?.value;
@@ -25,13 +27,28 @@ export function middleware(request: NextRequest) {
   )
   const isPublicRoute = publicRoutes.includes(pathname)
 
+  let isValidToken = false;
+  if (token) {
+    try {
+      const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!)
+      await jwtVerify(token, secret)
+      isValidToken = true;
+    } catch (error) {
+      console.log("error", error);
+      // Token is invalid, remove it
+      const response = NextResponse.redirect(new URL('/login', request.url));
+      response.cookies.delete('token');
+      return response;
+    }
+  }
+
   // Redirect authenticated users from auth routes to dashboard
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard/agent', request.url))
+  if (isAuthRoute && isValidToken) {
+    return NextResponse.redirect(new URL('/dashboard/agents', request.url))
   }
 
   // Redirect unauthenticated users from protected routes to login
-  if (isProtectedRoute && !token) {
+  if (isProtectedRoute && !isValidToken) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
