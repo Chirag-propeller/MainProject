@@ -8,7 +8,13 @@ export async function GET(req: NextRequest) {
   await dbConnect();
 
   try {
-    const user = await getUserFromRequest(req);
+    let user;
+    try {
+      user = await getUserFromRequest(req);
+    } catch (error) {
+      return NextResponse.json({ message: 'Unauthorized', error: error }, { status: 401 });
+    }
+   
     const agents = await Agent.find({ userId: user.userId }).sort({ createdAt: -1 });
     return NextResponse.json(agents, { status: 200 });
   } catch (error) {
