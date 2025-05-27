@@ -11,7 +11,7 @@ interface TokenPayload {
 export async function getUserFromRequest(req: NextRequest): Promise<TokenPayload> {
   const token = req.cookies.get('token')?.value;
   if(!token) {
-    NextResponse.redirect(new URL('/login', req.url));
+    // NextResponse.redirect(new URL('/login', req.url));
     throw new Error('Authentication token missing');    
   }
 
