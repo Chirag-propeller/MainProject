@@ -36,6 +36,7 @@ export interface UserDocument extends Document {
   otpExpiry?: Date;
   credits: mongoose.Types.Decimal128;
   creditsUsed: mongoose.Types.Decimal128;
+  callHistoryFields: string[];
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -69,6 +70,7 @@ const userSchema = new Schema<UserDocument>(
     knowledgeBases:  [{ type: Schema.Types.ObjectId, ref: 'PhoneNumber' , default: []}],
     credits: { type: mongoose.Schema.Types.Decimal128, default: 0 },    
     creditsUsed: { type: mongoose.Schema.Types.Decimal128, default: 0 },
+    callHistoryFields: { type: [String], default: [] },
   },
   { timestamps: true }
 );
