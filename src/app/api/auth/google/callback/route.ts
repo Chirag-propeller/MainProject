@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
       email: user.email
   }
     // 4. Generate your own token and set cookie
-    const token = jwt.sign(userTokenData, process.env.TOKEN_SECRET!, {expiresIn: "3d"});
+    const token = jwt.sign(userTokenData, process.env.TOKEN_SECRET!, {expiresIn: "10m"});
 
     // const response = NextResponse.redirect(new URL("/dashboard", req.url));
     const response = NextResponse.redirect(`${process.env.PAGE_REDIRECT_URI}/dashboard`);

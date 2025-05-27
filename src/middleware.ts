@@ -33,6 +33,7 @@ export async function middleware(request: NextRequest) {
     try {
       const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!)
       await jwtVerify(token, secret)
+      console.log("token is valid")
       isValidToken = true;
     } catch (error) {
       console.log("error", error);
