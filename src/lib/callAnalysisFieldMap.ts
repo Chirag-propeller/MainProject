@@ -28,6 +28,8 @@ export const CALL_ANALYSIS_FIELD_LABELS: Record<string, string> = {
     customer_engagement_score: "Engagement Score",
     interruption_count: "Interruptions",
     reviewer_comments: "Reviewer Comments",
-    follow_up_date_time: "Follow-up Time"
+    follow_up_date_time: "Follow-up Time",
+    call_direction: "Call Direction",
+    call_duration: "Call Duration(sec)",
   };
   

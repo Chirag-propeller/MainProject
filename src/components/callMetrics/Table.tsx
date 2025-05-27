@@ -102,6 +102,8 @@ export default function CallAnalysisTable({
           interruption_count: callAnalysis.INTERRUPTION_COUNT,
           reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
           cost: item.cost,
+          call_direction: item.call_direction,
+          call_duration: item.call_duration_in_sec,
           
           transcript: item.call_transcript,
         };
