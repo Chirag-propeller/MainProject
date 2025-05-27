@@ -11,6 +11,21 @@ export async function middleware(request: NextRequest) {
   // const cookieStore = await cookies();
   // const token1 = cookieStore.get('token')?.value;
   const token = request.cookies.get('token')?.value
+  let isValidToken = false;
+  if (token) {
+    try {
+      const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!)
+      await jwtVerify(token, secret)
+      console.log("token is valid")
+      isValidToken = true;
+    } catch (error) {
+      console.log("error", error);
+      // Token is invalid, remove it
+      
+      (await cookies()).set('token', '', { maxAge: 0 })
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+  }
 
   if (pathname === '/dashboard' || pathname === '/dashboard/') {
     return NextResponse.redirect(new URL('/dashboard/agents', request.url));
@@ -27,22 +42,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   )
   const isPublicRoute = publicRoutes.includes(pathname)
-
-  let isValidToken = false;
-  if (token) {
-    try {
-      const secret = new TextEncoder().encode(process.env.TOKEN_SECRET!)
-      await jwtVerify(token, secret)
-      console.log("token is valid")
-      isValidToken = true;
-    } catch (error) {
-      console.log("error", error);
-      // Token is invalid, remove it
-      
-      (await cookies()).set('token', '', { maxAge: 0 })
-      return NextResponse.redirect(new URL('/login', request.url))
-    }
-  }
 
   // Redirect authenticated users from auth routes to dashboard
   if (isAuthRoute && isValidToken) {
