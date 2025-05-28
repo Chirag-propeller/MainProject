@@ -5,12 +5,25 @@ import createCampaign from '@/model/createCampaign';
 import { randomUUID } from 'crypto';
 import { getUserFromRequest } from '@/lib/auth';
 import User from '@/model/user/user.model';
-
+import Contact from '@/model/campaign/contact.model';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     await dbConnect();
     const user = await getUserFromRequest(req);
+    const {contacts, ...rest} = body;
+    if(contacts){
+      if(contacts.length > 0){
+        for(const contact of contacts){
+          await Contact.create({
+          userId: user.userId,
+          campaignId: body.campaignCallId,
+          phonenumber: contact.phonenumber,
+          metadata: contact.metadata,
+          });
+        }
+      }
+    }
     const newCampaign = await createCampaign.create({
       userId:  user.userId,
       campaignCallId: body.campaignCallId || randomUUID(),

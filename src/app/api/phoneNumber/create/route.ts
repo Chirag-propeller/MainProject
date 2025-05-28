@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
           numbers,
           trunkOptions
         );
-        console.log(trunk.sipTrunkId);
+        // console.log(trunk.sipTrunkId);
 
       }catch(error){
         console.error('Error creating trunk:', error);

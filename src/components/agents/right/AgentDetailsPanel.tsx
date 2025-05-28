@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Agent } from '../types';
 import { Button } from '@/components/ui/button';
 import AgentGeneralTab from './AgentGeneralTab';
 import AgentPromptTab from './AgentPromptTab';
 import { useRouter } from 'next/navigation';
 import Test from './Test';
-import { Play } from 'lucide-react';
+import { Play, Pencil } from 'lucide-react';
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -18,6 +18,9 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   const [activeTab, setActiveTab] = useState<string>('general');
   const [isUpdating, setIsUpdating] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
+  const [isNameUpdating, setIsNameUpdating] = useState(false);
+  const [name, setName] = useState(agent.agentName);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   // Tabs available for this agent
   const tabs = [
@@ -29,6 +32,8 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   ];
 
   const handleUpdate = async () => {
+
+    
     setIsUpdating(true);
     const res = await fetch(`/api/agent/${agent._id}`, {
         method: 'PUT', // or PATCH if your backend prefers
@@ -52,17 +57,38 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   const handleTest = () => {
     setIsTesting(true);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (isNameUpdating && nameRef.current && !nameRef.current.contains(event.target as Node)) {
+        setIsNameUpdating(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isNameUpdating]);
   
   const handleCloseTest = () => {
     setIsTesting(false);
   };
+  useEffect(() => {
+    setAgent({...agent, agentName: name});
+  }, [name]);
 
   return (
     <div className="flex flex-col bg-white rounded-lg border border-t-0 border-gray-200 h-full ">
       {/* Header with agent name, ID and buttons */}
       <div className="flex justify-between items-start p-4 pb-1">
         <div className="flex flex-col">
-          <h2 className="text-2xl font-semibold">{agent.agentName}</h2>
+          <div className='flex items-center gap-2'>
+            {isNameUpdating ? ( 
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='border-gray-300 rounded-md border-1 px-2 py-1' ref={nameRef} />
+            ) : (
+              <h2 className="text-2xl font-semibold">{name}</h2>
+            )}
+            <Pencil className='w-4 h-4 text-gray-500 cursor-pointer' onClick={() => setIsNameUpdating(true)} />
+          </div>
+          
           <p className="text-xs text-gray-500 mb-1 ">ID: {agent._id}</p>
         </div>
         <div className="flex space-x-2 gap-1">

@@ -9,6 +9,8 @@ import CampaignData from './CampaignData';
 import EditForm from '../edit/EditForm';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import CampaignGoal from './CampaignGoal';
+
 import { SendModal } from '../sendModal/SendModal';
 
 interface CampaignDetailsProps {
@@ -23,7 +25,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   const [isEditing, setIsEditing] = useState(false);
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [title, setTitle] = useState(campaign.campaignCallName);
-  const [activeTab, setActiveTab] = useState<'general'|'analytics'|'data'|'edit'>('general');
+  const [activeTab, setActiveTab] = useState<'general'|'analytics'|'data'|'edit'|'campaigns goals'>('general');
   const [isLoading, setIsLoading] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
@@ -90,6 +92,14 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
     // const creditsUsed = user.data?.creditsUsed || 0;
     if(credits - creditsUsed <= 0){
       alert("You have no credits left");
+      return;
+    }
+    if(campaign.status === "completed"){
+      alert("Campaign is already completed");
+      return;
+    }
+    if(campaign.status === "ongoing"){
+      alert("Campaign is already ongoing");
       return;
     }
     setIsSendModalOpen(true);
@@ -178,10 +188,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       {
         !isEditing && (
           <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
-          {['general','analytics','data'].map(tab => (
+          {['general','campaigns goals', 'analytics','data'].map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab as 'general'|'analytics'|'data')}
+              onClick={() => setActiveTab(tab as 'general'|'analytics'|'data'|'campaigns goals')}
               className={`pb-0.5 cursor-pointer ${activeTab === tab ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -245,8 +255,10 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       {/* Tab content */}
       <div className="flex-1 overflow-auto p-6">
         {activeTab === 'general' && <CampaignGeneral campaign={campaign} agents={agents} />}
+        {activeTab === 'campaigns goals' && <CampaignGoal campaign={campaign} agents={agents} />}
         {activeTab === 'analytics' && <CampaignAnalytics campaign={campaign} agents={agents} />}
         {activeTab === 'data' && <CampaignData campaign={campaign} />}
+
         {activeTab === 'edit' && <EditForm campaign={campaign} onSave={handleFormSave} />}
       </div>
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} campaign={campaign}  />}

@@ -9,7 +9,7 @@ import axios from 'axios'
 import { Agent } from '@/components/agents/types'
 import { History } from 'lucide-react'
 
-const allFields = ["started_at", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status"]
+const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm cost", "stt cost", "tts cost"]
 
 // Sample data for filters
 
@@ -26,7 +26,7 @@ const sentimentOptions = [
 
 const page = () => {
   const [agentOptions, setAgentOptions] = useState<Agent[]>([]);
-  const [customiseField, setCustomiseField] = useState(["started_at", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber"]);
+  const [customiseField, setCustomiseField] = useState(["started_at", "call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber"]);
   const [filters, setFilters] = useState<FilterState>({
     agent: [],
     status: [],

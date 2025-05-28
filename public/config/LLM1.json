@@ -8,24 +8,21 @@
                 { "name": "GPT-4.1", "value": "gpt-4.1" },
                 { "name": "GPT-4.1 Mini", "value": "gpt-4.1-mini" },
                 { "name": "GPT-4.1 Nano", "value": "gpt-4.1-nano" },
-                { "name": "GPT-4.5 Preview", "value": "gpt-4.5-preview" },
                 { "name": "GPT-4o", "value": "gpt-4o" },
+                { "name": "Gpt-4o 2024-05-13", "value": "gpt-4o-2024-05-13" },
                 { "name": "GPT-4o Mini", "value": "gpt-4o-mini" },
-                { "name": "O1", "value": "o1" },
-                { "name": "O1 Pro", "value": "o1-pro" },
-                { "name": "O3", "value": "o3" },
-                { "name": "O1 Mini", "value": "o1-mini" },
-                { "name": "GPT Image 1", "value": "gpt-image-1" }
+                { "name": "GPT-4o Mini 2024-07-18", "value": "gpt-4o-mini-2024-07-18" },
+                { "name": "Gpt-4 Turbo", "value": "gpt-4-turbo" },
+                { "name": "Gpt-4 Turbo 2024-04-09", "value": "gpt-4-turbo-2024-04-09" }
             ]
         },
         {
             "name": "Cerebras",
             "value": "Cerebras",
             "models": [
-                { "name": "Llama 4 Scout", "value": "llama-4-scout" },
-                { "name": "Llama 3.1 8B", "value": "llama-3.1-8b" },
+                { "name": "Llama 3.1 8B", "value": "llama3.1-8b" },
                 { "name": "Llama 3.3 70B", "value": "llama-3.3-70b" },
-                { "name": "Qwen 3 32B", "value": "qwen-3-32b" },
+                { "name": "Llama 4 scout 17b", "value": "llama-4-scout-17b-16e-instruct" },
                 { "name": "Deepseek R1 Distill Llama 70B", "value": "deepseek-r1-distill-llama-70b" }
             ]
         },
@@ -33,18 +30,13 @@
             "name": "Groq",
             "value": "Groq",
             "models": [
-                { "name": "Llama 4 Scout (17Bx16E)", "value": "llama-4-scout-17bx16e" },
-                { "name": "Llama 4 Maverick (17Bx128E)", "value": "llama-4-maverick-17bx128e" },
-                { "name": "Llama Guard 4 12B 128k", "value": "llama-guard-4-12b-128k" },
-                { "name": "DeepSeek R1 Distill Llama 70B", "value": "deepseek-r1-distill-llama-70b" },
-                { "name": "Qwen QwQ 32B (Preview) 128k", "value": "qwen-qwq-32b-preview-128k" },
-                { "name": "Mistral Saba 24B", "value": "mistral-saba-24b" },
-                { "name": "Llama 3.3 70B Versatile 128k", "value": "llama-3.3-70b-versatile-128k" },
-                { "name": "Llama 3.1 8B Instant 128k", "value": "llama-3.1-8b-instant-128k" },
-                { "name": "Llama 3 70B 8k", "value": "llama-3-70b-8k" },
-                { "name": "Llama 3 8B 8k", "value": "llama-3-8b-8k" },
-                { "name": "Gemma 2 9B 8k", "value": "gemma-2-9b-8k" },
-                { "name": "Llama Guard 3 8B 8k", "value": "llama-guard-3-8b-8k" }
+                { "name": "Llama 3 8B 8k", "value": "llama3-8b-8192" },
+                { "name": "Llama 3 70B ", "value": "llama3-70b-8192" },
+                { "name": "Llama Guard 3 8B", "value": "llama-guard-3-8b" },
+                { "name": "Llama 3.1 8B Instant ", "value": "llama-3.1-8b-instant" },
+                { "name": "Llama 3.3 70B Versatile 128k", "value": "llama-3.3-70b-versatile" },
+                { "name": "Llama 4 Scout (17Bx16E)", "value": "meta-llama/llama-4-scout-17b-16e-instruct" },
+                { "name": "Llama 4 Maverick (17Bx128E)", "value": "meta-llama/llama-4-maverick-17b-128e-instruct" }
             ]
         }
     ],

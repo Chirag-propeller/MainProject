@@ -59,6 +59,20 @@ export default function CallAnalysisTable({
         const callAnalysis = item.call_analysis || {};
         const metadata = item.metadata || {};
         const parsedDate = parseApiDate(item.started_at);
+        const agent = agentOptions.find((agent: Agent) => agent.agentId === metadata.agentid);
+        const llm = agent?.llm ? `${agent?.llm} (${agent?.llmModel})` : "N/A";
+        const stt = agent?.stt ? `${agent?.stt} ` : "N/A";
+        const tts = agent?.tts ? `${agent?.tts} (${agent?.ttsModel})` : "N/A";
+        let call_duration = "-";
+        if (item.call_duration_in_sec) {
+          const minutes = Math.floor(item.call_duration_in_sec / 60);
+          const seconds = item.call_duration_in_sec % 60;
+          if (minutes > 0) {
+            call_duration = `${minutes}m ${seconds.toFixed(0)}s`;
+          } else {
+            call_duration = `${seconds.toFixed(0)}s`;
+          }
+        }
 
         return {
           // Root-level
@@ -70,10 +84,14 @@ export default function CallAnalysisTable({
           user_id: item.user_id,
 
           // Metadata
-          agent: metadata.agentid,
+          agent: agent?.agentName,
+          llm: llm,
+          stt: stt,
+          tts: tts,
           fromPhone: metadata.fromPhone,
           numberoffollowup: metadata.numberoffollowup,
           total_followup_count: metadata.total_followup_count,
+          average_latency: item.avg_total_latency,
 
           // Call Analysis
           status: callAnalysis.STATUS,
@@ -101,32 +119,18 @@ export default function CallAnalysisTable({
           customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
           interruption_count: callAnalysis.INTERRUPTION_COUNT,
           reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
+          violations: callAnalysis.VIOLATIONS.length,
           cost: item.cost,
           call_direction: item.call_direction,
-          call_duration: item.call_duration_in_sec,
-          
+          call_duration: call_duration,
+          call_type: item.call_type,
           transcript: item.call_transcript,
+          llm_cost: Number(item.llm_cost_rupees?.$numberDecimal).toFixed(2),
+          stt_cost: Number(item.stt_cost_rupees?.$numberDecimal).toFixed(2),
+          tts_cost: Number(item.tts_cost_rupees?.$numberDecimal).toFixed(2),
+          
         };
       });
-
-      // Apply date range filter if set
-      // if (dateRange.startDate || dateRange.endDate) {
-      //   mappedData = mappedData.filter((item: any) => {
-      //     const date = item.rawDate;
-      //     console.log("date", date);
-          
-      //     if (dateRange.startDate && dateRange.endDate) {
-      //       return isAfter(date, startOfDay(dateRange.startDate)) && 
-      //              isBefore(date, startOfDay(dateRange.endDate));
-      //     } else if (dateRange.startDate) {
-      //       return isAfter(date, startOfDay(dateRange.startDate));
-      //     } else if (dateRange.endDate) {
-      //       return isBefore(date, startOfDay(dateRange.endDate));
-      //     }
-          
-      //     return true;
-      //   });
-      // }
 
       console.log("mappedData", mappedData);
       setCallData(mappedData);
@@ -155,7 +159,7 @@ export default function CallAnalysisTable({
                   {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-left text-xs font-medium text-gray-500 tracking-wider text-nowrap"
+                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
                     >
                       {CALL_ANALYSIS_FIELD_LABELS[key] ||
                         key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -170,7 +174,7 @@ export default function CallAnalysisTable({
                     className="hover:bg-gray-50 cursor-pointer transition duration-150"
                     onClick={() => handleRowClick(call)}
                   >
-                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium">
+                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium text-nowrap">
                       {index + 1}
                     </td>
                     {customiseField.map((key) => (
@@ -211,16 +215,22 @@ export default function CallAnalysisTable({
                 <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
-                    <SideBarCell title="Agent" value={selectedCall.agent}/>
-                    <SideBarCell title="From Phone Number" value={selectedCall.phonenumber}/>
-                    <SideBarCell title="To Phone Number" value={selectedCall.phonenumber}/>
-                    <SideBarCell title="Average Latency" value={selectedCall.latency || "N/A"}/>
+                    <SideBarCell title="Agent" value={selectedCall.agent ?? "N/A"}/>
+                    <SideBarCell title="From Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
+                    <SideBarCell title="To Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
+                    <SideBarCell title="Average Latency" value={selectedCall.average_latency ? `${selectedCall.average_latency.toFixed(2)} s` : "N/A"}/>
+                    <SideBarCell title="LLM" value={selectedCall.llm }/>
+                    <SideBarCell title="STT" value={selectedCall.stt ?? "N/A"}/>
+                    <SideBarCell title="TTS" value={selectedCall.tts ?? "N/A"}/>
                   </div>
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
-                    <SideBarCell title="Call Duration" value={selectedCall.call_duration || "N/A"}/>
-                    <SideBarCell title="Call Status" value={selectedCall.status || "N/A"}/>
-                    <SideBarCell title="Direction" value={selectedCall.direction || "N/A"}/>
-                    <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count || "N/A"}/>
+                    <SideBarCell title="Call Duration" value={selectedCall.call_duration ?? "N/A"}/>
+                    <SideBarCell title="Call Status" value={selectedCall.status ?? "N/A"}/>
+                    <SideBarCell title="Direction" value={selectedCall.call_direction ?? "N/A"}/>
+                    <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count ?? "N/A"}/>
+                    <SideBarCell title="LLM Cost" value={selectedCall.llm_cost ?? "N/A"}/>
+                    <SideBarCell title="STT Cost" value={selectedCall.stt_cost ?? "N/A"}/>
+                    <SideBarCell title="TTS Cost" value={selectedCall.tts_cost ?? "N/A"}/>
                   </div>
                 </div>
               </div>
@@ -233,18 +243,18 @@ export default function CallAnalysisTable({
                 <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Agent Performance</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
-                    <SideBarCell title="Call Quality Score" value={selectedCall.call_quality_score || "N/A"}/>
-                    <SideBarCell title="Script Adherence Score" value={selectedCall.script_adherence_score || "N/A"}/>
-                    <SideBarCell title="Interruption Count" value={selectedCall.interruption_count || "N/A"}/>
-                    <SideBarCell title="Violations" value={selectedCall.violations|| "N/A"}/>
-                    <SideBarCell title="Call Disposition" value={selectedCall.call_disposition || "N/A"}/>
+                    <SideBarCell title="Call Quality Score" value={selectedCall.call_quality_score ?? "N/A"}/>
+                    <SideBarCell title="Script Adherence Score" value={selectedCall.script_adherence_score ?? "N/A"}/>
+                    <SideBarCell title="Interruption Count" value={selectedCall.interruption_count ?? "N/A"}/>
+                    <SideBarCell title="Violations" value={selectedCall.violations ?? "N/A"}/>
+                    <SideBarCell title="Call Disposition" value={selectedCall.call_disposition ?? "N/A"}/>
                   </div>
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
-                    <SideBarCell title="Goal Completion" value={selectedCall.goal_completion || "N/A"}/>
-                    <SideBarCell title="Sentiment" value={selectedCall.sentiment || "N/A"}/>
-                    <SideBarCell title="NLP Error Rate" value={selectedCall.nlp_error_rate || "N/A"}/>
-                    <SideBarCell title="Intent Success Rate" value={selectedCall.intent_success_rate || "N/A"}/>
-                    <SideBarCell title="Escalation Flag" value={selectedCall.escalation_flag || "N/A"}/>
+                    <SideBarCell title="Goal Completion" value={selectedCall.goal_completion ?? "N/A"}/>
+                    <SideBarCell title="Sentiment" value={selectedCall.sentiment ?? "N/A"}/>
+                    <SideBarCell title="NLP Error Rate" value={selectedCall.nlp_error_rate ?? "N/A"}/>
+                    <SideBarCell title="Intent Success Rate" value={selectedCall.intent_success_rate ?? "N/A"}/>
+                    <SideBarCell title="Escalation Flag" value={selectedCall.escalation_flag ?? "N/A"}/>
                   </div>
                 </div>
               </div>
@@ -253,12 +263,12 @@ export default function CallAnalysisTable({
                 <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Compliance</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
-                    <SideBarCell title="Compliance Risk Score" value={selectedCall.compliance_risk_score || "N/A"}/>
-                    <SideBarCell title="Keyword Alert Count" value={selectedCall.keyword_alert_count || "N/A"}/>
+                    <SideBarCell title="Compliance Risk Score" value={selectedCall.compliance_risk_score ?? "N/A"}/>
+                    <SideBarCell title="Keyword Alert Count" value={selectedCall.keyword_alert_count ?? "N/A"}/>
                   </div>
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
-                    <SideBarCell title="PCI DSS Sensitive Data Detected" value={selectedCall.pci_dss_sensitive_data_detected || "N/A"}/>
-                    <SideBarCell title="GDPR Data Request" value={selectedCall.gdpr_data_request || "N/A"}/>
+                    <SideBarCell title="PCI DSS Sensitive Data Detected" value={selectedCall.pci_dss_sensitive_data_detected ?? "N/A"}/>
+                    <SideBarCell title="GDPR Data Request" value={selectedCall.gdpr_data_request ?? "N/A"}/>
                   </div>
                 </div>
               </div>

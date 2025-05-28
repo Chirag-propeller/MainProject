@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import createCampaign from '@/model/createCampaign'; // same model as used in create
 import { getUserFromRequest } from '@/lib/auth';
+import Contact from '@/model/campaign/contact.model';
 
 export async function PUT(req: NextRequest) {
   try {
@@ -15,6 +16,23 @@ export async function PUT(req: NextRequest) {
 
     await dbConnect();
     const user = await getUserFromRequest(req);
+    const {contacts, ...rest} = body;
+    console.log("contacts", contacts);
+    console.log("body", body);
+    if(contacts){
+      if(contacts.length > 0){
+        await Contact.deleteMany({campaignId: body._id});
+        for(const contact of contacts){
+          await Contact.create({
+          userId: user.userId,
+          campaignId: body._id,
+          phonenumber: contact.phonenumber,
+          metadata: contact.metadata,
+          });
+          console.log("contact", contact);
+        }
+      }
+    }
 
     // Find campaign by ID and make sure it's owned by the user
     const campaign = await createCampaign.findOne({ _id: _id, userId: user.userId });
