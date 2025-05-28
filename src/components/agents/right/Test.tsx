@@ -105,6 +105,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   const fetchToken = async () => {
     try {
       const dataToSend = {
+        agentId: agent.agentId,
         llm: agent.llm,
         llmModel: agent.llmModel,
         inputLanguage: agent.inputLanguage,

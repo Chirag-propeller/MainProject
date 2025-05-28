@@ -61,9 +61,9 @@ const EditForm: React.FC<{
 
   function transformDynamicData(data: any): { contacts: Contact[] } {
     const contacts = data
-      .filter((item: any) => item["Phone Number "]?.trim())
+      .filter((item: any) => item["Phone Number"]?.trim())
       .map((item: any) => {
-        const { ["Phone Number "]: phoneNumber, ...restMetadata } = item;
+        const { ["Phone Number"]: phoneNumber, ...restMetadata } = item;
         return {
           phonenumber: phoneNumber,
           metadata: {
@@ -113,6 +113,7 @@ const EditForm: React.FC<{
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleFileSelect");
     const file = e.target.files?.[0];
     if (file) {
       setFileName(file.name);
@@ -122,11 +123,17 @@ const EditForm: React.FC<{
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
+          console.log("results", results.data);
           const temp = transformDynamicData(results.data);
+          console.log("temp", temp);
           setContact(temp.contacts);
           const phoneNumbers = extractPhoneNumbers(results.data);
           setExtractedPhones(phoneNumbers);
+          console.log("contact", temp.contacts);
         },
+        error: (err) => {
+          console.error('Error parsing file:', err);
+        }
       });
     }
   };
@@ -149,6 +156,7 @@ const EditForm: React.FC<{
 
     data.forEach(row => {
       Object.values(row).forEach(value => {
+        // console.log("value", value);
         const matches = String(value).match(phoneRegex);
         if (matches) {
           matches.forEach(phone => {
@@ -160,6 +168,7 @@ const EditForm: React.FC<{
         }
       });
     });
+    // console.log("phoneNumbers", phoneNumbers);
     return [...new Set(phoneNumbers)];
   };
 
@@ -197,6 +206,8 @@ const EditForm: React.FC<{
         recipients: extractedPhones.length > 0 ? extractedPhones : [],
         status: formData.status,
         concurrentCalls: formData.concurrentCalls,
+
+        contacts: contact,
       };
       console.log(campaignData);
       onSave(campaignData);

@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '../../ui/button';
 import { Campaign } from '../types';
 import { Info, Calendar, Clock } from 'lucide-react';
-
+import axios from 'axios';
 interface SendModalProps {
   onClose: () => void;
   campaign: Campaign;
@@ -55,9 +55,40 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
 
     setExpectedInfo({ startDateTime, totalCalls, maxConcurrency, noOfCallLoops, avgTimePerCall, avgTimeCampaignMins, avgTimeCampaignHrs, expectedEndDateTime });
   };
-
+  const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
+  const API_KEY = 'supersecretapikey123';
+  
+  const triggerFastApiCall = async (campId: string) => {
+    try {
+      const payload = {
+        agentId: campaign.agentId,
+        fromPhone: campaign.fromNumber,
+        numberofFollowup: campaign.noOfFollowUps,
+        campaignid: campId,
+                
+      }
+      console.log("payload", payload);
+      const response = await axios.post(
+        API_URL,
+        payload,
+        {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
+          },
+        }
+      );
+  
+      return response.data;
+    } catch (error: any) {
+      console.error('❌ Axios Error:', error.response?.data || error.message);
+      throw error;
+    }
+  };
   const handleSend = () => {
-    // TODO: implement API call to send campaign with these options
+    console.log(campaign);
+    triggerFastApiCall(campaign._id);
   };
 
   // Format date for display

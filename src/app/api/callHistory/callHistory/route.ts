@@ -11,12 +11,15 @@ export async function POST(req: NextRequest) {
     const user = await getUserFromRequest(req);
     const { filters, dateRange } = await req.json();
     // console.log(dateRange);
-
+  
     const userId = new mongoose.Types.ObjectId(user.userId);
 
     // Start building the match object
     const matchStage: any = {
-      user_id: userId,
+      $or: [
+        { user_id: userId },
+        { user_id: user.userId }
+      ]
     };
 
     // Agent ID is inside metadata.agentid
@@ -73,7 +76,7 @@ export async function POST(req: NextRequest) {
           from: "aggregated_metrics", // collection name in MongoDB
           localField: "room_name", // field from OutBoundCall
           foreignField: "_id", // field from AggregatedMetrics  
-          as: "costMetrics" // output array field
+          as: "Metrics" // output array field
         }
       },
       
@@ -82,8 +85,14 @@ export async function POST(req: NextRequest) {
         $addFields: {
           cost: {
             $ifNull: [
-              { $arrayElemAt: ["$costMetrics.total_cost", 0] }, // Get total_cost from first matching document
+              { $arrayElemAt: ["$Metrics.total_cost", 0] }, // Get total_cost from first matching document
               0 // default value if no match or total_cost is null
+            ]
+          },
+          avg_total_latency: {
+            $ifNull: [
+              { $arrayElemAt: ["$Metrics.avg_total_latency", 0] }, // Get avg_total_latency from first matching document
+              0 // default value if no match or avg_total_latency is null
             ]
           }
         }
