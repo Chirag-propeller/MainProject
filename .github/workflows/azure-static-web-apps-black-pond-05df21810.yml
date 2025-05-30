@@ -49,6 +49,8 @@ jobs:
           PAGE_REDIRECT_URI: ${{ secrets.PAGE_REDIRECT_URI }}
           TWILIO_SID: ${{ secrets.TWILIO_SID }}
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
+          ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
