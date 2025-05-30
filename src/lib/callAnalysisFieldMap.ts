@@ -39,5 +39,6 @@ export const CALL_ANALYSIS_FIELD_LABELS: Record<string, string> = {
     follow_up_date_time: "Follow-up Time",
     call_direction: "Call Direction",
     call_duration: "Call Duration(sec)",
+    average_latency: "Avg. Latency(sec)",
   };
   

@@ -1,10 +1,12 @@
 "use client";
-import CampaignDashboard from '@/components/campaigns/CampaignDashboard'
+import CampaignForm from '@/components/campaigns/CampaignForm'
 import React from 'react'
 
 const CreateCampaignPage = () => {
   return (
-    <CampaignDashboard />
+    <div className="h-full p-4">
+      <CampaignForm />
+    </div>
   )
 }
 

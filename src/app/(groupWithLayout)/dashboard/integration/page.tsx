@@ -1,4 +1,5 @@
 "use client"
+import { ZohoCard } from '@/components/integration';
 import GmailCard from '@/components/integration/GmailCard';
 import React from 'react'
 
@@ -17,8 +18,11 @@ const page = () => {
     <div>
       <div className='text-xl py-2 my-2'>Integration</div>
       <div>
-
-        Coming soon ... 
+        <ZohoCard
+          onSuccess={handleSuccess}
+          onError={handleError}
+        />
+        {/* Coming soon ...  */}
         
       {/* <GmailCard
         endpoint={url}

@@ -64,8 +64,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
         agentId: campaign.agentId,
         fromPhone: campaign.fromNumber,
         numberofFollowup: campaign.noOfFollowUps,
-        campaignid: campId,
-                
+        campaignid: campId,  
       }
       console.log("payload", payload);
       const response = await axios.post(

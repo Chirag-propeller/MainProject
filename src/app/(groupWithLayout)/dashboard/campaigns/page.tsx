@@ -1,12 +1,11 @@
 "use client"
-import CampaignDashboard from '@/components/campaigns/CampaignDashboard'
 import React from 'react'
 
 const CampaignsPage = () => {
   return (
-    <>
-      <CampaignDashboard />
-    </>
+    <div className="h-full flex items-center justify-center text-gray-500">
+      Select a campaign to view details or create a new one
+    </div>
   )
 }
 

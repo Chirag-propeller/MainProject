@@ -52,6 +52,24 @@ const CampaignCallSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  slotDates:{
+    type: Array,
+  },
+  slotTime:{
+    type: String,
+  },
+  goal:{
+    type: String,
+  },
+  dataToCollect:{
+    type: Array,
+  },
+  mandatoryAdherence:{
+    type: String,
+  },
+  recipientFile:{
+    type: String,
+  },
   recipients: [{ type: String,}],
   userId: {type: Schema.Types.ObjectId},
   outboundCallId: [{ type: Schema.Types.ObjectId, ref: 'outbound_call_data' , default: []}],
