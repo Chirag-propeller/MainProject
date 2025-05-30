@@ -15,6 +15,16 @@ export interface Campaign {
   followUp?: string;
   noOfFollowUps?: string;
   
+  // New fields from the database model
+  goal?: string;
+  dataToCollect?: string[];
+  mandatoryAdherence?: string;
+  slotDates?: string[];
+  slotTime?: string;
+  callDate?: string;
+  callTimezone?: string;
+  callScheduledOrNot?: boolean;
+  callTime?: string;
 }
 
 export interface Agent {

@@ -29,6 +29,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   const [isLoading, setIsLoading] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
+  const editFormRef = useRef<{ save: () => void }>(null);
   
   const statusStyles: Record<string, string> = {
     ongoing: 'bg-blue-100 text-blue-800',
@@ -76,10 +77,9 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   };
 
   const handleSave = () => {
-    // Trigger the save in EditForm by simulating a click on the hidden button
-    const saveButton = document.getElementById('campaign-save-button');
-    if (saveButton) {
-      saveButton.click();
+    // Use ref to call save function in EditForm
+    if (editFormRef.current) {
+      editFormRef.current.save();
     }
   };
 
@@ -134,7 +134,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   }, [isTitleEditing]);
   
   return (
-    <div className="flex flex-col bg-white rounded-lg border border-slate-200 h-full">
+    <div className="flex flex-col bg-white rounded-lg h-full">
       {/* Fixed header */}
       <div className="flex justify-between items-start p-4 pb-1 ">
         {/* Title and ID */}
@@ -150,7 +150,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
             />
           ) : (
             <div className="flex items-center">
-              <h2 className="text-xl font-semibold">{campaign.campaignCallName}</h2>
+              <h2 className="text-2xl font-semibold">{campaign.campaignCallName}</h2>
               {
                 isEditing && (
                   <Edit2
@@ -162,7 +162,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
 
             </div>
           )}
-          <p className="text-sm text-gray-500 mt-1">ID: {campaign._id}</p>
+          <p className="text-xs text-gray-500 mt-0.5">ID: {campaign._id}</p>
         </div>
         {/* Action buttons */}
         <div className="flex space-x-2 gap-1">
@@ -216,42 +216,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
         )
       }
 
-      {/* Hidden button for programmatic triggering of save */}
-      {/* <button id="campaign-save-button" className="hidden" />
-      {
-        !isEditing && (
-          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
-          {['general','analytics','data'].map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab as 'general'|'analytics'|'data')}
-              className={`pb-0.5 cursor-pointer ${activeTab === tab ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
-        </div>
-        )
-      } */}
-
-      {/* Edit tab */}
-      {/* {
-        isEditing && (
-          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
-          <button
-                key="edit"
-                onClick={() => setActiveTab('edit')}
-                className={`pb-0.5 cursor-pointer ${activeTab === 'edit' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
-              >
-                Edit
-              </button>
-          </div>
-        )
-      } */}
-
-      {/* Hidden button for programmatic triggering of save */}
-      <button id="campaign-save-button" className="hidden" />
-
       {/* Tab content */}
       <div className="flex-1 overflow-auto p-6">
         {activeTab === 'general' && <CampaignGeneral campaign={campaign} agents={agents} />}
@@ -259,7 +223,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
         {activeTab === 'analytics' && <CampaignAnalytics campaign={campaign} agents={agents} />}
         {activeTab === 'data' && <CampaignData campaign={campaign} />}
 
-        {activeTab === 'edit' && <EditForm campaign={campaign} onSave={handleFormSave} />}
+        {activeTab === 'edit' && <EditForm campaign={campaign} onSave={handleFormSave} ref={editFormRef} />}
       </div>
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} campaign={campaign}  />}
     </div>

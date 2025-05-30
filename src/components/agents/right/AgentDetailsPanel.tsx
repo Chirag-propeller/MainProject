@@ -93,10 +93,11 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
         </div>
         <div className="flex space-x-2 gap-1">
           <Button 
-            variant="secondary" 
+            variant="default" 
             size="md"
             onClick={handleUpdate}
-            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 border-gray-300'
+            // className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 bg-indigo-600/50 hover:bg-indigo-600/50  border-gray-300'
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 '
           >
             Update
           </Button>
@@ -109,13 +110,13 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
             Update
           </Button> */}
           <Button 
-            variant="default" 
+            variant="secondary" 
             size="md"
             onClick={handleTest}
-            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 '
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 border-1 text-indigo-600 border-indigo-500 hover:bg-indigo-50'
           >
             Test
-            <Play className=' pl-1 w-4 h-4 ml-0.5' />
+            <Play className='text-indigo-600 pl-1 w-4 h-4 ml-0.5' />
           </Button>
         </div>
       </div>

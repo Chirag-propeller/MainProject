@@ -99,9 +99,9 @@ const CampaignDashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-80px)]" style={{ height: 'calc(100vh - 80px)' }}>
+    <div className="flex h-[calc(100vh-12px)]">
       {/* Campaigns list section (25-40% width) */}
-      <div className="w-1/4 border-r border-gray-200 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+      <div className="w-1/4 border-r border-gray-200 px-2 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
         <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100">
           <CampaignHeader 
             title="Campaigns"
@@ -126,7 +126,7 @@ const CampaignDashboard: React.FC = () => {
       </div>
 
       {/* Campaign details section (approximately 60% width) */}
-      <div className="w-3/4 p-4 overflow-auto">
+      <div className="w-3/4 overflow-auto">
         {isCreateCampaignPage ? (
           <CampaignForm />
         ) : selectedCampaign ? (
