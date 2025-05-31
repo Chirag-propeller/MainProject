@@ -1,5 +1,6 @@
 "use client"
 import { ZohoCard } from '@/components/integration';
+import GoogleSheetCard from '@/components/integration/card/GoogleSheet';
 import GmailCard from '@/components/integration/GmailCard';
 import React from 'react'
 
@@ -29,6 +30,10 @@ const page = () => {
         onSuccess={handleSuccess}
         onError={handleError}
       /> */}
+      <GoogleSheetCard
+        onSuccess={handleSuccess}
+        onError={handleError}
+      />
       </div>
     </div>
   )

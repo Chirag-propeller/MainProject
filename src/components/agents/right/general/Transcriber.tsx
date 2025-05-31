@@ -50,7 +50,9 @@ const Transcriber = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) 
     // }, [languages])
 
     useEffect(() => {
-        setAgent({...agent, stt: selectedLang})
+        if (agent.stt !== selectedLang) {
+            setAgent({...agent, stt: selectedLang})
+        }
     }, [selectedLang])
   return (
     <div className='border border-gray-200 rounded-lg'>

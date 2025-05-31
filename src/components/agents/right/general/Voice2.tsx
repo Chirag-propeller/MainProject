@@ -50,16 +50,24 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
       }, [voices]);
       
     useEffect(() => {
-        setAgent({...agent, tts: selectedProvider})
+        if (agent.tts !== selectedProvider) {
+            setAgent({...agent, tts: selectedProvider})
+        }
     }, [selectedProvider])
     useEffect(() => {
-        setAgent({...agent, gender: gender})
+        if (agent.gender !== gender) {
+            setAgent({...agent, gender: gender})
+        }
     }, [gender])
     useEffect(() => {
-        setAgent({...agent, ttsLanguage: language})
+        if (agent.ttsLanguage !== language) {
+            setAgent({...agent, ttsLanguage: language})
+        }
     }, [language])
     useEffect(() => {
-        setAgent({...agent, ttsVoiceName: selectedVoice})
+        if (agent.ttsVoiceName !== selectedVoice) {
+            setAgent({...agent, ttsVoiceName: selectedVoice})
+        }
     }, [selectedVoice])
 
 
