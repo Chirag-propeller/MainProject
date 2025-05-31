@@ -71,8 +71,21 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   const handleCloseTest = () => {
     setIsTesting(false);
   };
+
+  // Sync local state when agent changes from external source
   useEffect(() => {
-    setAgent({...agent, agentName: name});
+    setName(agent.agentName);
+  }, [agent.agentName]);
+
+  // Debounced update for name input (avoids updating on every keystroke)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (agent.agentName !== name) {
+        setAgent({...agent, agentName: name});
+      }
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timeout);
   }, [name]);
 
   return (

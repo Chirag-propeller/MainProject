@@ -87,6 +87,8 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
     const [models, setModels] = useState<{name: string, value: string}[]>([]);
     const [selectedModel, setSelectedModel] = useState<string>(agent.llmModel || "");
     const [temperature, setTemperature] = useState<number>(1);
+    
+    // Local state for text inputs (provides immediate UI feedback)
     const [firstMessage, setFirstMessage] = useState<string>(agent.welcomeMessage || "");
     const [systemPrompt, setSystemPrompt] = useState<string>(agent.prompt || "");
 
@@ -140,7 +142,7 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
         }
     }, [agent.llmModel, models]);
 
-    // Effect 4: Initialize form fields from agent data
+    // Sync local state when agent changes from external source
     useEffect(() => {
         setFirstMessage(agent.welcomeMessage || "");
     }, [agent.welcomeMessage]);
@@ -149,32 +151,39 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
         setSystemPrompt(agent.prompt || "");
     }, [agent.prompt]);
 
-    // Update agent when selections change
+    // Update agent when dropdown selections change (immediate updates for dropdowns)
     useEffect(() => {
-        setAgent({...agent, llm: selectedProvider})
+        if (agent.llm !== selectedProvider) {
+            setAgent({...agent, llm: selectedProvider})
+        }
     }, [selectedProvider])
 
     useEffect(() => {
-        setAgent({...agent, llmModel: selectedModel})
+        if (agent.llmModel !== selectedModel) {
+            setAgent({...agent, llmModel: selectedModel})
+        }
     }, [selectedModel])
 
-    // useEffect(() => {
-    //     setAgent({...agent, temperature: temperature})
-    // }, [temperature])
+    // Debounced updates for text inputs (avoids updating on every keystroke)
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if (agent.welcomeMessage !== firstMessage) {
+                setAgent({...agent, welcomeMessage: firstMessage});
+            }
+        }, 500); // 500ms delay
+
+        return () => clearTimeout(timeout);
+    }, [firstMessage]);
 
     useEffect(() => {
-        setAgent({...agent, welcomeMessage: firstMessage})
-    }, [firstMessage])
+        const timeout = setTimeout(() => {
+            if (agent.prompt !== systemPrompt) {
+                setAgent({...agent, prompt: systemPrompt});
+            }
+        }, 500); // 500ms delay
 
-    useEffect(() => {
-        setAgent({...agent, prompt: systemPrompt})
-    }, [systemPrompt])
-
-    // useEffect(() => {
-    //     setSelectedLLM(llm[0])
-    // }, [llm])
-
-
+        return () => clearTimeout(timeout);
+    }, [systemPrompt]);
     
   return (
     <div className='border border-gray-200 rounded-lg'>
@@ -204,7 +213,12 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
         </header>
         {isOpen && (
             <div className='p-2 flex gap-2  '>
-                <ModelLeft firstMessage={firstMessage} setFirstMessage={setFirstMessage} systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt}/>
+                <ModelLeft 
+                    firstMessage={firstMessage} 
+                    setFirstMessage={setFirstMessage} 
+                    systemPrompt={systemPrompt} 
+                    setSystemPrompt={setSystemPrompt}
+                />
                 <ModelRight llmProviders={providers} selectedProvider={selectedProvider} setSelectedProvider={setSelectedProvider} models={models} selectedModel={selectedModel} setSelectedModel={setSelectedModel}/>
             </div>
         )}
