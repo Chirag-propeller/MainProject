@@ -32,12 +32,13 @@ export async function GET(req: NextRequest) {
   await App.create({
     userId: user.userId,
     name: "google",
-    integration_type: "sheets",
-    token: data.access_token,
-    refresh_token: data.refresh_token,
-    token_type: data.token_type,
-    expires_in: data.expires_in,
+    provider: "google",
+    integrationType: "sheets",
+    accessToken: data.access_token,
+    refreshToken: data.refresh_token,
+    tokenType: data.token_type,
+    expiresIn: data.expires_in,
   });
 
-  return NextResponse.redirect("/dashboard/integration?googleSheets=connected");
+  return NextResponse.redirect(`${baseUrl}/dashboard/integration?googleSheets=connected`);
 }
