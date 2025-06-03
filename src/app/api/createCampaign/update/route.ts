@@ -8,6 +8,7 @@ import Contact from '@/model/campaign/contact.model';
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
+    console.log("body", body);
     const { _id, ...updateData } = body;
 
     if (!_id) {
@@ -40,7 +41,7 @@ export async function PUT(req: NextRequest) {
     if (!campaign) {
       return NextResponse.json({ success: false, error: 'Campaign not found or unauthorized' }, { status: 404 });
     }
-
+    console.log("updateData", updateData);
     // Update the campaign
     Object.assign(campaign, updateData);
     await campaign.save();

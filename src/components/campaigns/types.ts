@@ -25,10 +25,17 @@ export interface Campaign {
   callTimezone?: string;
   callScheduledOrNot?: boolean;
   callTime?: string;
+  
+  // Recipient provider fields
+  recipientFile?: string;
+  recipientFileProvider?: 'csv' | 'googleSheet';
+  recipientFileLink?: string;
+  recipientFileId?: string;
+  recipientFileName?: string;
 }
 
 export interface Agent {
   _id: string;
   agentId: string;
   agentName: string;
-} 
+}

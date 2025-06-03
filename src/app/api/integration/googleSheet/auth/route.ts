@@ -1,8 +1,21 @@
 // /app/api/integration/google-sheets/auth/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import dbConnect from "@/lib/mongodb";
+import { getUserFromRequest } from "@/lib/auth";
+import App from "@/model/integration/app.model";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const baseUrl = process.env.BASE_URL!;
+  await dbConnect();
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.redirect("/login");
+  }
+  const app = await App.findOne({ user: user.userId }); 
+  if (app) {
+    return NextResponse.json({ error: "Client already exists" }, { status: 307 });
+  }
+
   const redirectUri = encodeURIComponent(
     `${baseUrl}/api/integration/googleSheet/callback`
   );
