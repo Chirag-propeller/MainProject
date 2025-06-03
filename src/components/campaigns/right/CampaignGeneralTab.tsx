@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Campaign, Agent } from '../types';
-import { ChevronDown, ChevronUp, Settings, Users, Target, Calendar, Upload, Clock, Shield } from 'lucide-react';
+import { ChevronDown, ChevronUp, Settings, Users, Target, Calendar, Clock } from 'lucide-react';
 import TimezoneDropdown from '@/components/ui/TimezoneDropdown';
-import * as Papa from 'papaparse';
-import axios from 'axios';
+import RecipientsTab from './RecipientsTab';
 
 interface CampaignGeneralTabProps {
   campaign: Campaign;
@@ -20,14 +19,6 @@ interface CollapsibleSectionProps {
   onToggle: () => void;
   children: React.ReactNode;
 }
-
-type Contact = {
-  phonenumber: string;
-  metadata: {
-    follow_up_date_time: string,
-    [key: string]: any;
-  };
-};
 
 type Weekday = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
 const weekdays: Weekday[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -81,12 +72,6 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   const goalInputRef = useRef<HTMLTextAreaElement>(null);
   const dataTextareaRef = useRef<HTMLTextAreaElement>(null);
   const mandatoryAdherenceTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // File upload states
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [extractedPhones, setExtractedPhones] = useState<string[]>([]);
-  const [contact, setContact] = useState<Contact[]>([]);
 
   // Add state for phone numbers
   const [fromNumberList, setFromNumberList] = useState<string[]>([]);
@@ -107,7 +92,6 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   const handleInputChange = useCallback((field: keyof Campaign, value: any) => {
     if (!isEditable) return;
     
-    // console.log(`🔄 Updating campaign field: ${field}`, value);
     setCampaign({
       ...campaign,
       [field]: value
@@ -157,91 +141,6 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
       }
     });
   }, [handleInputChange]);
-
-  // File upload functionality
-  function transformDynamicData(data: any): { contacts: Contact[] } {
-    return {
-      contacts: data.map((row: any) => ({
-        phonenumber: row.phone || row.phonenumber || Object.values(row)[0],
-        metadata: {
-          follow_up_date_time: new Date().toISOString(),
-          ...row
-        }
-      }))
-    };
-  }
-
-  const extractPhoneNumbers = (data: any[]) => {
-    const phoneRegex = /(\+?\d{1,4}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?[\d\-.\s]{7,13}/g;
-    const phoneNumbers: string[] = [];
-
-    data.forEach(row => {
-      Object.values(row).forEach(value => {
-        const matches = String(value).match(phoneRegex);
-        if (matches) {
-          matches.forEach(phone => {
-            const cleaned = phone.replace(/[^+\d]/g, '');
-            if (cleaned.length >= 10) {
-              phoneNumbers.push(cleaned);
-            }
-          });
-        }
-      });
-    });
-    return [...new Set(phoneNumbers)];
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log('📁 File selected:', file.name);
-      setFileName(file.name);
-  
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          console.log('📊 CSV parse results:', results.data);
-          
-          const temp = transformDynamicData(results.data);
-          console.log('🔄 Transformed contacts:', temp.contacts);
-          
-          const phoneNumbers = extractPhoneNumbers(results.data);
-          console.log('📞 Extracted phone numbers:', phoneNumbers);
-          
-          setContact(temp.contacts);
-          setExtractedPhones(phoneNumbers);
-          
-          // Update campaign with both recipients and contacts
-          const updatedCampaign = {
-            ...campaign,
-            recipients: phoneNumbers,
-            contacts: temp.contacts  // Add contacts for API
-          };
-          console.log('💾 Updating campaign with recipients:', updatedCampaign);
-          setCampaign(updatedCampaign);
-        },
-        error: (err) => {
-          console.error('❌ Error parsing file:', err);
-        }
-      });
-    }
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (file && file.type === 'text/csv') {
-      setFileName(file.name);
-      // Trigger the same logic as file select
-      const fakeEvent = { target: { files: [file] } } as any;
-      handleFileSelect(fakeEvent);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-  };
 
   // Day selection handler
   const handleDayToggle = (day: Weekday) => {
@@ -295,13 +194,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
     if (campaign.slotDates) {
       setSelectedDays(campaign.slotDates as Weekday[]);
     }
-    
-    // Initialize extracted phones from existing recipients if not already extracted
-    if (campaign.recipients && campaign.recipients.length > 0 && extractedPhones.length === 0) {
-      console.log('📋 Initializing extracted phones from existing recipients:', campaign.recipients);
-      setExtractedPhones(campaign.recipients as string[]);
-    }
-  }, [campaign, extractedPhones.length]);
+  }, [campaign]);
 
   return (
     <div className='flex flex-col gap-2'>
@@ -439,97 +332,11 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
         isOpen={openSections.recipients}
         onToggle={() => toggleSection('recipients')}
       >
-        <div className="space-y-4">
-          {isEditable && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Upload Recipients File</label>
-              <label
-                htmlFor="recipientsFile"
-                className="block p-4 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer hover:border-indigo-400 transition-colors"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-              >
-                {fileName ? (
-                  <span className="text-green-600 font-medium">{fileName}</span>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                    <span className="text-gray-500">
-                      Drop CSV file here or click to upload
-                    </span>
-                  </div>
-                )}
-                <input
-                  type="file"
-                  id="recipientsFile"
-                  ref={fileInputRef}
-                  accept=".csv"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-              </label>
-              {extractedPhones.length > 0 && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
-                  <span className="text-sm text-green-700 font-medium">
-                    ✓ {extractedPhones.length} phone numbers extracted successfully
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
-
-          <div>
-            {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-              Recipients ({(campaign.recipients?.length || 0) + (extractedPhones.length || 0)} total)
-            </label> */}
-            
-            {/* Show extracted phones if available */}
-            {extractedPhones.length > 0 && (
-              <div className="mb-3">
-                <div className="text-xs text-green-600 font-medium mb-1">
-                  Recently uploaded ({extractedPhones.length} numbers):
-                </div>
-                <div className="max-h-32 overflow-y-auto border border-green-200 rounded-md p-2 bg-green-50">
-                  {extractedPhones.slice(0, 3).map((phone, index) => (
-                    <div key={index} className="text-sm text-green-700 py-1">
-                      {phone}
-                    </div>
-                  ))}
-                  {extractedPhones.length > 5 && (
-                    <div className="text-sm text-green-600 italic">
-                      ... and {extractedPhones.length - 3} more
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Show existing recipients */}
-            {/* {campaign.recipients && campaign.recipients.length > 0 ? (
-              <div>
-                <div className="text-xs text-gray-600 font-medium mb-1">
-                  Campaign recipients ({campaign.recipients.length} numbers):
-                </div>
-                <div className="max-h-40 overflow-y-auto border border-gray-200 rounded-md p-2 bg-gray-50">
-                  {campaign.recipients.slice(0, 10).map((recipient, index) => (
-                    <div key={index} className="text-sm text-gray-600 py-1">
-                      {recipient}
-                    </div>
-                  ))}
-                  {campaign.recipients.length > 10 && (
-                    <div className="text-sm text-gray-500 italic">
-                      ... and {campaign.recipients.length - 10} more
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : extractedPhones.length === 0 && (
-              <div className="p-4 text-center text-gray-500 border border-gray-200 rounded-md bg-gray-50">
-                No recipients added yet. Upload a CSV file to add recipients.
-              </div>
-            )} */}
-          </div>
-        </div>
+        <RecipientsTab
+          campaign={campaign}
+          setCampaign={setCampaign}
+          isEditable={isEditable}
+        />
       </CollapsibleSection>
 
       {/* Goals Section */}

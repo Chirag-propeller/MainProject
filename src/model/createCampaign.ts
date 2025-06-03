@@ -70,6 +70,20 @@ const CampaignCallSchema = new mongoose.Schema({
   recipientFile:{
     type: String,
   },
+  recipientFileProvider:{
+    type: String,
+    enum: ['csv', 'googleSheet'],
+  },
+  recipientFileLink:{
+    type: String,
+  },
+  recipientFileId:{
+    type: String,
+  },
+  recipientFileName:{
+    type: String,
+  },
+
   recipients: [{ type: String,}],
   userId: {type: Schema.Types.ObjectId},
   outboundCallId: [{ type: Schema.Types.ObjectId, ref: 'outbound_call_data' , default: []}],
