@@ -4,11 +4,11 @@ import { getUserFromRequest } from "@/lib/auth";
 import App from "@/model/integration/app.model";
 import mongoose from "mongoose";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   await dbConnect();
   const user = await getUserFromRequest(req);
   if (!user) {
-    return NextResponse.redirect("/login");
+    return NextResponse.redirect(new URL("/login", req.url));
   }
   const userId = new mongoose.Types.ObjectId(user.userId);
   const app = await App.findOne({ userId, provider: "googleSheet" });
