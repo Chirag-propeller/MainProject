@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import EditProfileForm from './EditProfileForm';
 import { useUserData, User } from './UserDataContext';
-import { User as UserIcon, Mail, Phone, Globe, Calendar, Shield, Settings, Camera } from 'lucide-react';
+import { User as UserIcon, Mail, Phone, Globe, Calendar, Shield, Settings, Camera, Zap, Database, Bot } from 'lucide-react';
 
 const ProfileCard = () => {
   const { user, loading, error, updateUser } = useUserData();
@@ -98,7 +98,7 @@ const ProfileCard = () => {
 
   return (
     <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between pb-4">
+      {/* <CardHeader className="flex flex-row items-center justify-between pb-4">
         <CardTitle className="text-lg font-semibold text-gray-800">
           Profile Information
         </CardTitle>
@@ -113,7 +113,7 @@ const ProfileCard = () => {
             Edit
           </Button>
         )}
-      </CardHeader>
+      </CardHeader> */}
       
       <CardContent className="p-6">
         {isEditing ? (
@@ -124,6 +124,7 @@ const ProfileCard = () => {
           />
         ) : (
           <div className="space-y-6">
+            <div className='flex justify-between'>
             {/* Profile Header */}
             <div className="flex items-start gap-4">
               <div className="relative group">
@@ -144,6 +145,7 @@ const ProfileCard = () => {
                   <Camera className="w-4 h-4 text-white" />
                 </div>
               </div>
+
               
               <div className="flex-1 space-y-2">
                 <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
@@ -163,7 +165,19 @@ const ProfileCard = () => {
                 </div>
               </div>
             </div>
+            <div className='items-center'>
+              <Button 
+                variant="secondary"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                className="text-indigo-600 hover:bg-indigo-50"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+            </div>
 
+            </div>
             {/* Contact Information */}
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
@@ -228,7 +242,7 @@ const ProfileCard = () => {
             </div>
 
             {/* Resources Summary */}
-            <div className="bg-blue-50 rounded-lg p-4">
+            {/* <div className="bg-blue-50 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-gray-800 mb-3">Resources</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="text-center">
@@ -248,7 +262,84 @@ const ProfileCard = () => {
                   <div className="text-xs text-gray-600">Campaigns</div>
                 </div>
               </div>
+            </div> */}
+
+            <div className="bg-blue-50 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+            <Database className="w-4 h-4 mr-2 text-blue-600" />
+            Resources Overview
+          </h3>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white rounded-lg p-3 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-indigo-600">
+                    {user.agents?.length || 0}
+                  </div>
+                  <div className="text-xs text-gray-600 flex items-center">
+                    <Bot className="w-3 h-3 mr-1" />
+                    AI Agents
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-indigo-600" />
+                </div>
+              </div>
             </div>
+            
+            <div className="bg-white rounded-lg p-3 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-blue-600">
+                    {user.phoneNumbers?.length || 0}
+                  </div>
+                  <div className="text-xs text-gray-600 flex items-center">
+                    <Phone className="w-3 h-3 mr-1" />
+                    Phone Numbers
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Phone className="w-4 h-4 text-blue-600" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg p-3 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-purple-600">
+                    {user.knowledgeBases?.length || 0}
+                  </div>
+                  <div className="text-xs text-gray-600 flex items-center">
+                    <Database className="w-3 h-3 mr-1" />
+                    Knowledge Bases
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                  <Database className="w-4 h-4 text-purple-600" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg p-3 border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-lg font-semibold text-green-600">
+                    {user.campaigns?.length || 0}
+                  </div>
+                  <div className="text-xs text-gray-600 flex items-center">
+                    <Zap className="w-3 h-3 mr-1" />
+                    Campaigns
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-green-600" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
           </div>
         )}
       </CardContent>

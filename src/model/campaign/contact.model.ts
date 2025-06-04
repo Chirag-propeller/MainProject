@@ -18,6 +18,10 @@ const contactSchema = new Schema({
     metadata: {
         type: Object,
     },
+    status: {
+        type: String,
+        default: 'pending'
+    },
 }, { timestamps: true });
 
   export default mongoose.models.Contact ||

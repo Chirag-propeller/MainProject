@@ -83,6 +83,9 @@ const CampaignCallSchema = new mongoose.Schema({
   recipientFileName:{
     type: String,
   },
+  agent:{
+    type: JSON,
+  },
 
   recipients: [{ type: String,}],
   userId: {type: Schema.Types.ObjectId},

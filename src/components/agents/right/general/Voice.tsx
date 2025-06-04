@@ -70,16 +70,23 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
                     name: model.name,
                     value: model.value
                 }));
+                console.log("modelOptions", modelOptions);
+                console.log("provider", provider);
                 setModels(modelOptions);
+                // setSelectedModel(modelOptions[0].value);
                 
                 // If agent has a saved model that exists in new provider, keep it; otherwise use first available
                 if (agent.ttsModel && modelOptions.some(m => m.value === agent.ttsModel)) {
                     console.log("agent.ttsModel", agent.ttsModel);
                     setSelectedModel(agent.ttsModel);
+
                 } else if (modelOptions.length > 0) {
                     console.log("modelOptions", modelOptions[0].value);
                     setSelectedModel(modelOptions[0].value);
                 }
+                // if(modelOptions && modelOptions.length > 0) {
+                    
+                // }
             } 
             // else {
             //     setModels([]);
@@ -87,6 +94,11 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
             // }
         }
     }, [selectedProvider, ttsOptions]);
+    useEffect(() => {
+
+        console.log("selectedModel", selectedModel);
+        console.log("agent.ttsModel", agent.ttsModel);
+    }, [selectedModel])
     // useEffect(() => {
     //     const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
     //     const modelOptions = provider?.models.map((model: TtsModel) => ({
@@ -96,7 +108,7 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
     //     if(modelOptions && modelOptions.length > 0) {
     //         setSelectedModel(modelOptions[0].value);
     //     }
-    // }, [selectedProvider])
+    // }, [selectedProvider, ttsOptions])
 
     // Effect 2: Update languages when provider or model changes
     useEffect(() => {
@@ -183,14 +195,59 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
 
     // Update agent when selections change
     useEffect(() => {
+        console.log("Inside useEffect of selectedProvider");
+        let newModel = selectedModel;
+        if (selectedProvider && Array.isArray(ttsOptions)) {
+            const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
+            if (provider && provider.models) {
+                const modelOptions = provider.models.map((model: TtsModel) => ({
+                    name: model.name,
+                    value: model.value
+                }));
+                // setSelectedModel(modelOptions[0].value);
+                
+                // If agent has a saved model that exists in new provider, keep it; otherwise use first available
+                if (agent.ttsModel && modelOptions.some(m => m.value === agent.ttsModel)) {
+                    console.log("agent.ttsModel", agent.ttsModel);
+                    newModel = agent.ttsModel;
+
+                } else if (modelOptions.length > 0) {
+                    console.log("modelOptions", modelOptions[0].value);
+                    newModel = modelOptions[0].value;
+                }
+            } 
+
+        }
+
+        
         if (agent.tts !== selectedProvider) {
-            setAgent({...agent, tts: selectedProvider})
+            // console.log("Inside useEffect of selectedProvider");
+            // console.log("selectedModel", selectedModel);
+            // console.log("selectedProvider", selectedProvider);
+            setAgent({...agent, tts: selectedProvider, ttsModel: newModel})
         }
     }, [selectedProvider])
+
+    useEffect(() => {
+        console.log("agent", agent)
+    }, [agent])
     
     useEffect(() => {
+        // console.log("=== DEBUGGING SETAGENT ===");
+        // console.log("selectedModel:", selectedModel);
+        // console.log("agent.ttsModel:", agent.ttsModel);
+        // console.log("Comparison result:", agent.ttsModel !== selectedModel);
+        console.log("Inside useEffect of selectedModel");
         if (agent.ttsModel !== selectedModel) {
-            setAgent({...agent, ttsModel: selectedModel})
+            // console.log("BEFORE setAgent - agent:", agent);
+            // console.log("NEW OBJECT:", {...agent, ttsModel: selectedModel});
+            
+            setAgent({...agent, ttsModel: selectedModel});
+            
+            // Add a timeout to check if it updated
+            // setTimeout(() => {
+            //     console.log("AFTER setAgent - check if updated");
+            // }, 100);
         }
     }, [selectedModel])
     
