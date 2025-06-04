@@ -40,10 +40,11 @@ const CampaignForm: React.FC = () => {
   });
 
   function transformDynamicData(data: any): { contacts: Contact[] } {
+    console.log(data);
     const contacts = data
-      .filter((item: any) => item["Phone Number "]?.trim())
+      .filter((item: any) => item["Phone Number"]?.trim())
       .map((item: any) => {
-        const { ["Phone Number "]: phoneNumber, ...restMetadata } = item;
+        const { ["Phone Number"]: phoneNumber, ...restMetadata } = item;
   
         return {
           phonenumber: phoneNumber,
@@ -53,7 +54,7 @@ const CampaignForm: React.FC = () => {
           }
         };
       });
-  
+    console.log(contacts);
     return { contacts };
   }
 
@@ -112,7 +113,8 @@ const CampaignForm: React.FC = () => {
     }
   };
 
-  const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
+  // const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
+  const API_URL = 'http://localhost:8000/process-numbers/';
   const API_KEY = 'supersecretapikey123';
   
   const triggerFastApiCall = async (campId: string) => {

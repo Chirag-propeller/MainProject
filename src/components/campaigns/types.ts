@@ -14,6 +14,8 @@ export interface Campaign {
   recipients?: string[];
   followUp?: string;
   noOfFollowUps?: string;
+  userId?: string;
+  agent?: JSON;
   
   // New fields from the database model
   goal?: string;

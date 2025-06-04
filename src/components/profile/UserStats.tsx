@@ -118,7 +118,7 @@ const UserStats = () => {
         </div>
 
         {/* Resource Statistics */}
-        <div className="bg-blue-50 rounded-lg p-4">
+        {/* <div className="bg-blue-50 rounded-lg p-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
             <Database className="w-4 h-4 mr-2 text-blue-600" />
             Resources Overview
@@ -193,10 +193,10 @@ const UserStats = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Account Status */}
-        <div className="bg-gray-50 rounded-lg p-4">
+        {/* <div className="bg-gray-50 rounded-lg p-4">
           <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
             <Activity className="w-4 h-4 mr-2 text-gray-600" />
             Account Status
@@ -232,7 +232,7 @@ const UserStats = () => {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Quick Actions */}
         <div className="bg-indigo-50 rounded-lg p-4">

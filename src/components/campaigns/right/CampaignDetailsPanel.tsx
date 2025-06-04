@@ -102,10 +102,12 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   const triggerFastApiCall = async (campId: string) => {
     try {
       const payload = {
-        agentId: campaign.agentId,
-        fromPhone: campaign.fromNumber,
-        numberofFollowup: campaign.noOfFollowUps,
-        campaignid: campId,  
+        agent_id: campaign.agentId,
+        from_phone: campaign.fromNumber,
+        user_id: campaign.userId,
+        campaign_id: campId, 
+        max_concurrent_calls: campaign.concurrentCalls,
+        
       }
       console.log("payload", payload);
       const response = await axios.post(
