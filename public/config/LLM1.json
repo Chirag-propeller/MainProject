@@ -793,8 +793,8 @@
             "value": "Deepgram",
             "models": [
                 {
-                    "name": "Nova-2",
-                    "value": "nova-2",
+                    "name": "Nova-2-General",
+                    "value": "nova-2-general",
                     "languages": [
                         { "name": "Multilingual (Spanish + English)", "value": "multi" },
                         { "name": "Bulgarian", "value": "bg" },
