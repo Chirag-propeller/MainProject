@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import AgentsList from '@/components/agents/AgentsList';
 import { Agent } from '@/components/agents/types';
 import { fetchAgents } from '@/components/agents/api';
@@ -14,7 +14,9 @@ export default function AgentsLayout({
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
+  const router = useRouter();
   
+
   // Extract the selected agent ID from the URL
   const selectedId = pathname?.split('/').pop();
   // const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -26,6 +28,10 @@ export default function AgentsLayout({
       try {
         const agentsData = await fetchAgents();
         setAgents(agentsData);
+        console.log("agentsData", agentsData);
+        if(agentsData.length > 0) {
+          router.push(`/dashboard/agents/${agentsData[0]._id}`);
+        }
       } catch (error) {
         console.error('Failed to load agents:', error);
       } finally {
