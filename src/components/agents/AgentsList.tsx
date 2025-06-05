@@ -93,7 +93,7 @@ const AgentsList = ({ agents, selectedId, setAgents }: { agents: Agent[], select
         stt: "Deepgram",
         tts: "AWS",
         ttsVoiceName: "Amy",
-        ttsModel: "Polly-Generative",
+        ttsModel: "generative",
         speed: 1,
         welcomeMessage: "Hi",
         knowledgeBaseAttached: false,
