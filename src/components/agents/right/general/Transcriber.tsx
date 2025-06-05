@@ -51,7 +51,7 @@ const Transcriber = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) 
 
     useEffect(() => {
         if (agent.stt !== selectedLang) {
-            setAgent({...agent, stt: selectedLang})
+            setAgent({...agent, inputLanguage: selectedLang})
         }
     }, [selectedLang])
   return (
