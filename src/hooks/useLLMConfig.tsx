@@ -23,6 +23,23 @@ interface LLMConfig {
   sttOptions: string[];
   loading: boolean;
   ttsLanguageOptions: string[];
+  sttModels: STTConfig[];
+}
+
+interface Languages{
+  name: string;
+  value: string;
+}
+interface STTModel {
+  name: string;
+  value: string;
+  languages: Languages[];
+}
+
+interface STTConfig {
+  name: string;
+  value: string;
+  models: STTModel[];
 }
 
 export default function useLLMConfig(): LLMConfig {
@@ -31,6 +48,7 @@ export default function useLLMConfig(): LLMConfig {
   const [ttsOptions, setTTSOptions] = useState<TtsOptions>({});
   const [ttsLanguageOptions, setTTSLanguageOptions] = useState<string[]>([]);
   const [sttOptions, setSTTOptions] = useState<string[]>([]);
+  const [sttModels, setSTTModels] = useState<STTConfig[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -47,6 +65,7 @@ export default function useLLMConfig(): LLMConfig {
         setTTSOptions(data.providers || {});
         setSTTOptions(data.stt_languages || []);
         setTTSLanguageOptions(data.tts_languages || []);
+        setSTTModels(data.stt || []);
       } catch (error) {
         console.error("Error loading config:", error);
       } finally {
@@ -57,5 +76,5 @@ export default function useLLMConfig(): LLMConfig {
     fetchConfig();
   }, []);
 
-  return { llmOptions, llmProviders, ttsOptions, sttOptions, loading, ttsLanguageOptions };
+  return { llmOptions, llmProviders, ttsOptions, sttOptions, loading, ttsLanguageOptions, sttModels: sttModels };
 }

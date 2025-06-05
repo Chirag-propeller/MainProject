@@ -91,6 +91,8 @@ const AgentsList = ({ agents, selectedId, setAgents }: { agents: Agent[], select
         llmModel: "gpt-4o-mini",
         inputLanguage: "English-US",
         stt: "Deepgram",
+        sttModel: "nova-2",
+        sttLanguage: "en-US",
         tts: "AWS",
         ttsVoiceName: "Amy",
         ttsModel: "generative",

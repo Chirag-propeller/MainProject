@@ -1,0 +1,42 @@
+# knowledgeBaseList
+
+import os
+from livekit import api
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv
+from flask_cors import CORS
+from livekit.api import LiveKitAPI, ListRoomsRequest,AccessToken,TokenVerifier
+import uuid
+import json
+
+
+async def generate_room_name():
+    name = "room-" + str(uuid.uuid4())
+    rooms = await get_rooms()
+    while name in rooms:
+        name = "room-" + str(uuid.uuid4())
+    return name
+
+async def get_rooms():
+    api = LiveKitAPI()
+    rooms = await api.room.list_rooms(ListRoomsRequest())
+    await api.aclose()
+    return [room.name for room in rooms.rooms]
+
+
+@app.route("/getToken", methods=["POST"])
+async def get_token():
+    data = request.get_json()
+    name = await generate_room_name()
+    room = name
+    
+    token = api.AccessToken(os.getenv("LIVEKIT_API_KEY"), os.getenv("LIVEKIT_API_SECRET")) \
+        .with_identity(name)\
+        .with_metadata(json.dumps(data))\
+        .with_name(name)\
+        .with_grants(api.VideoGrants(
+            room_join=True,
+            room=room
+        ))
+    print("Get Token")
+    return {"room_name": room, "token": token.to_jwt()}

@@ -110,6 +110,8 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         llmModel: agent.llmModel,
         inputLanguage: agent.inputLanguage,
         stt : agent.stt,
+        sttModel : agent.sttModel,
+        sttLanguage : agent.sttLanguage,
         tts : agent.tts,
         ttsModel : agent.ttsModel,
         ttsVoiceName : agent.ttsVoiceName,

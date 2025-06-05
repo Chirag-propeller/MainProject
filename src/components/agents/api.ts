@@ -7,6 +7,8 @@ interface AgentPayload {
   llmModel?: string;
   inputLanguage?: string;
   stt?: string;
+  sttModel?: string;
+  sttLanguage?: string;
   tts?: string;
   ttsVoiceName?: string;
   ttsModel?: string;
