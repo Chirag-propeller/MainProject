@@ -58,16 +58,32 @@ export async function POST(req: NextRequest) {
     // console.log("matchStage",matchStage);
 
     const pipeline = [
+      // {
+      //   $addFields: {
+      //     started_at_date: {
+      //     $dateFromString: {
+      //       dateString: "$started_at",
+      //       format: "%Y-%m-%d %H:%M"
+      //   }
+      //   }
+      // },
+      // },
       {
         $addFields: {
           started_at_date: {
-          $dateFromString: {
-            dateString: "$started_at",
-            format: "%Y-%m-%d %H:%M"
+            $cond: {
+              if: { $eq: [{ $type: "$started_at" }, "string"] },
+              then: {
+                $dateFromString: {
+                  dateString: "$started_at",
+                  format: "%Y-%m-%d %H:%M"
+                }
+              },
+              else: "$started_at"
+            }
+          }
         }
-        }
-      },
-      },
+      },      
       { $match: matchStage },
       
       // Lookup to join with AggregatedMetrics collection
