@@ -34,7 +34,7 @@ const CampaignForm: React.FC = () => {
     timeZone: "",
     recipientsFile: null as File | null,
     recipients: extractedPhones,
-    followUp: "No",
+    followUp: false,
     noOfFollowUps: "0",
     status: "ongoing"
   });
@@ -200,6 +200,8 @@ const CampaignForm: React.FC = () => {
       callDate: formData.sendOption === 'schedule' ? new Date(formData.scheduleDate) : null,
       recipients: extractedPhones,
       status: status,
+      followUp: formData.followUp,
+      noOfFollowUps: formData.noOfFollowUps,
     };
     
     try {
@@ -232,6 +234,11 @@ const CampaignForm: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFollowUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value === "Yes";
+    setFormData(prev => ({ ...prev, followUp: value }));
   };
 
   const handleCancel = () => {
@@ -403,8 +410,8 @@ const CampaignForm: React.FC = () => {
                   type="radio"
                   name="followUp"
                   value="Yes"
-                  checked={formData.followUp === "Yes"}
-                  onChange={handleInputChange}
+                  checked={formData.followUp === true}
+                  onChange={handleFollowUpChange}
                   className="mr-2"
                 />
                 Yes
@@ -414,15 +421,15 @@ const CampaignForm: React.FC = () => {
                   type="radio"
                   name="followUp"
                   value="No"
-                  checked={formData.followUp === "No"}
-                  onChange={handleInputChange}
+                  checked={formData.followUp === false}
+                  onChange={handleFollowUpChange}
                   className="mr-2"
                 />
                 No
               </label>
             </div>
 
-            {formData.followUp === "Yes" && (
+            {formData.followUp === true && (
               <div className="mt-2">
                 <label htmlFor="noOfFollowUps" className="block text-sm font-medium">
                   Number of Follow-ups

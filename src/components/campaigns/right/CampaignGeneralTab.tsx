@@ -194,7 +194,12 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
     if (campaign.slotDates) {
       setSelectedDays(campaign.slotDates as Weekday[]);
     }
-  }, [campaign]);
+
+    // Auto-set followUp to true if noOfFollowUps > 0
+    if (campaign.noOfFollowUps && parseInt(campaign.noOfFollowUps) > 0 && campaign.followUp !== true) {
+      handleInputChange('followUp', true);
+    }
+  }, [campaign, handleInputChange]);
 
   return (
     <div className='flex flex-col gap-2'>
@@ -281,9 +286,12 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                       <input
                         type="radio"
                         name="followUp"
-                        value="No"
-                        checked={campaign.followUp === "No" || !campaign.followUp}
-                        onChange={(e) => handleInputChange('followUp', e.target.value)}
+                        value="false"
+                        checked={(() => {
+                          const hasFollowups = campaign.noOfFollowUps && parseInt(campaign.noOfFollowUps) > 0;
+                          return campaign.followUp === false || (!campaign.followUp && !hasFollowups);
+                        })()}
+                        onChange={(e) => handleInputChange('followUp', e.target.value === "true")}
                         className="mr-2 text-sm"
                       />
                       No
@@ -292,15 +300,18 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                       <input
                         type="radio"
                         name="followUp"
-                        value="Yes"
-                        checked={campaign.followUp === "Yes"}
-                        onChange={(e) => handleInputChange('followUp', e.target.value)}
+                        value="true"
+                        checked={(() => {
+                          const hasFollowups = campaign.noOfFollowUps && parseInt(campaign.noOfFollowUps) > 0;
+                          return hasFollowups || campaign.followUp === true;
+                        })()}
+                        onChange={(e) => handleInputChange('followUp', e.target.value === "true")}
                         className="mr-2 text-sm"
                       />
                       Yes
                     </label>
                   </div>
-                  {campaign.followUp === "Yes" && (
+                  {(campaign.followUp === true || (campaign.noOfFollowUps && parseInt(campaign.noOfFollowUps) > 0)) && (
                     <input
                       type="number"
                       value={campaign.noOfFollowUps || ''}
@@ -314,8 +325,8 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                 </div>
               ) : (
                 <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
-                  {campaign.followUp || 'No'}
-                  {campaign.followUp === 'Yes' && campaign.noOfFollowUps && (
+                  {campaign.followUp ? 'Yes' : 'No'}
+                  {campaign.followUp === true && campaign.noOfFollowUps && (
                     <span className="ml-2">({campaign.noOfFollowUps} follow-ups)</span>
                   )}
                 </div>

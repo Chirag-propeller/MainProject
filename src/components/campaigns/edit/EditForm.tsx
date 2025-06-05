@@ -77,7 +77,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
     timeZone: campaign.callTimezone || "",
     recipientsFile: null as File | null,
     recipients: campaign.recipients || [],
-    followUp: campaign.noOfFollowUps === "" || campaign.noOfFollowUps === "0" ? "No" : "Yes",
+    followUp: campaign.noOfFollowUps === "" || campaign.noOfFollowUps === "0" ? false : true,
     noOfFollowUps: campaign.noOfFollowUps || "0",
     status: campaign.status || "ongoing",
     concurrentCalls: campaign.concurrentCalls || 0,
@@ -220,10 +220,18 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
 
   // Simple handler for radio buttons
   const handleRadioChange = (name: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    if (name === 'followUp') {
+      const boolValue = value === 'Yes';
+      setFormData(prev => ({
+        ...prev,
+        followUp: boolValue
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   // Simple handler for checkboxes (days selection)
@@ -411,7 +419,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                         type="radio"
                         name="followUp"
                         value="Yes"
-                        checked={formData.followUp === "Yes"}
+                        checked={formData.followUp === true}
                         onChange={(e) => handleRadioChange('followUp', e.target.value)}
                         className="mr-2"
                       />
@@ -422,14 +430,14 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                         type="radio"
                         name="followUp"
                         value="No"
-                        checked={formData.followUp === "No"}
+                        checked={formData.followUp === false}
                         onChange={(e) => handleRadioChange('followUp', e.target.value)}
                         className="mr-2"
                       />
                       No
                     </label>
                   </div>
-                  {formData.followUp === "Yes" && (
+                  {formData.followUp === true && (
                     <input
                       type="number"
                       name="noOfFollowUps"
