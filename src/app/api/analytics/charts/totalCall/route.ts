@@ -114,17 +114,33 @@ export async function POST(req: NextRequest) {
                 $match: { user_id: new mongoose.Types.ObjectId(user.userId) }
             },
 
+            // {
+            // $addFields: {
+            //     started_at_date: {
+            //     $dateFromString: {
+            //         dateString: "$started_at",
+            //         format: "%Y-%m-%d %H:%M",
+            //         timezone: "Asia/Kolkata", 
+            //     }
+            //     }
+            // }
+            // },
             {
-            $addFields: {
-                started_at_date: {
-                $dateFromString: {
-                    dateString: "$started_at",
-                    format: "%Y-%m-%d %H:%M",
-                    timezone: "Asia/Kolkata", 
+                $addFields: {
+                  started_at_date: {
+                    $cond: {
+                      if: { $eq: [{ $type: "$started_at" }, "string"] },
+                      then: {
+                        $dateFromString: {
+                          dateString: "$started_at",
+                          format: "%Y-%m-%d %H:%M"
+                        }
+                      },
+                      else: "$started_at"
+                    }
+                  }
                 }
-                }
-            }
-            },
+              }, 
             {
                 $match: match
             },
@@ -157,7 +173,7 @@ export async function POST(req: NextRequest) {
         //   const pipeline = pipeline; // put aggregation pipeline from above
 
         const result = await OutBoundCall.aggregate(pipeline);
-        console.log(result);
+        // console.log(result);
         let formatted;
 
         if(interval.unit === "hour"){

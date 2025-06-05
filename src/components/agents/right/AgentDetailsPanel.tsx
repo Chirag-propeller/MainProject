@@ -25,10 +25,10 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   // Tabs available for this agent
   const tabs = [
     { id: 'general', label: 'General' },
-    { id: 'prompt', label: 'Prompt' },
-    { id: 'settings', label: 'Settings' },
-    { id: 'conversations', label: 'Conversations' },
-    { id: 'analytics', label: 'Analytics' }
+    // { id: 'prompt', label: 'Prompt' },
+    // { id: 'settings', label: 'Settings' },
+    // { id: 'conversations', label: 'Conversations' },
+    // { id: 'analytics', label: 'Analytics' }
   ];
 
   const handleUpdate = async () => {
