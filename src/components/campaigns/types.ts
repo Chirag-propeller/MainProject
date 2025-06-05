@@ -12,7 +12,7 @@ export interface Campaign {
   timeZone?: string;
   recipientsFile?: File | null;
   recipients?: string[];
-  followUp?: string;
+  followUp?: boolean;
   noOfFollowUps?: string;
   userId?: string;
   agent?: JSON;
