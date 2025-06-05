@@ -10,6 +10,8 @@ export interface Agent {
   llmModel?: string;
   inputLanguage?: string;
   stt?: string;
+  sttModel?: string;
+  sttLanguage?: string;
   tts?: string;
   ttsLanguage?: string;
   ttsVoiceName?: string;

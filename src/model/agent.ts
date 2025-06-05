@@ -15,6 +15,8 @@ export interface IAgent extends Document {
   prompt?: string;
   speed?: number;
   stt?: string;
+  sttModel?: string;
+  sttLanguage?: string;
   tts?: string;
   ttsVoiceName?: string;
   ttsLanguage?: string;
@@ -37,6 +39,8 @@ const AgentSchema: Schema = new Schema({
   prompt: { type: String },
   speed: { type: Number },
   stt: { type: String },
+  sttModel: { type: String },
+  sttLanguage: { type: String },
   tts: { type: String },
   ttsLanguage: { type: String },
   ttsModel: { type: String },
