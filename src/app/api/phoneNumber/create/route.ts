@@ -18,9 +18,9 @@ export async function POST(req: NextRequest) {
   try {
     const user = await getUserFromRequest(req);
     const body = await req.json();
-    const sipClient = new SipClient(process.env.LIVEKIT_URL!,
-      process.env.LIVEKIT_API_KEY,
-      process.env.LIVEKIT_API_SECRET);
+    const sipClient = new SipClient(process.env.TELEPHONY_LIVEKIT_URL!,
+      process.env.TELEPHONY_LIVEKIT_API_KEY,
+      process.env.TELEPHONY_LIVEKIT_API_SECRET);
       // phoneNumber,
       // terminationUri: terminationURI, 
       // sipTrunkUserName: sipUsername,

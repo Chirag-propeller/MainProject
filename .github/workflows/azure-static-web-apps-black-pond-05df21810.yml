@@ -55,6 +55,11 @@ jobs:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
           GOOGLE_SHEETS_CLIENT_SECRET: ${{ secrets.GOOGLE_SHEETS_CLIENT_SECRET }}
+          NEXT_PUBLIC_CAMPAIGN_URL: ${{ secrets.NEXT_PUBLIC_CAMPAIGN_URL }}
+          LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+          TELEPHONY_LIVEKIT_URL: ${{ secrets.TELEPHONY_LIVEKIT_URL }}
+          TELEPHONY_LIVEKIT_API_KEY: ${{ secrets.TELEPHONY_LIVEKIT_API_KEY }}
+          TELEPHONY_LIVEKIT_API_SECRET: ${{ secrets.TELEPHONY_LIVEKIT_API_SECRET }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
