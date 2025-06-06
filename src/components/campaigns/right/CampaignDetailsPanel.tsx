@@ -96,7 +96,8 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
 
     return errors;
   };
-  const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
+  // const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
+  const API_URL = process.env.NEXT_PUBLIC_CAMPAIGN_URL!;
   const API_KEY = 'supersecretapikey123';
   
   const triggerFastApiCall = async (campId: string) => {
@@ -107,7 +108,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         user_id: campaign.userId,
         campaign_id: campId, 
         max_concurrent_calls: campaign.concurrentCalls,
-        
+        numberoffollowup: campaign.noOfFollowUps,
       }
       console.log("payload", payload);
       const response = await axios.post(
