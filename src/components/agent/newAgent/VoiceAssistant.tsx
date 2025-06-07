@@ -22,9 +22,10 @@ interface VoiceAssistantProps {
   setShowVoiceAssistant: (show: boolean) => void;
   // sendData: () => Promise<void>; 
   token: string;
+  isOpen: boolean;
 }
 
-const VoiceAssistant = ({ setShowVoiceAssistant, token }: VoiceAssistantProps) =>  {
+const VoiceAssistant = ({ setShowVoiceAssistant, token, isOpen }: VoiceAssistantProps) =>  {
   const url = process.env.NEXT_PUBLIC_AZURE_URL
   const livekit_url = process.env.NEXT_PUBLIC_LIVEKIT_URL
 
@@ -34,7 +35,7 @@ const VoiceAssistant = ({ setShowVoiceAssistant, token }: VoiceAssistantProps) =
   }
 
   return (
-    <div className='h-[90%] border-1 border-solid border-gray-500 rounded-sm m-1 p-2 bg-white w-full'>
+    <div className={`h-[90%] border-1 border-solid border-gray-500 rounded-sm m-1 p-1 bg-white w-full ${isOpen ? 'block' : 'hidden'}`}>
     <LiveKitRoom
       // serverUrl='wss://proj1-pv288rqz.livekit.cloud'
       // serverUrl='wss://newvoiceapp1-s3d1i5qu.livekit.cloud'

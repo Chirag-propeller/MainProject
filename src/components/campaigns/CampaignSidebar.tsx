@@ -41,7 +41,7 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
       callScheduledOrNot: true,
       callDate: null,
       status: 'draft',
-      concurrentCalls: 0,
+      concurrentCalls: 1,
     };
     
     try {

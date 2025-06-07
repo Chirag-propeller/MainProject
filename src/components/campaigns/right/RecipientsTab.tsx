@@ -142,7 +142,7 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
       });
       if (res.status === 404) {
         setGoogleSheetIntegrated(false);
-        toast.error('No integration with Google Sheet. Please integrate Google Sheet first');
+        // toast.error('No integration with Google Sheet. Please integrate Google Sheet first');
         return;
       }
       const data = await res.json();
@@ -292,7 +292,7 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
       recipientFileId: tab === 'googleSheet' ? selectedSheet || undefined : undefined,
       recipientFileName: tab === 'csv' ? fileName || undefined : selectedSheetName || undefined,
     };
-    setCampaign(updatedCampaign);
+    // setCampaign(updatedCampaign);
   };
 
   // Initialize data on component mount
@@ -331,50 +331,9 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
 
   return (
     <div className="space-y-4">
-      {/* Tab Navigation */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8">
-          <button
-            onClick={() => handleTabSwitch('csv')}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'csv'
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-center space-x-2">
-              <FileText className="w-4 h-4" />
-              <span>Upload CSV</span>
-              {campaign.recipientFileProvider === 'csv' && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                  Active
-                </span>
-              )}
-            </div>
-          </button>
-          <button
-            onClick={() => handleTabSwitch('googleSheet')}
-            className={`py-2 px-1 border-b-2 font-medium text-sm ${
-              activeTab === 'googleSheet'
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-          >
-            <div className="flex items-center space-x-2">
-              <Table className="w-4 h-4" />
-              <span>Google Sheet</span>
-              {campaign.recipientFileProvider === 'googleSheet' && (
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
-                  Active
-                </span>
-              )}
-            </div>
-          </button>
-        </nav>
-      </div>
 
-      {/* Provider Status Display */}
-      {campaign.recipientFileProvider && (
+        {/* Provider Status Display */}
+        {campaign.recipientFileProvider && (
         <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -393,19 +352,67 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                   File: {campaign.recipientFileName}
                 </p>
               )}
-              {campaign.recipientFileId && (
+              {/* {campaign.recipientFileId && (
                 <p className="text-xs text-blue-600">
                   ID: {campaign.recipientFileId}
                 </p>
-              )}
+              )} */}
             </div>
           </div>
         </div>
       )}
 
+      { campaign.status === 'draft' && (
+        <div>
+
+
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200">
+        <nav className="flex space-x-8">
+          <button
+            onClick={() => handleTabSwitch('csv')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'csv'
+                ? 'border-indigo-500 text-indigo-600 cursor-pointer'
+                : 'border-transparent text-gray-500 hover:text-gray-700 cursor-pointer hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <FileText className="w-4 h-4" />
+              <span>Upload CSV</span>
+              {campaign.recipientFileProvider === 'csv' && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                  Active
+                </span>
+              )}
+            </div>
+          </button>
+          <button
+            onClick={() => handleTabSwitch('googleSheet')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'googleSheet'
+                ? 'border-indigo-500 text-indigo-600 cursor-pointer'
+                : 'border-transparent text-gray-500 hover:text-gray-700 cursor-pointer hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              <Table className="w-4 h-4" />
+              <span>Google Sheet</span>
+              {campaign.recipientFileProvider === 'googleSheet' && (
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                  Active
+                </span>
+              )}
+            </div>
+          </button>
+        </nav>
+      </div>
+
+
+
       {/* CSV Upload Tab */}
       {activeTab === 'csv' && (
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           {isEditable && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Upload Recipients File</label>
@@ -448,7 +455,7 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
 
       {/* Google Sheet Tab */}
       {activeTab === 'googleSheet' && googleSheetIntegrated ? (
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           <div className="bg-white rounded-lg border border-gray-200">
             <div className="p-4 border-b border-gray-200">
               <h4 className="text-sm font-medium text-gray-900">Select Google Sheet</h4>
@@ -583,6 +590,8 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
           </p>
         </div>
       )}
+    </div>
+    )}
     </div>
   );
 };
