@@ -126,8 +126,9 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
       };
       console.log(dataToSend);
       console.log("run");
+      const tempUrl ="/api/livekit/getToken" 
       // const response = await axios.post(`${url}/getToken`, dataToSend);
-      const response = await axios.post(`api/livekit/getToken`, dataToSend);
+      const response = await axios.post(tempUrl, dataToSend);
       // const response = await fetch(`${url}/getToken`);
       // console.log("Url ->", url);
       const data = response.data;
