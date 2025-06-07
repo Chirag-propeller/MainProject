@@ -1,5 +1,5 @@
 // middleware.ts
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 // import jwt from 'jsonwebtoken';
 import { jwtVerify } from 'jose'
 import { cookies } from "next/headers";
@@ -25,10 +25,10 @@ export async function middleware(request: NextRequest) {
       (await cookies()).set('token', '', { maxAge: 0 })
       return NextResponse.redirect(new URL('/login', request.url))
     }
-  }else{
+  }
+  if(!isValidToken){
     return NextResponse.redirect(new URL('/login', request.url))
   }
-
 
   if (pathname === '/dashboard' || pathname === '/dashboard/') {
     return NextResponse.redirect(new URL('/dashboard/agents', request.url));

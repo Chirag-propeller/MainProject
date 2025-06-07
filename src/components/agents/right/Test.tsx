@@ -52,7 +52,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   if (!mounted) {
     return null;
   }
-  let url = process.env.NEXT_PUBLIC_AZURE_URL;
+  const url = process.env.NEXT_PUBLIC_AZURE_URL;
 
   // llm?: string;
   // llmModel?: string;
@@ -127,8 +127,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
       };
       console.log(dataToSend);
       console.log("run");
-      // const response = await axios.post(`${url}/getToken`, dataToSend);
-      const response = await axios.post(`/api/livekit/getToken`, dataToSend);
+      const response = await axios.post(`${url}/getToken`, dataToSend);
       // const response = await fetch(`${url}/getToken`);
       // console.log("Url ->", url);
       const data = response.data;
@@ -210,8 +209,8 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
           </div>
           <hr className='w-[80%] border-gray-700 mx-auto '/> */}
 
-          {showVoiceAssistant  ?  (  
-              <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant}/>) : 
+          {showVoiceAssistant  ?  ( 
+              <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant}  />) : 
               (<div className='flex flex-col justify-center items-center h-[95%]'>
                 
                 {/* <Logo className='w-10 h-10' /> */}
