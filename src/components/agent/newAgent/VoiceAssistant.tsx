@@ -22,7 +22,7 @@ interface VoiceAssistantProps {
   setShowVoiceAssistant: (show: boolean) => void;
   // sendData: () => Promise<void>; 
   token: string;
-  isOpen: boolean;
+  isOpen?: boolean;
 }
 
 const VoiceAssistant = ({ setShowVoiceAssistant, token, isOpen }: VoiceAssistantProps) =>  {
