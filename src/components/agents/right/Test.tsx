@@ -1,7 +1,6 @@
 import VoiceAssistant from '@/components/agent/newAgent/VoiceAssistant';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-// import { url } from 'inspector';
 import { Agent } from '../types';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/sidebar/Logo';
@@ -127,7 +126,8 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
       };
       console.log(dataToSend);
       console.log("run");
-      const response = await axios.post(`${url}/getToken`, dataToSend);
+      // const response = await axios.post(`${url}/getToken`, dataToSend);
+      const response = await axios.post(`api/livekit/getToken`, dataToSend);
       // const response = await fetch(`${url}/getToken`);
       // console.log("Url ->", url);
       const data = response.data;
