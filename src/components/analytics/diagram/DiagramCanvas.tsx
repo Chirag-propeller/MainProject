@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import ReactFlow, { Node, Edge, Controls, Background , MarkerType } from 'reactflow';
+import ReactFlow, { Node, Edge, Controls, Background , MarkerType, ReactFlowProvider, useReactFlow } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { mockData } from './staticData';
 import { getHeight, isConnected } from './diagramUtils';
@@ -242,7 +242,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
   return (
     <div 
     // className="w-full h-screen">
-    className="w-[1000px] h-[450px] cursor-pointer ">
+    className="w-full h-[450px] overflow-x-hidden cursor-pointer ">
       <ReactFlow
         className='!cursor-pointer'
             nodeTypes={nodeTypes}

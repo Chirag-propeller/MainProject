@@ -22,8 +22,7 @@
             "models": [
                 { "name": "Llama 3.1 8B", "value": "llama3.1-8b" },
                 { "name": "Llama 3.3 70B", "value": "llama-3.3-70b" },
-                { "name": "Llama 4 scout 17b", "value": "llama-4-scout-17b-16e-instruct" },
-                { "name": "Deepseek R1 Distill Llama 70B", "value": "deepseek-r1-distill-llama-70b" }
+                { "name": "Llama 4 scout 17b", "value": "llama-4-scout-17b-16e-instruct" }
             ]
         },
         {
@@ -32,7 +31,6 @@
             "models": [
                 { "name": "Llama 3 8B 8k", "value": "llama3-8b-8192" },
                 { "name": "Llama 3 70B ", "value": "llama3-70b-8192" },
-                { "name": "Llama Guard 3 8B", "value": "llama-guard-3-8b" },
                 { "name": "Llama 3.1 8B Instant ", "value": "llama-3.1-8b-instant" },
                 { "name": "Llama 3.3 70B Versatile 128k", "value": "llama-3.3-70b-versatile" },
                 { "name": "Llama 4 Scout (17Bx16E)", "value": "meta-llama/llama-4-scout-17b-16e-instruct" },

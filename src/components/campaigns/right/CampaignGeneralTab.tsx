@@ -268,7 +268,6 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   value={campaign.concurrentCalls || 0}
                   onChange={(e) => handleInputChange('concurrentCalls', parseInt(e.target.value) || 0)}
                   className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  min="0"
                 />
               ) : (
                 <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">

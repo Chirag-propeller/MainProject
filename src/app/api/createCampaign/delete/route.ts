@@ -2,6 +2,7 @@ import { getUserFromRequest } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import createCampaign from "@/model/createCampaign";
 import User from "@/model/user/user.model";
+import Contact from "@/model/campaign/contact.model";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -18,6 +19,7 @@ export async function DELETE(req: NextRequest){
         if (campaign.userId.toString() !== user.userId) {
             return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 403 });
           }
+        await Contact.deleteMany({campaignId: id});
         await createCampaign.findByIdAndDelete(id);
         await User.findByIdAndUpdate(user.userId, { $pull: { campigns: id } });
         return NextResponse.json({ success: true, message: 'Campaign deleted successfully' }, { status: 200 });

@@ -111,6 +111,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         numberoffollowup: campaign.noOfFollowUps,
       }
       console.log("payload", payload);
+
       const response = await axios.post(
         API_URL,
         payload,
@@ -140,12 +141,15 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
       toast.error(errorMessage);
       return;
     }
+    // setCampaign({...campaign, status: 'ongoing'});
+    // setHasChanges(true);
 
     setIsSending(true);
     try {
       // First save any pending changes
-      if (hasChanges || isNameUpdating) {
-        const updatedCampaign = { ...campaign, campaignCallName: name };
+      // if (hasChanges || isNameUpdating) 
+        {
+        const updatedCampaign = { ...campaign, campaignCallName: name, status: 'ongoing' };
         const updateResponse = await axios.put('/api/createCampaign/update', updatedCampaign);
         if (!updateResponse.data.success) {
           toast.error('Failed to save changes before sending');
@@ -155,7 +159,6 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         setHasChanges(false);
         setIsNameUpdating(false);
       }
-
       console.log("campaign._id", campaign);
       try {
         const response = await triggerFastApiCall(campaign._id);
@@ -165,9 +168,6 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         console.error('❌ Failed to send campaign:', error);
         toast.error('Failed to send campaign');
       }
-      
-      
-      
     } catch (error) {
       console.error('❌ Failed to send campaign:', error);
       toast.error('Failed to send campaign');
@@ -266,7 +266,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
               </Button>
             </>
           ) : (
-            <Button variant="default" size="md" onClick={handleSend}>
+            <Button variant="secondary" size="md" className="px-4.5 py-0.5 text-md rounded-[4px] shadow-xs text-indigo-300 border-2 cursor-not-allowed border-indigo-200 hover:bg-gray-100 hover:text-indigo-300">
               <Send className="w-4 h-4 mr-1" />
               Send
             </Button>
