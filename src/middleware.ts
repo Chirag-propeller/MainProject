@@ -26,13 +26,6 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
   }
-  if(!isValidToken){
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  if (pathname === '/dashboard' || pathname === '/dashboard/') {
-    return NextResponse.redirect(new URL('/dashboard/agents', request.url));
-  }
 
   // Define routes
   const authRoutes = ['/login', '/signup']
@@ -45,6 +38,9 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   )
   const isPublicRoute = publicRoutes.includes(pathname)
+  if ((pathname === '/dashboard' && isValidToken) || (pathname === '/dashboard/' && isValidToken)) {
+    return NextResponse.redirect(new URL('/dashboard/agents', request.url));
+  }
 
   // Redirect authenticated users from auth routes to dashboard
   if (isAuthRoute && isValidToken) {
