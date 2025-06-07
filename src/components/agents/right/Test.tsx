@@ -211,7 +211,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
           <hr className='w-[80%] border-gray-700 mx-auto '/> */}
 
           {showVoiceAssistant  ?  (  
-              <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant} isOpen={isOpen} />) : 
+              <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant}/>) : 
               (<div className='flex flex-col justify-center items-center h-[95%]'>
                 
                 {/* <Logo className='w-10 h-10' /> */}
