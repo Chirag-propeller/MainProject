@@ -89,15 +89,6 @@ const Sidebar = ()=> {
             icon={item.icon}
           />
         ))} */}
-        <footer className='sticky bottom-0 left-0 w-full'>
-          <div className='flex justify-center items-center'>
-            <p className='text-sm text-gray-500'>
-              <span className='font-bold'>
-                Voice Assistant
-              </span>
-            </p>
-          </div>
-        </footer>
       </nav>
     </aside>
   );
