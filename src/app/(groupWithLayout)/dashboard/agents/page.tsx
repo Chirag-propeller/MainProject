@@ -1,11 +1,12 @@
 'use client'
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 // This is the main page for the agents section
 export default function AgentsPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const router = useRouter();
   useEffect(() => {
 
     const fetchAgents = async () => {
@@ -13,6 +14,10 @@ export default function AgentsPage() {
       try {
         const response = await fetch('/api/agents/get');
         const data = await response.json();
+        if(data.message === 'Unauthorized' || data.message === 'Authentication token missing'){
+          router.push('/login');
+          return;
+        }
         console.log(data);
         setData(data);
         // if(data.length > 0) {

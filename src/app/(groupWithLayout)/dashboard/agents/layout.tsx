@@ -29,6 +29,7 @@ export default function AgentsLayout({
         const agentsData:any = await fetchAgents();
         if(agentsData.message === 'Unauthorized' || agentsData.message === 'Authentication token missing'){
           router.push('/login');
+          return;
         }
         setAgents(agentsData);
         console.log("agentsData", agentsData);
