@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <main className="ml-52 w-full">{children}</main>
       
       </div>
-      <Footer/>
+      {/* <Footer/> */}
       </div>
   );
 }

@@ -10,6 +10,9 @@ export async function POST(req: NextRequest) {
   try {
     const user = await getUserFromRequest(req);
     const { filters, dateRange } = await req.json();
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const limit = parseInt(req.nextUrl.searchParams.get("limit") || "20");
+    // console.log(page, limit);
     // console.log(dateRange);
   
     const userId = new mongoose.Types.ObjectId(user.userId);
@@ -21,6 +24,7 @@ export async function POST(req: NextRequest) {
         { user_id: user.userId }
       ]
     };
+    matchStage.call_analysis = { $exists: true, $ne: null };
 
     // Agent ID is inside metadata.agentid
     if (filters.agent && filters.agent.length > 0) {
@@ -124,7 +128,7 @@ export async function POST(req: NextRequest) {
       // You can add sorting, pagination, projection, etc. here
     ];
 
-    const data = await OutBoundCall.aggregate(pipeline);
+    const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
 
     return NextResponse.json(
       {

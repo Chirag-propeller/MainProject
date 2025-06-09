@@ -26,12 +26,14 @@ export default function CallAnalysisTable({
   customiseField, 
   filters, 
   agentOptions, 
-  dateRange
+  dateRange, 
+  page,
 }: {
   customiseField: string[], 
   filters: FilterState, 
   agentOptions: Agent[],
-  dateRange: DateRangeFilter
+  dateRange: DateRangeFilter,
+  page: number
 }) {
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +50,7 @@ export default function CallAnalysisTable({
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.post("/api/callHistory/callHistory", {
+      const data = await axios.post(`/api/callHistory/callHistory?page=${page}&limit=${10}`, {
         filters: filters,
         dateRange: dateRange
       });
@@ -137,7 +139,7 @@ export default function CallAnalysisTable({
       setLoading(false);
     };
     fetchData();
-  }, [filters, agentOptions, dateRange]);
+  }, [filters, agentOptions, dateRange, page]);
 
   const handleRowClick = (call: any) => {
     setSelectedCall(call);
@@ -197,7 +199,7 @@ export default function CallAnalysisTable({
           </div>
 
           {selectedCall && (
-            <div className="fixed top-0 right-0 h-full w-[54%] bg-white shadow-lg border-l border-gray-200 z-50 overflow-y-auto ">
+            <div className="fixed top-0 right-0 h-full w-[54%] bg-white shadow-lg border-l border-gray-200 z-150 overflow-y-auto ">
               <div className="px-2 p-1 flex justify-between border-b border-gray-200 sticky top-0 bg-white">
                 <div className="flex flex-col gap-0">
                   <h2 className="text-md font-semibold">{selectedCall.started_at}</h2>

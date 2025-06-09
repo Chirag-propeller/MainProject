@@ -1,9 +1,93 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon, CreditCard } from 'lucide-react';
+import { Home, LineChart, Users, Phone, File, PhoneCall, Headphones, ChartArea, Folder, History, ChartBar, PhoneCallIcon, CreditCard, UserIcon, Loader2, User, Mail, Zap } from 'lucide-react';
 import SidebarLink from './sidebar/SidebarLink';
 import Logo from './sidebar/Logo';
+import { useState, useEffect } from 'react';
+
+// UserCard component for bottom of sidebar
+const UserCard = () => {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/user/getCurrentUser');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        
+        const userData = await response.json();
+        
+        // Process credits like in UserDataContext
+        const credits = parseFloat(userData.credits?.$numberDecimal) || 0;
+        const creditsUsed = parseFloat(userData.creditsUsed?.$numberDecimal) || 0;
+        
+        setUser({
+          ...userData,
+          credits,
+          creditsUsed
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="w-44 p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center justify-center">
+          <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+          <span className="ml-2 text-sm text-gray-500">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  const creditBalance = user.credits - user.creditsUsed;
+
+  return (
+    <Link href="/dashboard/profile">
+      <div className="w-44 p-3 bg-gray-50 hover:bg-gray-100 transition-colors rounded-lg border border-gray-200 cursor-pointer">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+            <User className="w-4 h-4 text-indigo-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 className="text-sm font-medium text-gray-900 truncate">{user.name}</h4>
+          </div>
+        </div>
+        
+        <div className="space-y-1">
+          <div className="flex items-center gap-1">
+            <Mail className="w-3 h-3 text-gray-400" />
+            <span className="text-xs text-gray-600 truncate">{user.email}</span>
+          </div>
+          
+          <div className="flex items-center gap-1">
+            <Zap className="w-3 h-3 text-green-500" />
+            <span className="text-xs font-medium text-gray-900">
+              ${creditBalance.toFixed(2)} credits
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const navItemsMain = [
   // { name: 'Home', href: '/dashboard', icon: Home },
@@ -89,6 +173,10 @@ const Sidebar = ()=> {
             icon={item.icon}
           />
         ))} */}
+
+        <div className='absolute bottom-3'>
+          <UserCard />
+        </div>
       </nav>
     </aside>
   );

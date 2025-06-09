@@ -7,7 +7,9 @@ import { FilterState } from '@/components/callHistory/topBar/Filter'
 import { DateRangeFilter } from '@/components/callHistory/topBar/DateFilter'
 import axios from 'axios'
 import { Agent } from '@/components/agents/types'
-import { History } from 'lucide-react'
+import { ChevronLeft, ChevronRight, History } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm cost", "stt cost", "tts cost"]
 
@@ -25,7 +27,9 @@ const sentimentOptions = [
 ]
 
 const page = () => {
+  const router = useRouter();
   const [agentOptions, setAgentOptions] = useState<Agent[]>([]);
+  const [page, setPage] = useState(1);
   const [customiseField, setCustomiseField] = useState(["started_at", "call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber"]);
   const [filters, setFilters] = useState<FilterState>({
     agent: [],
@@ -38,6 +42,7 @@ const page = () => {
   });
 
   useEffect(() => {
+    router.push(`/dashboard/callHistory?page=${page}&limit=${10}`)
     const fetchAgents = async () => {
       const response = await axios.get("/api/agents/get")
       const agents = response.data
@@ -46,14 +51,21 @@ const page = () => {
     }
     fetchAgents()
   }, [])
-  
+
+
+  const pageChanger = (page: number) => {
+    setPage(page);
+    router.push(`/dashboard/callHistory?page=${page}&limit=${10}`)
+  }
+    
 
   // You could implement the filtering logic here or pass the filters to the Table component
 
   return (
-    <div className='pl-4'>
+    <div className='pl-4 pb-10'>
+      <div className='sticky top-0 z-100 bg-white'>
 
-      <div className='flex gap-1.5 py-4'>
+      <div className='flex gap-1.5 py-4 '>
         <History className='w-3.5 h-3.5  self-center text-indigo-600' />
         <h1 className="text-lg  self-center text-indigo-600">Call History</h1>
       </div>
@@ -76,7 +88,17 @@ const page = () => {
           sentimentOptions={sentimentOptions}
         />
       </div>
-      <Table customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} />
+      </div>
+      <Table customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  />
+
+      <div className='flex justify-center gap-2 py-4  '>
+        {
+          page > 1 && <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page - 1)}> <ChevronLeft /> </Button>
+        }
+        {
+          <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page + 1)}> <ChevronRight /> </Button>
+        }
+      </div>
     </div>
   )
 }

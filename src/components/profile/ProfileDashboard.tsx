@@ -16,7 +16,7 @@ const ProfileDashboard = () => {
             <h1 className="text-lg self-center text-indigo-600">Profile</h1>
 
           </div>
-          <div className='items-center'>
+          <div className='items-center self-center'>
             <Logout/>
           </div>
         </div>
