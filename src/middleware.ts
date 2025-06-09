@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   )
   const isPublicRoute = publicRoutes.includes(pathname)
-  if ((pathname === '/dashboard' && isValidToken) || (pathname === '/dashboard/' && isValidToken) || (pathname === '/dashboard/agents' && isValidToken)) {
+  if ((pathname === '/dashboard' && isValidToken) || (pathname === '/dashboard/' && isValidToken) ) {
     return NextResponse.redirect(new URL('/dashboard/agents', request.url));
   }
 
