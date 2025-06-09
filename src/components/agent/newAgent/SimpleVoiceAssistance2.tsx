@@ -6,11 +6,11 @@ import React from 'react'
 const Message = ({type, text}: {type: string, text: string}) => {
   return (
     <div>
-      <div className={`flex justify-start ${type === 'agent' ? ' text-blue-400' : ' text-gray-600'}`}>
-      <strong className="text-black"> 
+      <div className={`flex justify-start ${type === 'agent' ? ' text-indigo-700' : ' text-green-500'}`}>
+      <strong className=" text-sm pr-1 "> 
         {type === 'agent' ? 'Agent: ' : 'User: '}
        </strong>
-       <span>
+       <span className="text-sm">
         {text}
        </span>
        </div>
@@ -74,7 +74,7 @@ const SimpleVoiceAssistance = () => {
     if (!messagesContainerRef.current) return;
     
     const container = messagesContainerRef.current;
-    const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 10;
+    const isAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 2;
     
     // Enable auto-scroll if user scrolls to bottom, disable if they scroll up
     setShouldAutoScroll(isAtBottom);
@@ -83,7 +83,7 @@ const SimpleVoiceAssistance = () => {
   return (
     <div className="flex flex-col justify-between w-full h-full">
       <div 
-        className="flex-1 overflow-hidden overflow-y-auto p-1 space-y-1" 
+        className="flex-1 overflow-hidden overflow-y-auto p-1 gap-0.5 " 
         ref={messagesContainerRef}
         onScroll={handleScroll}
       >
