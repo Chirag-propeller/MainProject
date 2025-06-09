@@ -19,8 +19,14 @@ export default function AgentsPage() {
         //   redirect(`/dashboard/agents/${data[0]._id}`);
         // }
         
-      } catch (error) {
+      } catch (error:any) {
         console.error('Failed to load agents:', error);
+        if(error.message === 'Unauthorized'){
+          redirect('/login');
+        }
+        if(error.message === 'Authentication token missing'){
+          redirect('/login');
+        }
       }finally{
         setLoading(false);
       }

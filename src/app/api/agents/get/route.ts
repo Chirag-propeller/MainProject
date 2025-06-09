@@ -19,6 +19,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(agents, { status: 200 });
   } catch (error:any) {
     console.error('Error fetching agents:', error);
+    if(error.message === 'Unauthorized'){
+      return NextResponse.json({ message: 'Unauthorized', error: error }, { status: 401 });
+    }
+    if(error.message === 'Authentication token missing'){
+      return NextResponse.json({ message: 'Authentication token missing', error: error }, { status: 400 });
+    }
     return NextResponse.json(
       {
         success: false,
