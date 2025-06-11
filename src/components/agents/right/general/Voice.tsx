@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Agent } from '@/components/agents/types'
 import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
-import { Triangle, Speaker, Music, Speech  } from 'lucide-react';
+import { Triangle, Speaker, Music, Speech, Play  } from 'lucide-react';
 import SelectionDropdown from '@/components/agents/SelectionDropdown';
+import VoiceSelector from './VoiceSelection';
 
 interface TtsProvider {
   name: string;
@@ -60,6 +61,7 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
     const [voices, setVoices] = useState<{name: string, value: string}[]>([]);
     const [selectedVoice, setSelectedVoice] = useState<string>(agent.ttsVoiceName || "");
     const [isOpen, setIsOpen] = useState(false)
+    // const [isPlaying, setIsPlaying] = useState(false)
 
     // Effect 1: Update models when provider changes
     useEffect(() => {
@@ -319,7 +321,22 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
                 <div className='flex flex-col gap-2 mx-1 w-9/11'>
                     <div className='mx-1 p-1'>
                     <label className='mx-1  '> Voice </label>
-                    <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} />
+                    <VoiceSelector voices={voices} selectedVoice={selectedVoice} setSelectedVoice={setSelectedVoice} agent={agent} />
+
+                    {/* <select 
+                        className='p-1.5  rounded-lg w-full text-sm bg-gray-100 border border-gray-300 '
+                        value={selectedVoice}
+                        onChange={(e) => setSelectedVoice(e.target.value)}
+                    >
+                        {voices.length > 0 ? voices?.map((option: any, idx:any) => (
+                            <option key={idx} value={option.value} className='p-1 flex flex-row '> <p>{option.name}</p>
+                            <Play className='w-4 h-4 text-gray-900 self-center' onClick={() => {
+                                console.log("option", option)
+                            }}/>
+                             </option>
+                        )) : <option value="">No options available</option>}
+                    </select> */}
+                    {/* <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} /> */}
                     </div>
                 </div>
             </div>

@@ -1,11 +1,12 @@
 // lib/azure.ts
-import { BlobServiceClient } from '@azure/storage-blob'
+import { BlobSASPermissions, BlobServiceClient } from '@azure/storage-blob'
 
 const AZURE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING!
 const CONTAINER_NAME = 'knowledgebase'
+const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_CONNECTION_STRING)
 
 export async function uploadFileToAzure(buffer: Buffer, filename: string): Promise<string> {
-  const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_CONNECTION_STRING)
+
   const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME)
 
   const blockBlobClient = containerClient.getBlockBlobClient(filename)
@@ -19,6 +20,86 @@ export async function uploadFileToAzure(buffer: Buffer, filename: string): Promi
   return blockBlobClient.url
 }
 
+// export async function hasVoice(filename: string): Promise<boolean> {
+  
+//   const blockBlobClient = containerClient.getBlockBlobClient(filename)
+//   const exists = await blockBlobClient.exists()
+//   return exists
+// }
+
+export async function hasVoice(provider: string, model: string, voice: string): Promise<boolean> {
+  const containerClient = blobServiceClient.getContainerClient("tts")
+  const filename = generateFilename(provider, model, voice);
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    return await blockBlobClient.exists();
+  } catch (error) {
+    console.error(`Error checking voice existence for ${filename}:`, error);
+    return false;
+  }
+}
+
+export async function storeVoice(
+  audioData: Buffer,
+  provider: string,
+  model: string,
+  voice: string
+): Promise<string> {
+  const filename = generateFilename(provider, model, voice);
+  try {
+    const containerClient = blobServiceClient.getContainerClient("tts")
+    const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    await blockBlobClient.uploadData(audioData, {
+      blobHTTPHeaders: {
+        blobContentType: 'audio/mpeg',
+        blobCacheControl: 'public, max-age=31536000' // 1 year cache
+      }
+    });
+    const permissions = new BlobSASPermissions();
+    permissions.read = true;
+    const sasUrl = await blockBlobClient.generateSasUrl({
+      permissions: permissions,
+      expiresOn: new Date(Date.now() + 10 * 60 * 1000), // 1 hour
+    });
+    console.log("sasUrl", sasUrl)
+    return sasUrl;
+  } catch (error) {
+    console.error(`Error storing voice ${filename}:`, error);
+    throw error;
+  }
+}
+
+export async function getVoiceUrl(
+  provider: string,
+  model: string,
+  voice: string
+): Promise<string | null> {
+  const containerClient = blobServiceClient.getContainerClient("tts")
+  const filename = generateFilename(provider, model, voice);
+  try {
+
+    const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    if (await blockBlobClient.exists()) {
+      const permissions = new BlobSASPermissions();
+      permissions.read = true;
+      const sasUrl = await blockBlobClient.generateSasUrl({
+        permissions: permissions,
+        expiresOn: new Date(Date.now() + 10 * 60 * 1000), // 1 hour
+      });
+      console.log("sasUrl", sasUrl)
+      return sasUrl;
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error getting URL for ${filename}:`, error);
+    return null;
+  }
+}
+
+// Helper for consistent filenames
+function generateFilename(provider: string, model: string, voice: string): string {
+  return `${provider.toLowerCase()}/${model}/${voice}.mp3`.replace(/\s+/g, '-');
+}
 
 
 // import { BlobServiceClient } from '@azure/storage-blob'
