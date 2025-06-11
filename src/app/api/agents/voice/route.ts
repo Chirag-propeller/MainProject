@@ -100,9 +100,17 @@ export async function POST(req: Request) {
     }
 
     if (provider === 'Google') {
-      const audioBuffer = await synthesizeSpeech(text, voice);
-      const audioUrl = await storeVoice(audioBuffer, provider, model, voice);
-      return NextResponse.json({ audioUrl });
+      try {
+        const audioBuffer = await synthesizeSpeech(text, voice);
+        const audioUrl = await storeVoice(audioBuffer, provider, model, voice);
+        return NextResponse.json({ audioUrl });
+      } catch (error) {
+        console.error("Google TTS generation error:", error);
+        return NextResponse.json(
+          { error: "" },
+          { status: 500 }
+        );
+      }
     }
 
     return NextResponse.json(
@@ -113,7 +121,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("TTS generation error:", error);
     return NextResponse.json(
-      { error: "Failed to generate voice preview" },
+      { error: "Failed to generate voice preview" , cause: error},
       { status: 500 }
     );
   }

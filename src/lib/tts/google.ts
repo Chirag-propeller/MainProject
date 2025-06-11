@@ -3,9 +3,13 @@ import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 
 // This is the sample text that will be synthesized.
 
-const client = new TextToSpeechClient();
+
+
 
 export async function synthesizeSpeech(text: string, voiceName: string): Promise<Buffer> {
+  try {
+    const client = new TextToSpeechClient();
+
   const languageCode = voiceName.split('-').slice(0, 2).join('-');
   console.log("text", text);
   const request = {
@@ -25,6 +29,11 @@ export async function synthesizeSpeech(text: string, voiceName: string): Promise
     throw new Error('Failed to generate audio from Google TTS.');
   }
   return Buffer.from(audioContent as Uint8Array);
+
+} catch (error) {
+  console.error("Google TTS client error:", error);
+  throw new Error("Failed to create Google TTS client.", { cause: error });
+}
 }
 
 
