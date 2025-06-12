@@ -8,6 +8,7 @@ import CampaignGeneralTab from '@/components/campaigns/right/CampaignGeneralTab'
 import CampaignAnalytics from './CampaignAnalytics';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import Analytics from './analytics/Analytics';
 
 interface CampaignDetailsPanelProps {
   campaign: Campaign;
@@ -299,7 +300,8 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         )}
         
         {activeTab === 'analytics' && (
-          <CampaignAnalytics campaign={campaign} agents={agents} />
+          // <CampaignAnalytics campaign={campaign} agents={agents} />
+          <Analytics campaignId={campaign._id} />
         )}
       </div>
     </div>

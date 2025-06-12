@@ -21,11 +21,6 @@ export async function POST(req: NextRequest) {
     const sipClient = new SipClient(process.env.TELEPHONY_LIVEKIT_URL!,
       process.env.TELEPHONY_LIVEKIT_API_KEY,
       process.env.TELEPHONY_LIVEKIT_API_SECRET);
-      // phoneNumber,
-      // terminationUri: terminationURI, 
-      // sipTrunkUserName: sipUsername,
-      // sipTrunkPassword: sipPassword,
-      // nickname,
       let {phoneNumber, terminationUri, sipTrunkUserName, sipTrunkPassword, nickname} = body;
       if (!nickname) {
         nickname = "Outbound Phone Number";

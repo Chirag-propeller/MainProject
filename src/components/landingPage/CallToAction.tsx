@@ -7,6 +7,7 @@ import { useDeviceType } from '@/hooks/useDeviceType';
 import { Button } from './Button';
 import toast from 'react-hot-toast';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 // import { useIsMobile } from '@/hooks/use-mobile';
 
 const CallToAction: React.FC = () => {
@@ -26,7 +27,7 @@ const CallToAction: React.FC = () => {
   //   }
   //   toast.success('Email sent successfully');
   // };
-  const buttonClickHandler = () => {
+  const buttonClickHandler = async () => {
     setSubmitted(true);
   
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -52,9 +53,41 @@ const CallToAction: React.FC = () => {
       sendEmail();
     } catch (error) {
       toast.error('Email not sent');
+      return;
+    }
+    
+
+    try {
+      const response = await fetch('/api/landingPage/sendCTAMail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
+      });
+
+      const result = await response.json();
+
+      // if (response.ok) {
+      //   // setMessage('Marketing email sent successfully!');
+      // } else {
+      //   // setMessage(`Error: ${result.error}`);
+      // }
+    } catch (error) {
+      // setMessage('Failed to send email. Please try again.');
+      console.error('Error sending email:', error);
+    } finally {
+      // setIsLoading(false);
     }
 
-      
+
+
+    window.open('https://calendly.com/ayush-propalai/30min', '_blank');
+    
+    console.log("Email sent successfully");
     setValidEmail(true);
     setIsClicked(true);
     setEmail('');
