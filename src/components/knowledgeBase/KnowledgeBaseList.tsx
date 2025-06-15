@@ -62,22 +62,52 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
     }
   }
 
-  if (loading) return <p className='p-2'>Loading...</p>
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+      </div>
+    )
+  }
+
+  if (kbs.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No knowledge bases found. Click Create to add your first knowledge base.
+      </div>
+    )
+  }
 
   return (
     <div className='space-y-2'>
       {kbs.map((kb) => (
         <div
           key={kb._id}
-          onClick={() => onSelect(kb)}
-          className={`flex justify-between items-center cursor-pointer px-3 py-2 rounded-md hover:bg-gray-200 ${
-            selectedId === kb._id ? 'bg-gray-300 font-semibold' : ''
+          className={`group p-2 px-2 border rounded-md mb-2 hover:border-indigo-500 transition-colors cursor-pointer ${
+            selectedId === kb._id ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'
           }`}
+          onClick={() => onSelect(kb)}
         >
-        <span onClick={() => onSelect(kb)} className=" w-full ">{kb.name}</span>
-          <button onClick={() => deleteKnowledgeBase(kb._id)} className="text-gray-600 ml-2 cursor-pointer hover:text-red-700">
-            <Trash2 size={12} />
-          </button>
+          <div className="flex items-center justify-between">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-medium text-gray-900 truncate">
+                {kb.name}
+              </h3>
+              <p className="text-xs text-gray-500 mt-1">
+                {kb.files?.length || 0} files • {kb.links?.length || 0} links
+              </p>
+            </div>
+            
+            <button 
+              onClick={(e) => {
+                e.stopPropagation()
+                deleteKnowledgeBase(kb._id)
+              }} 
+              className="ml-2 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Trash2 size={14} />
+            </button>
+          </div>
         </div>
       ))}
     </div>

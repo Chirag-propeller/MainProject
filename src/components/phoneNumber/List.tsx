@@ -1,7 +1,6 @@
 import { Trash2 } from 'lucide-react'; // Cleaner trash icon
 
-import React from 'react'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // interface Phone {
 //   phoneNumber : string;
@@ -67,32 +66,56 @@ const List = ({ refreshTrigger, selectedPhoneNumber,setSelectedPhoneRecord }: { 
     fetchPhone();
   }, [refreshTrigger]);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-32">
+        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+      </div>
+    )
+  }
+
+  if (phoneNumber.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No phone numbers found. Click Create to add your first phone number.
+      </div>
+    )
+  }
+
   return (
-    <div>
-      
-      {loading ? (<p className="text-gray-600">Loading Phone Numbers...</p>) : (
-        phoneNumber.map((phone) => {
-          const isActive = phone.phoneNumber === selectedPhoneNumber;
-          return (
-            <div
-              key={phone.phoneNumber}
-              className={`flex justify-between cursor-pointer p-1 rounded-sm ${
-                isActive ? 'bg-gray-300 font-bold' : 'hover:bg-gray-200'
-              }`}
-              onClick={() => setSelectedPhoneRecord(phone)}
-
-              // onClick={() => setSelectedPhoneNumber(phone.phoneNumber)}
-            >
-              <p>{phone.phoneNumber}</p>
-              <button onClick={(e) => handleDelete(phone.phoneNumber, e)} className="text-gray-700 cursor-pointer hover:text-red-800">
-                <Trash2 className="w-4 h-4" />
-              </button>
-
+    <div className="space-y-2">
+      {phoneNumber.map((phone) => {
+        const isActive = phone.phoneNumber === selectedPhoneNumber;
+        return (
+          <div
+            key={phone.phoneNumber}
+            className={`group p-2 px-2 border rounded-md mb-2 hover:border-indigo-500 transition-colors cursor-pointer ${
+              isActive ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'
+            }`}
+            onClick={() => setSelectedPhoneRecord(phone)}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium text-gray-900 truncate">
+                  {phone.phoneNumber}
+                </h3>
+                {phone.name && (
+                  <p className="text-xs text-gray-500 mt-1 truncate">
+                    {phone.name}
+                  </p>
+                )}
+              </div>
               
+              <button 
+                onClick={(e) => handleDelete(phone.phoneNumber, e)} 
+                className="ml-2 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <Trash2 size={14} />
+              </button>
             </div>
-          );
-        })
-      )}
+          </div>
+        );
+      })}
     </div>
   )
 }

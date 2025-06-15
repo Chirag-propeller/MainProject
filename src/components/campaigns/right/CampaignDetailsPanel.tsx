@@ -289,7 +289,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 overflow-auto p-4">
+      <div className="flex-1 overflow-auto">
         {activeTab === 'general' && (
           <CampaignGeneralTab 
             campaign={campaign} 
@@ -301,7 +301,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         
         {activeTab === 'analytics' && (
           // <CampaignAnalytics campaign={campaign} agents={agents} />
-          <Analytics campaignId={campaign._id} />
+          <Analytics campaignId={campaign._id} status={campaign.status} />
         )}
       </div>
     </div>

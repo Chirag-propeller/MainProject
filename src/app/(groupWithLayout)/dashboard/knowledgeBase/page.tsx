@@ -7,6 +7,7 @@ import KnowledgeBaseDetails from '@/components/knowledgeBase/KnowledgeBaseDetail
 import KnowledgeBaseList from '@/components/knowledgeBase/KnowledgeBaseList'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Suspense } from 'react'
+import { BookOpen } from 'lucide-react'
 
 // Create a separate component for the content that uses useSearchParams
 const KnowledgeBaseContent = () => {
@@ -36,27 +37,42 @@ const KnowledgeBaseContent = () => {
   }, [searchParams])
 
   return (
-    <div className='flex justify-between relative'>
-      {/* Sidebar */}
-      <div className='w-[30%] bg-gray-100 p-2 h-[90vh] rounded-md mx-2'>
-        <div className='flex justify-between items-center mb-4'>
-          <p className='text-xl'>Knowledge Base</p>
-          <Button className='cursor-pointer h-7 w-7' onClick={() => setShowModal(true)}>+</Button>
+    <div className="flex h-full" style={{ height: 'calc(100vh - 12px)' }}>
+      {/* Left sidebar with knowledge base list (25% width) */}
+      <div className="w-1/4">
+        <div className="w-full border-gray-200 border-t-0 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+          {/* Header with title and create button */}
+          <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+            <div className='flex gap-1.5'>
+              <BookOpen className='w-3.5 h-3.5 self-center text-indigo-600' />
+              <h1 className="text-lg self-center text-indigo-600">Knowledge Base</h1>
+            </div>
+
+            <Button 
+              onClick={() => setShowModal(true)}
+              className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300'
+            >
+              Create
+            </Button>
+          </div>
+
+          {/* List of knowledge bases */}
+          <div className="flex-1 overflow-y-auto p-3">
+            <KnowledgeBaseList
+              showModal={showModal}
+              onSelect={(kb) => setSelectedKB(kb)}
+              selectedId={selectedKB?._id}
+            />
+          </div>
         </div>
-
-        <KnowledgeBaseList
-          showModal={showModal}
-          onSelect={(kb) => setSelectedKB(kb)}
-          selectedId={selectedKB?._id}
-        />
       </div>
-
-      {/* Main Content */}
-      <div className='w-[70%] bg-gray-100 p-2 h-[90vh] rounded-md overflow-y-auto'>
+      
+      {/* Main content area (75% width) */}
+      <div className="w-3/4 overflow-auto">
         {selectedKB ? (
           <KnowledgeBaseDetails kb={selectedKB} />
         ) : (
-          <div className='flex justify-center items-center h-full text-gray-400'>
+          <div className='flex justify-center items-center h-full text-gray-500'>
             Select a knowledge base to view details
           </div>
         )}

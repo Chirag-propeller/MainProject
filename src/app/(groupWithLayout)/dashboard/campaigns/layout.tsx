@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import CampaignSidebar from '@/components/campaigns/CampaignSidebar';
 import { Campaign } from '@/components/campaigns/types';
 import { fetchCampaigns } from '@/components/campaigns/api';
@@ -14,7 +14,7 @@ export default function CampaignsLayout({
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
-  
+  const router = useRouter();
   // Extract the selected campaign ID from the URL
   const selectedId = pathname?.split('/').pop();
   const isCreatePage = pathname?.includes('createCampaign');
@@ -26,6 +26,9 @@ export default function CampaignsLayout({
       try {
         const campaignsData = await fetchCampaigns();
         setCampaigns(campaignsData);
+        if(campaignsData.length > 0) {
+          router.push(`/dashboard/campaigns/${campaignsData[0]._id}`);
+        }
       } catch (error) {
         console.error('Failed to load campaigns:', error);
       } finally {

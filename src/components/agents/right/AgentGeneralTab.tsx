@@ -3,6 +3,7 @@ import { Agent } from '../types';
 import Model from './general/Model';
 import Transcriber from './general/Transcriber';
 import Voice from './general/Voice';
+import Tools from './general/Tools';
 
 interface AgentGeneralTabProps {
   agent: Agent;
@@ -15,6 +16,7 @@ const AgentGeneralTab: React.FC<AgentGeneralTabProps> = ({ agent, setAgent }) =>
         <Model agent={agent} setAgent={setAgent} />
         <Transcriber agent={agent} setAgent={setAgent} />
         <Voice agent={agent} setAgent={setAgent} />
+        <Tools agent={agent} setAgent={setAgent} />
     </div>
   );
 };

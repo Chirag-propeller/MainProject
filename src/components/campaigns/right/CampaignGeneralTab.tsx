@@ -202,6 +202,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   }, [campaign, handleInputChange]);
 
   return (
+    <div className='p-4'>
     <div className='flex flex-col gap-2'>
       {/* Campaign Details Section */}
       <CollapsibleSection
@@ -577,6 +578,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           )}
         </div>
       </CollapsibleSection>
+    </div>
     </div>
   );
 };
