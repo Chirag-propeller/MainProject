@@ -14,7 +14,7 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
     const [campaign, setCampaign] = useState<any>(null);
     const [dataToShow, setDataToShow] = useState<any[]>([
       {
-        title: "Total Calls",
+        title: "Total Planned Calls",
         name: "total_calls",
         value: 0
       },
@@ -90,8 +90,21 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
     });
     const data = response.data;
     const campaign = data.campaign[0];
-    console.log(campaign);
+    console.log("campaign", campaign);
     setCampaign(campaign);
+    for(let i=0; i<dataToShow.length; i++){
+      if(dataToShow[i].name === 'total_calls'){
+        dataToShow[i].value = campaign.total_calls;
+      }else if(dataToShow[i].name === 'completed_calls'){
+        dataToShow[i].value = campaign.completed_calls;
+      }else if(dataToShow[i].name === 'failed_calls'){
+        dataToShow[i].value = campaign.failed_calls;
+      }
+    }
+    
+    setDataToShow([...dataToShow]);
+    console.log("dataToShow", dataToShow);
+    setCampaignStatus(campaign.status);
     return campaign;
   }
 
@@ -103,12 +116,16 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
         const campaignData = await fetchCampaignAnalytics();
         console.log(campaignData?.status);
         if(campaignData?.status === 'active'){
-          fetchAnalytics();
+          fetchCampaignAnalytics();
+          // fetchAnalytics();
+          if(campaignStatus=== 'active'){
           const interval = setInterval(() => {
-              fetchAnalytics();
+              
+              fetchCampaignAnalytics();
             }, 60000);
             return () => clearInterval(interval);
           }
+        }
       } catch (error) {
         console.error('Error initializing campaign:', error);
       }

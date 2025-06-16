@@ -15,16 +15,9 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         setIsUploading(true)
         formData.append('agent_id', agentId)
         formData.append('file', file)
-        const url = process.env.NEXT_PUBLIC_AZURE_URL
         
         try {
-            const response = await axios.post(`${url}/upload-pdf`, formData, {
-                headers: {
-                    'accept': 'application/json',
-                    'x-api-key': 'supersecretapikey123',
-                    "Connection": "keep-alive"
-                }
-            })
+            const response = await axios.post('/api/upload-pdf', formData)
             if (response.status === 200) {
                 console.log('File uploaded successfully')
                 setAgent({
