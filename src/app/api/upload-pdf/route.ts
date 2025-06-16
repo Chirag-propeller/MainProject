@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import axios from 'axios'
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,52 +21,52 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
     console.log('API Route: Received form data with keys:', Array.from(formData.keys()))
 
-    // Make the request to Azure service
+    // Make the request to Azure service using axios
     const targetUrl = `${azureUrl}/upload-pdf`
     console.log('API Route: Making request to:', targetUrl)
 
-    const response = await fetch(targetUrl, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'x-api-key': 'supersecretapikey123'
-      },
-      body: formData
-    })
-
-    console.log('API Route: Azure response status:', response.status)
-    console.log('API Route: Azure response headers:', Object.fromEntries(response.headers.entries()))
-
-    // Handle the response
-    if (!response.ok) {
-      let errorMessage = `HTTP ${response.status}`
-      try {
-        const errorBody = await response.text()
-        console.error('API Route: Azure error body:', errorBody)
-        errorMessage += `: ${errorBody}`
-      } catch (e) {
-        console.error('API Route: Could not read error body:', e)
-      }
-      
-      return NextResponse.json({ 
-        error: 'Azure service error',
-        details: errorMessage 
-      }, { status: response.status })
-    }
-
-    // Parse successful response
-    const responseText = await response.text()
-    console.log('API Route: Azure response body:', responseText)
-    
-    let responseData
     try {
-      responseData = JSON.parse(responseText)
-    } catch (e) {
-      console.error('API Route: Could not parse JSON response:', e)
-      responseData = { message: responseText }
-    }
+      const response = await axios.post(targetUrl, formData, {
+        headers: {
+          'Accept': 'application/json',
+          'x-api-key': 'supersecretapikey123',
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 30000, // 30 second timeout
+        maxRedirects: 5
+      })
 
-    return NextResponse.json(responseData)
+      console.log('API Route: Azure response status:', response.status)
+      console.log('API Route: Azure response data:', response.data)
+
+      return NextResponse.json(response.data)
+
+    } catch (axiosError: any) {
+      console.error('API Route: Axios error:', axiosError.message)
+      console.error('API Route: Axios error code:', axiosError.code)
+      console.error('API Route: Axios error response:', axiosError.response?.data)
+      console.error('API Route: Axios error status:', axiosError.response?.status)
+
+      if (axiosError.response) {
+        // Server responded with error status
+        return NextResponse.json({ 
+          error: 'Azure service error',
+          details: axiosError.response.data || `HTTP ${axiosError.response.status}`
+        }, { status: axiosError.response.status })
+      } else if (axiosError.request) {
+        // Request was made but no response received
+        return NextResponse.json({ 
+          error: 'Network error',
+          details: 'No response from Azure service - this might be a CORS or network issue'
+        }, { status: 502 })
+      } else {
+        // Something else happened
+        return NextResponse.json({ 
+          error: 'Request setup error',
+          details: axiosError.message
+        }, { status: 500 })
+      }
+    }
 
   } catch (error) {
     console.error('API Route: Unexpected error:', error)

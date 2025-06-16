@@ -15,10 +15,20 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         setIsUploading(true)
         formData.append('agent_id', agentId)
         formData.append('file', file)
+        const url = process.env.NEXT_PUBLIC_AZURE_URL
         
         try {
-            console.log('Frontend: Starting upload request')
-            const response = await axios.post('/api/upload-pdf', formData)
+            console.log('Frontend: Starting direct upload to Azure service')
+            console.log('Frontend: Upload URL:', `${url}/upload-pdf`)
+            
+            const response = await axios.post(`${url}/upload-pdf`, formData, {
+                headers: {
+                    'Accept': 'application/json',
+                    'x-api-key': 'supersecretapikey123'
+                },
+                timeout: 30000
+            })
+            
             console.log('Frontend: Upload response:', response.data)
             
             if (response.status === 200) {
@@ -34,9 +44,15 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
             }
         } catch (error: any) {
             console.error('Frontend: Error uploading file:', error)
-            console.error('Frontend: Error response:', error.response?.data)
-            console.error('Frontend: Error status:', error.response?.status)
-            toast.error(`Upload error: ${error.response?.data?.details || error.message}`)
+            
+            if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+                console.error('CORS or network issue detected')
+                toast.error('CORS error: The Azure service needs to allow requests from this domain')
+            } else {
+                console.error('Frontend: Error response:', error.response?.data)
+                console.error('Frontend: Error status:', error.response?.status)
+                toast.error(`Upload error: ${error.response?.data?.message || error.message}`)
+            }
         } finally {
             setIsUploading(false)
         }
