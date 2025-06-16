@@ -20,13 +20,23 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         try {
             console.log('Frontend: Starting direct upload to Azure service')
             console.log('Frontend: Upload URL:', `${url}/upload-pdf`)
+            console.log('Frontend: File details:', {
+                name: file.name,
+                size: file.size,
+                type: file.type
+            })
             
             const response = await axios.post(`${url}/upload-pdf`, formData, {
                 headers: {
                     'Accept': 'application/json',
                     'x-api-key': 'supersecretapikey123'
                 },
-                timeout: 30000
+                timeout: 60000, // Increased to 60 seconds
+                maxContentLength: 50 * 1024 * 1024, // 50MB max
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1))
+                    console.log('Upload progress:', percentCompleted + '%')
+                }
             })
             
             console.log('Frontend: Upload response:', response.data)
@@ -70,6 +80,24 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         fileInputRef.current?.click()
     }
 
+    const testAzureConnectivity = async () => {
+        try {
+            console.log('Testing Azure service connectivity...')
+            const response = await fetch('/api/test-azure')
+            const data = await response.json()
+            console.log('Azure connectivity test result:', data)
+            
+            if (data.success) {
+                toast.success('Azure service is reachable!')
+            } else {
+                toast.error(`Azure service test failed: ${data.message}`)
+            }
+        } catch (error) {
+            console.error('Connectivity test failed:', error)
+            toast.error('Failed to test Azure connectivity')
+        }
+    }
+
     return (
         <div className='w-full'>
             <div className='flex flex-col gap-4'>
@@ -85,6 +113,14 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                         >
                             <Upload className='w-4 h-4' />
                             {isUploading ? 'Uploading...' : 'Upload File'}
+                        </Button>
+                        <Button
+                            onClick={testAzureConnectivity}
+                            variant='secondary'
+                            size='sm'
+                            className='rounded-[2px]'
+                        >
+                            Test Connection
                         </Button>
                         <input
                             ref={fileInputRef}
