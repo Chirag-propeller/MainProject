@@ -43,7 +43,10 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         }
         
         try {
-            const response = await axios.post(`${url}/upload-pdf`, formData2, {
+            const response = await axios.post(`${url}/upload-pdf`, {
+                agentId: agentId,
+                url: azureUrl,
+            }, {
                 headers: {
                     'accept': 'application/json',
                     'x-api-key': 'supersecretapikey123'
