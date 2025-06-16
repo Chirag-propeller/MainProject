@@ -17,7 +17,10 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         formData.append('file', file)
         
         try {
+            console.log('Frontend: Starting upload request')
             const response = await axios.post('/api/upload-pdf', formData)
+            console.log('Frontend: Upload response:', response.data)
+            
             if (response.status === 200) {
                 console.log('File uploaded successfully')
                 setAgent({
@@ -26,12 +29,14 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                 })
                 toast.success('File uploaded successfully')
             } else {
-                console.error('Failed to upload file')
+                console.error('Failed to upload file, status:', response.status)
                 toast.error('Failed to upload file')
             }
-        } catch (error) {
-            console.error('Error uploading file:', error)
-            toast.error('Error uploading file. Please try again.')
+        } catch (error: any) {
+            console.error('Frontend: Error uploading file:', error)
+            console.error('Frontend: Error response:', error.response?.data)
+            console.error('Frontend: Error status:', error.response?.status)
+            toast.error(`Upload error: ${error.response?.data?.details || error.message}`)
         } finally {
             setIsUploading(false)
         }
