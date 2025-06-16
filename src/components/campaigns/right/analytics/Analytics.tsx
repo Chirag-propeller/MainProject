@@ -4,14 +4,14 @@ import ProgressCard from './ProgressCard';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
 
-const Analytics = ({campaignId, status}: {campaignId: string, status: string}) => {
+const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, setHasChanges}: {campaign: any, setCampaign: (campaign: any) => void, campaignId: string, handleUpdate: () => void, status: string, setHasChanges: (hasChanges: boolean) => void}) => {
     const [analytics, setAnalytics] = useState<any[]>([]);
     const [loading, setLoading] = useState((status === 'draft') ? false : true);
     const [isLive, setIsLive] = useState(status === 'ongoing');
     const [isDraft, setIsDraft] = useState(status === 'draft');
     const [campaignStatus, setCampaignStatus] = useState(status);
     const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
-    const [campaign, setCampaign] = useState<any>(null);
+    const [tempCampaign, setTempCampaign] = useState<any>(null);
     const [dataToShow, setDataToShow] = useState<any[]>([
       {
         title: "Total Planned Calls",
@@ -80,6 +80,7 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
   }
 
   const fetchCampaignAnalytics = async () => {
+    setLoading(true);
     const response = await axios.post('/api/createCampaign/analytics', {
       campaignId: campaignId
     }, {
@@ -89,22 +90,42 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
       }
     });
     const data = response.data;
-    const campaign = data.campaign[0];
-    console.log("campaign", campaign);
-    setCampaign(campaign);
+    const campaignData = data.campaign[0];
+    console.log("campaign", campaignData);
+    setTempCampaign(campaignData);
+    
+    // Calculate pending calls: total - completed - failed
+    const pendingCalls = (campaignData.total_calls || 0) - (campaignData.completed_calls || 0) - (campaignData.failed_calls || 0);
+    
     for(let i=0; i<dataToShow.length; i++){
       if(dataToShow[i].name === 'total_calls'){
-        dataToShow[i].value = campaign.total_calls;
+        dataToShow[i].value = campaignData.total_calls || 0;
       }else if(dataToShow[i].name === 'completed_calls'){
-        dataToShow[i].value = campaign.completed_calls;
+        dataToShow[i].value = campaignData.completed_calls || 0;
       }else if(dataToShow[i].name === 'failed_calls'){
-        dataToShow[i].value = campaign.failed_calls;
+        dataToShow[i].value = campaignData.failed_calls || 0;
+      }else if(dataToShow[i].name === 'queued_calls'){
+        dataToShow[i].value = pendingCalls;
       }
     }
     
     setDataToShow([...dataToShow]);
     console.log("dataToShow", dataToShow);
-    setCampaignStatus(campaign.status);
+    
+    setCampaignStatus(campaignData.status);
+    
+    // Update parent campaign status if completed
+    if(campaignData.status === 'completed') {
+      setHasChanges(true);
+      setCampaign({
+        ...campaign,
+        status: 'completed'
+      });
+      
+      handleUpdate();
+
+    }
+    setLoading(false);
     return campaign;
   }
 
@@ -136,10 +157,10 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
 
   // Separate useEffect for when campaign status changes
   useEffect(() => {
-    if(isDraft || !campaign) return;
+    if(isDraft || !tempCampaign) return;
     
     
-    if(campaign.status === 'active' && !loading){
+    if(tempCampaign.status === 'active' && !loading){
       fetchAnalytics();
       const interval = setInterval(() => {
           fetchAnalytics();
@@ -147,7 +168,7 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
         return () => clearInterval(interval);
     }
     
-  }, [campaign?.status, isDraft]);
+  }, [tempCampaign?.status, isDraft]);
 
     // Helper function to get data by name
     const getDataValue = (name: string) => {

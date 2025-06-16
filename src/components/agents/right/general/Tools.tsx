@@ -12,13 +12,38 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
 
     const uploadFile = async (file: File) => {
         const formData = new FormData()
+        const formData2 = new FormData()
         setIsUploading(true)
         formData.append('agent_id', agentId)
         formData.append('file', file)
+        formData2.append('agentId', agentId)
         const url = process.env.NEXT_PUBLIC_AZURE_URL
+        let azureUrl = null;
+        try {
+            const response = await axios.post('/api/agents/file', formData);
+            
+            if (response.status === 200) {
+                azureUrl = response.data.url;
+                formData2.append('url', azureUrl)
+                console.log('File uploaded successfully')
+                setAgent({
+                    ...agent,
+                    knowledgeBaseAttached: true,
+                })
+                toast.success('File uploaded successfully')
+            } else {
+                console.error('Failed to upload file')
+                toast.error('Failed to upload file')
+                return;
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error)
+            toast.error('Error uploading file. Please try again.')
+            return;
+        }
         
         try {
-            const response = await axios.post(`${url}/upload-pdf`, formData, {
+            const response = await axios.post(`${url}/upload-pdf`, formData2, {
                 headers: {
                     'accept': 'application/json',
                     'x-api-key': 'supersecretapikey123'

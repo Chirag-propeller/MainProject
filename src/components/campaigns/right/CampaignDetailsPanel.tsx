@@ -48,7 +48,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
 
   const handleUpdate = async () => {
     if (!hasChanges && !isNameUpdating) {
-      toast.error('No changes to save');
+      // toast.error('No changes to save');
       return;
     }
 
@@ -301,7 +301,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         
         {activeTab === 'analytics' && (
           // <CampaignAnalytics campaign={campaign} agents={agents} />
-          <Analytics campaignId={campaign._id} status={campaign.status} />
+          <Analytics campaign={campaign} setHasChanges={setHasChanges} setCampaign={setCampaign} campaignId={campaign._id} handleUpdate={handleUpdate} status={campaign.status} />
         )}
       </div>
     </div>
