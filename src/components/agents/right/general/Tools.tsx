@@ -18,31 +18,12 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         const url = process.env.NEXT_PUBLIC_AZURE_URL
         
         try {
-            console.log('Frontend: Starting direct upload to Azure service')
-            console.log('Frontend: Upload URL:', `${url}/upload-pdf`)
-            console.log('Frontend: Current domain:', window.location.origin)
-            console.log('Frontend: Environment:', process.env.NODE_ENV)
-            console.log('Frontend: File details:', {
-                name: file.name,
-                size: file.size,
-                type: file.type
-            })
-            
             const response = await axios.post(`${url}/upload-pdf`, formData, {
                 headers: {
-                    'Accept': 'application/json',
+                    'accept': 'application/json',
                     'x-api-key': 'supersecretapikey123'
-                },
-                timeout: 60000, // Increased to 60 seconds
-                maxContentLength: 50 * 1024 * 1024, // 50MB max
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1))
-                    console.log('Upload progress:', percentCompleted + '%')
                 }
             })
-            
-            console.log('Frontend: Upload response:', response.data)
-            
             if (response.status === 200) {
                 console.log('File uploaded successfully')
                 setAgent({
@@ -51,25 +32,12 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                 })
                 toast.success('File uploaded successfully')
             } else {
-                console.error('Failed to upload file, status:', response.status)
+                console.error('Failed to upload file')
                 toast.error('Failed to upload file')
             }
-        } catch (error: any) {
-            console.error('Frontend: Error uploading file:', error)
-            console.error('Frontend: Error code:', error.code)
-            console.error('Frontend: Error name:', error.name)
-            
-            if (error.code === 'ERR_NETWORK' || error.name === 'TypeError' || error.message.includes('CORS')) {
-                console.error('CORS or network issue detected')
-                toast.error(`CORS Error: Azure service at ${url} needs to allow requests from ${window.location.origin}`)
-            } else if (error.code === 'ECONNABORTED') {
-                console.error('Request timeout')
-                toast.error('Upload timeout - the file might be too large or the service is slow')
-            } else {
-                console.error('Frontend: Error response:', error.response?.data)
-                console.error('Frontend: Error status:', error.response?.status)
-                toast.error(`Upload error: ${error.response?.data?.message || error.message}`)
-            }
+        } catch (error) {
+            console.error('Error uploading file:', error)
+            toast.error('Error uploading file. Please try again.')
         } finally {
             setIsUploading(false)
         }
@@ -87,37 +55,6 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         fileInputRef.current?.click()
     }
 
-    const testAzureConnectivity = async () => {
-        try {
-            console.log('Testing direct Azure service connectivity...')
-            const url = process.env.NEXT_PUBLIC_AZURE_URL
-            console.log('Testing URL:', url)
-            
-            // Test direct connection from client-side
-            const response = await fetch(url!, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            
-            console.log('Direct Azure test result:', response.status, response.statusText)
-            
-            if (response.ok) {
-                toast.success('Azure service is reachable directly!')
-            } else {
-                toast.error(`Azure service returned: ${response.status} ${response.statusText}`)
-            }
-        } catch (error: any) {
-            console.error('Direct connectivity test failed:', error)
-            if (error.message.includes('CORS') || error.name === 'TypeError') {
-                toast.error('CORS issue: Azure service needs to allow your domain')
-            } else {
-                toast.error(`Connection failed: ${error.message}`)
-            }
-        }
-    }
-
     return (
         <div className='w-full'>
             <div className='flex flex-col gap-4'>
@@ -133,14 +70,6 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                         >
                             <Upload className='w-4 h-4' />
                             {isUploading ? 'Uploading...' : 'Upload File'}
-                        </Button>
-                        <Button
-                            onClick={testAzureConnectivity}
-                            variant='secondary'
-                            size='sm'
-                            className='rounded-[2px]'
-                        >
-                            Test Connection
                         </Button>
                         <input
                             ref={fileInputRef}
