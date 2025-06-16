@@ -20,7 +20,7 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         const url = process.env.NEXT_PUBLIC_AZURE_URL
         let azureUrl = null;
         try {
-            const response = await axios.post('/api/agents/file', formData);
+            const response = await axios.post('/api/agents/file',   formData);
             
             if (response.status === 200) {
                 azureUrl = response.data.url;
