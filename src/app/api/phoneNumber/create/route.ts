@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         auth_username: sipTrunkUserName,
         auth_password: sipTrunkPassword,
         transport: 0,
-        destination_country: "IN"
+        destination_country: "IN",
       };
       let trunk;
       try{
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
           nickname,
           address,
           numbers,
-          trunkOptions
+          trunkOptions          
         );
         // console.log(trunk.sipTrunkId);
 

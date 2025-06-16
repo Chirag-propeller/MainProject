@@ -16,24 +16,32 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         formData.append('agent_id', agentId)
         formData.append('file', file)
         const url = process.env.NEXT_PUBLIC_AZURE_URL
-        const response = await axios.post(`${url}/upload-pdf`, formData, {
-            headers: {
-                'accept': 'application/json',
-                'x-api-key': 'supersecretapikey123',
-            }
-        })
-        if (response.status === 200) {
-            console.log('File uploaded successfully')
-            setAgent({
-                ...agent,
-                knowledgeBaseAttached: true,
+        
+        try {
+            const response = await axios.post(`${url}/upload-pdf`, formData, {
+                headers: {
+                    'accept': 'application/json',
+                    'x-api-key': 'supersecretapikey123',
+                    "Connection": "keep-alive"
+                }
             })
-            toast.success('File uploaded successfully')
-        } else {
-            console.error('Failed to upload file')
-            toast.error('Failed to upload file')
+            if (response.status === 200) {
+                console.log('File uploaded successfully')
+                setAgent({
+                    ...agent,
+                    knowledgeBaseAttached: true,
+                })
+                toast.success('File uploaded successfully')
+            } else {
+                console.error('Failed to upload file')
+                toast.error('Failed to upload file')
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error)
+            toast.error('Error uploading file. Please try again.')
+        } finally {
+            setIsUploading(false)
         }
-        setIsUploading(false)
     }
 
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +67,7 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                             variant='default'
                             size='sm'
                             className='rounded-[2px]'
+                            disabled={isUploading}
                         >
                             <Upload className='w-4 h-4' />
                             {isUploading ? 'Uploading...' : 'Upload File'}

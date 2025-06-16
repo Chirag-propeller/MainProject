@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Card from './Card';
 import ProgressCard from './ProgressCard';
 import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 const Analytics = ({campaignId, status}: {campaignId: string, status: string}) => {
     const [analytics, setAnalytics] = useState<any[]>([]);
@@ -10,6 +11,7 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
     const [isDraft, setIsDraft] = useState(status === 'draft');
     const [campaignStatus, setCampaignStatus] = useState(status);
     const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+    const [campaign, setCampaign] = useState<any>(null);
     const [dataToShow, setDataToShow] = useState<any[]>([
       {
         title: "Total Calls",
@@ -77,16 +79,58 @@ const Analytics = ({campaignId, status}: {campaignId: string, status: string}) =
       }
   }
 
-    useEffect(() => {
-        
-      if(isLive){
-        fetchAnalytics();
-        const interval = setInterval(() => {
-            fetchAnalytics();
-          }, 60000);
-          return () => clearInterval(interval);
-        }
-    }, [isLive]);
+  const fetchCampaignAnalytics = async () => {
+    const response = await axios.post('/api/createCampaign/analytics', {
+      campaignId: campaignId
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'supersecretapikey123'
+      }
+    });
+    const data = response.data;
+    const campaign = data.campaign[0];
+    console.log(campaign);
+    setCampaign(campaign);
+    return campaign;
+  }
+
+  useEffect(() => {
+    if(isDraft) return;
+    
+    const initializeCampaign = async () => {
+      try {
+        const campaignData = await fetchCampaignAnalytics();
+        console.log(campaignData?.status);
+        if(campaignData?.status === 'active'){
+          fetchAnalytics();
+          const interval = setInterval(() => {
+              fetchAnalytics();
+            }, 60000);
+            return () => clearInterval(interval);
+          }
+      } catch (error) {
+        console.error('Error initializing campaign:', error);
+      }
+    };
+    
+    initializeCampaign();
+  }, [campaignId, isDraft]);
+
+  // Separate useEffect for when campaign status changes
+  useEffect(() => {
+    if(isDraft || !campaign) return;
+    
+    
+    if(campaign.status === 'active' && !loading){
+      fetchAnalytics();
+      const interval = setInterval(() => {
+          fetchAnalytics();
+        }, 60000);
+        return () => clearInterval(interval);
+    }
+    
+  }, [campaign?.status, isDraft]);
 
     // Helper function to get data by name
     const getDataValue = (name: string) => {
