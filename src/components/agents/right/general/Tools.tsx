@@ -20,6 +20,8 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
         try {
             console.log('Frontend: Starting direct upload to Azure service')
             console.log('Frontend: Upload URL:', `${url}/upload-pdf`)
+            console.log('Frontend: Current domain:', window.location.origin)
+            console.log('Frontend: Environment:', process.env.NODE_ENV)
             console.log('Frontend: File details:', {
                 name: file.name,
                 size: file.size,
@@ -54,10 +56,15 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
             }
         } catch (error: any) {
             console.error('Frontend: Error uploading file:', error)
+            console.error('Frontend: Error code:', error.code)
+            console.error('Frontend: Error name:', error.name)
             
-            if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+            if (error.code === 'ERR_NETWORK' || error.name === 'TypeError' || error.message.includes('CORS')) {
                 console.error('CORS or network issue detected')
-                toast.error('CORS error: The Azure service needs to allow requests from this domain')
+                toast.error(`CORS Error: Azure service at ${url} needs to allow requests from ${window.location.origin}`)
+            } else if (error.code === 'ECONNABORTED') {
+                console.error('Request timeout')
+                toast.error('Upload timeout - the file might be too large or the service is slow')
             } else {
                 console.error('Frontend: Error response:', error.response?.data)
                 console.error('Frontend: Error status:', error.response?.status)
@@ -82,19 +89,32 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
 
     const testAzureConnectivity = async () => {
         try {
-            console.log('Testing Azure service connectivity...')
-            const response = await fetch('/api/test-azure')
-            const data = await response.json()
-            console.log('Azure connectivity test result:', data)
+            console.log('Testing direct Azure service connectivity...')
+            const url = process.env.NEXT_PUBLIC_AZURE_URL
+            console.log('Testing URL:', url)
             
-            if (data.success) {
-                toast.success('Azure service is reachable!')
+            // Test direct connection from client-side
+            const response = await fetch(url!, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            
+            console.log('Direct Azure test result:', response.status, response.statusText)
+            
+            if (response.ok) {
+                toast.success('Azure service is reachable directly!')
             } else {
-                toast.error(`Azure service test failed: ${data.message}`)
+                toast.error(`Azure service returned: ${response.status} ${response.statusText}`)
             }
-        } catch (error) {
-            console.error('Connectivity test failed:', error)
-            toast.error('Failed to test Azure connectivity')
+        } catch (error: any) {
+            console.error('Direct connectivity test failed:', error)
+            if (error.message.includes('CORS') || error.name === 'TypeError') {
+                toast.error('CORS issue: Azure service needs to allow your domain')
+            } else {
+                toast.error(`Connection failed: ${error.message}`)
+            }
         }
     }
 
