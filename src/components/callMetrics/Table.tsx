@@ -12,6 +12,7 @@ import axios from "axios";
 import { FilterState } from "../callHistory/topBar/Filter";
 import { Agent } from "../agents/types";
 import { DateRangeFilter } from "../callHistory/topBar/DateFilter";
+import { useRouter } from "next/navigation";
 
 const FIELDS_TO_DISPLAY = [
   "status",
@@ -38,7 +39,8 @@ export default function CallAnalysisTable({
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCall, setSelectedCall] = useState<any | null>(null);
-
+  const router = useRouter();
+  
   function formatDateTime(dateStr: string): string {
     const parsed = parse(dateStr, "yyyy-MM-dd HH:mm", new Date());
     return format(parsed, "hh:mm a - dd MMM, yyyy");
@@ -50,6 +52,7 @@ export default function CallAnalysisTable({
 
   useEffect(() => {
     const fetchData = async () => {
+      // router.push(`/callHistory?page=${1}&limit=${10}`);
       const data = await axios.post(`/api/callHistory/callHistory?page=${page}&limit=${10}`, {
         filters: filters,
         dateRange: dateRange

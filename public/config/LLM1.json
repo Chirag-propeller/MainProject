@@ -1,5 +1,5 @@
 {    
-    "llm_models":  ["OpenAI", "Groq", "Cerebras"],
+    "llm_models":  ["OpenAI", "Groq", "Cerebras", "Azure"],
     "llm_providers": [
         {
             "name": "OpenAI",
@@ -35,6 +35,38 @@
                 { "name": "Llama 3.3 70B Versatile 128k", "value": "llama-3.3-70b-versatile" },
                 { "name": "Llama 4 Scout (17Bx16E)", "value": "meta-llama/llama-4-scout-17b-16e-instruct" },
                 { "name": "Llama 4 Maverick (17Bx128E)", "value": "meta-llama/llama-4-maverick-17b-128e-instruct" }
+            ]
+        },
+        {
+            "name": "Azure",
+            "value": "azure",
+            "models": [
+                { "name": "GPT-4.1", "value": "gpt-4.1" },
+                { "name": "GPT-4.1 Mini", "value": "gpt-4.1-mini" },
+                { "name": "GPT-4.1 Nano", "value": "gpt-4.1-nano" },
+                { "name": "GPT-4o", "value": "gpt-4o" },
+                { "name": "GPT-4o 2024-05-13", "value": "gpt-4o-2024-05-13" },
+                { "name": "GPT-4o Mini", "value": "gpt-4o-mini" },
+                { "name": "GPT-4o Mini 2024-07-18", "value": "gpt-4o-mini-2024-07-18" },
+                { "name": "GPT-4 Turbo", "value": "gpt-4-turbo" },
+                { "name": "GPT-4 Turbo 2024-04-09", "value": "gpt-4-turbo-2024-04-09" },
+                { "name": "GPT-4 Turbo Preview", "value": "gpt-4-turbo-preview" },
+                { "name": "GPT-4 0125 Preview", "value": "gpt-4-0125-preview" },
+                { "name": "GPT-4 1106 Preview", "value": "gpt-4-1106-preview" },
+                { "name": "GPT-4 Vision Preview", "value": "gpt-4-vision-preview" },
+                { "name": "GPT-4 1106 Vision Preview", "value": "gpt-4-1106-vision-preview" },
+                { "name": "GPT-4", "value": "gpt-4" },
+                { "name": "GPT-4 0314", "value": "gpt-4-0314" },
+                { "name": "GPT-4 0613", "value": "gpt-4-0613" },
+                { "name": "GPT-4 32K", "value": "gpt-4-32k" },
+                { "name": "GPT-4 32K 0314", "value": "gpt-4-32k-0314" },
+                { "name": "GPT-4 32K 0613", "value": "gpt-4-32k-0613" },
+                { "name": "GPT-3.5 Turbo", "value": "gpt-3.5-turbo" },
+                { "name": "GPT-3.5 Turbo 16K", "value": "gpt-3.5-turbo-16k" },
+                { "name": "GPT-3.5 Turbo 0301", "value": "gpt-3.5-turbo-0301" },
+                { "name": "GPT-3.5 Turbo 0613", "value": "gpt-3.5-turbo-0613" },
+                { "name": "GPT-3.5 Turbo 1106", "value": "gpt-3.5-turbo-1106" },
+                { "name": "GPT-3.5 Turbo 16K 0613", "value": "gpt-3.5-turbo-16k-0613" }
             ]
         }
     ],
@@ -854,6 +886,52 @@
                     "languages": [
                         { "name": "English General", "value": "en" },
                         { "name": "English-US", "value": "en-US" }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Google",
+            "value": "Google",
+            "models": [
+                {
+                    "name": "Chirp-2",
+                    "value": "chirp_2",
+                    "languages": [
+                        { "name": "Assamese (India)", "value": "as-IN" },
+                        { "name": "Bengali (India)", "value": "bn-IN" },
+                        { "name": "English (India)", "value": "en-IN" },
+                        { "name": "Gujarati (India)", "value": "gu-IN" },
+                        { "name": "Hindi (India)", "value": "hi-IN" },
+                        { "name": "Kannada (India)", "value": "kn-IN" },
+                        { "name": "Malayalam (India)", "value": "ml-IN" },
+                        { "name": "Marathi (India)", "value": "mr-IN" },
+                        { "name": "Oriya (India)", "value": "or-IN" },
+                        { "name": "Punjabi (Gurmukhi India)", "value": "pa-Guru-IN" },
+                        { "name": "Sindhi (India)", "value": "sd-IN" },
+                        { "name": "Tamil (India)", "value": "ta-IN" },
+                        { "name": "Telugu (India)", "value": "te-IN" }
+                    ]
+                },
+                {
+                    "name": "Long",
+                    "value": "long",
+                    "languages": [
+                        { "name": "English (India)", "value": "en-IN" },
+                        { "name": "Hindi (India)", "value": "hi-IN" },
+                        { "name": "Kannada (India)", "value": "kn-IN" },
+                        { "name": "Malayalam (India)", "value": "ml-IN" },
+                        { "name": "Marathi (India)", "value": "mr-IN" },
+                        { "name": "Tamil (India)", "value": "ta-IN" },
+                        { "name": "Telugu (India)", "value": "te-IN" }
+                    ]
+                },
+                {
+                    "name": "Telephony",
+                    "value": "telephony",
+                    "languages": [
+                        { "name": "English (India)", "value": "en-IN" },
+                        { "name": "Hindi (India)", "value": "hi-IN" }
                     ]
                 }
             ]
