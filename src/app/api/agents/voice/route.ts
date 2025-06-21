@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { generateAWSVoice } from "@/lib/tts/aws";
 import { hasVoice, storeVoice, getVoiceUrl } from "@/lib/azure";
 import { synthesizeSpeech } from "@/lib/tts/google";
-import { OpenAI } from "openai";
+import { synthesizeSpeechSarvam } from "@/lib/tts/sarvam";
 import axios from "axios";
+import { synthesizeSpeechElevenLabs } from "@/lib/tts/elevanlabs";
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
   
   try {
     // 1. Check Azure cache first
-    const cachedUrl = await getVoiceUrl(provider, model, voice);
+    const cachedUrl = await getVoiceUrl(provider, model, voice, language);
     if (cachedUrl) {
       // console.log("cachedUrl", cachedUrl)
       return NextResponse.json({ audioUrl: cachedUrl });
@@ -31,7 +32,7 @@ export async function POST(req: Request) {
           messages: [
             {
               role: 'system',
-              content: `You are a language expert. Translate English text into grammatically correct for Language ${language} for audio ouput. Always read ProPal AI  as pɹoʊ pæl eɪ aɪ or proU p{l eI aI irrespective of the language. Only translate the text, do not add any other text.`,
+              content: `You are a language expert. Translate English text into grammatically correct for Language ${language} for audio ouput. Always read ProPal AI  as pɹoʊ pæl eɪ aɪ or proU p{l eI aI irrespective of the language. Only translate the text, do not add any other text. Dont translate any numeric value like keep 1 pm as 1 pm even in hindi`,
             },
             {
               role: 'user',
@@ -91,7 +92,7 @@ export async function POST(req: Request) {
       const audioBuffer = await generateAWSVoice(voice, model,text);
       
       // 3. Store in Azure with automatic URL return
-      const audioUrl = await storeVoice(audioBuffer, provider, model, voice);
+      const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
       
       return NextResponse.json({ 
         audioUrl,
@@ -102,7 +103,7 @@ export async function POST(req: Request) {
     if (provider === 'Google') {
       try {
         const audioBuffer = await synthesizeSpeech(text, voice);
-        const audioUrl = await storeVoice(audioBuffer, provider, model, voice);
+        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
         return NextResponse.json({ audioUrl });
       } catch (error) {
         console.error("Google TTS generation error:", error);
@@ -112,7 +113,26 @@ export async function POST(req: Request) {
         );
       }
     }
-
+    if (provider === 'sarvam') {
+      try {
+        const audioBuffer = await synthesizeSpeechSarvam(text, voice, model, language);
+        // console.log("audioBuffer", audioBuffer);
+        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
+        // console.log("audioUrl", audioUrl);
+        return NextResponse.json({ audioUrl });
+      } catch (error) {
+        console.error("Sarvam TTS generation error:", error);
+      }
+    }
+    if (provider === 'elevenlabs') {
+      try {
+        const audioBuffer = await synthesizeSpeechElevenLabs(text, voice, model, language);
+        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
+        return NextResponse.json({ audioUrl });
+      } catch (error) {
+        console.error("ElevenLabs TTS generation error:", error);
+      }
+    }
     return NextResponse.json(
       { message: "Provider not supported" },
       { status: 400 }
@@ -135,7 +155,7 @@ export async function POST(req: Request) {
 // export async function POST(req: Request) {
 //     const { provider, model, voice, text } = await req.json();
     
-//     // console.log("provider", provider)
+//    // console.log("provider", provider)
 //     // console.log("model", model)
 //     // console.log("voice", voice)
 //     // console.log("text", text)

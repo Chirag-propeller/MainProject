@@ -27,9 +27,9 @@ export async function uploadFileToAzure(buffer: Buffer, filename: string): Promi
 //   return exists
 // }
 
-export async function hasVoice(provider: string, model: string, voice: string): Promise<boolean> {
+export async function hasVoice(provider: string, model: string, voice: string, language: string): Promise<boolean> {
   const containerClient = blobServiceClient.getContainerClient("tts")
-  const filename = generateFilename(provider, model, voice);
+  const filename = generateFilename(provider, model, voice, language);
   try {
     const blockBlobClient = containerClient.getBlockBlobClient(filename);
     return await blockBlobClient.exists();
@@ -43,9 +43,10 @@ export async function storeVoice(
   audioData: Buffer,
   provider: string,
   model: string,
-  voice: string
+  voice: string,
+  language: string
 ): Promise<string> {
-  const filename = generateFilename(provider, model, voice);
+  const filename = generateFilename(provider, model, voice, language);
   try {
     const containerClient = blobServiceClient.getContainerClient("tts")
     const blockBlobClient = containerClient.getBlockBlobClient(filename);
@@ -72,10 +73,11 @@ export async function storeVoice(
 export async function getVoiceUrl(
   provider: string,
   model: string,
-  voice: string
+  voice: string,
+  language: string
 ): Promise<string | null> {
   const containerClient = blobServiceClient.getContainerClient("tts")
-  const filename = generateFilename(provider, model, voice);
+  const filename = generateFilename(provider, model, voice, language);
   try {
 
     const blockBlobClient = containerClient.getBlockBlobClient(filename);
@@ -97,8 +99,8 @@ export async function getVoiceUrl(
 }
 
 // Helper for consistent filenames
-function generateFilename(provider: string, model: string, voice: string): string {
-  return `${provider.toLowerCase()}/${model}/${voice}.mp3`.replace(/\s+/g, '-');
+function generateFilename(provider: string, model: string, voice: string, language: string): string {
+  return `${provider.toLowerCase()}/${model}/${voice}-${language}.mp3`.replace(/\s+/g, '-');
 }
 
 

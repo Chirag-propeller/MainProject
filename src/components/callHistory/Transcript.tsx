@@ -20,7 +20,7 @@ type Props = {
 
 export default function TranscriptBox({ transcript }: Props) {
   return (
-    <div className="bg-white overflow-y-scroll h-100 border-2 border-gray-200 shadow-md rounded-sm p-2 max-w-2xl mx-auto space-y-2 ">
+    <div className="bg-white overflow-y-scroll h-100 border-2 border-gray-200 shadow-md rounded-sm p-2 w-full space-y-2 ">
         <div className="">
       {transcript.items.map((item: any) => {
         if (!item.content?.length) return null;
@@ -43,7 +43,6 @@ export default function TranscriptBox({ transcript }: Props) {
             
               {isUser ? <span className=" font-semibold">User: </span> : <span className="text-indigo-700 font-semibold">Agent: </span>}
               {isUser ?<span className="text-gray-500">{item.content.join(" ")}</span> : <span className="text-indigo-500">{item.content.join(" ")}</span>}
-              {/* {item.interrupted && <span className="text-red-500 ml-1">[Interrupted]</span>} */}
             </div>
           </div>
         );

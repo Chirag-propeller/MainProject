@@ -37,6 +37,7 @@ export interface UserDocument extends Document {
   credits: mongoose.Types.Decimal128;
   creditsUsed: mongoose.Types.Decimal128;
   callHistoryFields: string[];
+  premium: boolean;
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -71,6 +72,7 @@ const userSchema = new Schema<UserDocument>(
     credits: { type: mongoose.Schema.Types.Decimal128, default: 0 },    
     creditsUsed: { type: mongoose.Schema.Types.Decimal128, default: 0 },
     callHistoryFields: { type: [String], default: [] },
+    premium: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

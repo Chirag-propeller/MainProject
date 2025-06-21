@@ -12,6 +12,7 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
     const [campaignStatus, setCampaignStatus] = useState(status);
     const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
     const [tempCampaign, setTempCampaign] = useState<any>(null);
+    const [shouldUpdate, setShouldUpdate] = useState(false);
     const [dataToShow, setDataToShow] = useState<any[]>([
       {
         title: "Total Planned Calls",
@@ -116,18 +117,24 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
     
     // Update parent campaign status if completed
     if(campaignData.status === 'completed') {
-      setHasChanges(true);
       setCampaign({
         ...campaign,
         status: 'completed'
       });
-      
-      handleUpdate();
-
+      setHasChanges(true);
+      setShouldUpdate(true);
     }
     setLoading(false);
     return campaign;
   }
+
+  // Effect to handle calling handleUpdate when hasChanges is set to true
+  useEffect(() => {
+    if (shouldUpdate) {
+      handleUpdate();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]); // handleUpdate removed - we only want this to run when shouldUpdate changes
 
   useEffect(() => {
     if(isDraft) return;
