@@ -9,7 +9,6 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
     const [isUploading, setIsUploading] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
-    const [isFileUploaded, setIsFileUploaded] = useState(agent.knowledgeBaseAttached)
 
     const uploadFile = async (file: File) => {
         const formData = new FormData()
@@ -27,6 +26,11 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                 azureUrl = response.data.url;
                 formData2.append('url', azureUrl)
                 console.log('File uploaded successfully')
+                setAgent({
+                    ...agent,
+                    knowledgeBaseAttached: true,
+                })
+                toast.success('File uploaded successfully')
             } else {
                 console.error('Failed to upload file')
                 toast.error('Failed to upload file')
@@ -54,7 +58,6 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                     ...agent,
                     knowledgeBaseAttached: true,
                 })
-                setIsFileUploaded(true)
                 toast.success('File uploaded successfully')
             } else {
                 console.error('Failed to upload file')
@@ -83,11 +86,6 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
     return (
         <div className='w-full'>
             <div className='flex flex-col gap-4'>
-                {isFileUploaded ? (
-                    <p className='text-xs text-gray-500'>
-                        File uploaded successfully
-                    </p>
-                ) : (
                 <div className='flex flex-col gap-2'>
                     <label className='text-sm font-medium text-gray-700'>Upload PDF for Knowledge Base</label>
                     <div className='flex gap-2'>
@@ -115,8 +113,7 @@ const ToolsContent = ({ agentId, agent, setAgent }: { agentId: string, agent: Ag
                     <p className='text-xs text-gray-500'>
                         {selectedFile?.name || "No file selected"}
                     </p>
-                </div>)}
-
+                </div>
             </div>
         </div>
     )

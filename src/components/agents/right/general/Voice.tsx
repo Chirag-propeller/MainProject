@@ -42,7 +42,6 @@ interface LLMConfig {
 
 const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => void}) => {
     const genders = ["Male", "Female"]
-    const [isPremium, setIsPremium] = useState(false)
     const { ttsOptions , ttsLanguageOptions} = useLLMConfig() as unknown as LLMConfig
     
     // Get providers list
@@ -62,7 +61,6 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
     const [voices, setVoices] = useState<{name: string, value: string}[]>([]);
     const [selectedVoice, setSelectedVoice] = useState<string>(agent.ttsVoiceName || "");
     const [isOpen, setIsOpen] = useState(false)
-    
     // const [isPlaying, setIsPlaying] = useState(false)
 
     // Effect 1: Update models when provider changes
@@ -70,8 +68,7 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
         if (selectedProvider && Array.isArray(ttsOptions)) {
             const provider = ttsOptions.find((p: TtsProvider) => p.value === selectedProvider);
             if (provider && provider.models) {
-                
-                const modelOptions = provider.models.map((model: TtsModel) =>  ({
+                const modelOptions = provider.models.map((model: TtsModel) => ({
                     name: model.name,
                     value: model.value
                 }));
