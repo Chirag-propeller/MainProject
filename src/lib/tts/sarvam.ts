@@ -59,9 +59,7 @@ export async function synthesizeSpeechSarvam(text: string, voice: any, model: an
 
     // 3. Decode the Base64 string into a binary Buffer
     const audioBuffer = Buffer.from(base64Audio, 'base64');
-    
-    const bufferStream = new Readable();
-    return bufferStream;
+    return audioBuffer;
 
     // Return the stream directly
     // return response.audio as unknown as NodeJS.ReadableStream; 
