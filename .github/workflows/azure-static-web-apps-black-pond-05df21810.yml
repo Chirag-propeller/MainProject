@@ -33,6 +33,13 @@ jobs:
             echo "❌ googleJson.json not found!"
             exit 1
           fi
+      - name: Clear npm cache
+        run: npm cache clean --force
+      # Install dependencies with memory optimization
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+        env:
+          NODE_OPTIONS: "--max-old-space-size=6144"
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
