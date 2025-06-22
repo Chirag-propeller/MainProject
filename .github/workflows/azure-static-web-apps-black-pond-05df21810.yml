@@ -1,3 +1,115 @@
+# name: Azure Static Web Apps CI/CD
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     types: [opened, synchronize, reopened, closed]
+#     branches:
+#       - main
+
+# jobs:
+#   build_and_deploy_job:
+#     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+#     runs-on: ubuntu-latest
+#     name: Build and Deploy Job
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           submodules: true
+#           lfs: false
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '20'
+#           cache: 'npm'
+#       - name: Reconstruct googleJson.json from secret
+#         run: |
+#           mkdir -p src/lib/tts
+#           echo "${{ secrets.GOOGLE_JSON_BASE64 }}" | base64 --decode > src/lib/tts/googleJson.json
+#           chmod 600 src/lib/tts/googleJson.json
+#       - name: Check googleJson.json exists and output preview
+#         run: |
+#           if [ -f src/lib/tts/googleJson.json ]; then
+#             echo "✅ googleJson.json exists:"
+#             head -n 10 src/lib/tts/googleJson.json
+#           else
+#             echo "❌ googleJson.json not found!"
+#             exit 1
+#           fi
+#       - name: Clear npm cache
+#         run: npm cache clean --force
+#       # Install dependencies with memory optimization
+#       - name: Install dependencies
+#         run: npm ci --prefer-offline --no-audit
+#         env:
+#           NODE_OPTIONS: "--max-old-space-size=6144"
+#       - name: Build And Deploy
+#         id: builddeploy
+#         uses: Azure/static-web-apps-deploy@v1
+#         with:
+#           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLACK_POND_05DF21810 }}
+#           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+#           action: "upload"
+#           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+#           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+#           app_location: "/" # App source code path
+#           api_location: "" # Api source code path - optional
+#           output_location: "" # Built app content directory - optional
+#         env: # <-- ADD THIS `env:` SECTION HERE
+#           NEXT_PUBLIC_AZURE_URL: ${{ secrets.NEXT_PUBLIC_AZURE_URL }}
+#           NEXT_PUBLIC_CALL_URL: ${{ secrets.NEXT_PUBLIC_CALL_URL }}
+#           NEXT_PUBLIC_LIVEKIT_URL: ${{ secrets.NEXT_PUBLIC_LIVEKIT_URL }}
+#           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+#           LIVEKIT_API_KEY: ${{ secrets.LIVEKIT_API_KEY }}
+#           LIVEKIT_API_SECRET: ${{ secrets.LIVEKIT_API_SECRET }}
+#           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+#           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }} # ✅ Added Resend API Key
+#           GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} # Google OAuth credentials
+#           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} # Google OAuth credentials
+#           GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }} # Google OAuth credentials
+#           TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }} # Token secret (JWT, etc.)
+#           NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}
+#           NEXT_PUBLIC_GOOGLE_REDIRECT_URI: ${{ secrets.NEXT_PUBLIC_GOOGLE_REDIRECT_URI }}
+#           PAGE_REDIRECT_URI: ${{ secrets.PAGE_REDIRECT_URI }}
+#           TWILIO_SID: ${{ secrets.TWILIO_SID }}
+#           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+#           ZOHO_CLIENT_ID: ${{ secrets.ZOHO_CLIENT_ID }}
+#           ZOHO_CLIENT_SECRET: ${{ secrets.ZOHO_CLIENT_SECRET }}
+#           BASE_URL: ${{ secrets.BASE_URL }}
+#           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+#           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
+#           GOOGLE_SHEETS_CLIENT_SECRET: ${{ secrets.GOOGLE_SHEETS_CLIENT_SECRET }}
+#           NEXT_PUBLIC_CAMPAIGN_URL: ${{ secrets.NEXT_PUBLIC_CAMPAIGN_URL }}
+#           LIVEKIT_URL: ${{ secrets.LIVEKIT_URL }}
+#           TELEPHONY_LIVEKIT_URL: ${{ secrets.TELEPHONY_LIVEKIT_URL }}
+#           TELEPHONY_LIVEKIT_API_KEY: ${{ secrets.TELEPHONY_LIVEKIT_API_KEY }}
+#           TELEPHONY_LIVEKIT_API_SECRET: ${{ secrets.TELEPHONY_LIVEKIT_API_SECRET }}
+#           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           AWS_REGION: ${{ secrets.AWS_REGION }}
+#           GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+#           SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+#           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+
+
+#   close_pull_request_job:
+#     if: github.event_name == 'pull_request' && github.event.action == 'closed'
+#     runs-on: ubuntu-latest
+#     name: Close Pull Request Job
+#     steps:
+#       - name: Close Pull Request
+#         id: closepullrequest
+#         uses: Azure/static-web-apps-deploy@v1
+#         with:
+#           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLACK_POND_05DF21810 }}
+#           action: "close"
+
+
+
+
 name: Azure Static Web Apps CI/CD
 
 on:
@@ -45,6 +157,22 @@ jobs:
         run: npm ci --prefer-offline --no-audit
         env:
           NODE_OPTIONS: "--max-old-space-size=6144"
+      
+      # Debug: Check deployment size
+      - name: Check deployment size
+        run: |
+          echo "Checking deployment size..."
+          du -sh . || true
+          echo "Largest directories:"
+          du -sh */ 2>/dev/null | sort -hr | head -10 || true
+          echo "API folder contents:"
+          if [ -d "api" ]; then
+            echo "API folder size: $(du -sh api/)"
+            echo "API folder contents:"
+            find api/ -type f -size +1M 2>/dev/null | head -10 || echo "No large files found in API"
+          fi
+          echo "Node modules size:"
+          du -sh node_modules/ 2>/dev/null || echo "No node_modules found"
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -55,9 +183,17 @@ jobs:
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "" # Built app content directory - optional
+          api_location: "" # No separate API folder - using Next.js API routes
+          output_location: ".next" # Built app content directory
+          skip_app_build: false
         env: # <-- ADD THIS `env:` SECTION HERE
+          # Force Node.js 20 for Azure Static Web Apps
+          WEBSITE_NODE_DEFAULT_VERSION: "20.x"
+          ENABLE_ORYX_BUILD: "true"
+          PRE_BUILD_SCRIPT_PATH: ""
+          POST_BUILD_SCRIPT_PATH: ""
+          
+          # Your existing environment variables
           NEXT_PUBLIC_AZURE_URL: ${{ secrets.NEXT_PUBLIC_AZURE_URL }}
           NEXT_PUBLIC_CALL_URL: ${{ secrets.NEXT_PUBLIC_CALL_URL }}
           NEXT_PUBLIC_LIVEKIT_URL: ${{ secrets.NEXT_PUBLIC_LIVEKIT_URL }}
