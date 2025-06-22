@@ -3,8 +3,8 @@ import { generateAWSVoice } from "@/lib/tts/aws";
 import { hasVoice, storeVoice, getVoiceUrl } from "@/lib/azure";
 import { synthesizeSpeech } from "@/lib/tts/google";
 import { synthesizeSpeechSarvam } from "@/lib/tts/sarvam";
-import { OpenAI } from "openai";
 import axios from "axios";
+import { synthesizeSpeechElevenLabs } from "@/lib/tts/elevanlabs";
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
@@ -122,6 +122,15 @@ export async function POST(req: Request) {
         return NextResponse.json({ audioUrl });
       } catch (error) {
         console.error("Sarvam TTS generation error:", error);
+      }
+    }
+    if (provider === 'elevenlabs') {
+      try {
+        const audioBuffer = await synthesizeSpeechElevenLabs(text, voice, model, language);
+        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
+        return NextResponse.json({ audioUrl });
+      } catch (error) {
+        console.error("ElevenLabs TTS generation error:", error);
       }
     }
     return NextResponse.json(
