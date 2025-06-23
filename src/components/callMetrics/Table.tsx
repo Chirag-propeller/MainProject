@@ -29,12 +29,16 @@ export default function CallAnalysisTable({
   agentOptions, 
   dateRange, 
   page,
+  setHasNextPage,
+  setHasPreviousPage
 }: {
   customiseField: string[], 
   filters: FilterState, 
   agentOptions: Agent[],
   dateRange: DateRangeFilter,
-  page: number
+  page: number,
+  setHasNextPage: (hasNextPage: boolean) => void,
+  setHasPreviousPage: (hasPreviousPage: boolean) => void
 }) {
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,7 +61,9 @@ export default function CallAnalysisTable({
         filters: filters,
         dateRange: dateRange
       });
-      console.log(data.data);
+      const pagination = data.data.pagination;
+      setHasNextPage(pagination.hasNextPage);
+      setHasPreviousPage(pagination.hasPreviousPage);
       let mappedData = data.data.data
       .filter((item: any) => item.call_analysis)
       .map((item: any) => {
