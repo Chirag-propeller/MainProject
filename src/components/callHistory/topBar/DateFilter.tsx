@@ -60,19 +60,18 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       setTempDateRange({
         startDate: selectedDate,
         endDate: null
-        // endDate: endOfDay(selectedDate)
       });
     } else {
       // Complete the range
       if (isBefore(selectedDate, tempDateRange.startDate)) {
         setTempDateRange({
           startDate: selectedDate,
-          endDate: endOfDay(tempDateRange.startDate)
+          endDate: tempDateRange.startDate
         });
       } else {
         setTempDateRange({
           startDate: tempDateRange.startDate,
-          endDate: endOfDay(selectedDate)
+          endDate: selectedDate
         });
       }
     }
@@ -88,7 +87,6 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       case 'today':
         startDate = new Date(now);
         startDate.setHours(0, 0, 0, 0);
-        endDate = endOfDay(startDate);
         break;
       // case 'thisYear': 
       //   startDate = new Date(now);
@@ -98,24 +96,20 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       //   break;
       case '7days':
         startDate = sub(new Date(now), { days: 7 });
-        endDate = endOfDay(now);
         break;
       case '30days':
         startDate = sub(new Date(now), { days: 30 });
-        endDate = endOfDay(now);
         break;
       case 'thisMonth':
         startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        endDate = endOfDay(now);
         break;
       case 'lastMonth':
         startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-        // endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-        endDate = endOfDay(new Date(now.getFullYear(), now.getMonth(), 0));
+        endDate = new Date(now.getFullYear(), now.getMonth(), 0);
         break;
       case 'thisYear':
         startDate = new Date(now.getFullYear(), 0, 1);
-        endDate = endOfDay(now);
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         break;
       default:
         break;

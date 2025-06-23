@@ -11,7 +11,7 @@ import { ChevronLeft, ChevronRight, History } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 
-const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm_cost", "stt_cost", "tts_cost"]
+const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm cost", "stt cost", "tts cost"]
 
 // Sample data for filters
 
@@ -31,20 +31,6 @@ const page = () => {
   const [agentOptions, setAgentOptions] = useState<Agent[]>([]);
   const [page, setPage] = useState(1);
   const [customiseField, setCustomiseField] = useState(["started_at", "call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber"]);
-  const [hasNextPage, setHasNextPage] = useState(false);
-  const [hasPreviousPage, setHasPreviousPage] = useState(false);
-
-  useEffect(() => {
-    const fetchCustomiseField = async () => {
-      const response = await axios.get("/api/user/getCurrentUser")
-      const userData = response.data
-      console.log(userData);
-      if(userData.callHistoryFields && userData.callHistoryFields.length > 0) {
-        setCustomiseField(userData.callHistoryFields);
-      }
-    }
-    fetchCustomiseField();
-  }, [])
   const [filters, setFilters] = useState<FilterState>({
     agent: [],
     status: [],
@@ -103,15 +89,14 @@ const page = () => {
         />
       </div>
       </div>
-      <Table  customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  setHasNextPage={setHasNextPage} setHasPreviousPage={setHasPreviousPage} />
+      <Table customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  />
 
       <div className='flex justify-center gap-2 py-4  '>
         {
-          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page - 1)} disabled={!hasPreviousPage}> <ChevronLeft /> </Button>
+          page > 1 && <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page - 1)}> <ChevronLeft /> </Button>
         }
-        <div className='text-xs text-gray-500 self-center'> Page:{page} </div>
         {
-          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page + 1)} disabled={!hasNextPage}> <ChevronRight /> </Button>
+          <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page + 1)}> <ChevronRight /> </Button>
         }
       </div>
     </div>

@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
   try {
     const user = await getUserFromRequest(req);
     const { filters, dateRange } = await req.json();
-    // console.log("filters, dateRange", filters, dateRange);
     const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
     const limit = parseInt(req.nextUrl.searchParams.get("limit") || "20");
     // console.log(page, limit);
@@ -48,12 +47,19 @@ export async function POST(req: NextRequest) {
         $gte: start,
         $lte: end,
       };
+
+      // matchStage["started_at_date"] = {
+      //   $gte: new Date(dateRange?.startDate),
+
+      //   $lte: new Date(dateRange?.endDate),
+      // };
     }
 
     // Sentiment is inside call_analysis.SENTIMENT
     if (filters.sentiment && filters.sentiment.length > 0) {
       matchStage["call_analysis.SENTIMENT"] = { $in: filters.sentiment };
     }
+    // console.log("matchStage",matchStage);
 
     const pipeline = [
       // {
@@ -82,12 +88,7 @@ export async function POST(req: NextRequest) {
           }
         }
       },      
-
       { $match: matchStage },
-      
-      // Sort by started_at_date in descending order (newest first)
-      { $sort: { started_at_date: -1 as const } },
-
       
       // Lookup to join with AggregatedMetrics collection
       {
@@ -122,41 +123,17 @@ export async function POST(req: NextRequest) {
         $project: {
           costMetrics: 0
         }
-      },
-
-      {
-        $facet: {
-          // Get total count
-          totalCount: [
-            { $count: "count" }
-          ],
-          // Get paginated data
-          data: [
-            { $skip: (page - 1) * limit },
-            { $limit: limit }
-          ]
-        }
       }
 
       // You can add sorting, pagination, projection, etc. here
     ];
 
-    const result = await OutBoundCall.aggregate(pipeline as any)
-    const totalCount = result[0].totalCount[0]?.count || 0;
-    const data = result[0].data || [];
-    // console.log("data", data);
+    const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
 
     return NextResponse.json(
       {
         success: true,
-        data: data,
-        pagination: {
-          currentPage: page,
-          totalPages: Math.ceil(totalCount / limit),
-          totalRecords: totalCount,
-          hasNextPage: page < Math.ceil(totalCount / limit),
-          hasPreviousPage: page > 1
-        },
+        data,
       },
       { status: 200 }
     );

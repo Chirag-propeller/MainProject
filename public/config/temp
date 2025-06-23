@@ -1,50 +1,14 @@
-elevenlabs: TTSModels = Literal['eleven_monolingual_v1', 'eleven_multilingual_v1', 'eleven_multilingual_v2', 'eleven_turbo_v2', 'eleven_turbo_v2_5', 'eleven_flash_v2_5', 'eleven_flash_v2', 'eleven_v3']
- 
-voices:"Anika": "90ipbRoKi4CpHXvKVtl0",
-        "Riya": "mfMM3ijQgz8QtMeKifko",
-        "Edward": "2BJW5coyhAzSr8STdHbE",
-        "Krishna": "m5qndnI7u4OAdXhH0Mr5",
-        "Rachel": "21m00Tcm4TlvDq8ikWAM",
-        "Drew": "29vD33N1CtxCmqQRPOHJ",
-        "Clyde": "2EiwWnXFnvU5JabPnv8n",
-        "Paul": "5Q0t7uMcjvnagumLfvZi",
-        "Aria": "9BWtsMINqrJLrRacOk9x",
-        "Domi": "AZnzlk1XvdvUeBnXmlld",
-        "Dave": "CYw3kZ02Hs0563khs1Fj",
-        "Roger": "CwhRBWXzGAHq8TQ4Fs17",
-        "Fin": "D38z5RcWu1voky8WS1ja",
-        "Sarah": "EXAVITQu4vr4xnSDxMaL",
-        "Antoni": "ErXwobaYiN019PkySvjV",
-        "Laura": "FGY2WhTYpPnrIDTdsKH5",
-        "Thomas": "GBv7mTt0atIp3Br8iCZE",
-        "Charlie": "IKne3meq5aSn9XLyUdCD",
-        "Emily": "LcfcDJNUP1GQjkzn1xUU",
-        "Elli": "MF3mGyEYCl7XYWbV9V6O",
-        "Callum": "N2lVS1w4EtoT3dr4eOWO",
-        "Patrick": "ODq5zmih8GrVes37Dizd",
-        "River": "SAz9YHcvj6GT2YYXdXww",
-        "Harry": "SOYHLrjzK2X1ezoPC6cr",
-        "Matilda": "XrExE9yKIg1WjnnlVkGX",
-        "Joseph": "Zlb1dXrM653N07WRdFW3",
-        "Jeremy": "bVMeCyTHy58xNoL34h3p",
-        "Jessica": "cgSgspJ2msm6clMCkdW9",
- 
-cartesia: TTSModels = Literal['sonic', 'sonic-2', 'sonic-lite', 'sonic-preview', 'sonic-turbo']
- 
-voices:     "Indian Lady": "3b554273-4299-48b9-9aaf-eefd438e3941",
-    "Zia": "32b3f3c5-7171-46aa-abe7-b598964aa793",
-    "Hindi Woman": "9cebb910-d4b7-4a4a-85a4-12c79137724c",
-    "Anu": "87177869-f798-48ae-870f-e07d0c960a1e",
-    "Janvi": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8",
-    "Priya": "f6141af3-5f94-418c-80ed-a45d450e7e2e",
-    "Kiara": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d",
-    "Sophie": "bf0a246a-8642-498a-9950-80c35e9276b5",
-    "Savannah": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2",
-    "Brooke": "6f84f4b8-58a2-430c-8c79-688dad597532",
-    "Griffin": "c99d36f3-5ffd-4253-803a-535c1bc9c306",
-    "Mehul": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb",
-    "Ishan": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3",
-    "Charvi": "dc40fa13-d344-4c77-b579-1f0aec140e05",
-    "Parvati": "bec003e2-3cb3-429c-8468-206a393c67ad",
-    "Mihir": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
-    }
+Name	BCP-47	Model
+English (India)	en-IN	long
+Hindi (India)	hi-IN	long
+Hindi (India)	hi-IN	long
+Hindi (India)	hi-IN	telephony
+English (India)	en-IN	long
+English (India)	en-IN	telephony
+Hindi (India)	hi-IN	long
+Hindi (India)	hi-IN	telephony
+Kannada (India)	kn-IN	long
+Malayalam (India)	ml-IN	long
+Marathi (India)	mr-IN	long
+Tamil (India)	ta-IN	long
+Telugu (India)	te-IN	long
