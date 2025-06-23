@@ -7,6 +7,7 @@ import axios from 'axios';
 const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, setHasChanges}: {campaign: any, setCampaign: (campaign: any) => void, campaignId: string, handleUpdate: () => void, status: string, setHasChanges: (hasChanges: boolean) => void}) => {
     const [analytics, setAnalytics] = useState<any[]>([]);
     const [loading, setLoading] = useState((status === 'draft') ? false : true);
+    const [shouldUpdate, setShouldUpdate] = useState(false);
     const [isLive, setIsLive] = useState(status === 'ongoing');
     const [isDraft, setIsDraft] = useState(status === 'draft');
     const [campaignStatus, setCampaignStatus] = useState(status);
@@ -116,11 +117,13 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
     
     // Update parent campaign status if completed
     if(campaignData.status === 'completed') {
-      setHasChanges(true);
+      
       setCampaign({
         ...campaign,
         status: 'completed'
       });
+      setHasChanges(true);
+      setShouldUpdate(true);
       
       handleUpdate();
 
@@ -128,6 +131,15 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
     setLoading(false);
     return campaign;
   }
+
+
+    // Effect to handle calling handleUpdate when hasChanges is set to true
+  useEffect(() => {
+    if (shouldUpdate) {
+      handleUpdate();
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
 
   useEffect(() => {
     if(isDraft) return;
