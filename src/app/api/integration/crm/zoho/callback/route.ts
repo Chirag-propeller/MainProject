@@ -45,5 +45,5 @@ export async function GET(req: NextRequest) {
   });
 
   // 🔁 Redirect to dashboard or success page
-  return NextResponse.redirect(`${baseUrl}/dashboard/integration?zoho=connected`);
+  return NextResponse.redirect(`${baseUrl}dashboard/integration?zoho=connected`);
 }
