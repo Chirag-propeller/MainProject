@@ -120,7 +120,7 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
                 field.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
             </label>
           ))}
-                            <div className=' flex justify-between sticky bottom-0 bg-white py-1'>
+              <div className=' flex justify-between sticky bottom-0 bg-white py-1'>
                   <Button
                     variant="secondary"
                     size="sm"
