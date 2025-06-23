@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     code,
     client_id: process.env.ZOHO_CLIENT_ID!,
     client_secret: process.env.ZOHO_CLIENT_SECRET!,
-    redirect_uri: `${baseUrl}/api/integration/crm/zoho/callback`,
+    redirect_uri: `${baseUrl}api/integration/crm/zoho/callback`,
   });
 
   const res = await fetch("https://accounts.zoho.in/oauth/v2/token", {
