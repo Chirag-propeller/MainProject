@@ -156,7 +156,7 @@ export default function CallAnalysisTable({
         <>
           <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 sticky top-0">
                 <tr>
                   <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
                     S.No
@@ -180,7 +180,7 @@ export default function CallAnalysisTable({
                     onClick={() => handleRowClick(call)}
                   >
                     <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium text-nowrap">
-                      {index + 1}
+                    {((page - 1) * 10) + index + 1}
                     </td>
                     {customiseField.map((key) => (
                       <CallAnalysisCell  key={key} value={call?.[key]} field={key} />
@@ -216,7 +216,7 @@ export default function CallAnalysisTable({
                 </button>
               </div>
 
-              <div className="">
+              {/* <div className="">
                 <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
@@ -238,8 +238,41 @@ export default function CallAnalysisTable({
                     <SideBarCell title="TTS Cost" value={selectedCall.tts_cost ?? "N/A"}/>
                   </div>
                 </div>
+              </div> */}
+              <div className="">
+                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
+                <div className="py-2">
+                <div className="flex justify-between">
+                  <div className="p-4 py-0 w-1/2 flex flex-col gap-1">
+                    <SideBarCell title="Agent" value={selectedCall.agent ?? "N/A"}/>
+                    <SideBarCell title="From Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
+                    <SideBarCell title="To Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
+                    <SideBarCell title="Average Latency" value={selectedCall.average_latency ? `${selectedCall.average_latency.toFixed(2)} s` : "N/A"}/>
+                    <SideBarCell title="LLM" value={selectedCall.llm }/>
+                    <SideBarCell title="STT" value={selectedCall.stt ?? "N/A"}/>
+                    <SideBarCell title="TTS" value={selectedCall.tts ?? "N/A"}/>
+                  </div>
+                  <div className="p-4 py-0 w-1/2 flex flex-col gap-1">
+                    <SideBarCell title="Call Duration" value={selectedCall.call_duration ?? "N/A"}/>
+                    <SideBarCell title="Call Status" value={selectedCall.status ?? "N/A"}/>
+                    <SideBarCell title="Direction" value={selectedCall.call_direction ?? "N/A"}/>
+                    <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count ?? "N/A"}/>
+                    <SideBarCell title="LLM Cost" value={selectedCall.llm_cost ?? "N/A"}/>
+                    <SideBarCell title="STT Cost" value={selectedCall.stt_cost ?? "N/A"}/>
+                    <SideBarCell title="TTS Cost" value={selectedCall.tts_cost ?? "N/A"}/>
+                  </div>
+                </div>
+                <div className="flex justify-between p-4 py-1">
+                  {
+                    <SideBarCell title="Summary" value={selectedCall.reviewer_comments ?? "N/A"}/>
+                  }
+                </div>
+                </div>
               </div>
               
+
+
+
               {/* <div className="">
                 <h1 className="text-xs  p-4 py-1 "> Call Recording</h1>
               </div> */}

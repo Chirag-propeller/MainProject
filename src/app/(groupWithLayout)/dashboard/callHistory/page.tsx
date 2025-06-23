@@ -11,7 +11,7 @@ import { ChevronLeft, ChevronRight, History } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 
-const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm cost", "stt cost", "tts cost"]
+const allFields = ["started_at","call_type", "call_direction", "call_duration", "status", "agent", "average_latency", "phonenumber", "from_phonenumber", "cost", "sentiment", "goal_completion_status", "llm", "stt", "tts", "llm_cost", "stt_cost", "tts_cost"]
 
 // Sample data for filters
 
