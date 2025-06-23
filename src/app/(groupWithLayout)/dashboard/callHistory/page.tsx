@@ -41,6 +41,21 @@ const page = () => {
     endDate: null
   });
 
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+
+  useEffect(() => {
+    const fetchCustomiseField = async () => {
+      const response = await axios.get("/api/user/getCurrentUser")
+      const userData = response.data
+      console.log(userData);
+      if(userData.callHistoryFields && userData.callHistoryFields.length > 0) {
+        setCustomiseField(userData.callHistoryFields);
+      }
+    }
+    fetchCustomiseField();
+  }, [])
+
   useEffect(() => {
     router.push(`/dashboard/callHistory?page=${page}&limit=${10}`)
     const fetchAgents = async () => {
@@ -89,16 +104,27 @@ const page = () => {
         />
       </div>
       </div>
-      <Table customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  />
-
+      {/* <Table customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  />
+       */}
+      <Table  customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  setHasNextPage={setHasNextPage} setHasPreviousPage={setHasPreviousPage} />
       <div className='flex justify-center gap-2 py-4  '>
+        {
+          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page - 1)} disabled={!hasPreviousPage}> <ChevronLeft /> </Button>
+        }
+        <div className='text-xs text-gray-500 self-center'> Page:{page} </div>
+        {
+          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page + 1)} disabled={!hasNextPage}> <ChevronRight /> </Button>
+        }
+      </div>
+
+      {/* <div className='flex justify-center gap-2 py-4  '>
         {
           page > 1 && <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page - 1)}> <ChevronLeft /> </Button>
         }
         {
           <Button size="sm" className='rounded-[4px]' onClick={() => pageChanger(page + 1)}> <ChevronRight /> </Button>
         }
-      </div>
+      </div> */}
     </div>
   )
 }

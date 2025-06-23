@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
         }
       },      
       { $match: matchStage },
+      { $sort: { started_at_date: -1 as const } },
       
       // Lookup to join with AggregatedMetrics collection
       {
@@ -123,17 +124,40 @@ export async function POST(req: NextRequest) {
         $project: {
           costMetrics: 0
         }
+      },
+      {
+        $facet: {
+          // Get total count
+          totalCount: [
+            { $count: "count" }
+          ],
+          // Get paginated data
+          data: [
+            { $skip: (page - 1) * limit },
+            { $limit: limit }
+          ]
+        }
       }
 
       // You can add sorting, pagination, projection, etc. here
     ];
 
-    const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
+    // const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
+    const result = await OutBoundCall.aggregate(pipeline as any)
+    const totalCount = result[0].totalCount[0]?.count || 0;
+    const data = result[0].data || [];
 
     return NextResponse.json(
       {
         success: true,
-        data,
+        data: data,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(totalCount / limit),
+          totalRecords: totalCount,
+          hasNextPage: page < Math.ceil(totalCount / limit),
+          hasPreviousPage: page > 1
+        },
       },
       { status: 200 }
     );
