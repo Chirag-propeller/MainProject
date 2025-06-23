@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { generateAWSVoice } from "@/lib/tts/aws";
 import { hasVoice, storeVoice, getVoiceUrl } from "@/lib/azure";
 import { synthesizeSpeech } from "@/lib/tts/google";
-import { synthesizeSpeechSarvam } from "@/lib/tts/sarvam";
+// import { synthesizeSpeechSarvam } from "@/lib/tts/sarvam";
 import axios from "axios";
-import { synthesizeSpeechElevenLabs } from "@/lib/tts/elevanlabs";
+// import { synthesizeSpeechElevenLabs } from "@/lib/tts/elevanlabs";
 
 // const openai = new OpenAI({
 //   apiKey: process.env.OPENAI_API_KEY,
