@@ -100,16 +100,7 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
       >
         Custom Fields <ChevronDown className='w-3.5 h-3.5  self-center text-indigo-600' />
       </button>
-      <div className=' flex justify-between sticky bottom-0 bg-white py-1'>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={applyHandler}
-              className='rounded-[2px] px-2 py-1 text-xs'
-            >
-              Apply
-            </Button>
-          </div>
+
       {isOpen && (
         <div
           className='absolute top-full left-0 z-100 bg-white border border-gray-300 w-fit rounded-md p-2 pb-0 max-h-60 overflow-y-auto'
@@ -128,6 +119,16 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
               {CALL_ANALYSIS_FIELD_LABELS[field] ||
                 field.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
             </label>
+                  <div className=' flex justify-between sticky bottom-0 bg-white py-1'>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={applyHandler}
+                    className='rounded-[2px] px-2 py-1 text-xs'
+                  >
+                    Apply
+                  </Button>
+                </div>
           ))}
         </div>
       )}
