@@ -113,26 +113,26 @@ export async function POST(req: Request) {
         );
       }
     }
-    if (provider === 'sarvam') {
-      try {
-        const audioBuffer = await synthesizeSpeechSarvam(text, voice, model, language);
-        // console.log("audioBuffer", audioBuffer);
-        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
-        // console.log("audioUrl", audioUrl);
-        return NextResponse.json({ audioUrl });
-      } catch (error) {
-        console.error("Sarvam TTS generation error:", error);
-      }
-    }
-    if (provider === 'elevenlabs') {
-      try {
-        const audioBuffer = await synthesizeSpeechElevenLabs(text, voice, model, language);
-        const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
-        return NextResponse.json({ audioUrl });
-      } catch (error) {
-        console.error("ElevenLabs TTS generation error:", error);
-      }
-    }
+    // if (provider === 'sarvam') {
+    //   try {
+    //     const audioBuffer = await synthesizeSpeechSarvam(text, voice, model, language);
+    //     // console.log("audioBuffer", audioBuffer);
+    //     const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
+    //     // console.log("audioUrl", audioUrl);
+    //     return NextResponse.json({ audioUrl });
+    //   } catch (error) {
+    //     console.error("Sarvam TTS generation error:", error);
+    //   }
+    // }
+    // if (provider === 'elevenlabs') {
+    //   try {
+    //     const audioBuffer = await synthesizeSpeechElevenLabs(text, voice, model, language);
+    //     const audioUrl = await storeVoice(audioBuffer, provider, model, voice, language);
+    //     return NextResponse.json({ audioUrl });
+    //   } catch (error) {
+    //     console.error("ElevenLabs TTS generation error:", error);
+    //   }
+    // }
     return NextResponse.json(
       { message: "Provider not supported" },
       { status: 400 }

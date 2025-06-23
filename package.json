@@ -11,7 +11,6 @@
   "dependencies": {
     "@aws-sdk/client-polly": "^3.826.0",
     "@azure/storage-blob": "^12.27.0",
-    "@elevenlabs/elevenlabs-js": "^2.2.0",
     "@google-cloud/text-to-speech": "^6.1.0",
     "@livekit/components-react": "^2.9.9",
     "@livekit/components-styles": "^1.1.5",
@@ -41,7 +40,6 @@
     "reactflow": "^11.11.4",
     "recharts": "^2.15.3",
     "resend": "^4.4.1",
-    "sarvamai": "^0.1.5-a0",
     "tailwind-merge": "^3.2.0",
     "tailwind-variants": "^1.0.0",
     "tailwindcss-animate": "^1.0.7",
@@ -64,10 +62,8 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  
-    "engines": {
-      "node": "20.x",
-      "npm": ">=10.0.0"
-    
+  "engines": {
+    "node": "20.x",
+    "npm": ">=10.0.0"
   }
 }
