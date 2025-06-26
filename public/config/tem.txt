@@ -1,0 +1,48 @@
+
+  "cartesia": {
+    "models": {
+      "sonic": {
+        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
+      },
+      "sonic-2": {
+        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
+      },
+      "sonic-lite": {
+        "languages": ["en"]
+      },
+      "sonic-preview": {
+        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
+      },
+      "sonic-turbo": {
+        "languages": ["en"]
+      }
+    },
+
+  "elevenlabs": {
+    "models": {
+      "eleven_monolingual_v1": {
+        "languages": ["en"]
+      },
+      "eleven_multilingual_v1": {
+        "languages": ["en", "de", "pl", "es", "it", "fr", "pt", "hi"]
+      },
+      "eleven_multilingual_v2": {
+        "languages": ["ar", "bg", "zh", "hr", "cs", "da", "nl", "en", "tl", "fi", "fr", "de", "el", "hi", "id", "it", "ja", "ko", "ms", "pl", "pt", "ro", "ru", "sk", "es", "sv", "ta", "tr"]
+      },
+      "eleven_turbo_v2": {
+        "languages": ["en"]
+      },
+      "eleven_turbo_v2_5": {
+        "languages": ["en"]
+      },
+      "eleven_flash_v2": {
+        "languages": ["en"]
+      },
+      "eleven_flash_v2_5": {
+        "languages": ["en"]
+      },
+      "eleven_v3": {
+        "languages": ["af", "ar", "hy", "as", "az", "be", "bn", "bs", "bg", "ca", "ceb", "ny", "hr", "cs", "da", "nl", "en", "et", "tl", "fi", "fr", "gl", "ka", "de", "el", "gu", "ha", "he", "hi", "hu", "is", "ig", "id", "ga", "it", "ja", "jv", "kn", "kk", "km", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tg", "ta", "te", "th", "tr", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"]
+      }
+    },
+    
