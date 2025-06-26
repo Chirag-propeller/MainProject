@@ -5,6 +5,8 @@ export interface IAgent extends Document {
   agentId: string;
   agentName: string;
   backgroundSound?: string;
+  callHangup:boolean;
+  callHangupPhase:string[];
   createdAt: Date;
   gender?: string;
   inputLanguage?: string;
@@ -12,6 +14,9 @@ export interface IAgent extends Document {
   knowledgeBase: mongoose.Types.ObjectId[];
   llm?: string;
   llmModel?: string;
+  maxCallDuration?: number;
+  numberTransfer?: boolean;
+  numberTransferNumber?: string;
   prompt?: string;
   speed?: number;
   stt?: string;
@@ -29,6 +34,8 @@ const AgentSchema: Schema = new Schema({
   // userId : {}
   agentId: { type: String, required: true, unique: true },
   agentName: { type: String, required: false , default: "Agent 1"},
+  callHangup: { type: Boolean, default: false },
+  callHangupPhase: [{ type: String, default: [] }],
   backgroundSound: { type: String },
   gender: { type: String },
   inputLanguage: { type: String },
@@ -36,6 +43,9 @@ const AgentSchema: Schema = new Schema({
   knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase' , default: []}],
   llm: { type: String },
   llmModel: { type: String },
+  maxCallDuration: { type: Number, default: 120 },
+  numberTransfer: { type: Boolean, default: false },
+  numberTransferNumber: { type: String },
   prompt: { type: String },
   speed: { type: Number },
   stt: { type: String },

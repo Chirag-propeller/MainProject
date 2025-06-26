@@ -1,48 +1,37 @@
-
-  "cartesia": {
-    "models": {
-      "sonic": {
-        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
-      },
-      "sonic-2": {
-        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
-      },
-      "sonic-lite": {
-        "languages": ["en"]
-      },
-      "sonic-preview": {
-        "languages": ["zh", "nl", "en", "fr", "de", "hi", "it", "ja", "ko", "pl", "pt", "ru", "es", "sv", "tr"]
-      },
-      "sonic-turbo": {
-        "languages": ["en"]
-      }
-    },
-
-  "elevenlabs": {
-    "models": {
-      "eleven_monolingual_v1": {
-        "languages": ["en"]
-      },
-      "eleven_multilingual_v1": {
-        "languages": ["en", "de", "pl", "es", "it", "fr", "pt", "hi"]
-      },
-      "eleven_multilingual_v2": {
-        "languages": ["ar", "bg", "zh", "hr", "cs", "da", "nl", "en", "tl", "fi", "fr", "de", "el", "hi", "id", "it", "ja", "ko", "ms", "pl", "pt", "ro", "ru", "sk", "es", "sv", "ta", "tr"]
-      },
-      "eleven_turbo_v2": {
-        "languages": ["en"]
-      },
-      "eleven_turbo_v2_5": {
-        "languages": ["en"]
-      },
-      "eleven_flash_v2": {
-        "languages": ["en"]
-      },
-      "eleven_flash_v2_5": {
-        "languages": ["en"]
-      },
-      "eleven_v3": {
-        "languages": ["af", "ar", "hy", "as", "az", "be", "bn", "bs", "bg", "ca", "ceb", "ny", "hr", "cs", "da", "nl", "en", "et", "tl", "fi", "fr", "gl", "ka", "de", "el", "gu", "ha", "he", "hi", "hu", "is", "ig", "id", "ga", "it", "ja", "jv", "kn", "kk", "km", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tg", "ta", "te", "th", "tr", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"]
-      }
-    },
-    
+en:
+Aria: english,9BWtsMINqrJLrRacOk9x
+sarah: en,EXAVITQu4vr4xnSDxMaL
+laura:.FGY2WhTYpPnrIDTdsKH5
+carlie:IKne3meq5aSn9XLyUdCD
+george:JBFqnCBsd6RMkjVDRZzb
+callum:N2lVS1w4EtoT3dr4eOWO
+river:SAz9YHcvj6GT2YYXdXww
+liam:TX3LPaxmHKxFdv7VOQHJ
+charlotte:XB0fDUnXU5powFXDhCwa
+alice:Xb7hH8MSUJpSbSDYk0k2
+matilda:XrExE9yKIg1WjnnlVkGX
+jessica:cgSgspJ2msm6clMCkdW9
+chirs:iP95p4xoKVk53GoZ742B
+brian:nPczCjzI2devNBz1zQrb
+ 
+hi:
+sarah,EXAVITQu4vr4xnSDxMaL
+george
+callum
+jessica
+chris
+liam
+brian
+alice
+ 
+ 
+krishna :m5qndnI7u4OAdXhH0Mr5 hi, en
+riya  :mfMM3ijQgz8QtMeKifko,hi
+ 
+ 
+models --
+multilingual v1 - hi + en
+ 
+turbo v2 -- eng
+ 
+multilingual v2 - hi+ en
