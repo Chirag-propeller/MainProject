@@ -24,4 +24,9 @@ export interface Agent {
   welcomeMessage?: string;
   knowledgeBaseAttached?: boolean;
   knowledgeBase: mongoose.Types.ObjectId[];
+  maxCallDuration?: number;
+  numberTransfer?: boolean;
+  numberTransferNumber?: string;
+  callHangup?: boolean;
+  callHangupPhase?: string[];
 } 

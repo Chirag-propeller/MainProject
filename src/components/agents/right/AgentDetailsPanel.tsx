@@ -97,7 +97,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
             {isNameUpdating ? ( 
               <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='border-gray-300 rounded-md border-1 px-2 py-1' ref={nameRef} />
             ) : (
-              <h2 className="text-2xl font-semibold">{name}</h2>
+              <h2 className="text-2xl text-ellipsis overflow-hidden max-w-124 text-nowrap font-semibold">{name}</h2>
             )}
             <Pencil className='w-4 h-4 text-gray-500 cursor-pointer' onClick={() => setIsNameUpdating(true)} />
           </div>
