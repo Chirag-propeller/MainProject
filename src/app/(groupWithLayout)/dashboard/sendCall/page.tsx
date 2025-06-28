@@ -119,15 +119,16 @@ export default function ContactForm() {
         <div className="flex items-center gap-4">
           <label className="w-32 text-sm font-medium text-gray-700">From Number</label>
           <select
-            className="flex-1 p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
             value={fromNumber}
             onChange={(e) => setFromNumber(e.target.value)}
             required
             disabled={isSending}  // Disable while sending
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
           >
             <option value="">Select Number</option>
             {fromNumberList.map((option, idx) => (
-              <option key={idx} value={option} className="p-1">{option}</option>
+              <option key={idx} value={option}>{option}</option>
             ))}
           </select>
         </div>
@@ -140,7 +141,8 @@ export default function ContactForm() {
             placeholder="Enter phone number"
             value={toNumber}
             onChange={(e) => setToNumber(e.target.value)}
-            className="flex-1 p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-[375px] p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
             required
             disabled={isSending}  // Disable while sending
           />
@@ -148,13 +150,14 @@ export default function ContactForm() {
 
         {/* From Agent */}
         <div className="flex items-center gap-4">
-          <label className="w-32 text-sm font-medium text-gray-700">From Agent</label>
+          <label className="w-32 text-sm font-medium text-gray-700 text-nowrap ">From Agent</label>
           <select
-            className="flex-1 p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
             value={fromAgent}
             onChange={handleAgentChange}
             required
             disabled={isSending}  // Disable while sending
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
           >
             <option value="">Select agent</option>
             {agentList.map((agent: any) => (
