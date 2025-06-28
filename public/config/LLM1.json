@@ -1117,59 +1117,6 @@
             "premium": true,
             "models": [
                 {
-                    "name": "Eleven Monolingual v1",
-                    "value": "eleven_monolingual_v1",
-                    "features": "Clear English voice cloning",
-                    "languages": [
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
-                                        { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
-                                        { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
-                                        { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
-                                        { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
-                                        { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
-                                        { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     "name": "Eleven Multilingual v1",
                     "value": "eleven_multilingual_v1",
                     "features": "Supports multiple languages",
@@ -1182,93 +1129,56 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
                                         { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
                                         { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
                                         { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
+                                        { "name": "Carlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "Charlotte", "value": "XB0fDUnXU5powFXDhCwa" },
+                                        { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
                                         { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
+                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" },
+                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
                                         { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
                                         { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
+                                        { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                                        { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                                        { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" },
+                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
                                     ]
                                 }
                             ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Eleven Multilingual v2",
-                    "value": "eleven_multilingual_v2",
-                    "features": "Improved multilingual support",
-                    "languages": [
+                        },
                         {
-                            "name": "English (US)",
-                            "value": "en-US",
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
                             "gender": [
                                 {
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
-                                        { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
                                         { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
-                                        { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
-                                        { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
+                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" },
+                                        { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
+                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
                                         { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
-                                        { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
+                                        { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                                        { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                                        { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" },
+                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
                                     ]
                                 }
                             ]
@@ -1288,14 +1198,12 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
                                         { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
                                         { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
                                         { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
+                                        { "name": "Carlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "Charlotte", "value": "XB0fDUnXU5powFXDhCwa" },
+                                        { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
                                         { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
                                         { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
                                     ]
@@ -1304,24 +1212,12 @@
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
                                         { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
                                         { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
+                                        { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                                        { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                                        { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" }
                                     ]
                                 }
                             ]
@@ -1329,9 +1225,9 @@
                     ]
                 },
                 {
-                    "name": "Eleven Turbo v2.5",
-                    "value": "eleven_turbo_v2_5",
-                    "features": "Turbo speed, clearer voice",
+                    "name": "Eleven Multilingual v2",
+                    "value": "eleven_multilingual_v2",
+                    "features": "Improved multilingual support",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1341,199 +1237,56 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
                                         { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
                                         { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
                                         { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
+                                        { "name": "Carlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "Charlotte", "value": "XB0fDUnXU5powFXDhCwa" },
+                                        { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
                                         { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
+                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" },
+                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
                                         { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
                                         { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
+                                        { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                                        { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                                        { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" },
+                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
                                     ]
                                 }
                             ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Eleven Flash v2.5",
-                    "value": "eleven_flash_v2_5",
-                    "features": "Ultra-fast, low latency TTS",
-                    "languages": [
+                        },
                         {
-                            "name": "English (US)",
-                            "value": "en-US",
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
                             "gender": [
                                 {
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
-                                        { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
                                         { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
-                                        { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
-                                        { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
+                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" },
+                                        { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
+                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                                        { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
                                         { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
-                                        { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Eleven Flash v2",
-                    "value": "eleven_flash_v2",
-                    "features": "Fast response, decent clarity",
-                    "languages": [
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
-                                        { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
-                                        { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
-                                        { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
-                                        { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
-                                        { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
-                                        { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Eleven v3",
-                    "value": "eleven_v3",
-                    "features": "Latest, most natural voices",
-                    "languages": [
-                        {
-                            "name": "English (US)",
-                            "value": "en-US",
-                            "gender": [
-                                {
-                                    "name": "Female",
-                                    "value": "Female",
-                                    "voices": [
-                                        { "name": "Anika", "value": "90ipbRoKi4CpHXvKVtl0" },
-                                        { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                                        { "name": "Rachel", "value": "21m00Tcm4TlvDq8ikWAM" },
-                                        { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
-                                        { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
-                                        { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
-                                        { "name": "Emily", "value": "LcfcDJNUP1GQjkzn1xUU" },
-                                        { "name": "Elli", "value": "MF3mGyEYCl7XYWbV9V6O" },
-                                        { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
-                                        { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
-                                    ]
-                                },
-                                {
-                                    "name": "Male",
-                                    "value": "Male",
-                                    "voices": [
-                                        { "name": "Edward", "value": "2BJW5coyhAzSr8STdHbE" },
-                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                                        { "name": "Drew", "value": "29vD33N1CtxCmqQRPOHJ" },
-                                        { "name": "Clyde", "value": "2EiwWnXFnvU5JabPnv8n" },
-                                        { "name": "Paul", "value": "5Q0t7uMcjvnagumLfvZi" },
-                                        { "name": "Domi", "value": "AZnzlk1XvdvUeBnXmlld" },
-                                        { "name": "Dave", "value": "CYw3kZ02Hs0563khs1Fj" },
-                                        { "name": "Roger", "value": "CwhRBWXzGAHq8TQ4Fs17" },
-                                        { "name": "Fin", "value": "D38z5RcWu1voky8WS1ja" },
-                                        { "name": "Antoni", "value": "ErXwobaYiN019PkySvjV" },
-                                        { "name": "Thomas", "value": "GBv7mTt0atIp3Br8iCZE" },
-                                        { "name": "Charlie", "value": "IKne3meq5aSn9XLyUdCD" },
-                                        { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
-                                        { "name": "Patrick", "value": "ODq5zmih8GrVes37Dizd" },
-                                        { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
-                                        { "name": "Harry", "value": "SOYHLrjzK2X1ezoPC6cr" },
-                                        { "name": "Joseph", "value": "Zlb1dXrM653N07WRdFW3" },
-                                        { "name": "Jeremy", "value": "bVMeCyTHy58xNoL34h3p" }
+                                        { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                                        { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                                        { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" },
+                                        { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
                                     ]
                                 }
                             ]
@@ -1560,28 +1313,62 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Indian Lady", "value": "3b554273-4299-48b9-9aaf-eefd438e3941" },
-                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
-                                        { "name": "Hindi Woman", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
-                                        { "name": "Anu", "value": "87177869-f798-48ae-870f-e07d0c960a1e" },
-                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
-                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
-                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
-                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
                                         { "name": "Savannah", "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2" },
+                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
                                         { "name": "Brooke", "value": "6f84f4b8-58a2-430c-8c79-688dad597532" },
-                                        { "name": "Charvi", "value": "dc40fa13-d344-4c77-b579-1f0aec140e05" },
-                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" }
+                                        { "name": "Wise Lady", "value": "c8605446-247c-4d39-acd4-8f4c28aa363c" },
+                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
+                                        { "name": "Southern Woman", "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94" },
+                                        { "name": "Welcoming Lady", "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
+                                        
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
                                         { "name": "Griffin", "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306" },
-                                        { "name": "Mehul", "value": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb" },
+                                        
+                                        { "name": "Carson", "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe" },
+                                        { "name": "Ethan", "value": "00967b2f-88a6-4a31-8153-110a92134b9f" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aadhya", "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222" },
+                                        { "name": "Apoorva", "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12" },
+                                        { "name": "Ananya", "value": "28ca2041-5dda-42df-8123-f58ea9c3da00" },
+                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" },
+                                        { "name": "Astha", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
+                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
+                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
+                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
+                                        { "name": "Maya", "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
+                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" },
+                                        { "name": "Ayush", "value": "791d5162-d5eb-40f0-8189-f19db44611d8" },
+                                        { "name": "Amit", "value": "9b953e7b-86a8-42f0-b625-1434fb15392b" },
                                         { "name": "Ishan", "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3" },
-                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" }
+                                        { "name": "Hindi Reporter Man", "value": "bdab08ad-4137-4548-b9db-6142854c7525" },
+                                        { "name": "Hindi Narrator Man", "value": "7f423809-0011-4658-ba48-a411f5e516ba" }
                                     ]
                                 }
                             ]
@@ -1601,28 +1388,58 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Indian Lady", "value": "3b554273-4299-48b9-9aaf-eefd438e3941" },
-                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
-                                        { "name": "Hindi Woman", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
-                                        { "name": "Anu", "value": "87177869-f798-48ae-870f-e07d0c960a1e" },
-                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
-                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
-                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
-                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
                                         { "name": "Savannah", "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2" },
+                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
                                         { "name": "Brooke", "value": "6f84f4b8-58a2-430c-8c79-688dad597532" },
-                                        { "name": "Charvi", "value": "dc40fa13-d344-4c77-b579-1f0aec140e05" },
-                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" }
+                                        { "name": "Wise Lady", "value": "c8605446-247c-4d39-acd4-8f4c28aa363c" },
+                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
+                                        { "name": "Southern Woman", "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94" },
+                                        { "name": "Welcoming Lady", "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" },
                                         { "name": "Griffin", "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306" },
-                                        { "name": "Mehul", "value": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb" },
+                                        { "name": "Carson", "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe" },
+                                        { "name": "Ethan", "value": "00967b2f-88a6-4a31-8153-110a92134b9f" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aadhya", "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222" },
+                                        { "name": "Apoorva", "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12" },
+                                        { "name": "Ananya", "value": "28ca2041-5dda-42df-8123-f58ea9c3da00" },
+                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" },
+                                        { "name": "Astha", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
+                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
+                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
+                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
+                                        { "name": "Maya", "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" },
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
+                                        { "name": "Ayush", "value": "791d5162-d5eb-40f0-8189-f19db44611d8" },
+                                        { "name": "Amit", "value": "9b953e7b-86a8-42f0-b625-1434fb15392b" },
                                         { "name": "Ishan", "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3" },
-                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" }
+                                        { "name": "Hindi Reporter Man", "value": "bdab08ad-4137-4548-b9db-6142854c7525" },
+                                        { "name": "Hindi Narrator Man", "value": "7f423809-0011-4658-ba48-a411f5e516ba" }
                                     ]
                                 }
                             ]
@@ -1642,28 +1459,60 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Indian Lady", "value": "3b554273-4299-48b9-9aaf-eefd438e3941" },
-                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
-                                        { "name": "Hindi Woman", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
-                                        { "name": "Anu", "value": "87177869-f798-48ae-870f-e07d0c960a1e" },
-                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
-                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
-                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
-                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
                                         { "name": "Savannah", "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2" },
+                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
                                         { "name": "Brooke", "value": "6f84f4b8-58a2-430c-8c79-688dad597532" },
-                                        { "name": "Charvi", "value": "dc40fa13-d344-4c77-b579-1f0aec140e05" },
-                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" }
+                                        { "name": "Wise Lady", "value": "c8605446-247c-4d39-acd4-8f4c28aa363c" },
+                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
+                                        { "name": "Southern Woman", "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94" },
+                                        { "name": "Welcoming Lady", "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
+                                        
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
                                         { "name": "Griffin", "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306" },
-                                        { "name": "Mehul", "value": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb" },
+                                        { "name": "Carson", "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe" },
+                                        { "name": "Ethan", "value": "00967b2f-88a6-4a31-8153-110a92134b9f" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aadhya", "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222" },
+                                        { "name": "Apoorva", "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12" },
+                                        { "name": "Ananya", "value": "28ca2041-5dda-42df-8123-f58ea9c3da00" },
+                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" },
+                                        { "name": "Astha", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
+                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
+                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
+                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
+                                        { "name": "Maya", "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
+                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" },
+                                        { "name": "Ayush", "value": "791d5162-d5eb-40f0-8189-f19db44611d8" },
+                                        { "name": "Amit", "value": "9b953e7b-86a8-42f0-b625-1434fb15392b" },
                                         { "name": "Ishan", "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3" },
-                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" }
+                                        { "name": "Hindi Reporter Man", "value": "bdab08ad-4137-4548-b9db-6142854c7525" },
+                                        { "name": "Hindi Narrator Man", "value": "7f423809-0011-4658-ba48-a411f5e516ba" }
                                     ]
                                 }
                             ]
@@ -1683,28 +1532,59 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Indian Lady", "value": "3b554273-4299-48b9-9aaf-eefd438e3941" },
-                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
-                                        { "name": "Hindi Woman", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
-                                        { "name": "Anu", "value": "87177869-f798-48ae-870f-e07d0c960a1e" },
-                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
-                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
-                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
-                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
                                         { "name": "Savannah", "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2" },
+                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
                                         { "name": "Brooke", "value": "6f84f4b8-58a2-430c-8c79-688dad597532" },
-                                        { "name": "Charvi", "value": "dc40fa13-d344-4c77-b579-1f0aec140e05" },
-                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" }
+                                        { "name": "Wise Lady", "value": "c8605446-247c-4d39-acd4-8f4c28aa363c" },
+                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
+                                        { "name": "Southern Woman", "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94" },
+                                        { "name": "Welcoming Lady", "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
                                         { "name": "Griffin", "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306" },
-                                        { "name": "Mehul", "value": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb" },
+                                        { "name": "Carson", "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe" },
+                                        { "name": "Ethan", "value": "00967b2f-88a6-4a31-8153-110a92134b9f" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aadhya", "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222" },
+                                        { "name": "Apoorva", "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12" },
+                                        { "name": "Ananya", "value": "28ca2041-5dda-42df-8123-f58ea9c3da00" },
+                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" },
+                                        { "name": "Astha", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
+                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
+                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
+                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
+                                        { "name": "Maya", "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
+                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" },
+                                        { "name": "Ayush", "value": "791d5162-d5eb-40f0-8189-f19db44611d8" },
+                                        { "name": "Amit", "value": "9b953e7b-86a8-42f0-b625-1434fb15392b" },
                                         { "name": "Ishan", "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3" },
-                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" }
+                                        { "name": "Hindi Reporter Man", "value": "bdab08ad-4137-4548-b9db-6142854c7525" },
+                                        { "name": "Hindi Narrator Man", "value": "7f423809-0011-4658-ba48-a411f5e516ba" }
                                     ]
                                 }
                             ]
@@ -1724,28 +1604,59 @@
                                     "name": "Female",
                                     "value": "Female",
                                     "voices": [
-                                        { "name": "Indian Lady", "value": "3b554273-4299-48b9-9aaf-eefd438e3941" },
-                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
-                                        { "name": "Hindi Woman", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
-                                        { "name": "Anu", "value": "87177869-f798-48ae-870f-e07d0c960a1e" },
-                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
-                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
-                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
-                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
                                         { "name": "Savannah", "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2" },
+                                        { "name": "Zia", "value": "32b3f3c5-7171-46aa-abe7-b598964aa793" },
                                         { "name": "Brooke", "value": "6f84f4b8-58a2-430c-8c79-688dad597532" },
-                                        { "name": "Charvi", "value": "dc40fa13-d344-4c77-b579-1f0aec140e05" },
-                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" }
+                                        { "name": "Wise Lady", "value": "c8605446-247c-4d39-acd4-8f4c28aa363c" },
+                                        { "name": "Sophie", "value": "bf0a246a-8642-498a-9950-80c35e9276b5" },
+                                        { "name": "Southern Woman", "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94" },
+                                        { "name": "Welcoming Lady", "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd" }
                                     ]
                                 },
                                 {
                                     "name": "Male",
                                     "value": "Male",
                                     "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
                                         { "name": "Griffin", "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306" },
-                                        { "name": "Mehul", "value": "d088cdf6-0ef0-4656-aea8-eb9b004e82eb" },
+                                        { "name": "Carson", "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe" },
+                                        { "name": "Ethan", "value": "00967b2f-88a6-4a31-8153-110a92134b9f" }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Hindi (India)",
+                            "value": "hi-IN",
+                            "gender": [
+                                {
+                                    "name": "Female",
+                                    "value": "Female",
+                                    "voices": [
+                                        { "name": "Aadhya", "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222" },
+                                        { "name": "Apoorva", "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12" },
+                                        { "name": "Ananya", "value": "28ca2041-5dda-42df-8123-f58ea9c3da00" },
+                                        { "name": "Parvati", "value": "bec003e2-3cb3-429c-8468-206a393c67ad" },
+                                        { "name": "Astha", "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c" },
+                                        { "name": "Janvi", "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8" },
+                                        { "name": "Priya", "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e" },
+                                        { "name": "Kiara", "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d" },
+                                        { "name": "Maya", "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d" }
+                                    ]
+                                },
+                                {
+                                    "name": "Male",
+                                    "value": "Male",
+                                    "voices": [
+                                        { "name": "Ashish Clone", "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532" }
+                                        ,
+                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" },
+                                        { "name": "Ayush", "value": "791d5162-d5eb-40f0-8189-f19db44611d8" },
+                                        { "name": "Amit", "value": "9b953e7b-86a8-42f0-b625-1434fb15392b" },
                                         { "name": "Ishan", "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3" },
-                                        { "name": "Mihir", "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf" }
+                                        { "name": "Hindi Reporter Man", "value": "bdab08ad-4137-4548-b9db-6142854c7525" },
+                                        { "name": "Hindi Narrator Man", "value": "7f423809-0011-4658-ba48-a411f5e516ba" }
                                     ]
                                 }
                             ]
@@ -1885,11 +1796,11 @@
         {
             "name": "Sarvam",
             "value": "sarvam",
-            "features": "Indian languages, general use",
             "models": [
                 {
                     "name": "Saarika v1",
                     "value": "saarika:v1",
+                    "features": "Indian languages, general use",
                     "languages": [
                         { "name": "Bengali (India)", "value": "bn-IN" },
                         { "name": "English (India)", "value": "en-IN" },
