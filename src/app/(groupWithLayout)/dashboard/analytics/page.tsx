@@ -50,10 +50,10 @@ const page = () => {
   }, []);
 
   return (
-    <div className='w-full h-[200vh] overflow-y-auto px-4'>
+    <div className='w-full h-[200vh] overflow-y-auto px-4 bg-white dark:bg-gray-950'>
       <div className='flex gap-1.5 py-4'>
-        <LineChart className='w-3.5 h-3.5 self-center text-indigo-600' />
-        <h1 className="text-lg self-center text-indigo-600">Analytics</h1>
+        <LineChart className='w-3.5 h-3.5 self-center text-indigo-600 dark:text-gray-100' />
+        <h1 className="text-lg self-center text-indigo-600 dark:text-gray-100">Analytics</h1>
       </div>
       <div className='flex flex-col gap-2'>
         {/* <NumberCard  heading="Total Users" subheading="Since last week" value="12,430" /> */}

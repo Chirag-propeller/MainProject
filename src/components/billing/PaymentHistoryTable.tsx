@@ -49,13 +49,13 @@ const PaymentHistoryTable = () => {
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case 'successful':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
       case 'failed':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
     }
   }
   
@@ -67,15 +67,15 @@ const PaymentHistoryTable = () => {
   }
   
   return (
-    <Card className="h-full">
+    <Card className="h-full bg-white dark:bg-gray-950 border-gray-200 dark:border-gray-700">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold text-gray-800">Payment History</CardTitle>
+        <CardTitle className="text-xl font-semibold text-gray-800 dark:text-gray-100">Payment History</CardTitle>
       </CardHeader>
       <CardContent>
         {/* Filters */}
         <div className="mb-4 flex flex-wrap gap-3">
           <div>
-            <label htmlFor="method-filter" className="block text-xs font-medium text-gray-700 mb-1">
+            <label htmlFor="method-filter" className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
               Payment Method
             </label>
             <select
@@ -85,16 +85,16 @@ const PaymentHistoryTable = () => {
                 setPaymentMethodFilter(e.target.value as PaymentMethod)
                 setCurrentPage(1)
               }}
-              className="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+              className="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 rounded-md"
             >
-              <option value="All">All Methods</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="PayPal">PayPal</option>
+              <option value="All" className="dark:bg-gray-700">All Methods</option>
+              <option value="Credit Card" className="dark:bg-gray-700">Credit Card</option>
+              <option value="PayPal" className="dark:bg-gray-700">PayPal</option>
             </select>
           </div>
           
           <div>
-            <label htmlFor="status-filter" className="block text-xs font-medium text-gray-700 mb-1">
+            <label htmlFor="status-filter" className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
               Status
             </label>
             <select
@@ -104,11 +104,11 @@ const PaymentHistoryTable = () => {
                 setStatusFilter(e.target.value as PaymentStatus)
                 setCurrentPage(1)
               }}
-              className="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+              className="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 rounded-md"
             >
-              <option value="All">All Statuses</option>
-              <option value="successful">Successful</option>
-              <option value="failed">Failed</option>
+              <option value="All" className="dark:bg-gray-700">All Statuses</option>
+              <option value="successful" className="dark:bg-gray-700">Successful</option>
+              <option value="failed" className="dark:bg-gray-700">Failed</option>
             </select>
           </div>
           
@@ -126,33 +126,33 @@ const PaymentHistoryTable = () => {
         
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Amount
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Payment Method
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-gray-950 divide-y divide-gray-200 dark:divide-gray-700">
               {currentItems.length > 0 ? currentItems.map((payment) => (
-                <tr key={payment.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                <tr key={payment.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                     {formatDate(payment.date)}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                     ${payment.amount.toFixed(2)}
                   </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
                     {payment.paymentMethod}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm">
@@ -163,7 +163,7 @@ const PaymentHistoryTable = () => {
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={4} className="px-4 py-3 text-sm text-center text-gray-500">
+                  <td colSpan={4} className="px-4 py-3 text-sm text-center text-gray-500 dark:text-gray-400">
                     No payment records found with the selected filters.
                   </td>
                 </tr>
@@ -175,7 +175,7 @@ const PaymentHistoryTable = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-between items-center mt-4">
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               Showing {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredData.length)} of {filteredData.length} entries
             </div>
             <div className="flex space-x-1">

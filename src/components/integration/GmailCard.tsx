@@ -26,12 +26,12 @@ const GmailCard: React.FC<GmailCardProps> = ({ endpoint, onSuccess, onError }) =
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer p-4 w-[30%] rounded-2xl shadow-md hover:shadow-lg transition bg-white border flex items-center space-x-4"
+      className="cursor-pointer p-4 w-[30%] rounded-2xl shadow-md hover:shadow-lg dark:hover:shadow-gray-700/20 transition bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center space-x-4 hover:border-red-200 dark:hover:border-red-600"
     >
-      <MailIcon className="text-red-600" />
+      <MailIcon className="text-red-600 dark:text-red-400" />
       <div>
-        <h3 className="text-lg font-semibold">Connect Gmail</h3>
-        <p className="text-sm text-gray-500">Click to authenticate with your Gmail account.</p>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Connect Gmail</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Click to authenticate with your Gmail account.</p>
       </div>
     </div>
   );

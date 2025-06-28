@@ -40,27 +40,27 @@ const PhoneNumberContent = () => {
   }, [selectedPhoneNumber]);
 
   return (
-    <div className="flex h-full" style={{ height: 'calc(100vh - 12px)' }}>
+    <div className="flex h-full bg-white dark:bg-gray-900" style={{ height: 'calc(100vh - 12px)' }}>
       {/* Left sidebar with phone number list (25% width) */}
       <div className="w-1/4">
-        <div className="w-full border-gray-200 border-t-0 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+        <div className="w-full border-gray-200 dark:border-gray-700 border-t-0 flex flex-col bg-white dark:bg-gray-950" style={{ height: '100%', overflow: 'hidden' }}>
           {/* Header with title and create button */}
-          <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+          <div className="sticky top-0 z-20 bg-white dark:bg-gray-950 p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
             <div className='flex gap-1.5'>
-              <Phone className='w-3.5 h-3.5 self-center text-indigo-600' />
-              <h1 className="text-lg self-center text-indigo-600">Phone Numbers</h1>
+              <Phone className='w-3.5 h-3.5 self-center text-indigo-600 dark:text-gray-100' />
+              <h1 className="text-lg self-center text-indigo-600 dark:text-gray-100">Phone Numbers</h1>
             </div>
 
             <Button 
               onClick={() => setShowInputForm(true)}
-              className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300'
+              className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 dark:shadow-indigo-900 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700'
             >
               Create
             </Button>
           </div>
 
           {/* List of phone numbers */}
-          <div className="flex-1 overflow-y-auto p-3">
+          <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-gray-950">
             <List
               selectedPhoneNumber={selectedPhoneNumber}
               refreshTrigger={refreshList}
@@ -76,36 +76,36 @@ const PhoneNumberContent = () => {
       </div>
 
       {/* Main content area (75% width) */}
-      <div className="w-3/4 overflow-auto">
+      <div className="w-3/4 overflow-auto bg-white dark:bg-gray-950">
         {selectedPhoneRecord ? (
-          <div className="p-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Phone Number Details</h2>
+          <div className="p-6 bg-white dark:bg-gray-950">
+            <div className="bg-white dark:bg-gray-950 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Phone Number Details</h2>
               <div className="space-y-3">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Phone Number</label>
-                  <p className="text-lg font-medium text-gray-900">{selectedPhoneRecord.phoneNumber}</p>
+                  <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone Number</label>
+                  <p className="text-lg font-medium text-gray-900 dark:text-gray-100">{selectedPhoneRecord.phoneNumber}</p>
                 </div>
                 {selectedPhoneRecord.name && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Name</label>
-                    <p className="text-lg font-medium text-gray-900">{selectedPhoneRecord.name}</p>
+                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Name</label>
+                    <p className="text-lg font-medium text-gray-900 dark:text-gray-100">{selectedPhoneRecord.name}</p>
                   </div>
                 )}
                 {selectedPhoneRecord.createdAt && (
                   <div>
-                    <label className="text-sm font-medium text-gray-500">Created</label>
-                    <p className="text-lg font-medium text-gray-900">{selectedPhoneRecord.createdAt}</p>
+                    <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Created</label>
+                    <p className="text-lg font-medium text-gray-900 dark:text-gray-100">{selectedPhoneRecord.createdAt}</p>
                   </div>
                 )}
               </div>
               <div className="mt-6">
-                <Button onClick={() => alert("Edit logic goes here")}>Edit</Button>
+                <Button onClick={() => alert("Edit logic goes here")} className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700">Edit</Button>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex justify-center items-center h-full text-gray-500">
+          <div className="flex justify-center items-center h-full text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-950">
             Select a phone number to view details
           </div>
         )}
@@ -119,7 +119,7 @@ const PhoneNumberContent = () => {
 // This is the main page component that wraps the content in Suspense
 const PhoneNumber = () => {
   return (
-    <Suspense fallback={<div>Loading phone numbers...</div>}>
+    <Suspense fallback={<div className="text-gray-900 dark:text-gray-100">Loading phone numbers...</div>}>
       <PhoneNumberContent />
     </Suspense>
   );

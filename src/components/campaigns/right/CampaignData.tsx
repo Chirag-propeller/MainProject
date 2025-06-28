@@ -12,8 +12,8 @@ const CampaignData: React.FC<CampaignDataProps> = ({ campaign }) => {
     <div className="p-4 pt-0">
 
       {/* <EditForm /> */}
-      <h3 className="text-lg font-medium mb-2">Campaign Data</h3>
-      <pre className="bg-gray-100 rounded p-4 overflow-auto text-xs">
+      <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">Campaign Data</h3>
+      <pre className="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-4 overflow-auto text-xs border border-gray-200 dark:border-gray-700">
         {JSON.stringify(campaign, null, 2)}
       </pre>
     </div>

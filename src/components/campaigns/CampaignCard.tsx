@@ -38,14 +38,14 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   
   return (
     <Card 
-      className={`mb-1 hover:shadow-sm transition-shadow cursor-pointer ${isSelected ? 'border-indigo-600 bg-indigo-50 border-2' : ''}`}
+      className={`mb-1 hover:shadow-sm dark:hover:shadow-gray-700/20 transition-shadow cursor-pointer border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 ${isSelected ? 'border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20 border-2' : ''}`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="p-2 relative">
         <div className="mb-0.5 flex">
-          <h3 className="text-xs font-medium truncate pr-6">{campaign.campaignCallName}</h3>
+          <h3 className="text-xs font-medium text-gray-900 dark:text-gray-100 truncate pr-6">{campaign.campaignCallName}</h3>
           <span 
               className={`inline-block px-1.5 py-0.5 text-[9px] rounded-lg ${statusStyles[campaign.status]}`}
             >
@@ -54,8 +54,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         </div>
         <div className="flex justify-between items-center">
           <div className="space-y-0.5">
-            <p className="text-[10px] text-gray-500">Started: {new Date(campaign.createdAt).toLocaleDateString()}</p>
-            <p className="text-[10px] text-gray-500">ID: {campaign._id}</p>
+            <p className="text-[10px] text-gray-500 dark:text-gray-400">Started: {new Date(campaign.createdAt).toLocaleDateString()}</p>
+            <p className="text-[10px] text-gray-500 dark:text-gray-400">ID: {campaign._id}</p>
 
           </div>
           
@@ -71,10 +71,10 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
                 e.stopPropagation();
                 onDelete(campaign._id);
               }}
-              className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded-full hover:bg-red-50"
+              className="text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20"
             >
               {isDeleting === campaign._id ? (
-                <div className="w-4 h-4 border-2 border-t-transparent border-red-600 rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-t-transparent border-red-600 dark:border-red-400 rounded-full animate-spin"></div>
               ) : (
                 <Trash2 className="w-4 h-4" />
               )}

@@ -17,15 +17,15 @@ const page = () => {
 
   return (
     <>
-    <div className='flex'>
+    <div className='flex bg-gray-50 dark:bg-gray-950 min-h-screen'>
       {/* <div className='fixed flex justify-between bg-white  '> */}
       {/* <div className="fixed top-0 left-0 w-full bg-white p-4 flex justify-between"> */}
       <Sidebar/>
-      <div className="ml-64 p-6 w-full">
-        <div className="fixed left-64 top-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
+      <div className="ml-64 p-6 w-full bg-gray-50 dark:bg-gray-950">
+        <div className="fixed left-64 top-0 right-0 z-50 bg-gray-50 dark:bg-gray-950 p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
 
 
-        <p className=''> Agent </p>
+        <p className='text-gray-900 dark:text-gray-100 font-semibold text-lg'> Agent </p>
         {/* <Button className='cursor-pointer' onClick={()=> setShowCreateNewAgent(true)}>+ Create Agent</Button> */}
 
         <Link href="/dashboard/agent/newAgent"><Button className='cursor-pointer'>+ Create Agent</Button></Link>

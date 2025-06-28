@@ -105,9 +105,9 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-700/50 flex items-center justify-center z-50">
-      <div ref={modalRef} className="bg-white rounded-2xl shadow-xl w-[90%] max-w-2xl max-h-[90vh] flex flex-col">
+      <div ref={modalRef} className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-[90%] max-w-2xl max-h-[90vh] flex flex-col">
         {/* Fixed Header */}
-        <div className="py-4 px-6 border-b sticky top-0 bg-white z-10 rounded-t-2xl">
+        <div className="py-4 px-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-900 z-10 rounded-t-2xl">
           <h2 className="text-xl font-semibold">Send Campaign</h2>
         </div>
         
@@ -115,13 +115,13 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
         <div className="p-6 flex-1 overflow-auto">
           {/* Schedule call days */}
           <div className="mb-6">
-            <h3 className="font-medium text-lg mb-2">Schedule your call days</h3>
+            <h3 className="font-medium text-lg mb-2 text-gray-900 dark:text-gray-100">Schedule your call days</h3>
             <div className="grid grid-cols-4 gap-3 mt-3">
               {weekdays.map(day => (
-                <label key={day} className="inline-flex items-center space-x-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label key={day} className="inline-flex items-center space-x-2 p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                   <input 
                     type="checkbox" 
-                    className="w-4 h-4 text-blue-600" 
+                    className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                     checked={selectedDays.includes(day)} 
                     onChange={() => toggleDay(day)} 
                   />
@@ -133,46 +133,46 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
           
           {/* Call timings */}
           <div className="mb-6">
-            <h3 className="font-medium text-lg mb-2">Select call timings during the day</h3>
+            <h3 className="font-medium text-lg mb-2 text-gray-900 dark:text-gray-100">Select call timings during the day</h3>
             <div className="mt-3 space-y-3">
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="callTiming" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="fullDay" 
                   checked={callTiming==='fullDay'} 
                   onChange={() => setCallTiming('fullDay')} 
                 />
                 <span className="ml-2">Full day - 10 AM to 6 PM</span>
               </label>
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="callTiming" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="firstHalf" 
                   checked={callTiming==='firstHalf'} 
                   onChange={() => setCallTiming('firstHalf')} 
                 />
                 <span className="ml-2">1st Half only - 10 AM to 2 PM</span>
               </label>
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="callTiming" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="secondHalf" 
                   checked={callTiming==='secondHalf'} 
                   onChange={() => setCallTiming('secondHalf')} 
                 />
                 <span className="ml-2">2nd Half only - 2 PM to 6 PM</span>
               </label>
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="callTiming" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="custom" 
                   checked={callTiming==='custom'} 
                   onChange={() => setCallTiming('custom')} 
@@ -188,7 +188,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
                       type="time" 
                       value={customStartTime} 
                       onChange={e => setCustomStartTime(e.target.value)} 
-                      className="border border-gray-300 rounded p-2"
+                      className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-2 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                     />
                   </div>
                   <span>to</span>
@@ -198,7 +198,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
                       type="time" 
                       value={customEndTime} 
                       onChange={e => setCustomEndTime(e.target.value)} 
-                      className="border border-gray-300 rounded p-2"
+                      className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-2 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                     />
                   </div>
                 </div>
@@ -208,24 +208,24 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
           
           {/* Send option */}
           <div className="mb-6">
-            <h3 className="font-medium text-lg mb-2">Send Option</h3>
+            <h3 className="font-medium text-lg mb-2 text-gray-900 dark:text-gray-100">Send Option</h3>
             <div className="mt-3 space-y-3">
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="sendOption" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="now" 
                   checked={sendOption==='now'} 
                   onChange={() => setSendOption('now')} 
                 />
                 <span className="ml-2">Send Now</span>
               </label>
-              <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+              <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                 <input 
                   type="radio" 
                   name="sendOption" 
-                  className="w-4 h-4 text-blue-600" 
+                  className="w-4 h-4 text-blue-600 dark:text-blue-400" 
                   value="schedule" 
                   checked={sendOption==='schedule'} 
                   onChange={() => setSendOption('schedule')} 
@@ -242,7 +242,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
                     type="datetime-local" 
                     value={scheduleDateTime} 
                     onChange={e => setScheduleDateTime(e.target.value)} 
-                    className="border border-gray-300 rounded p-2"
+                    className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-2 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                   />
                 </div>
               </div>
@@ -251,7 +251,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
         </div>
         
         {/* Fixed Footer */}
-        <div className="py-2 px-6 border-t sticky bottom-0 bg-white z-10 rounded-b-2xl">
+        <div className="py-2 px-6 border-t border-gray-200 dark:border-gray-700 sticky bottom-0 bg-white dark:bg-gray-900 z-10 rounded-b-2xl">
           <div className="flex flex-col mb-4 relative">
             <div className="flex items-center">
               <h3 className="font-medium mr-2">Expected End Date & Time:</h3>
@@ -266,7 +266,7 @@ export const SendModal: React.FC<SendModalProps> = ({ onClose, campaign }) => {
             
             {/* Calculation Details Popup */}
             {showDetails && (
-              <div className="absolute bottom-full mb-2 bg-white border rounded-lg shadow-lg p-4 w-full">
+              <div className="absolute bottom-full mb-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 w-full">
                 <h4 className="font-medium mb-2">Campaign Details</h4>
                 <div className="space-y-1 text-sm">
                   <p>Campaign start date and time: {formatDate(expectedInfo.startDateTime)}</p>

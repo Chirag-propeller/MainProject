@@ -65,14 +65,14 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
   if (loading) {
     return (
       <div className="flex justify-center items-center h-32">
-        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 dark:border-indigo-400 rounded-full animate-spin"></div>
       </div>
     )
   }
 
   if (kbs.length === 0) {
     return (
-      <div className="text-center py-10 text-gray-500">
+      <div className="text-center py-10 text-gray-500 dark:text-gray-400">
         No knowledge bases found. Click Create to add your first knowledge base.
       </div>
     )
@@ -83,17 +83,19 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
       {kbs.map((kb) => (
         <div
           key={kb._id}
-          className={`group p-2 px-2 border rounded-md mb-2 hover:border-indigo-500 transition-colors cursor-pointer ${
-            selectedId === kb._id ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'
+          className={`group p-2 px-2 border rounded-md mb-2 hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors cursor-pointer ${
+            selectedId === kb._id 
+              ? 'border-indigo-500 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-900/20' 
+              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950 hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}
           onClick={() => onSelect(kb)}
         >
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-medium text-gray-900 truncate">
+              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                 {kb.name}
               </h3>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 {kb.files?.length || 0} files • {kb.links?.length || 0} links
               </p>
             </div>
@@ -103,7 +105,7 @@ const KnowledgeBaseList: React.FC<Props> = ({ onSelect, selectedId , showModal})
                 e.stopPropagation()
                 deleteKnowledgeBase(kb._id)
               }} 
-              className="ml-2 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="ml-2 p-1 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <Trash2 size={14} />
             </button>

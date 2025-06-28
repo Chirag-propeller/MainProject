@@ -197,12 +197,12 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
     };
     
   return (
-    <div className="space-y-4 p-4 pt-0">
+    <div className="space-y-4 p-4 pt-0 bg-gray-50 dark:bg-gray-950">
         {/* Header */}
-        <div className='flex flex-row justify-between items-center sticky top-0 bg-white z-10 pt-2 pb-1'>
+        <div className='flex flex-row justify-between items-center sticky top-0 bg-gray-50 dark:bg-gray-950 z-10 pt-2 pb-1'>
             <div>
-              <h1 className='text-lg font-medium text-gray-800'>Live Analytics</h1>
-              <p className='text-xs text-gray-500'>
+              <h1 className='text-lg font-medium text-gray-800 dark:text-gray-100'>Live Analytics</h1>
+              <p className='text-xs text-gray-500 dark:text-gray-400'>
                 Last updated: {lastUpdated?.toLocaleTimeString() || "--"} • Auto-refresh: {isLive ? "60s" : "Off"}
               </p>
             </div>
@@ -301,7 +301,7 @@ const Analytics = ({campaign, setCampaign, campaignId, handleUpdate, status, set
 
         {/* Follow Up Calls Section */}
         <div className="pt-4">
-          <h2 className="text-base font-medium text-gray-800 mb-3">Follow Up Calls</h2>
+          <h2 className="text-base font-medium text-gray-800 dark:text-gray-100 mb-3">Follow Up Calls</h2>
           
           {/* Row 1: Total Follow Ups (50% each) */}
           <div className='flex flex-row gap-2 mb-3'>

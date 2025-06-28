@@ -41,9 +41,9 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   ];
 
   const statusStyles: Record<string, string> = {
-    ongoing: 'bg-blue-100 text-blue-800',
-    completed: 'bg-green-100 text-green-800',
-    draft: 'bg-gray-100 text-gray-800'
+    ongoing: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+    completed: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+    draft: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
   };
 
   const handleUpdate = async () => {
@@ -205,7 +205,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   }, [name, campaign.campaignCallName]);
 
   return (
-    <div className="flex flex-col bg-white rounded-lg border border-t-0 border-gray-200 h-full">
+    <div className="flex flex-col bg-white dark:bg-gray-950 rounded-lg border border-t-0 border-gray-200 dark:border-gray-700 h-full">
       {/* Header with campaign name, ID, status and buttons */}
       <div className="flex justify-between items-start p-4 pb-1">
         <div className="flex flex-col">
@@ -215,11 +215,11 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
                 type="text" 
                 value={name} 
                 onChange={handleNameChange}
-                className='border-gray-300 rounded-md border-1 px-2 py-1 text-xl font-semibold' 
+                className='border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-md border-1 px-2 py-1 text-xl font-semibold' 
                 ref={nameRef} 
               />
             ) : (
-              <h2 className="text-2xl font-semibold">{name}</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{name}</h2>
             )}
             {isEditable && (
               <Pencil 
@@ -230,8 +230,8 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
           </div>
           
           <div className="flex items-center gap-2">
-            <p className="text-xs text-gray-500">ID: {campaign._id}</p>
-            <span className={`px-2 py-1 rounded text-xs font-medium ${statusStyles[campaign.status] || 'bg-gray-100 text-gray-800'}`}>
+            <p className="text-xs text-gray-500 dark:text-gray-400">ID: {campaign._id}</p>
+            <span className={`px-2 py-1 rounded text-xs font-medium ${statusStyles[campaign.status] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'}`}>
               {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
             </span>
           </div>
@@ -276,12 +276,12 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
+      <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300 dark:border-gray-700">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`pb-0.5 cursor-pointer ${activeTab === tab.id ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
+            className={`pb-0.5 cursor-pointer ${activeTab === tab.id ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400' : 'text-gray-600 dark:text-gray-400'}`}
           >
             {tab.label}
           </button>

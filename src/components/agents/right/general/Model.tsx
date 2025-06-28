@@ -25,12 +25,24 @@ const ModelLeft = ({firstMessage, setFirstMessage, systemPrompt, setSystemPrompt
     return (
         <div className='w-3/4'>
             <div className='flex flex-col gap-2 mb-3'>
-                <label htmlFor='firstMessage'>First Message</label>
-                <input id='firstMessage' type='text' className='w-full p-1 rounded-md border border-gray-300 text-sm px-2' value={firstMessage} onChange={(e) => setFirstMessage(e.target.value)} />
+                <label htmlFor='firstMessage' className='text-gray-700 dark:text-gray-300'>First Message</label>
+                <input 
+                    id='firstMessage' 
+                    type='text' 
+                    className='w-full p-1 rounded-md border border-gray-300 text-sm px-2 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none' 
+                    value={firstMessage} 
+                    onChange={(e) => setFirstMessage(e.target.value)} 
+                />
             </div>
             <div className='flex flex-col gap-2'>
-                <label htmlFor='systemPrompt'>System Prompt</label>
-                <textarea id='systemPrompt' className='w-full p-2 rounded-md border border-gray-300' rows={7} value={systemPrompt} onChange={(e) => setSystemPrompt(e.target.value)}/>
+                <label htmlFor='systemPrompt' className='text-gray-700 dark:text-gray-300'>System Prompt</label>
+                <textarea 
+                    id='systemPrompt' 
+                    className='w-full p-2 rounded-md border border-gray-300 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none' 
+                    rows={7} 
+                    value={systemPrompt} 
+                    onChange={(e) => setSystemPrompt(e.target.value)}
+                />
             </div>
         </div>
     )
@@ -55,11 +67,11 @@ const ModelRight = ({
         <div className='w-1/4'>
             <div className='flex flex-col gap-2 mx-1'>
                 <div className='mx-1 p-1'>
-                    <label className='m-1 p-1'> LLM Provider </label>
+                    <label className='m-1 p-1 text-gray-700 dark:text-gray-300'> LLM Provider </label>
                     <SelectionDropdown options={llmProviders} selectedOption={selectedProvider} setOption={setSelectedProvider} />
                 </div>
                 <div className='mx-1 p-1'>
-                    <label className='m-1 p-1'> LLM Model </label>
+                    <label className='m-1 p-1 text-gray-700 dark:text-gray-300'> LLM Model </label>
                     <SelectionDropdown options={models} selectedOption={selectedModel} setOption={setSelectedModel} />
                 </div>
                 {/* <div className='flex flex-col gap-2'>
@@ -186,16 +198,17 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
     }, [systemPrompt]);
     
   return (
-    <div className='border border-gray-200 rounded-lg'>
-        <header className='cursor-pointer bg-gray-100 p-2'
-         onClick={() => {
-            setIsOpen(!isOpen)
-         }}
+    <div className='border border-gray-200 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-950 overflow-hidden'>
+        <header 
+            className='cursor-pointer bg-gray-100 dark:bg-gray-950 dark:border dark:border-indigo-400 rounded-t-lg p-2 text-gray-900 dark:text-white'
+            onClick={() => {
+                setIsOpen(!isOpen)
+            }}
         >
             <div className='flex justify-between'>
                 <div className='flex gap-2'>
-                <Brain className='w-3.5 h-3.5 text-gray-900 self-center' />
-                <h2 className='text-md text-gray-900'>Model  
+                                 <Brain className='w-3.5 h-3.5 text-gray-900 dark:text-white self-center' />
+                 <h2 className='text-md text-gray-900 dark:text-white'>Model  
                     <span className='text-sm ml-1'>
                         (Large Language Model)
                     </span>
@@ -203,16 +216,16 @@ const Model = ({agent, setAgent}: {agent: Agent, setAgent:(agent: Agent) => void
 
                 </div>
 
-            <Triangle className={`w-3 h-3  self-center 
+                         <Triangle className={`w-3 h-3 self-center text-gray-400 dark:text-white
                 ${isOpen ? "rotate-180" : "rotate-90"}
                 `} 
-                style={{ fill: "lightgray" }}
+                style={{ fill: "currentColor" }}
                  />
             {/* <Triangle className='w-4 h-4 ml-1'  /> */}
             </div>
         </header>
         {isOpen && (
-            <div className='p-2 flex gap-2  '>
+                         <div className='p-2 flex gap-2 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100'>
                 <ModelLeft 
                     firstMessage={firstMessage} 
                     setFirstMessage={setFirstMessage} 

@@ -16,8 +16,8 @@ const page = () => {
   const url = "https://numbersfetchfastapi-f4hba2arduckbmf8.eastus2-01.azurewebsites.net/create-token"
 
   return (
-    <div className='pl-2'>
-      <div className='text-xl py-2 my-2'>Integration</div>
+    <div className="p-6 bg-white dark:bg-gray-950 min-h-screen">
+      <div className='text-xl py-2 my-2 text-gray-900 dark:text-gray-100'>Integration</div>
       <div className='flex flex-row flex-wrap gap-4'>
         <ZohoCard
           onSuccess={handleSuccess}

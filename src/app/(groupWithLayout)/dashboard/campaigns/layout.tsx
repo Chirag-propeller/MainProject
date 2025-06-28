@@ -40,12 +40,12 @@ export default function CampaignsLayout({
   }, []);
 
   return (
-    <div className="flex h-full" style={{ height: 'calc(100vh - 12px)' }}>
+    <div className="flex h-full bg-white dark:bg-gray-950 min-h-screen" style={{ height: 'calc(100vh - 12px)' }}>
       {/* Left sidebar with campaigns list (25% width) */}
-      <div className="w-1/4">
+      <div className="w-1/4 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950">
         {loading ? (
           <div className="flex justify-center items-center h-32">
-            <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+            <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 dark:border-indigo-400 rounded-full animate-spin"></div>
           </div>
         ) : (
           <CampaignSidebar 
@@ -58,7 +58,7 @@ export default function CampaignsLayout({
       </div>
       
       {/* Main content area (75% width) */}
-      <div className="w-3/4 overflow-auto">
+      <div className="w-3/4 overflow-auto bg-white dark:bg-gray-950">
         {children}
       </div>
     </div>

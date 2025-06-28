@@ -13,7 +13,7 @@ interface CampaignGeneralProps {
 
 const CampaignGeneral: React.FC<CampaignGeneralProps> = ({ campaign, agents }) => {
   return (
-    <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-3 p-4 bg-gray-50 dark:bg-gray-900'>
       <GeneralInfo campaign={campaign} />
       <AgentConfiguration campaign={campaign} agents={agents} />
       <GoalsAndData campaign={campaign} />

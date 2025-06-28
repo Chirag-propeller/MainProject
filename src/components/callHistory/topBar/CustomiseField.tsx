@@ -94,19 +94,19 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
       <button onClick={toggleDropdown} 
               className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors  ${
                 isOpen 
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
       >
-        Custom Fields <ChevronDown className='w-3.5 h-3.5  self-center text-indigo-600' />
+        Custom Fields <ChevronDown className='w-3.5 h-3.5  self-center text-indigo-600 dark:text-indigo-400' />
       </button>
 
       {isOpen && (
         <div
-          className='absolute top-full left-0 z-100 bg-white border border-gray-300 w-fit rounded-md p-2 pb-0 max-h-60 overflow-y-auto'
+          className='absolute top-full left-0 z-100 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 w-fit rounded-md p-2 pb-0 max-h-60 overflow-y-auto'
         >
           {allFields.map((field) => (
-            <label key={field} className='flex items-center w-fit text-nowrap text-sm' 
+            <label key={field} className='flex items-center w-fit text-nowrap text-sm text-gray-900 dark:text-gray-100' 
               // style={{ display: 'block', marginBottom: '5px' }}
               >
               <input
@@ -120,12 +120,12 @@ const CustomiseField: React.FC<CustomiseFieldProps> = ({
                 field.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
             </label>
           ))}
-              <div className=' flex justify-between sticky bottom-0 bg-white py-1'>
+              <div className=' flex justify-between sticky bottom-0 bg-white dark:bg-gray-800 py-1'>
                   <Button
                     variant="secondary"
                     size="sm"
                     onClick={applyHandler}
-                    className='rounded-[2px] px-2 py-1 text-xs'
+                    className='rounded-[2px] px-2 py-1 text-xs bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700'
                   >
                     Apply
                   </Button>

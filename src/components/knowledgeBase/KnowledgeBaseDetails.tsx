@@ -15,9 +15,9 @@ interface Props {
 const KnowledgeBaseDetails: React.FC<Props> = ({ kb }) => {
   console.log(kb);
   return (
-    <div className='bg-white p-6 w-full h-full rounded shadow overflow-y-auto'>
+    <div className='bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 p-6 w-full h-full rounded shadow overflow-y-auto'>
       <div className=' mb-4'>
-      <h2 className='text-2xl font-bold'>{kb.name}</h2>
+      <h2 className='text-2xl font-bold text-gray-900 dark:text-gray-100'>{kb.name}</h2>
 
       </div>
       
@@ -25,8 +25,8 @@ const KnowledgeBaseDetails: React.FC<Props> = ({ kb }) => {
 
       {kb.files?.length > 0 && (
         <div className='mb-4'>
-          <h3 className='text-lg font-semibold mb-1'>Files</h3>
-          <ul className='list-disc list-inside'>
+          <h3 className='text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100'>Files</h3>
+          <ul className='list-disc list-inside text-gray-700 dark:text-gray-300'>
             {kb.files.map((file, idx) => (
               <li key={idx}>{file.name}</li>
             ))}
@@ -36,11 +36,11 @@ const KnowledgeBaseDetails: React.FC<Props> = ({ kb }) => {
 
         {kb.links?.length > 0 && (
         <div>
-            <h3 className='text-lg font-semibold mb-1'>Links</h3>
+            <h3 className='text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100'>Links</h3>
             <ul className='list-disc list-inside'>
             {kb.links.map((link, idx) => (
                 <li key={link._id}>
-                <a href={link.url} target='_blank' rel='noopener noreferrer' className='text-blue-600 underline'>
+                <a href={link.url} target='_blank' rel='noopener noreferrer' className='text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300'>
                     {link.url}
                 </a>
                 </li>

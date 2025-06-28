@@ -125,12 +125,12 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
     <div className="relative w-full" ref={dropdownRef}>
       {/* Custom dropdown trigger */}
       <div
-        className="p-1.5 rounded-lg w-full text-sm bg-gray-100 border border-gray-300 flex items-center justify-between cursor-pointer"
+        className="p-1.5 rounded-lg w-full text-sm bg-gray-100 border border-gray-300 flex items-center justify-between cursor-pointer dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{selectedName}</span>
+        <span className="text-gray-900 dark:text-gray-100">{selectedName}</span>
         <svg 
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-0' : 'rotate-0'}`}
+          className={`w-4 h-4 transition-transform text-gray-500 dark:text-gray-400 ${isOpen ? 'rotate-0' : 'rotate-0'}`}
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -141,53 +141,37 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
 
       {/* Custom dropdown menu */}
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-[6px] shadow-lg text-sm max-h-[250px] overflow-y-auto">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-[6px] shadow-lg text-sm max-h-[250px] overflow-y-auto dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
           {voices.length > 0 ? (
             voices.map((option: any, idx: any) => (
               <div
                 key={idx}
                 className={`flex items-center gap-4 p-2 cursor-pointer text-sm py-1 ${
                   option.value === selectedVoice 
-                    ? 'bg-indigo-500 text-white ' 
-                    : 'hover:bg-gray-100'
+                    ? 'bg-indigo-500 text-white dark:bg-indigo-700' 
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100'
                 }`}
                 onClick={() => {
                   setSelectedVoice(option.value);
                   setIsOpen(false);
                 }}
               >
-                {/* <span className={option.value === selectedVoice ? 'font-medium' : ''}>{option.name}</span> */}
                 <button
-                  className={`p-2  rounded-full hover:bg-gray-200 focus:outline-none flex items-center gap-1 border  cursor-pointer  ${option.value === selectedVoice ? 'border-white' : 'border-indigo-500'} ${
+                  className={`p-2 rounded-full hover:bg-gray-200 focus:outline-none flex items-center gap-1 border cursor-pointer  ${option.value === selectedVoice ? 'border-white' : 'border-indigo-500'} ${
                     isLoading === option.value ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  } dark:hover:bg-gray-700 dark:border-indigo-400`}
                   onClick={(e) => PlayHandler(e, option)}
                   disabled={isLoading === option.value}
                 >
-                  {/* <p className={option.value === selectedVoice ? 'text-white text-sm' : 'text-gray-900 text-sm'}>Play</p> */}
-                  
-                  <Play className={`${option.value === selectedVoice ? ' text-white w-4 h-4' : 'text-indigo-500 w-4 h-4'} ${
+                  <Play className={`${option.value === selectedVoice ? ' text-white w-4 h-4' : 'text-indigo-500 w-4 h-4 dark:text-indigo-400'} ${
                     isLoading === option.value ? 'animate-spin' : ''
                   }`} />
                 </button>
-                <span className={option.value === selectedVoice ? 'font-medium' : ''}>{option.name}</span>
-                {/* {audioUrl && (
-                        <audio 
-                        // controls 
-                        src={audioUrl} 
-                        autoPlay
-                        className="mt-4"
-                        onEnded={() => {
-                            URL.revokeObjectURL(audioUrl); // Clean up
-                            setAudioUrl(null);
-                        }}
-                        />
-                    )} */}
-                {/* {audioUrl && <audio src={audioUrl} controls />} */}
+                <span className={`${option.value === selectedVoice ? 'font-medium text-white' : 'text-gray-900 dark:text-gray-100'}`}>{option.name}</span>
               </div>
             ))
           ) : (
-            <div className="p-2 text-gray-500">No options available</div>
+            <div className="p-2 text-gray-500 dark:text-gray-400">No options available</div>
           )}
         </div>
       )}

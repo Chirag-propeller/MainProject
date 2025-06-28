@@ -5,6 +5,7 @@ import Transcriber from './general/Transcriber';
 import Voice from './general/Voice';
 import Tools from './general/Tools';
 
+
 interface AgentGeneralTabProps {
   agent: Agent;
   setAgent: (agent: Agent) => void;
@@ -12,7 +13,7 @@ interface AgentGeneralTabProps {
 
 const AgentGeneralTab: React.FC<AgentGeneralTabProps> = ({ agent, setAgent }) => {
   return (
-    <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-3 dark:bg-gray-950 text-gray-900 dark:text-gray-100'>
         <Model agent={agent} setAgent={setAgent} />
         <Transcriber agent={agent} setAgent={setAgent} />
         <Voice agent={agent} setAgent={setAgent} />

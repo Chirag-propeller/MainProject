@@ -32,9 +32,9 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   const editFormRef = useRef<{ save: () => void }>(null);
   
   const statusStyles: Record<string, string> = {
-    ongoing: 'bg-blue-100 text-blue-800',
-    completed: 'bg-green-100 text-green-800',
-    draft: 'bg-gray-100 text-gray-800'
+    ongoing: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+    completed: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+    draft: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
   };
   useEffect(()=>{
     console.log(newCampaign);
@@ -134,7 +134,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
   }, [isTitleEditing]);
   
   return (
-    <div className="flex flex-col bg-white rounded-lg h-full">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-950 rounded-lg h-full">
       {/* Fixed header */}
       <div className="flex justify-between items-start p-4 pb-1 ">
         {/* Title and ID */}
@@ -146,15 +146,15 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
-              className="text-xl font-semibold border-b border-gray-300 focus:outline-none"
+              className="text-xl font-semibold border-b border-gray-300 dark:border-gray-700 focus:outline-none bg-transparent text-gray-900 dark:text-gray-100"
             />
           ) : (
             <div className="flex items-center">
-              <h2 className="text-2xl font-semibold">{campaign.campaignCallName}</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{campaign.campaignCallName}</h2>
               {
                 isEditing && (
                   <Edit2
-                  className="ml-0.5 h-2.5 top-0 cursor-pointer text-gray-500 hover:text-gray-700"
+                  className="ml-0.5 h-2.5 top-0 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                   onClick={() => setIsTitleEditing(true)}
                 />
                 )
@@ -162,7 +162,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
 
             </div>
           )}
-          <p className="text-xs text-gray-500 mt-0.5">ID: {campaign._id}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">ID: {campaign._id}</p>
         </div>
         {/* Action buttons */}
         <div className="flex space-x-2 gap-1">
@@ -187,12 +187,12 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       {/* Tabs navigation */}
       {
         !isEditing && (
-          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
+          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300 dark:border-gray-700">
           {['general','campaigns goals', 'analytics','data'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as 'general'|'analytics'|'data'|'campaigns goals')}
-              className={`pb-0.5 cursor-pointer ${activeTab === tab ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
+              className={`pb-0.5 cursor-pointer ${activeTab === tab ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400' : 'text-gray-600 dark:text-gray-400'}`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -204,11 +204,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       {/* Edit tab */}
       {
         isEditing && (
-          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
+          <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300 dark:border-gray-700">
           <button
                 key="edit"
                 onClick={() => setActiveTab('edit')}
-                className={`pb-0.5 cursor-pointer ${activeTab === 'edit' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
+                className={`pb-0.5 cursor-pointer ${activeTab === 'edit' ? 'text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400' : 'text-gray-600 dark:text-gray-400'}`}
               >
                 Edit
               </button>
@@ -217,7 +217,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({ campaign, agents, new
       }
 
       {/* Tab content */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-gray-950">
         {activeTab === 'general' && <CampaignGeneral campaign={campaign} agents={agents} />}
         {activeTab === 'campaigns goals' && <CampaignGoal campaign={campaign} agents={agents} />}
         {activeTab === 'analytics' && <CampaignAnalytics campaign={campaign} agents={agents} />}

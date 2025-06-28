@@ -77,12 +77,12 @@ const page = () => {
   // You could implement the filtering logic here or pass the filters to the Table component
 
   return (
-    <div className='pl-4 pb-10'>
-      <div className='sticky top-0 z-100 bg-white'>
+    <div className='pl-4 pb-10 bg-white dark:bg-gray-950 min-h-screen'>
+      <div className='sticky top-0 z-100 bg-white dark:bg-gray-950'>
 
       <div className='flex gap-1.5 py-4 '>
-        <History className='w-3.5 h-3.5  self-center text-indigo-600' />
-        <h1 className="text-lg  self-center text-indigo-600">Call History</h1>
+        <History className='w-3.5 h-3.5  self-center text-indigo-600 dark:text-gray-100' />
+        <h1 className="text-lg  self-center text-indigo-600 dark:text-gray-100">Call History</h1>
       </div>
       {/* <div className='flex justify-start'>
 
@@ -109,11 +109,11 @@ const page = () => {
       <Table  customiseField={customiseField} filters={filters} agentOptions={agentOptions} dateRange={dateRange} page={page}  setHasNextPage={setHasNextPage} setHasPreviousPage={setHasPreviousPage} />
       <div className='flex justify-center gap-2 py-4  '>
         {
-          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page - 1)} disabled={!hasPreviousPage}> <ChevronLeft /> </Button>
+          <Button size="sm" className='p-1 rounded-[4px] bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700' onClick={() => pageChanger(page - 1)} disabled={!hasPreviousPage}> <ChevronLeft /> </Button>
         }
-        <div className='text-xs text-gray-500 self-center'> Page:{page} </div>
+        <div className='text-xs text-gray-500 dark:text-gray-400 self-center'> Page:{page} </div>
         {
-          <Button size="sm" className='p-1 rounded-[4px]' onClick={() => pageChanger(page + 1)} disabled={!hasNextPage}> <ChevronRight /> </Button>
+          <Button size="sm" className='p-1 rounded-[4px] bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700' onClick={() => pageChanger(page + 1)} disabled={!hasNextPage}> <ChevronRight /> </Button>
         }
       </div>
 

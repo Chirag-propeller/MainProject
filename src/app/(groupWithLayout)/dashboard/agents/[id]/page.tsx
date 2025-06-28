@@ -36,7 +36,7 @@ export default function AgentDetailsPage() {
   // Show loading state
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-32">
+      <div className="flex justify-center items-center h-32 bg-gray-50 dark:bg-gray-950 min-h-screen">
         <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
       </div>
     );
@@ -45,7 +45,7 @@ export default function AgentDetailsPage() {
   // Show error if agent not found
   if (!agent) {
     return (
-      <div className="text-center py-10 text-red-500">
+      <div className="text-center py-10 text-red-500 bg-gray-50 dark:text-red-400 dark:bg-gray-950 min-h-screen">
         Agent not found. It may have been deleted or the ID is invalid.
       </div>
     );

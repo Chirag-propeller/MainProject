@@ -93,27 +93,27 @@ const Filter: React.FC<FilterProps> = ({
         onClick={toggleFilter}
         className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors  ${
           isOpen || getActiveFilterCount() > 0
-            ? 'bg-indigo-100 text-indigo-700'
-            : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200'
+            ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+            : 'bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
         }`}
       >
         <FilterIcon size={16} />
         <span>Filter</span>
         {getActiveFilterCount() > 0 && (
-          <span className="flex items-center justify-center bg-indigo-600 text-white rounded-full h-5 w-5 text-xs">
+          <span className="flex items-center justify-center bg-indigo-600 dark:bg-indigo-500 text-white rounded-full h-5 w-5 text-xs">
             {getActiveFilterCount()}
           </span>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-50 border border-gray-200 overflow-hidden">
-          <div className="flex justify-between items-center p-2 border-b border-gray-200">
-            <h3 className="font-medium text-sm text-gray-700">Filters</h3>
+        <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-md shadow-lg z-50 border border-gray-200 dark:border-gray-600 overflow-hidden">
+          <div className="flex justify-between items-center p-2 border-b border-gray-200 dark:border-gray-600">
+            <h3 className="font-medium text-sm text-gray-700 dark:text-gray-300">Filters</h3>
             {getActiveFilterCount() > 0 && (
               <button
                 onClick={clearFilters}
-                className="text-xs text-indigo-600 hover:text-indigo-800"
+                className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300"
               >
                 Clear all
               </button>
@@ -125,35 +125,35 @@ const Filter: React.FC<FilterProps> = ({
             {/* Agent filter */}
             <div className="">
               <button
-                className="w-full flex items-center justify-between p-2 py-1 hover:bg-gray-50 rounded-md"
+                className="w-full flex items-center justify-between p-2 py-1 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md"
                 onClick={() => toggleMenu('agent')}
               >
                 <div className="flex items-center gap-2">
-                  <UserRound size={16} className="text-gray-500" />
-                  <span className="text-xs font-medium">Agent</span>
+                  <UserRound size={16} className="text-gray-500 dark:text-gray-400" />
+                  <span className="text-xs font-medium text-gray-900 dark:text-gray-100">Agent</span>
                   {filters.agent.length > 0 && (
-                    <span className="bg-indigo-100 text-indigo-700 text-xs px-2 py-0.5 rounded-full">
+                    <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs px-2 py-0.5 rounded-full">
                       {filters.agent.length}
                     </span>
                   )}
                 </div>
-                <span className="text-gray-400">{activeMenu === 'agent' ? '−' : '+'}</span>
+                <span className="text-gray-400 dark:text-gray-500">{activeMenu === 'agent' ? '−' : '+'}</span>
               </button>
               
               {activeMenu === 'agent' && (
-                <div className="ml-8 border-l border-gray-200 pl-2 py-1">
+                <div className="ml-8 border-l border-gray-200 dark:border-gray-600 pl-2 py-1">
                   {agentOptions.map((option: Agent, key: number) => (
                     <div
                       key={key}
-                      className="flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer"
+                      className="flex items-center gap-2 p-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer"
                       onClick={() => toggleOption('agent', option.agentId)}
                     >
                       {filters.agent.includes(option.agentId) ? (
-                        <CheckSquare size={16} className="text-indigo-600" />
+                        <CheckSquare size={16} className="text-indigo-600 dark:text-indigo-400" />
                       ) : (
-                        <Square size={16} className="text-gray-400" />
+                        <Square size={16} className="text-gray-400 dark:text-gray-500" />
                       )}
-                      <span className="text-xs">{option.agentName}</span>
+                      <span className="text-xs text-gray-900 dark:text-gray-100">{option.agentName}</span>
                     </div>
                   ))}
                 </div>
@@ -163,35 +163,35 @@ const Filter: React.FC<FilterProps> = ({
             {/* Status filter */}
             <div className="">
               <button
-                className="w-full flex items-center justify-between py-1 p-2 hover:bg-gray-50 rounded-md"
+                className="w-full flex items-center justify-between py-1 p-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md"
                 onClick={() => toggleMenu('status')}
               >
                 <div className="flex items-center gap-2">
-                  <BarChart3 size={16} className="text-gray-500" />
-                  <span className="text-xs font-medium">Call Status</span>
+                  <BarChart3 size={16} className="text-gray-500 dark:text-gray-400" />
+                  <span className="text-xs font-medium text-gray-900 dark:text-gray-100">Call Status</span>
                   {filters.status.length > 0 && (
-                    <span className="bg-indigo-100 text-indigo-700 text-xs px-2 py-0.5 rounded-full">
+                    <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 text-xs px-2 py-0.5 rounded-full">
                       {filters.status.length}
                     </span>
                   )}
                 </div>
-                <span className="text-gray-400">{activeMenu === 'status' ? '−' : '+'}</span>
+                <span className="text-gray-400 dark:text-gray-500">{activeMenu === 'status' ? '−' : '+'}</span>
               </button>
               
               {activeMenu === 'status' && (
-                <div className="ml-8 border-l border-gray-200 pl-2 py-1">
+                <div className="ml-8 border-l border-gray-200 dark:border-gray-600 pl-2 py-1">
                   {statusOptions.map(option => (
                     <div
                       key={option.value}
-                      className="flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer"
+                      className="flex items-center gap-2 p-1.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded cursor-pointer"
                       onClick={() => toggleOption('status', option.value)}
                     >
                       {filters.status.includes(option.value) ? (
-                        <CheckSquare size={16} className="text-indigo-600" />
+                        <CheckSquare size={16} className="text-indigo-600 dark:text-indigo-400" />
                       ) : (
-                        <Square size={16} className="text-gray-400" />
+                        <Square size={16} className="text-gray-400 dark:text-gray-500" />
                       )}
-                      <span className="text-xs">{option.label}</span>
+                      <span className="text-xs text-gray-900 dark:text-gray-100">{option.label}</span>
                     </div>
                   ))}
                 </div>

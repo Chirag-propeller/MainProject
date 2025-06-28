@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+import { Loader2, TrendingUp, TrendingDown } from 'lucide-react';
 import React from 'react';
 
 interface ProgressCardProps {
@@ -7,14 +7,18 @@ interface ProgressCardProps {
   totalCalls: number;
   loading?: boolean;
   isLive?: boolean;
+  subtitle?: string;
+  value?: string;
+  trend?: { type: string; value: string };
+  description?: string;
 }
 
-const ProgressCard = ({ title, completedCalls, totalCalls, loading = false, isLive = false }: ProgressCardProps) => {
+const ProgressCard = ({ title, completedCalls, totalCalls, loading = false, isLive = false, subtitle, value, trend, description }: ProgressCardProps) => {
   const percentage = totalCalls > 0 ? Math.round((completedCalls / totalCalls) * 100) : 0;
 
   return (
     <div className="w-full p-1 mb-3">
-      <div className="bg-white p-4 rounded-lg shadow border border-gray-100 hover:shadow-md transition-all duration-200 relative">
+      <div className="bg-white dark:bg-gray-950 p-4 rounded-lg shadow border border-gray-100 dark:border-gray-700 hover:shadow-md dark:hover:shadow-gray-700/20 transition-all duration-200 relative">
         {/* Live indicator */}
         {isLive && (
           <div className="absolute top-2 right-2 flex items-center space-x-1">
@@ -46,7 +50,7 @@ const ProgressCard = ({ title, completedCalls, totalCalls, loading = false, isLi
             >
               {/* Animated shine effect - inline styles */}
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 dark:via-gray-800/20 to-transparent"
                 style={{
                   animation: 'shimmerEffect 2s infinite',
                 }}
@@ -71,6 +75,34 @@ const ProgressCard = ({ title, completedCalls, totalCalls, loading = false, isLi
             </div>
           </div> */}
         </div>
+
+        {/* Badge */}
+        <div className="flex items-center mb-2">
+          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300`}>
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></span>
+            Live
+          </span>
+        </div>
+
+        {/* Title and subtitle */}
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">{title}</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{subtitle}</p>
+
+        {/* Value */}
+        <div className="flex items-center justify-between">
+          <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">{value}</div>
+          {trend && (
+            <div className={`flex items-center text-sm ${trend.type === 'increase' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              {trend.type === 'increase' ? <TrendingUp className="w-4 h-4 mr-1" /> : <TrendingDown className="w-4 h-4 mr-1" />}
+              {trend.value}
+            </div>
+          )}
+        </div>
+
+        {/* Optional description */}
+        {description && (
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{description}</p>
+        )}
       </div>
 
       {/* Component-specific styles */}

@@ -4,6 +4,7 @@ import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from '@/components/agent/newAgent/SelectOptions';
 import { Triangle, Speaker, Music, Speech, Play  } from 'lucide-react';
 import SelectionDropdown from '@/components/agents/SelectionDropdown';
+import TTSModelDropdown from '@/components/agents/TTSModelDropdown';
 import VoiceSelector from './VoiceSelection';
 
 interface TtsProvider {
@@ -15,6 +16,7 @@ interface TtsProvider {
 interface TtsModel {
   name: string;
   value: string;
+  features?: string;
   languages: TtsLanguage[];
 }
 
@@ -52,7 +54,7 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
 
     // State variables with defaults from agent or fallback values
     const [selectedProvider, setSelectedProvider] = useState<string>(agent.tts || (providers.length > 0 ? providers[0].value : "")); 
-    const [models, setModels] = useState<{name: string, value: string}[]>([]);
+    const [models, setModels] = useState<{name: string, value: string, features?: string}[]>([]);
     const [selectedModel, setSelectedModel] = useState<string>(agent.ttsModel || "");
     const [availableLanguages, setAvailableLanguages] = useState<{name: string, value: string}[]>([]);
     const [language, setLanguage] = useState<string>(agent.ttsLanguage || "");
@@ -70,7 +72,8 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
             if (provider && provider.models) {
                 const modelOptions = provider.models.map((model: TtsModel) => ({
                     name: model.name,
-                    value: model.value
+                    value: model.value,
+                    features: model.features
                 }));
                 console.log("modelOptions", modelOptions);
                 console.log("provider", provider);
@@ -272,75 +275,52 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
     }, [selectedVoice])
 
   return (
-    <div className='border border-gray-200 rounded-lg'>
-        <header className='cursor-pointer bg-gray-100 p-2'
+                         <div className='border border-gray-200 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-950'>
+                                                   <header 
+         className='cursor-pointer bg-gray-100 dark:bg-gray-950 dark:border dark:border-indigo-400 rounded-t-lg p-2 text-gray-900 dark:text-white'
          onClick={() => {
             setIsOpen(!isOpen)
          }}
         >
             <div className='flex justify-between'>
                 <div className='flex gap-2'>
-                    <Speech className='w-3.5 h-3.5 text-gray-900 self-center' />
-                    {/* <Music className='w-4 h-4 text-gray-900 self-center' /> */}
-                    {/* <Speaker className='w-4 h-4 text-gray-900 self-center' /> */}
-                    <h2 className='text-md text-gray-900'>Voice</h2>
+                    <Speaker className='w-3.5 h-3.5 text-gray-900 dark:text-white self-center' />
+                    <h2 className='text-md text-gray-900 dark:text-white'>Voice</h2>
                 </div>
-
-                <Triangle className={`w-3 h-3  self-center 
-                ${isOpen ? "rotate-180" : "rotate-90"}
-                `} 
-                style={{ fill: "lightgray" }} />
+                <Triangle className={`w-3 h-3 self-center text-gray-400 dark:text-white ${isOpen ? "rotate-180" : "rotate-90"}`} 
+                style={{ fill: "currentColor" }} />
             </div>
         </header>
-        {isOpen && (
-            <div className='p-2 flex flex-row flex-wrap gap-2 w-full bg-gray-50 '>
-                <div className='flex flex-col gap-2 mx-1 w-2/5'>
-                    <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Provider </label>
-                    <SelectionDropdown options={providers} selectedOption={selectedProvider} setOption={setSelectedProvider} />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2 mx-1 w-2/5'>
-                    <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Model </label>
-                    <SelectionDropdown options={models} selectedOption={selectedModel} setOption={setSelectedModel} />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2 mx-1 w-2/5'>
-                    <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Language </label>
-                    <SelectionDropdown options={availableLanguages} selectedOption={language} setOption={setLanguage} />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2 mx-1 w-2/5'>
-                    <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Gender </label>
-                    <SelectOptions options={availableGenders} selectedOption={gender} setOption={setGender} />
-                    </div>
-                </div>
-                <div className='flex flex-col gap-2 mx-1 w-9/11'>
-                    <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Voice </label>
-                    <VoiceSelector voices={voices} selectedVoice={selectedVoice} setSelectedVoice={setSelectedVoice} agent={agent} />
-
-                    {/* <select 
-                        className='p-1.5  rounded-lg w-full text-sm bg-gray-100 border border-gray-300 '
-                        value={selectedVoice}
-                        onChange={(e) => setSelectedVoice(e.target.value)}
-                    >
-                        {voices.length > 0 ? voices?.map((option: any, idx:any) => (
-                            <option key={idx} value={option.value} className='p-1 flex flex-row '> <p>{option.name}</p>
-                            <Play className='w-4 h-4 text-gray-900 self-center' onClick={() => {
-                                console.log("option", option)
-                            }}/>
-                             </option>
-                        )) : <option value="">No options available</option>}
-                    </select> */}
-                    {/* <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} /> */}
-                    </div>
-                </div>
-            </div>
-        )}
+                 {isOpen && (
+                             <div className='p-4 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100'>
+                 <div className='flex flex-col gap-4'>
+                     <div className='flex flex-wrap gap-4'>
+                         <div className='flex flex-col gap-2 flex-1 min-w-[200px]'>
+                             <label className='text-gray-700 dark:text-gray-300 font-medium'>Provider</label>
+                             <SelectionDropdown options={providers} selectedOption={selectedProvider} setOption={setSelectedProvider} />
+                         </div>
+                         <div className='flex flex-col gap-2 flex-1 min-w-[200px]'>
+                             <label className='text-gray-700 dark:text-gray-300 font-medium'>Model</label>
+                             <TTSModelDropdown options={models} selectedOption={selectedModel} setOption={setSelectedModel} />
+                         </div>
+                     </div>
+                     <div className='flex flex-wrap gap-4'>
+                         <div className='flex flex-col gap-2 flex-1 min-w-[200px]'>
+                             <label className='text-gray-700 dark:text-gray-300 font-medium'>Language</label>
+                             <SelectionDropdown options={availableLanguages} selectedOption={language} setOption={setLanguage} />
+                         </div>
+                         <div className='flex flex-col gap-2 flex-1 min-w-[200px]'>
+                             <label className='text-gray-700 dark:text-gray-300 font-medium'>Gender</label>
+                             <SelectionDropdown options={availableGenders.map(g => ({name: g, value: g}))} selectedOption={gender} setOption={setGender} />
+                         </div>
+                     </div>
+                     <div className='flex flex-col gap-2'>
+                         <label className='text-gray-700 dark:text-gray-300 font-medium'>Voice</label>
+                         <VoiceSelector voices={voices} selectedVoice={selectedVoice} setSelectedVoice={setSelectedVoice} agent={agent} />
+                     </div>
+                 </div>
+             </div>
+         )}
     </div>
   )
 }

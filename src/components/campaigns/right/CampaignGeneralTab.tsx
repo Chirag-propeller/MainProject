@@ -31,23 +31,23 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
   children 
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full p-2 bg-gray-50 hover:bg-gray-100 flex items-center justify-between transition-colors"
+        className="w-full p-2 bg-gray-50 hover:bg-gray-100 dark:bg-gradient-to-r dark:from-gray-950 dark:to-gray-800 dark:hover:from-gray-800 dark:hover:to-gray-700 flex items-center justify-between transition-colors border border-gray-200 dark:border-indigo-400"
       >
         <div className="flex items-center">
-          <Icon className="w-5 h-5 mr-2 text-gray-600" />
-          <h3 className="text-sm font-medium text-gray-800">{title}</h3>
+          <Icon className="w-5 h-5 mr-2 text-gray-600 dark:text-white" />
+          <h3 className="text-sm font-medium text-gray-800 dark:text-white">{title}</h3>
         </div>
         {isOpen ? (
-          <ChevronUp className="w-4 h-4 text-gray-500" />
+          <ChevronUp className="w-4 h-4 text-gray-500 dark:text-white" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-gray-500" />
+          <ChevronDown className="w-4 h-4 text-gray-500 dark:text-white" />
         )}
       </button>
       {isOpen && (
-        <div className="p-4 bg-white border-t border-gray-200">
+        <div className="p-4 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-700">
           {children}
         </div>
       )}
@@ -202,7 +202,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   }, [campaign, handleInputChange]);
 
   return (
-    <div className='p-4'>
+    <div className='p-4 bg-white dark:bg-gray-950'>
     <div className='flex flex-col gap-2'>
       {/* Campaign Details Section */}
       <CollapsibleSection
@@ -214,12 +214,12 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Agent</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">Agent</label>
               {isEditable ? (
                 <select
                   value={campaign.agentId || ''}
                   onChange={(e) => handleInputChange('agentId', e.target.value)}
-                  className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">Select an agent</option>
                   {agents.map((agent) => (
@@ -229,19 +229,19 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   ))}
                 </select>
               ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                   {agentName}
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">From Number</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">From Number</label>
               {isEditable ? (
                 <select
                   value={campaign.fromNumber || ''}
                   onChange={(e) => handleInputChange('fromNumber', e.target.value)}
-                  className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 >
                   <option value="">Select a phone number</option>
                   {fromNumberList.map((number: string) => (
@@ -251,7 +251,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   ))}
                 </select>
               ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                   {campaign.fromNumber || 'Not specified'}
                 </div>
               )}
@@ -260,7 +260,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="concurrentCalls">Max Concurrent Calls</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2" htmlFor="concurrentCalls">Max Concurrent Calls</label>
               {isEditable ? (
                 <input
                   type="number"
@@ -268,21 +268,21 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   name="concurrentCalls"
                   value={campaign.concurrentCalls || 0}
                   onChange={(e) => handleInputChange('concurrentCalls', parseInt(e.target.value) || 0)}
-                  className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                   {campaign.concurrentCalls || 0}
                 </div>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Follow-up</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-white mb-2">Follow-up</label>
               {isEditable ? (
                 <div className="flex items-center gap-4">
                   <div className="flex gap-4">
-                    <label className="flex items-center text-sm">
+                    <label className="flex items-center text-sm text-gray-900 dark:text-gray-100">
                       <input
                         type="radio"
                         name="followUp"
@@ -296,7 +296,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                       />
                       No
                     </label>
-                    <label className="flex items-center text-sm">
+                    <label className="flex items-center text-sm text-gray-900 dark:text-gray-100">
                       <input
                         type="radio"
                         name="followUp"
@@ -316,7 +316,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                       type="number"
                       value={campaign.noOfFollowUps || ''}
                       onChange={(e) => handleInputChange('noOfFollowUps', e.target.value)}
-                      className="w-20 rounded-md border border-gray-300 px-1 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                      className="w-20 rounded-md border border-gray-300 dark:border-gray-600 px-1 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                       placeholder="#"
                       min="1"
                       max="5"
@@ -324,7 +324,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                   {campaign.followUp ? 'Yes' : 'No'}
                   {campaign.followUp === true && campaign.noOfFollowUps && (
                     <span className="ml-2">({campaign.noOfFollowUps} follow-ups)</span>
@@ -359,38 +359,38 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
       >
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-0.5">Campaign Goal <span className="italic text-gray-500 text-sm">(Define what the AI voice agent should achieve in a single sentence.)
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-0.5">Campaign Goal <span className="italic text-gray-500 dark:text-gray-300 text-sm">(Define what the AI voice agent should achieve in a single sentence.)
             </span></label>
-            <div className="text-gray-500 text-xs mb-2">💡 Example: "Remind users to renew their subscription"</div>
+            <div className="text-gray-500 dark:text-gray-300 text-xs mb-2">💡 Example: &ldquo;Remind users to renew their subscription&rdquo;</div>
             {isEditable ? (
               <textarea
                 ref={goalInputRef}
                 value={campaign.goal || ''}
                 onChange={handleGoalChange}
                 rows={2}
-                className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400"
+                className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400 dark:placeholder:text-gray-300 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 placeholder="Describe the main objective of this campaign..."
               />
             ) : (
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm min-h-[60px]">
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm min-h-[60px] text-gray-900 dark:text-gray-100">
                 {campaign.goal || 'No goal specified'}
               </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Data to Collect</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">Data to Collect</label>
             {isEditable ? (
               <textarea
                 ref={dataTextareaRef}
                 value={campaign.dataToCollect?.join('\n') || ''}
                 onChange={handleDataCollectChange}
                 rows={3}
-                className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400 dark:placeholder:text-gray-300 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 placeholder="Specify what information you want to gather (one per line)..."
               />
             ) : (
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm min-h-[60px]">
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm min-h-[60px] text-gray-900 dark:text-gray-100">
                 {campaign.dataToCollect && campaign.dataToCollect.length > 0 ? (
                   <ul className="list-disc list-inside">
                     {campaign.dataToCollect.map((item, index) => (
@@ -405,7 +405,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
 
               Mandatory Adherence
             </label>
@@ -415,11 +415,11 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                 value={campaign.mandatoryAdherence || ''}
                 onChange={handleMandatoryAdherenceChange}
                 rows={3}
-                className="w-full p-1 border border-gray-300 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full p-1 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400 dark:placeholder:text-gray-300 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 placeholder="Define compliance requirements and mandatory protocols..."
               />
             ) : (
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm min-h-[60px]">
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm min-h-[60px] text-gray-900 dark:text-gray-100">
                 {campaign.mandatoryAdherence || 'No mandatory adherence specified'}
               </div>
             )}
@@ -437,14 +437,14 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
         <div className="space-y-6">
           {/* Time Zone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Time Zone</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">Time Zone</label>
             {isEditable ? (
               <TimezoneDropdown
                 value={campaign.callTimezone || ''}
                 onChange={(value) => handleInputChange('callTimezone', value)}
               />
             ) : (
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                 {campaign.callTimezone || 'Not specified'}
               </div>
             )}
@@ -453,17 +453,17 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           {/* Schedule call days */}
           {isEditable && (
             <div>
-              <h4 className="font-medium text-gray-700 mb-3 text-sm">Schedule your call days</h4>
+              <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3 text-sm">Schedule your call days</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {weekdays.map(day => (
-                  <label key={day} className="inline-flex items-center space-x-2 p-1 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                  <label key={day} className="inline-flex items-center space-x-2 p-1 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                     <input 
                       type="checkbox" 
                       className="w-4 h-4 text-indigo-600" 
                       checked={selectedDays.includes(day)} 
                       onChange={() => handleDayToggle(day)} 
                     />
-                    <span className="text-sm">{day}</span>
+                    <span className="text-sm text-gray-900 dark:text-gray-100">{day}</span>
                   </label>
                 ))}
               </div>
@@ -473,8 +473,8 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           {/* Selected Days Display (Read-only view) */}
           {!isEditable && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Selected Days</label>
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">Selected Days</label>
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                 {campaign.slotDates && campaign.slotDates.length > 0 ? (
                   campaign.slotDates.join(', ')
                 ) : (
@@ -487,9 +487,9 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           {/* Call timings */}
           {isEditable && (
             <div>
-              <h4 className="font-medium text-gray-700 mb-3 text-sm">Select call timings during the day</h4>
+              <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3 text-sm">Select call timings during the day</h4>
               <div className="space-y-3">
-                <label className="flex items-center p-1 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-1 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                   <input 
                     type="radio" 
                     name="callTiming" 
@@ -498,9 +498,9 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                     checked={callTiming === 'fullDay'} 
                     onChange={(e) => handleCallTimingChange(e.target.value)} 
                   />
-                  <span className="ml-2 text-sm">Full day - 10 AM to 6 PM</span>
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">Full day - 10 AM to 6 PM</span>
                 </label>
-                <label className="flex items-center p-1 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-1 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                   <input 
                     type="radio" 
                     name="callTiming" 
@@ -509,9 +509,9 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                     checked={callTiming === 'firstHalf'} 
                     onChange={(e) => handleCallTimingChange(e.target.value)} 
                   />
-                  <span className="ml-2 text-sm">1st Half only - 10 AM to 2 PM</span>
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">1st Half only - 10 AM to 2 PM</span>
                 </label>
-                <label className="flex items-center p-1 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-1 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                   <input 
                     type="radio" 
                     name="callTiming" 
@@ -520,9 +520,9 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                     checked={callTiming === 'secondHalf'} 
                     onChange={(e) => handleCallTimingChange(e.target.value)} 
                   />
-                  <span className="ml-2 text-sm">2nd Half only - 2 PM to 6 PM</span>
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">2nd Half only - 2 PM to 6 PM</span>
                 </label>
-                <label className="flex items-center p-1 border border-gray-300 rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-1 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                   <input 
                     type="radio" 
                     name="callTiming" 
@@ -531,7 +531,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                     checked={callTiming === 'custom'} 
                     onChange={(e) => handleCallTimingChange(e.target.value)} 
                   />
-                  <span className="ml-2 text-sm">Custom</span>
+                  <span className="ml-2 text-sm text-gray-900 dark:text-gray-100">Custom</span>
                 </label>
                 
                 {callTiming === 'custom' && (
@@ -545,7 +545,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                           setCustomStartTime(e.target.value);
                           handleInputChange('slotTime', `${e.target.value}-${customEndTime}`);
                         }} 
-                        className="border border-gray-300 rounded-md p-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="border border-gray-300 dark:border-gray-600 rounded-md p-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                       />
                     </div>
                     <span className="text-sm">to</span>
@@ -558,7 +558,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                           setCustomEndTime(e.target.value);
                           handleInputChange('slotTime', `${customStartTime}-${e.target.value}`);
                         }} 
-                        className="border border-gray-300 rounded-md p-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="border border-gray-300 dark:border-gray-600 rounded-md p-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                       />
                     </div>
                   </div>
@@ -570,8 +570,8 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           {/* Call Time Display (Read-only view) */}
           {!isEditable && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Call Time</label>
-              <div className="p-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">Call Time</label>
+              <div className="p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-md text-sm text-gray-900 dark:text-gray-100">
                 {campaign.slotTime || 'Not specified'}
               </div>
             </div>

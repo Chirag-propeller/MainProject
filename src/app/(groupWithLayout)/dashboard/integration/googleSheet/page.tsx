@@ -89,21 +89,21 @@ const page = () => {
     }, []);
 
     return (
-        <div className="p-6 space-y-6">
-            <div className="text-2xl font-bold">Google Sheet Integration</div>
+        <div className="p-6 bg-white dark:bg-gray-950 min-h-screen">
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">Google Sheet Integration</div>
             
             {/* Select Sheet Card */}
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-                <div className="p-6 border-b border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-900">Select Sheet</h3>
-                    <p className="text-sm text-gray-600 mt-1">Choose a Google Sheet to read data from</p>
+            <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Select Sheet</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose a Google Sheet to read data from</p>
                 </div>
                 <div className="p-6">
                     <div className="flex items-center space-x-4">
                         <select 
                             onChange={changeSheet}
                             value={selectedSheetName}
-                            className="w-[300px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                            className="w-[300px] px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100"
                         >
                             <option value="">Select a sheet</option>
                             {sheets.map((sheet: any) => (
@@ -125,33 +125,33 @@ const page = () => {
 
             {/* Sheet Data Table */}
             {sheetData.length > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-                    <div className="p-6 border-b border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-900">Sheet Data</h3>
-                        <p className="text-sm text-gray-600 mt-1">Data from {selectedSheetName}</p>
+                <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Sheet Data</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Data from {selectedSheetName}</p>
                     </div>
                     <div className="p-6">
-                        <div className="rounded-md border border-gray-200 overflow-auto max-h-[400px]">
+                        <div className="rounded-md border border-gray-200 dark:border-gray-700 overflow-auto max-h-[400px]">
                             <table className="w-full">
-                                <thead className="bg-gray-50 sticky top-0">
+                                <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
                                     <tr>
                                         {sheetData[0]?.map((header: string, index: number) => (
                                             <th 
                                                 key={index} 
-                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600"
                                             >
                                                 {header}
                                             </th>
                                         ))}
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-white dark:bg-gray-950 divide-y divide-gray-200 dark:divide-gray-700">
                                     {sheetData.slice(1).map((row: any[], rowIndex: number) => (
-                                        <tr key={rowIndex} className="hover:bg-gray-50">
+                                        <tr key={rowIndex} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             {row.map((cell: any, cellIndex: number) => (
                                                 <td 
                                                     key={cellIndex}
-                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-200"
+                                                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700"
                                                 >
                                                     {cell || '-'}
                                                 </td>
@@ -167,13 +167,13 @@ const page = () => {
 
             {/* Phone Numbers Section */}
             {phoneNumbers.length > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
-                    <div className="p-6 border-b border-gray-200">
+                <div className="bg-white dark:bg-gray-950 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                         <div className="flex items-center space-x-2">
-                            <Phone className="h-5 w-5 text-gray-600" />
-                            <h3 className="text-lg font-semibold text-gray-900">Phone Numbers</h3>
+                            <Phone className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Phone Numbers</h3>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                             Extracted {phoneNumbers.length} phone numbers from the sheet
                         </p>
                     </div>
@@ -182,7 +182,7 @@ const page = () => {
                             {phoneNumbers.map((number, index) => (
                                 <div 
                                     key={index} 
-                                    className="p-3 bg-gray-50 rounded-md border border-gray-200 text-sm font-mono"
+                                    className="p-3 bg-gray-50 dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600 text-sm font-mono text-gray-900 dark:text-gray-100"
                                 >
                                     {number}
                                 </div>

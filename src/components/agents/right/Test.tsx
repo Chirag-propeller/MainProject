@@ -180,27 +180,27 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
     >
       <div 
         ref={modalRef}
-        className={`fixed top-0 right-0 h-full w-1/2 bg-white shadow-lg will-change-transform`}
+        className={`fixed top-0 right-0 h-full w-1/2 bg-white dark:bg-gray-900 shadow-lg will-change-transform`}
         style={{ 
           transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
           transition: 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1)',
           willChange: 'transform',
         }}
       >
-        <div className="h-full overflow-auto ">
-          <div className="sticky top-0 flex justify-between items-center mb-6">
+        <div className="h-full overflow-auto">
+          <div className="sticky top-0 flex justify-between items-center mb-6 p-4 bg-white dark:bg-gray-900">
             {/* <h2 className="text-xl font-semibold">Test Agent</h2> */}
             <Logo/>
             <button 
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-gray-100"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
-          <div className='w-[95%] h-[90%] text-sm bg-white m-2 rounded-sm '> 
+          <div className='w-[95%] h-[90%] text-sm bg-white dark:bg-gray-800 m-2 rounded-sm border border-gray-200 dark:border-gray-700'> 
           {/* <div className='flex justify-center'>
             <div className='flex bg-gray-100 p-1 rounded-sm w-[40%] h-fit m-2 justify-between'>
               <div className={` p-1 cursor-pointer rounded-sm  mx-1 w-[100%] bg-white`}>  
@@ -212,7 +212,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
 
           {showVoiceAssistant  ?  ( 
               <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant}  />) : 
-              (<div className='flex flex-col justify-center items-center h-[95%]'>
+              (<div className='flex flex-col justify-center items-center h-[95%] text-gray-900 dark:text-gray-100'>
                 
                 {/* <Logo className='w-10 h-10' /> */}
               {/* <h1 className='text-xl text-black '> Test your agent</h1> */}
@@ -220,7 +220,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
               <Button 
                 variant="default"
                 size="md"
-                className='px-8 py-2 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 border-gray-300'
+                className='px-8 py-2 text-md rounded-[4px] shadow-xs shadow-indigo-100 dark:shadow-indigo-900 border-1 border-gray-300 dark:border-gray-600'
                 onClick={handleTestClick}
               > 
                 Start a conversation

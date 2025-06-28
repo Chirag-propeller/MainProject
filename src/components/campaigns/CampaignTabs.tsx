@@ -36,29 +36,29 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
   return (
     <div className="h-full">
       <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-        <div className="sticky top-0 z-10 bg-white pb-2">
-          <TabsList className="bg-white border border-gray-200 rounded-lg p-0.5 shadow-sm w-full">
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-950 pb-2">
+          <TabsList className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-0.5 shadow-sm w-full">
             <TabsTrigger 
               value="all" 
-              className="data-[state=active]:bg-slate-100 data-[state=active]:shadow-none rounded-md"
+              className="data-[state=active]:bg-slate-100 dark:data-[state=active]:bg-gray-700 data-[state=active]:shadow-none rounded-md text-gray-700 dark:text-gray-300"
             >
               All
             </TabsTrigger>
             <TabsTrigger 
               value="ongoing" 
-              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none rounded-md"
+              className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300 data-[state=active]:shadow-none rounded-md text-gray-700 dark:text-gray-300"
             >
               Ongoing
             </TabsTrigger>
             <TabsTrigger 
               value="completed" 
-              className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 data-[state=active]:shadow-none rounded-md"
+              className="data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/30 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300 data-[state=active]:shadow-none rounded-md text-gray-700 dark:text-gray-300"
             >
               Completed
             </TabsTrigger>
             <TabsTrigger 
               value="draft" 
-              className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700 data-[state=active]:shadow-none rounded-md"
+              className="data-[state=active]:bg-gray-50 dark:data-[state=active]:bg-gray-700 data-[state=active]:text-gray-700 dark:data-[state=active]:text-gray-300 data-[state=active]:shadow-none rounded-md text-gray-700 dark:text-gray-300"
             >
               Drafts
             </TabsTrigger>
@@ -147,11 +147,11 @@ const CampaignList: React.FC<CampaignListProps> = ({
   setNewCampaign
 }) => {
   if (loading) {
-    return <div className="text-center py-8">Loading campaigns...</div>;
+    return <div className="text-center py-8 text-gray-700 dark:text-gray-300">Loading campaigns...</div>;
   }
   
   if (campaigns.length === 0) {
-    return <div className="text-center py-8 text-gray-500">{emptyMessage}</div>;
+    return <div className="text-center py-8 text-gray-500 dark:text-gray-400">{emptyMessage}</div>;
   }
   
   return (

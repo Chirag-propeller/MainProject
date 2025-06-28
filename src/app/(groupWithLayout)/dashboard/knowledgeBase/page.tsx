@@ -37,27 +37,27 @@ const KnowledgeBaseContent = () => {
   }, [searchParams])
 
   return (
-    <div className="flex h-full" style={{ height: 'calc(100vh - 12px)' }}>
+    <div className="flex h-full bg-white dark:bg-gray-900" style={{ height: 'calc(100vh - 12px)' }}>
       {/* Left sidebar with knowledge base list (25% width) */}
       <div className="w-1/4">
-        <div className="w-full border-gray-200 border-t-0 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+        <div className="w-full border-gray-200 dark:border-gray-700 border-t-0 flex flex-col bg-white dark:bg-gray-950" style={{ height: '100%', overflow: 'hidden' }}>
           {/* Header with title and create button */}
-          <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+          <div className="sticky top-0 z-20 bg-white dark:bg-gray-950 p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
             <div className='flex gap-1.5'>
-              <BookOpen className='w-3.5 h-3.5 self-center text-indigo-600' />
-              <h1 className="text-lg self-center text-indigo-600">Knowledge Base</h1>
+              <BookOpen className='w-3.5 h-3.5 self-center text-indigo-600 dark:text-gray-100' />
+              <h1 className="text-lg self-center text-indigo-600 dark:text-gray-100">Knowledge Base</h1>
             </div>
 
             <Button 
               onClick={() => setShowModal(true)}
-              className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300'
+              className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 dark:shadow-indigo-900 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700'
             >
               Create
             </Button>
           </div>
 
           {/* List of knowledge bases */}
-          <div className="flex-1 overflow-y-auto p-3">
+          <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-gray-950">
             <KnowledgeBaseList
               showModal={showModal}
               onSelect={(kb) => setSelectedKB(kb)}
@@ -68,11 +68,11 @@ const KnowledgeBaseContent = () => {
       </div>
       
       {/* Main content area (75% width) */}
-      <div className="w-3/4 overflow-auto">
+      <div className="w-3/4 overflow-auto bg-white dark:bg-gray-950">
         {selectedKB ? (
           <KnowledgeBaseDetails kb={selectedKB} />
         ) : (
-          <div className='flex justify-center items-center h-full text-gray-500'>
+          <div className='flex justify-center items-center h-full text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-950'>
             Select a knowledge base to view details
           </div>
         )}
@@ -87,7 +87,7 @@ const KnowledgeBaseContent = () => {
 
 const Page = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="text-gray-900 dark:text-gray-100">Loading...</div>}>
       <KnowledgeBaseContent />
     </Suspense>
   )

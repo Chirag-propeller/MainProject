@@ -312,24 +312,23 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
     onToggle: () => void; 
     children: React.ReactNode;
   }) => (
-    <div className='border border-gray-200 rounded-lg'>
+    <div className='border border-gray-200 dark:border-gray-700 rounded-lg'>
       <header 
-        className='cursor-pointer bg-gray-100 p-3'
+        className='cursor-pointer bg-gray-100 hover:bg-gray-200 dark:bg-indigo-600 dark:hover:bg-indigo-700 p-3 transition-colors'
         onClick={onToggle}
       >
         <div className='flex justify-between items-center'>
           <div className='flex gap-2 items-center'>
-            <Icon className='w-4 h-4 text-gray-900' />
-            <h3 className='text-md font-medium text-gray-900'>{title}</h3>
+            <Icon className='w-4 h-4 text-gray-900 dark:text-white' />
+            <h3 className='text-md font-medium text-gray-900 dark:text-white'>{title}</h3>
           </div>
           <Triangle 
-            className={`w-3 h-3 transition-transform ${isOpen ? "rotate-180" : "rotate-90"}`} 
-            style={{ fill: "lightgray" }}
+            className={`w-3 h-3 transition-transform fill-gray-400 dark:fill-white ${isOpen ? "rotate-180" : "rotate-90"}`}
           />
         </div>
       </header>
       {isOpen && (
-        <div className='p-4 bg-gray-50'>
+        <div className='p-4 bg-gray-50 dark:bg-gray-950'>
           {children}
         </div>
       )}
@@ -337,7 +336,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
   );
 
   return (
-    <div className="h-full overflow-auto">
+    <div className="h-full overflow-auto bg-gray-50 dark:bg-gray-950">
       <div className="p-4 pt-0 space-y-4">
         
         {/* Basic Configuration Section */}
@@ -350,7 +349,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label htmlFor="agent" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="agent" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   <Bot className="w-4 h-4 inline mr-1" />
                   Select Agent
                 </label>
@@ -359,7 +358,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                   name="agent"
                   value={formData.agent}
                   onChange={handleInputChange}
-                  className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                   required
                 >
                   <option value="">Select an agent</option>
@@ -372,7 +371,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="fromNumber" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="fromNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   <Phone className="w-4 h-4 inline mr-1" />
                   From Number
                 </label>
@@ -381,7 +380,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                   name="fromNumber"
                   value={formData.fromNumber}
                   onChange={handleInputChange}
-                  className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                   required
                 >
                   <option value="">Select a phone number</option>
@@ -396,7 +395,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label htmlFor="concurrentCalls" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="concurrentCalls" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Concurrent Calls
                 </label>
                 <input
@@ -406,33 +405,33 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                   min="0"
                   value={formData.concurrentCalls}
                   onChange={handleInputChange}
-                  className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Follow-ups</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Follow-ups</label>
                 <div className="flex items-center gap-4">
                   <div className="flex gap-4">
-                    <label className="flex items-center">
+                    <label className="flex items-center text-gray-900 dark:text-gray-100">
                       <input
                         type="radio"
                         name="followUp"
                         value="Yes"
                         checked={formData.followUp === true}
                         onChange={(e) => handleRadioChange('followUp', e.target.value)}
-                        className="mr-2"
+                        className="mr-2 text-indigo-600 dark:text-indigo-400"
                       />
                       Yes
                     </label>
-                    <label className="flex items-center">
+                    <label className="flex items-center text-gray-900 dark:text-gray-100">
                       <input
                         type="radio"
                         name="followUp"
                         value="No"
                         checked={formData.followUp === false}
                         onChange={(e) => handleRadioChange('followUp', e.target.value)}
-                        className="mr-2"
+                        className="mr-2 text-indigo-600 dark:text-indigo-400"
                       />
                       No
                     </label>
@@ -445,7 +444,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                       min="1"
                       max="5"
                       onChange={handleInputChange}
-                      className="w-20 rounded-md border border-gray-300 px-2 py-1"
+                      className="w-20 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                       placeholder="#"
                     />
                   )}
@@ -465,8 +464,8 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
           <div className="space-y-6">
             {/* Time Zone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <MapPin className="w-4 h-4 inline mr-1" />
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-100 mb-2">
+                <MapPin className="w-4 h-4 inline mr-1 text-gray-700 dark:text-gray-100" />
                 Time Zone
               </label>
               <TimezoneDropdown
@@ -477,13 +476,13 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
 
             {/* Schedule call days */}
             <div>
-              <h4 className="font-medium text-gray-700 mb-3">Schedule your call days</h4>
+              <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3">Schedule your call days</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {weekdays.map(day => (
-                  <label key={day} className="inline-flex items-center space-x-2 p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                  <label key={day} className="inline-flex items-center space-x-2 p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                     <input 
                       type="checkbox" 
-                      className="w-4 h-4 text-indigo-600" 
+                      className="w-4 h-4 text-indigo-600 dark:text-indigo-400" 
                       checked={formData.selectedDays.includes(day)} 
                       onChange={(e) => handleDayToggle(day)} 
                     />
@@ -495,46 +494,46 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
             
             {/* Call timings */}
             <div>
-              <h4 className="font-medium text-gray-700 mb-3">Select call timings during the day</h4>
+              <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-3">Select call timings during the day</h4>
               <div className="space-y-3">
-                <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                   <input 
                     type="radio" 
                     name="callTiming" 
-                    className="w-4 h-4 text-indigo-600" 
+                    className="w-4 h-4 text-indigo-600 dark:text-indigo-400" 
                     value="fullDay" 
                     checked={formData.callTiming === 'fullDay'} 
                     onChange={(e) => handleRadioChange('callTiming', e.target.value)} 
                   />
                   <span className="ml-2">Full day - 10 AM to 6 PM</span>
                 </label>
-                <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                   <input 
                     type="radio" 
                     name="callTiming" 
-                    className="w-4 h-4 text-indigo-600" 
+                    className="w-4 h-4 text-indigo-600 dark:text-indigo-400" 
                     value="firstHalf" 
                     checked={formData.callTiming === 'firstHalf'} 
                     onChange={(e) => handleRadioChange('callTiming', e.target.value)} 
                   />
                   <span className="ml-2">1st Half only - 10 AM to 2 PM</span>
                 </label>
-                <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                   <input 
                     type="radio" 
                     name="callTiming" 
-                    className="w-4 h-4 text-indigo-600" 
+                    className="w-4 h-4 text-indigo-600 dark:text-indigo-400" 
                     value="secondHalf" 
                     checked={formData.callTiming === 'secondHalf'} 
                     onChange={(e) => handleRadioChange('callTiming', e.target.value)} 
                   />
                   <span className="ml-2">2nd Half only - 2 PM to 6 PM</span>
                 </label>
-                <label className="flex items-center p-2 border rounded-md hover:bg-gray-50 cursor-pointer transition-colors">
+                <label className="flex items-center p-2 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors text-gray-900 dark:text-gray-100">
                   <input 
                     type="radio" 
                     name="callTiming" 
-                    className="w-4 h-4 text-indigo-600" 
+                    className="w-4 h-4 text-indigo-600 dark:text-indigo-400" 
                     value="custom" 
                     checked={formData.callTiming === 'custom'} 
                     onChange={(e) => handleRadioChange('callTiming', e.target.value)} 
@@ -545,24 +544,24 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                 {formData.callTiming === 'custom' && (
                   <div className="flex items-center mt-3 space-x-4 ml-8">
                     <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2 text-gray-500" />
+                      <Clock className="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" />
                       <input 
                         type="time" 
                         name="customStartTime"
                         value={formData.customStartTime} 
                         onChange={handleInputChange} 
-                        className="border border-gray-300 rounded p-2"
+                        className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                       />
                     </div>
-                    <span>to</span>
+                    <span className="text-gray-900 dark:text-gray-100">to</span>
                     <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-2 text-gray-500" />
+                      <Clock className="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400" />
                       <input 
                         type="time" 
                         name="customEndTime"
                         value={formData.customEndTime} 
                         onChange={handleInputChange} 
-                        className="border border-gray-300 rounded p-2"
+                        className="border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                       />
                     </div>
                   </div>
@@ -581,7 +580,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
         >
           <div className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="campaignGoal" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="campaignGoal" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Define Goal
               </label>
               <input
@@ -590,13 +589,13 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                 type="text"
                 value={formData.campaignGoal}
                 onChange={handleCampaignGoalChange}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                 placeholder="Describe the main objective of this campaign..."
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="dataToCollect" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="dataToCollect" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Data you want to collect
               </label>
               <textarea
@@ -605,13 +604,13 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                 value={formData.dataToCollect}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                 placeholder="Specify what information you want to gather from calls (one per line)..."
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="mandatoryAdherence" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="mandatoryAdherence" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Mandatory Adherence
               </label>
               <textarea
@@ -620,7 +619,7 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                 value={formData.mandatoryAdherence}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
                 placeholder="Define compliance requirements and mandatory protocols..."
               />
             </div>
@@ -636,17 +635,17 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
         >
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Upload Recipients File</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Upload Recipients File</label>
               <label
                 htmlFor="recipientsFile"
-                className="block p-4 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer hover:border-indigo-400 transition-colors"
+                className="block p-4 border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-center cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
                 {fileName ? (
-                  <span className="text-green-600 font-medium">{fileName}</span>
+                  <span className="text-green-600 dark:text-green-400 font-medium">{fileName}</span>
                 ) : (
-                  <span className="text-gray-500">
+                  <span className="text-gray-500 dark:text-gray-400">
                     Drop CSV file here or click to upload
                   </span>
                 )}
@@ -660,8 +659,8 @@ const EditForm = forwardRef<EditFormRef, EditFormProps>(({ campaign, onSave }, r
                 />
               </label>
               {extractedPhones.length > 0 && (
-                <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
-                  <span className="text-sm text-green-700 font-medium">
+                <div className="mt-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                  <span className="text-sm text-green-700 dark:text-green-300 font-medium">
                     ✓ {extractedPhones.length} phone numbers extracted successfully
                   </span>
                 </div>

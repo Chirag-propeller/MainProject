@@ -72,49 +72,47 @@ const Voice = ({agent, setAgent}: {agent: Agent, setAgent: (agent: Agent) => voi
 
 
   return (
-    <div className='border border-gray-200 rounded-lg'>
-        <header className='cursor-pointer bg-gray-100 p-2'
+    <div className='border border-gray-200 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-900'>
+        <header className='cursor-pointer bg-gray-100 p-2 dark:bg-gray-800'
          onClick={() => {
             setIsOpen(!isOpen)
          }}
         >
             <div className='flex justify-between'>
                 <div className='flex gap-2'>
-                    <Speech className='w-3.5 h-3.5 text-gray-900 self-center' />
+                    <Speech className='w-3.5 h-3.5 text-gray-900 dark:text-gray-100 self-center' />
                     {/* <Music className='w-4 h-4 text-gray-900 self-center' /> */}
                     {/* <Speaker className='w-4 h-4 text-gray-900 self-center' /> */}
-                    <h2 className='text-md text-gray-900'>Voice</h2>
+                    <h2 className='text-md text-gray-900 dark:text-gray-100'>Voice</h2>
                 </div>
 
-                <Triangle className={`w-3 h-3  self-center 
-                ${isOpen ? "rotate-180" : "rotate-90"}
-                `} 
-                style={{ fill: "lightgray" }} />
+                <Triangle className={`w-3 h-3 self-center text-gray-400 dark:text-gray-500 ${isOpen ? "rotate-180" : "rotate-90"}`} 
+                style={{ fill: "currentColor" }} />
             </div>
         </header>
         {isOpen && (
-            <div className='p-2 flex flex-row flex-wrap gap-2 w-full bg-gray-50 '>
+            <div className='p-2 flex flex-row flex-wrap gap-2 w-full bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100'>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Provider </label>
+                    <label className='mx-1 text-gray-700 dark:text-gray-300'> Provider </label>
                     <SelectOptions options={providers} selectedOption={selectedProvider} setOption={setSelectedProvider} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Gender </label>
+                    <label className='mx-1 text-gray-700 dark:text-gray-300'> Gender </label>
                     <SelectOptions options={genders} selectedOption={gender} setOption={setGender} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Language </label>
+                    <label className='mx-1 text-gray-700 dark:text-gray-300'> Language </label>
                     <SelectOptions options={ttsLanguages} selectedOption={language} setOption={setLanguage} />
                     </div>
                 </div>
                 <div className='flex flex-col gap-2 mx-1 w-2/5'>
                     <div className='mx-1 p-1'>
-                    <label className='mx-1  '> Voice </label>
+                    <label className='mx-1 text-gray-700 dark:text-gray-300'> Voice </label>
                     <SelectOptions options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} />
                     </div>
                 </div>

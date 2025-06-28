@@ -30,7 +30,7 @@ const Logout = () => {
       }
     };
   return (
-    <Button onClick={handleClick} variant="danger" className='bg-red-500 text-white rounded-[4px]' >Logout</Button>
+    <Button onClick={handleClick} variant="danger" className='bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white rounded-[4px]' >Logout</Button>
     // <button onClick={handleClick}>Logout</button>
   )
 }

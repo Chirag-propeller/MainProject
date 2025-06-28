@@ -26,17 +26,17 @@ const ZohoCard: React.FC<ZohoCardProps> = ({ onSuccess, onError }) => {
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer p-4 w-[30%] rounded-2xl shadow-md hover:shadow-lg transition bg-white border flex items-center space-x-4 hover:border-orange-200"
+      className="cursor-pointer p-4 w-[30%] rounded-2xl shadow-md hover:shadow-lg dark:hover:shadow-gray-700/20 transition bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center space-x-4 hover:border-orange-200 dark:hover:border-orange-600"
     >
-      <div className="flex items-center justify-center w-12 h-12 bg-orange-100 rounded-lg">
-        <Building2 className="text-orange-600 w-6 h-6" />
+      <div className="flex items-center justify-center w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+        <Building2 className="text-orange-600 dark:text-orange-400 w-6 h-6" />
       </div>
       <div className="flex-1">
-        <h3 className="text-lg font-semibold text-gray-900">Zoho CRM</h3>
-        <p className="text-sm text-gray-500">Connect your Zoho CRM to sync contacts and opportunities.</p>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Zoho CRM</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Connect your Zoho CRM to sync contacts and opportunities.</p>
       </div>
       <div className="flex items-center justify-center">
-        <Zap className="text-orange-500 w-4 h-4" />
+        <Zap className="text-orange-500 dark:text-orange-400 w-4 h-4" />
       </div>
     </div>
   );

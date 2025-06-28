@@ -42,15 +42,15 @@ export default function AgentsPage() {
     // redirect(`/dashboard/agents/${data[0]._id}`);
   }, []);
   return (
-    <div className="h-full flex items-center justify-center text-gray-500">
+    <div className="h-full min-h-screen flex items-center justify-center text-gray-500 bg-white dark:text-gray-100 dark:bg-gray-950">
       {loading ? (
         <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"> </div>
       ) : data.length > 0 ? (
-        <div>
+        <div className="text-gray-900 dark:text-gray-100">
           Redirecting to agent...
         </div>
       ) : (
-        <div>
+        <div className="text-gray-900 dark:text-gray-100">
           No agents found
         </div>
       )}

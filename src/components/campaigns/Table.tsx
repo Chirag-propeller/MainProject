@@ -99,7 +99,7 @@ const CampaignTable = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
+                            <tbody className="bg-white dark:bg-gray-950 divide-y divide-gray-100 dark:divide-gray-700">
               {campaigns.map((campaign, index) => (
                 <tr key={index} className="hover:bg-gray-50 transition duration-150">
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>

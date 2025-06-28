@@ -12,7 +12,7 @@ const AgentsDashboard: React.FC = () => {
   }, [router]);
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-full dark:bg-gray-900 dark:text-gray-100">
       <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
       <p className="ml-2">Redirecting...</p>
     </div>

@@ -108,7 +108,7 @@ const fetchLinks = async (url: string) => {
       formData.append("links", JSON.stringify(websiteLinks)); // ✅ match server expectation
     }
 
-    for (let pair of formData.entries()) {
+    for (const pair of formData.entries()) {
       console.log(`${pair[0]}: ${pair[1]}`);
     }
     
@@ -138,7 +138,7 @@ const fetchLinks = async (url: string) => {
 
 
   return (
-    <div className='fixed inset-0 bg-gray-700/50 flex justify-center items-center z-50'>
+    <div className='fixed inset-0 bg-gray-700/50 dark:bg-gray-900/70 flex justify-center items-center z-50'>
       
       {showTextModal && (
           <TextInputModal
@@ -176,17 +176,17 @@ const fetchLinks = async (url: string) => {
 
       <div
         ref={modalRef}
-        className='bg-white rounded-md p-6 w-[400px] shadow-lg flex flex-col gap-4 relative'
+        className='bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-md p-6 w-[400px] shadow-lg flex flex-col gap-4 relative'
       >
-        <h2 className='text-xl font-semibold'>Add Knowledge Base</h2>
+        <h2 className='text-xl font-semibold text-gray-900 dark:text-gray-100'>Add Knowledge Base</h2>
 
         <div>
-          <label className='text-sm font-medium'>Knowledge Base Name</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Knowledge Base Name</label>
           {/* <input type='text' placeholder='Enter' className='w-full p-2 mt-1 border rounded-md' /> */}
           <input
             type='text'
             placeholder='Enter'
-            className='w-full p-2 mt-1 border rounded-md'
+            className='w-full p-2 mt-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500'
             value={kbName}
             onChange={(e) => setKbName(e.target.value)}
           />
@@ -194,13 +194,13 @@ const fetchLinks = async (url: string) => {
         </div>
 
         <div className='relative'>
-            <label className='text-sm font-medium'>Documents</label>
+            <label className='text-sm font-medium text-gray-700 dark:text-gray-300'>Documents</label>
               
             <div className='flex justify-start items-center mt-1'>
                 <Button
                 id="add-docs-button"
                 type='button'
-                className='h-8 px-3'
+                className='h-8 px-3 bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700'
                 onClick={() => setShowDropdown(!showDropdown)}
                 >
                 Add
@@ -227,7 +227,7 @@ const fetchLinks = async (url: string) => {
               </div>
             )}
             {websiteLinks.length > 0 && (
-                <div className="mt-2 text-sm text-blue-600">
+                <div className="mt-2 text-sm text-blue-600 dark:text-blue-400">
                   {websiteLinks.map((link, idx) => (
                     <p key={idx}>{link}</p>
                   ))}
@@ -239,39 +239,39 @@ const fetchLinks = async (url: string) => {
                 <div
                 ref={dropdownRef}
                 
-                className='absolute left-0 mt-2 bg-white border border-gray-300 rounded-md shadow-lg w-[250px] z-50 p-2'
+                className='absolute left-0 mt-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg w-[250px] z-50 p-2'
  
                 >
-                <div className='text-sm font-medium px-2 py-1 cursor-pointer hover:bg-gray-100 rounded'
+                <div className='text-sm font-medium text-gray-900 dark:text-gray-100 px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 rounded'
                     onClick={() => {
                     setShowDropdown(false)
                     setShowCrawlModal(true)
                   }}
                 >
                     Add Web Pages
-                    <p className='text-xs text-gray-500 px-2 mb-2'>Crawl and sync your website</p>
+                    <p className='text-xs text-gray-500 dark:text-gray-400 px-2 mb-2'>Crawl and sync your website</p>
                 </div>
 
 
-                <div className='text-sm font-medium px-2 py-1 cursor-pointer hover:bg-gray-100 rounded'
+                <div className='text-sm font-medium text-gray-900 dark:text-gray-100 px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 rounded'
                   onClick={() => {
                     setShowDropdown(false);
                     fileInputRef.current?.click(); // 👈 trigger the file input
                     }}
                 >
                     Upload Files
-                    <p className='text-xs text-gray-500 px-2 mb-2'>File size should be less than 100MB</p>
+                    <p className='text-xs text-gray-500 dark:text-gray-400 px-2 mb-2'>File size should be less than 100MB</p>
                 </div>
 
 
-                <div className='text-sm font-medium px-2 py-1 cursor-pointer hover:bg-gray-100 rounded'
+                <div className='text-sm font-medium text-gray-900 dark:text-gray-100 px-2 py-1 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 rounded'
                     onClick={() => {
                       setShowDropdown(false);
                       setShowTextModal(true);
                     }}
                 >
                     Add Text
-                    <p className='text-xs text-gray-500 px-2'>Add articles manually</p>
+                    <p className='text-xs text-gray-500 dark:text-gray-400 px-2'>Add articles manually</p>
                 </div>
 
                 </div>
@@ -280,7 +280,7 @@ const fetchLinks = async (url: string) => {
 
 
         <div className='flex justify-end gap-2 mt-4'>
-          <Button variant='default' onClick={onClose}>
+          <Button variant='secondary' onClick={onClose} className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
             Cancel
           </Button>
           {/* <Button
@@ -292,7 +292,7 @@ const fetchLinks = async (url: string) => {
             Save
           </Button> */}
 
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} className="bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:hover:bg-indigo-700">Save</Button>
 
         </div>
       </div>

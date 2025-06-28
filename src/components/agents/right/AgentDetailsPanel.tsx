@@ -89,58 +89,55 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
   }, [name]);
 
   return (
-    <div className="flex flex-col bg-white rounded-lg border border-t-0 border-gray-200 h-full ">
+    <div className="flex flex-col bg-gray-50 rounded-lg border border-t-0 border-gray-200 h-full dark:bg-gray-950 dark:border-gray-700 min-h-screen">
       {/* Header with agent name, ID and buttons */}
-      <div className="flex justify-between items-start p-4 pb-1">
+      <div className="flex justify-between items-start p-4 pb-1 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         <div className="flex flex-col">
           <div className='flex items-center gap-2'>
             {isNameUpdating ? ( 
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className='border-gray-300 rounded-md border-1 px-2 py-1' ref={nameRef} />
+              <input 
+                type="text" 
+                value={name} 
+                onChange={(e) => setName(e.target.value)} 
+                className='border border-gray-300 rounded-md px-2 py-1 bg-gray-50 text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none' 
+                ref={nameRef} 
+              />
             ) : (
-              <h2 className="text-2xl font-semibold">{name}</h2>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{name}</h2>
             )}
-            <Pencil className='w-4 h-4 text-gray-500 cursor-pointer' onClick={() => setIsNameUpdating(true)} />
+            <Pencil className='w-4 h-4 text-gray-500 dark:text-gray-300 cursor-pointer hover:text-gray-700 dark:hover:text-gray-100' onClick={() => setIsNameUpdating(true)} />
           </div>
           
-          <p className="text-xs text-gray-500 mb-1 ">ID: {agent._id}</p>
+          <p className="text-xs text-gray-500 mb-1 dark:text-gray-400 ">ID: {agent._id}</p>
         </div>
         <div className="flex space-x-2 gap-1">
           <Button 
             variant="default" 
             size="md"
             onClick={handleUpdate}
-            // className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 bg-indigo-600/50 hover:bg-indigo-600/50  border-gray-300'
-            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 '
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-indigo-600 dark:text-white dark:shadow-indigo-900 dark:hover:bg-indigo-700 dark:border-transparent'
           >
             Update
           </Button>
-          {/* <Button 
-            variant="secondary" 
-            size="md"
-            onClick={handleUpdate}
-            className='border-gray-300 px-10 rounded-[4px]  border-1'
-          >
-            Update
-          </Button> */}
           <Button 
             variant="secondary" 
             size="md"
             onClick={handleTest}
-            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 border-1 text-indigo-600 border-indigo-500 hover:bg-indigo-50'
+            className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 border border-indigo-500 text-indigo-600 bg-gray-50 hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-400 dark:hover:bg-gray-800 dark:bg-gray-900'
           >
             Test
-            <Play className='text-indigo-600 pl-1 w-4 h-4 ml-0.5' />
+            <Play className='text-indigo-600 dark:text-indigo-400 pl-1 w-4 h-4 ml-0.5' />
           </Button>
         </div>
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300">
+      <div className="flex text-sm space-x-4 px-4 pb-2 border-b border-gray-300 bg-gray-50 dark:border-gray-700 text-gray-900 dark:text-gray-100 dark:bg-gray-950">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`pb-0.5 cursor-pointer ${activeTab === tab.id ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-600'}`}
+            className={`pb-0.5 cursor-pointer transition-colors ${activeTab === tab.id ? 'text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400' : 'text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100'}`}
           >
             {tab.label}
           </button>
@@ -148,13 +145,13 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
         {activeTab === 'general' && <AgentGeneralTab agent={agent} setAgent={setAgent} />}
         
         {activeTab === 'prompt' && <AgentPromptTab agent={agent} />}
         
         {activeTab === 'settings' && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-100">
             {isUpdating ? (
               <div>
                 <p className="mb-4">Update your agent settings here</p>
@@ -169,13 +166,13 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
         )}
         
         {activeTab === 'conversations' && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-100">
             "Conversations history will be displayed here"
           </div>
         )}
         
         {activeTab === 'analytics' && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-100">
             Analytics dashboard will be displayed here
           </div>
         )}

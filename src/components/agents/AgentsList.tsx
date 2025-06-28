@@ -21,13 +21,13 @@ const AgentListItem = ({
 }) => (
   <Link href={`/dashboard/agents/${agent._id}`} className={`block`}>
     <div className={`group p-2 px-2 border rounded-md mb-2 hover:border-indigo-500 transition-colors ${
-      isSelected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'
+      isSelected ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900 dark:border-indigo-400' : 'border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-950 dark:hover:bg-gray-800'
     }`}>
       <div className="flex justify-between items-start ">
         <div>
-          <h3 className="text-xs text-gray-900">{agent.agentName}</h3>
+          <h3 className="text-xs text-gray-900 dark:text-gray-100">{agent.agentName}</h3>
           {/* <p className="text-[10px] overflow-hidden text-ellipsis w-32 text-gray-600 mt-1 text-nowrap">ID: {agent._id}</p> */}
-          <p className="text-[10px] text-gray-600 mt-0.5">
+          <p className="text-[10px] text-gray-600 dark:text-gray-400 mt-0.5">
             Created At: {agent.createdAt ? new Date(agent.createdAt).toLocaleDateString() : 'Unknown'}
           </p>
         </div>
@@ -48,7 +48,7 @@ const AgentListItem = ({
                 e.stopPropagation();
                 onDelete(agent._id);
               }}
-              className="text-gray-500 hover:text-red-600 transition-colors p-1 rounded-full hover:bg-red-50"
+              className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20"
             >
               {isDeleting === agent._id ? (
                 <div className="w-4 h-4 border-2 border-t-transparent border-red-600 rounded-full animate-spin"></div>
@@ -159,27 +159,27 @@ const AgentsList = ({ agents, selectedId, setAgents }: { agents: Agent[], select
   };
 
   return (
-    <div className="w-full border-gray-200 border-t-0 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+    <div className="w-full border-gray-200 border-t-0 flex flex-col bg-white dark:bg-gray-950 dark:border-gray-700" style={{ height: '100%', overflow: 'hidden' }}>
       {/* Header with title and create button */}
-      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center dark:bg-gray-950 dark:border-gray-700">
         <div className='flex gap-1.5'>
-          <Users className='w-3.5 h-3.5  self-center text-indigo-600' />
-          <h1 className="text-lg  self-center text-indigo-600">Agents</h1>
+          <Users className='w-3.5 h-3.5  self-center text-indigo-600 dark:text-gray-100' />
+          <h1 className="text-lg  self-center text-indigo-600 dark:text-gray-100">Agents</h1>
         </div>
 
         <Button 
           onClick={handleCreateAgent}
           disabled={loading}
-          className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 '
+          className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 dark:shadow-indigo-900'
         >
           {loading ? 'Creating...' : 'Create'}
         </Button>
       </div>
 
       {/* List of agents */}
-      <div className="flex-1 overflow-y-auto p-3">
+      <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-gray-950">
         {agents.length === 0 ? (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-100">
             No agents found. Click Create to add your first agent.
           </div>
         ) : (

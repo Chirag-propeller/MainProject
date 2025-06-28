@@ -15,10 +15,10 @@ const IntegrationExample: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-white dark:bg-gray-900 min-h-screen">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Integrations</h1>
-        <p className="text-gray-600">Connect your favorite tools and services to enhance your workflow.</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Integrations</h1>
+        <p className="text-gray-600 dark:text-gray-400">Connect your favorite tools and services to enhance your workflow.</p>
       </div>
       
       <div className="flex flex-wrap gap-6">

@@ -67,23 +67,24 @@ const CallChart = (filters: any) => {
   }, [binSize]);
 
   return (
-    <div className="bg-white rounded-2xl shadow p-6">
-    <h2 className="text-sm font-semibold mb-4">Calls Per Day</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow dark:shadow-gray-700/50 p-6 dark:border dark:border-gray-700">
+    <h2 className="text-sm font-semibold mb-4 text-gray-900 dark:text-gray-100">Calls Per Day</h2>
     {
       data.length == 0 ? (
         <div className="flex justify-center items-center h-full">
-          <p className="text-gray-500">No Calls for this filter</p>
+          <p className="text-gray-500 dark:text-gray-400">No Calls for this filter</p>
         </div>
       ) : (
     <ResponsiveContainer width="100%" height={300}>
       <ComposedChart data={data}>
         {/* <LineChart data={data}> */}
-        <CartesianGrid stroke="#c6abd1" strokeDasharray="5 5" />
+        <CartesianGrid stroke="#c6abd1" strokeDasharray="5 5" className="dark:stroke-gray-600" />
         <XAxis 
             dataKey="date" 
             // tickCount={12}
             interval={binSize-1}
             tick={{ fontSize: '0.6rem', fontStyle: 'italic', fill: '#4b5563' }} // Smaller, italic labels
+            className="dark:fill-gray-300"
             // angle={-45}  // Rotate labels for better readability
             textAnchor="middle"  // Align the rotated text properly
             height={60}  // Adjust height to accommodate rotated labels
@@ -93,11 +94,18 @@ const CallChart = (filters: any) => {
               // tickLine={false}   
             tickFormatter={(value) => `${value}`} // Optional: format Y-axis labels
             tick={{ fontSize: '0.875rem', fill: '#4b5563' }} // Smaller Y-axis labels
+            className="dark:fill-gray-300"
         />
         <Tooltip 
-            contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '5px' }} 
+            contentStyle={{ 
+              backgroundColor: 'var(--tw-dark-mode, #fff)', 
+              border: '1px solid var(--tw-dark-mode, #ddd)', 
+              borderRadius: '5px',
+              color: 'var(--tw-dark-mode, inherit)'
+            }} 
             labelStyle={{ fontWeight: 'bold' }} 
             itemStyle={{ fontStyle: 'italic' }}
+            wrapperClassName="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100"
         />
         {/* <Area 
           type="linear" 

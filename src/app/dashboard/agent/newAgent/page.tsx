@@ -214,64 +214,65 @@ const Main = () => {
   };
 
   return (
-    <div className='bg-gray-100 h-fit '>
-      <div className='flex bg-gray-100 h-[90vh] w-full'>
-        <div className='w-[45vw] bg-white m-2 rounded-sm '> 
+    <div className='bg-gray-100 dark:bg-gray-900 h-fit min-h-screen'>
+      <div className='flex bg-gray-100 dark:bg-gray-900 h-[90vh] w-full'>
+        <div className='w-[45vw] bg-white dark:bg-gray-800 m-2 rounded-sm border border-gray-200 dark:border-gray-700'> 
           <div className='flex'>
           
           <Link href="/dashboard/agent">
           
-            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm ' variant="ghost" size="sm">Back</Button>
+            <Button className='cursor-pointer mt-2 ms-2 border-1 text-sm' variant="ghost" size="sm">Back</Button>
           </Link>
-          <input placeholder='Agent Name' className='border-gray-300 px-2 m-2 rounded-sm mt-3 border-1' value={agentName} onChange={(e) => setAgentName(e.target.value)}/>
+          <input placeholder='Agent Name' className='border-gray-300 dark:border-gray-600 px-2 m-2 rounded-sm mt-3 border-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none' value={agentName} onChange={(e) => setAgentName(e.target.value)}/>
           </div>
           <div className='flex mt-2 flex-wrap'>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3  '> Language </p>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> Language </p>
               <SelectOptions options={languages} selectedOption={selectedLang} setOption={setSelectedLang} loading={loading} />
             </div>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3  '> LLM </p>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> LLM </p>
               <SelectOptions options={llm} selectedOption={selectedLLM} setOption={setSelectedLLM} loading={loading} />
             </div>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3  '> TTS Provider </p>
-              <select className='p-1 m-1 rounded-full  text-sm bg-gray-100 border border-gray-300 ' value={selectedProvider} onChange={handleProviderChange}>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> TTS Provider </p>
+              <select className='p-1 m-1 rounded-full text-sm bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none' value={selectedProvider} onChange={handleProviderChange}>
                   {providers.map((provider) => (
-                    <option key={provider} value={provider} className='p-1'>
+                    <option key={provider} value={provider} className='p-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'>
                       {provider}
                     </option>
                   ))}
               </select>
             </div>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3 '> Gender </p>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> Gender </p>
               <SelectOptions  options={["Male", "Female"]} selectedOption={gender} setOption={setGender} loading={loading} />
             </div>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3 '> TTS Language </p>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> TTS Language </p>
               <SelectOptions options={ttsLanguages} selectedOption={selectedTtsLanguage} setOption={setSelectedTtsLanguage} loading={loading} />
             </div>
             <div className='mx-1 p-1'>
-              <p className='text-xs mx-3 '> Select Voices </p>
+              <p className='text-xs mx-3 text-gray-700 dark:text-gray-300'> Select Voices </p>
               <SelectOptions options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} loading={loading} />
             </div>
 
           </div>
           <textarea 
-            className='p-2 m-3 rounded-md w-[95%] text-sm border border-gray-300 h-[50vh]'
+            className='p-2 m-3 rounded-md w-[95%] text-sm border border-gray-300 dark:border-gray-600 h-[50vh] bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none'
             value={text}
             onChange={(e) => setText(e.target.value)}
+            placeholder="Enter your agent prompt..."
           />
           
         </div>
-        <div className='w-[27vw] bg-white m-2 rounded-sm '> 
+        <div className='w-[27vw] bg-white dark:bg-gray-800 m-2 rounded-sm border border-gray-200 dark:border-gray-700'> 
           <div className='cursor-pointer' onClick={() => setKnowledgeBase(!knowledgeBase)}> 
-            <h1 className='m-3 text-sm text-black hover:underline'>Knowledge Base</h1> 
+            <h1 className='m-3 text-sm text-black dark:text-gray-100 hover:underline'>Knowledge Base</h1> 
           </div>
-          <div className='text-gray-500 m-2 mx-3 '>
+          <div className='text-gray-500 dark:text-gray-400 m-2 mx-3'>
                 <p className=' p-1  text-xs'> Add knowledge base to provide context to the agent.</p>
-                <Button variant="ghost" size="sm" className=' relative border-1 border-gray-300 rounded-none'
+                <Button variant="ghost" size="sm" className=' relative border-1 border-gray-300 dark:border-gray-600 rounded-none'
                 onClick={() => setIsKnowledgeBaseModalListOpen(true)}
                 >Add
    
@@ -294,7 +295,7 @@ const Main = () => {
                   knowledgeBaseList.map((id) => {
                     const kb = knowledgeBases.find(k => k._id === id);
                     return (
-                      <li key={id} className='text-sm'>
+                      <li key={id} className='text-sm text-gray-700 dark:text-gray-300'>
                         {kb?.name || 'Unknown'}
                       </li>
                     );
@@ -316,15 +317,15 @@ const Main = () => {
             )
           } */}
         </div>
-        <div className='w-[27vw] text-sm bg-white m-2 rounded-sm '> 
+        <div className='w-[27vw] text-sm bg-white dark:bg-gray-800 m-2 rounded-sm border border-gray-200 dark:border-gray-700'> 
           <div className='flex justify-center'>
-            <div className='flex bg-gray-100 p-1 rounded-sm w-[40%] h-fit m-2 justify-between'>
-              <div className={` p-1 cursor-pointer rounded-sm  mx-1 w-[100%] bg-white`}>  
+            <div className='flex bg-gray-100 dark:bg-gray-700 p-1 rounded-sm w-[40%] h-fit m-2 justify-between'>
+              <div className={` p-1 cursor-pointer rounded-sm  mx-1 w-[100%] bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-100`}>  
               Test your agent
               </div>
             </div>
           </div>
-          <hr className='w-[80%] border-gray-700 mx-auto '/>
+          <hr className='w-[80%] border-gray-700 dark:border-gray-600 mx-auto '/>
 
           {showVoiceAssistant  ?  ( 
               <VoiceAssistant token={token} setShowVoiceAssistant={setShowVoiceAssistant}  />) : 
@@ -332,7 +333,7 @@ const Main = () => {
               {/* <h1 className='text-xl text-black '> Test your agent</h1> */}
               <br/>
               <button 
-                className='cursor-pointer text-black border border-gray-300 p-2 rounded-md px-4'
+                className='cursor-pointer text-black dark:text-gray-100 border border-gray-300 dark:border-gray-600 p-2 rounded-md px-4 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors'
                 onClick={handleTestClick}
               > 
                 Test
@@ -343,7 +344,7 @@ const Main = () => {
         </div>
       </div>
         <div className=' flex justify-center '>
-          <button className='white cursor-pointer border-1 p-1 px-10 rounded-sm border-gray-400 bg-white mb-5 m-2' onClick={createAgentHandler}>
+          <button className='white cursor-pointer border-1 p-1 px-10 rounded-sm border-gray-400 dark:border-gray-600 bg-white dark:bg-gray-800 mb-5 m-2 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors' onClick={createAgentHandler}>
             Create Agent
           </button>
         </div>

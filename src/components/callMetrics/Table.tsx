@@ -157,20 +157,20 @@ export default function CallAnalysisTable({
   return (
     <div className="w-full max-w-[80vw]  overflow-hidden relative">
       {loading ? (
-        <p className="text-gray-600">Loading call analysis...</p>
+        <p className="text-gray-600 dark:text-gray-400">Loading call analysis...</p>
       ) : (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50 sticky top-0">
+          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200 dark:border-gray-700">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+              <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
                 <tr>
-                  <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
+                  <th className="sticky top-0 bg-gray-50 dark:bg-gray-800 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 tracking-wider">
                     S.No
                   </th>
                   {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
+                      className="sticky top-0 bg-gray-50 dark:bg-gray-800 z-10 px-6 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 tracking-wider text-nowrap text-center"
                     >
                       {CALL_ANALYSIS_FIELD_LABELS[key] ||
                         key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -178,14 +178,14 @@ export default function CallAnalysisTable({
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y text-sm divide-gray-100">
+              <tbody className="bg-white dark:bg-gray-900 divide-y text-sm divide-gray-100 dark:divide-gray-700">
                 {callData.map((call, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gray-50 cursor-pointer transition duration-150"
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition duration-150"
                     onClick={() => handleRowClick(call)}
                   >
-                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium text-nowrap">
+                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 dark:text-gray-300 font-medium text-nowrap">
                     {((page - 1) * 10) + index + 1}
                     </td>
                     {customiseField.map((key) => (
@@ -197,7 +197,7 @@ export default function CallAnalysisTable({
                   <tr>
                     <td
                       colSpan={customiseField.length + 1}
-                      className="px-6 py-4 text-center text-gray-500"
+                      className="px-6 py-4 text-center text-gray-500 dark:text-gray-400"
                     >
                       No call analysis data found.
                     </td>
@@ -208,15 +208,15 @@ export default function CallAnalysisTable({
           </div>
 
           {selectedCall && (
-            <div className="fixed top-0 right-0 h-full w-[54%] bg-white shadow-lg border-l border-gray-200 z-150 overflow-y-auto ">
-              <div className="px-2 p-1 flex justify-between border-b border-gray-200 sticky top-0 bg-white">
+            <div className="fixed top-0 right-0 h-full w-[54%] bg-white dark:bg-gray-950 shadow-lg border-l border-gray-200 dark:border-gray-700 z-150 overflow-y-auto ">
+              <div className="px-2 p-1 flex justify-between border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-950">
                 <div className="flex flex-col gap-0">
-                  <h2 className="text-md font-semibold">{selectedCall.started_at}</h2>
-                  <h2 className="text-xs text-gray-600">Call ID: {selectedCall.id}</h2>
+                  <h2 className="text-md font-semibold text-gray-900 dark:text-gray-100">{selectedCall.started_at}</h2>
+                  <h2 className="text-xs text-gray-600 dark:text-gray-100">Call ID: {selectedCall.id}</h2>
                 </div>
                 <button
                   onClick={() => setSelectedCall(null)}
-                  className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-gray-300 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -246,7 +246,7 @@ export default function CallAnalysisTable({
                 </div>
               </div> */}
               <div className="">
-                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
+                <h1 className="text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 py-1 "> Call Overview</h1>
                 <div className="py-2">
                 <div className="flex justify-between">
                   <div className="p-4 py-0 w-1/2 flex flex-col gap-1">
@@ -284,7 +284,7 @@ export default function CallAnalysisTable({
               </div> */}
 
               <div className=""> 
-                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Agent Performance</h1>
+                <h1 className="text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 py-1 ">Agent Performance</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
                     <SideBarCell title="Call Quality Score" value={selectedCall.call_quality_score ?? "N/A"}/>
@@ -304,7 +304,7 @@ export default function CallAnalysisTable({
               </div>
 
               <div className="">
-                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Compliance</h1>
+                <h1 className="text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 py-1 ">Compliance</h1>
                 <div className="flex justify-between">
                   <div className="p-4 py-2 w-1/2 flex flex-col gap-1"> 
                     <SideBarCell title="Compliance Risk Score" value={selectedCall.compliance_risk_score ?? "N/A"}/>
@@ -318,7 +318,7 @@ export default function CallAnalysisTable({
               </div>
 
               <div className="">
-                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 ">Transcript</h1>
+                <h1 className="text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 py-1 ">Transcript</h1>
                 <TranscriptBox transcript={selectedCall.transcript} />
               </div>
             </div>

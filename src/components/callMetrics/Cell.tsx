@@ -30,7 +30,7 @@ type CallAnalysisCellProps = {
     // }
   
     return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-300">
         {displayValue ?? "-"}
       </td>
     );

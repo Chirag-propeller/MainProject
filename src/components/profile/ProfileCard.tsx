@@ -22,18 +22,18 @@ const ProfileCard = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800 border-green-200';
-      case 'paid': return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'suspended': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'active': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200 dark:border-green-700';
+      case 'paid': return 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 border-indigo-200 dark:border-indigo-700';
+      case 'suspended': return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-700';
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-600';
     }
   };
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'admin': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'user': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'admin': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700';
+      case 'user': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-700';
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 border-gray-200 dark:border-gray-600';
     }
   };
 
@@ -46,22 +46,22 @@ const ProfileCard = () => {
     return (
       <Card className="h-full animate-pulse">
         <CardHeader className="pb-4">
-          <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 bg-gray-200 rounded-full"></div>
+              <div className="h-16 w-16 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
               <div className="space-y-2 flex-1">
-                <div className="h-5 bg-gray-200 rounded w-2/3"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                  <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
                 </div>
               ))}
             </div>
@@ -132,10 +132,10 @@ const ProfileCard = () => {
                   <img 
                     src={user.profilePicture} 
                     alt={user.name}
-                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
                   />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center border-2 border-gray-200">
+                  <div className="w-16 h-16 rounded-full bg-indigo-500 flex items-center justify-center border-2 border-gray-200 dark:border-gray-700">
                     <span className="text-lg font-semibold text-white">
                       {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </span>
@@ -148,8 +148,8 @@ const ProfileCard = () => {
 
               
               <div className="flex-1 space-y-2">
-                <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
-                <div className="flex items-center gap-2 text-indigo-600">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">{user.name}</h2>
+                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400">
                   <Mail className="w-4 h-4" />
                   <span className="text-sm">{user.email}</span>
                 </div>
@@ -170,7 +170,7 @@ const ProfileCard = () => {
                 variant="secondary"
                 size="sm"
                 onClick={() => setIsEditing(true)}
-                className="text-indigo-600 hover:bg-indigo-50"
+                className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
               >
                 <Settings className="w-4 h-4 mr-2" />
                 Edit
@@ -179,27 +179,27 @@ const ProfileCard = () => {
 
             </div>
             {/* Contact Information */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                <UserIcon className="w-4 h-4 mr-2 text-indigo-600" />
+            <div className="bg-gray-50 dark:bg-gray-950 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center">
+                <UserIcon className="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400" />
                 Contact Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500 flex items-center">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
                     <Phone className="w-3 h-3 mr-1" />
                     Phone Number
                   </p>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                     {user.phone || 'Not provided'}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500 flex items-center">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
                     <Globe className="w-3 h-3 mr-1" />
                     Language & Timezone
                   </p>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                     {user.language?.toUpperCase() || 'EN'} • {user.timezone || 'IST'}
                   </p>
                 </div>
@@ -207,34 +207,34 @@ const ProfileCard = () => {
             </div>
 
             {/* Account Details */}
-            <div className="bg-indigo-50 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-                <Calendar className="w-4 h-4 mr-2 text-indigo-600" />
+            <div className="bg-indigo-50 dark:bg-gray-950 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center">
+                <Calendar className="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400" />
                 Account Details
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500">Member Since</p>
-                  <p className="text-sm font-medium text-gray-800">{formatDate(user.createdAt)}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Member Since</p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{formatDate(user.createdAt)}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500">Last Login</p>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Last Login</p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                     {user.lastLoginAt ? formatDate(user.lastLoginAt) : 'Never'}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500">Email Verified</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Email Verified</p>
                   <div className="flex items-center">
                     <div className={`w-1.5 h-1.5 rounded-full mr-2 ${user.isVerified ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                    <p className="text-sm font-medium text-gray-800">
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
                       {user.isVerified ? 'Verified' : 'Not Verified'}
                     </p>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-500">Auth Provider</p>
-                  <p className="text-sm font-medium text-gray-800 capitalize">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Auth Provider</p>
+                  <p className="text-sm font-medium text-gray-800 dark:text-gray-100 capitalize">
                     {user.authProvider}
                   </p>
                 </div>
@@ -264,77 +264,77 @@ const ProfileCard = () => {
               </div>
             </div> */}
 
-            <div className="bg-blue-50 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
-            <Database className="w-4 h-4 mr-2 text-blue-600" />
+            <div className="bg-blue-50 dark:bg-gray-950 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center">
+            <Database className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
             Resources Overview
           </h3>
           
           <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white rounded-lg p-3 border border-gray-100">
+            <div className="bg-white dark:bg-gray-950 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-lg font-semibold text-indigo-600">
+                  <div className="text-lg font-semibold text-indigo-600 dark:text-indigo-400">
                     {user.agents?.length || 0}
                   </div>
-                  <div className="text-xs text-gray-600 flex items-center">
+                  <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
                     <Bot className="w-3 h-3 mr-1" />
                     AI Agents
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                  <Bot className="w-4 h-4 text-indigo-600" />
+                <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg p-3 border border-gray-100">
+            <div className="bg-white dark:bg-gray-950 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-lg font-semibold text-blue-600">
+                  <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">
                     {user.phoneNumbers?.length || 0}
                   </div>
-                  <div className="text-xs text-gray-600 flex items-center">
+                  <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
                     <Phone className="w-3 h-3 mr-1" />
                     Phone Numbers
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Phone className="w-4 h-4 text-blue-600" />
+                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                  <Phone className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg p-3 border border-gray-100">
+            <div className="bg-white dark:bg-gray-950 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-lg font-semibold text-purple-600">
+                  <div className="text-lg font-semibold text-purple-600 dark:text-purple-400">
                     {user.knowledgeBases?.length || 0}
                   </div>
-                  <div className="text-xs text-gray-600 flex items-center">
+                  <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
                     <Database className="w-3 h-3 mr-1" />
                     Knowledge Bases
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Database className="w-4 h-4 text-purple-600" />
+                <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                  <Database className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
             </div>
             
-            <div className="bg-white rounded-lg p-3 border border-gray-100">
+            <div className="bg-white dark:bg-gray-950 rounded-lg p-3 border border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-lg font-semibold text-green-600">
+                  <div className="text-lg font-semibold text-green-600 dark:text-green-400">
                     {user.campaigns?.length || 0}
                   </div>
-                  <div className="text-xs text-gray-600 flex items-center">
+                  <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center">
                     <Zap className="w-3 h-3 mr-1" />
                     Campaigns
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-green-600" />
+                <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-green-600 dark:text-green-400" />
                 </div>
               </div>
             </div>

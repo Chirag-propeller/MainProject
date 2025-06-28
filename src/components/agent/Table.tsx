@@ -61,46 +61,46 @@ const AgentTable = () => {
   
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6 mt-7">Your Agents</h2>
+    <div className="p-6 max-w-6xl mx-auto bg-gray-50 dark:bg-gray-950">
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6 mt-7">Your Agents</h2>
 
       {loading ? (
-        <p className="text-gray-600">Loading agents...</p>
+        <p className="text-gray-600 dark:text-gray-400">Loading agents...</p>
       ) : (
-        <div className="overflow-x-auto shadow-md rounded-xl border border-gray-200">
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
-            <thead className="bg-gray-50">
+        <div className="overflow-x-auto shadow-md rounded-xl border border-gray-200 dark:border-gray-700">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+            <thead className="bg-gray-50 dark:bg-gray-950">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">S.No</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent ID</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">LLM Used</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">S.No</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Agent ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Agent Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">LLM Used</th>
 
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prompt</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Language</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Prompt</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Language</th>
                 {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th> */}
 
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
+            <tbody className="bg-white dark:bg-gray-950 divide-y divide-gray-100 dark:divide-gray-700">
               {agents.map((agent, index) => (
                 <tr key={agent._id} 
                   // onClick={() => router.push(`/dashboard/agent/${agent._id}/edit`)}
-                  className="hover:bg-gray-50 transition duration-150 cursor-pointer group"
+                  className="hover:bg-gray-50 dark:hover:bg-gray-800 transition duration-150 cursor-pointer group"
                   >
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700 font-medium">{index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentId}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.agentName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{agent.llm || '-'}</td>
-                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{agent.prompt || '-'}</td>
-                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700">{agent.inputLanguage || '-'}</td>
-                  <td className="px-2 py-4 whitespace-nowrap text-gray-700">
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300 font-medium">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">{agent.agentId}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">{agent.agentName}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">{agent.llm || '-'}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700 dark:text-gray-300">{agent.prompt || '-'}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-gray-700 dark:text-gray-300">{agent.inputLanguage || '-'}</td>
+                  <td className="px-2 py-4 whitespace-nowrap text-gray-700 dark:text-gray-300">
                     
                   <button onClick={(e) =>{
                     e.stopPropagation(); // prevent row click navigation
                     handleDelete(agent._id);
                   }} 
-                  className="text-gray-700 cursor-pointer group-hover:text-red-700">
+                  className="text-gray-700 dark:text-gray-300 cursor-pointer group-hover:text-red-700 dark:group-hover:text-red-400">
                     <Trash2 className="w-4 h-4" />
                   </button>
 
@@ -118,7 +118,7 @@ const AgentTable = () => {
               ))}
               {agents.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500">No agents found.</td>
+                  <td colSpan={4} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">No agents found.</td>
                 </tr>
               )}
             </tbody>

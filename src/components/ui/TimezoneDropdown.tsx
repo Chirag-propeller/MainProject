@@ -106,32 +106,32 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className={`w-full p-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-left flex items-center justify-between text-sm ${
-          disabled ? 'bg-gray-100 cursor-not-allowed' : 'hover:border-gray-400'
+        className={`w-full p-1 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400 bg-white dark:bg-gray-800 text-left flex items-center justify-between text-sm ${
+          disabled ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : 'hover:border-gray-400 dark:hover:border-gray-600'
         }`}
       >
         <div className="flex items-center">
-          <Globe className="w-4 h-4 mr-2 text-gray-400" />
-          <span className={selectedTimezone ? 'text-gray-900' : 'text-gray-500'}>
+          <Globe className="w-4 h-4 mr-2 text-gray-400 dark:text-gray-100" />
+          <span className={selectedTimezone ? 'text-gray-900 dark:text-gray-100' : 'text-gray-900 dark:text-gray-100'}>
             {selectedTimezone ? selectedTimezone.label : placeholder}
           </span>
         </div>
-        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-hidden">
+                        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-950 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-hidden">
           {/* Search input */}
-          <div className="p-2 border-b border-gray-200">
+          <div className="p-2 border-b border-gray-200 dark:border-gray-700">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by city, country, or offset..."
-                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-md text-sm focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400"
               />
             </div>
           </div>
@@ -144,21 +144,21 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
                   key={timezone.value}
                   type="button"
                   onClick={() => handleSelect(timezone)}
-                  className={`w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors ${
-                    value === timezone.value ? 'bg-indigo-50 text-indigo-700' : 'text-gray-900'
+                  className={`w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors ${
+                    value === timezone.value ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' : 'text-gray-900 dark:text-gray-100'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="font-medium text-sm">{timezone.label}</div>
-                      <div className="text-xs text-gray-500">{timezone.city}, {timezone.country}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{timezone.city}, {timezone.country}</div>
                     </div>
-                    <div className="text-xs text-gray-400">{timezone.offset}</div>
+                    <div className="text-xs text-gray-400 dark:text-gray-500">{timezone.offset}</div>
                   </div>
                 </button>
               ))
             ) : (
-              <div className="px-3 py-4 text-sm text-gray-500 text-center">
+              <div className="px-3 py-4 text-sm text-gray-500 dark:text-gray-400 text-center">
                 No timezones found matching "{searchTerm}"
               </div>
             )}

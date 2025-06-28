@@ -33,37 +33,37 @@ const Card = ({ title, value, widthPercentage = '30', className = '', loading, t
     switch (theme) {
       case 'green':
         return {
-          bg: 'bg-green-50 border-green-200',
-          text: 'text-green-600',
-          value: 'text-green-700',
+          bg: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+          text: 'text-green-600 dark:text-green-400',
+          value: 'text-green-700 dark:text-green-300',
           dot: 'bg-green-500'
         };
       case 'red':
         return {
-          bg: 'bg-red-50 border-red-200', 
-          text: 'text-red-600',
-          value: 'text-red-700',
+          bg: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800', 
+          text: 'text-red-600 dark:text-red-400',
+          value: 'text-red-700 dark:text-red-300',
           dot: 'bg-red-500'
         };
       case 'yellow':
         return {
-          bg: 'bg-yellow-50 border-yellow-200',
-          text: 'text-yellow-600', 
-          value: 'text-yellow-700',
+          bg: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
+          text: 'text-yellow-600 dark:text-yellow-400', 
+          value: 'text-yellow-700 dark:text-yellow-300',
           dot: 'bg-yellow-500'
         };
       case 'orange':
         return {
-          bg: 'bg-orange-50 border-orange-200',
-          text: 'text-orange-600',
-          value: 'text-orange-700', 
+          bg: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800',
+          text: 'text-orange-600 dark:text-orange-400',
+          value: 'text-orange-700 dark:text-orange-300', 
           dot: 'bg-orange-500'
         };
       default:
         return {
-          bg: 'bg-white border-gray-100',
-          text: 'text-gray-600',
-          value: 'text-indigo-500',
+          bg: 'bg-white dark:bg-gray-950 border-gray-100 dark:border-gray-700',
+          text: 'text-gray-600 dark:text-gray-400',
+          value: 'text-indigo-500 dark:text-indigo-400',
           dot: 'bg-indigo-500'
         };
     }

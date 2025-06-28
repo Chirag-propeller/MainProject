@@ -99,10 +99,10 @@ const CampaignDashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex h-[calc(100vh-12px)]">
+    <div className="flex h-[calc(100vh-12px)] bg-white dark:bg-gray-950">
       {/* Campaigns list section (25-40% width) */}
-      <div className="w-1/4 border-r border-gray-200 px-2 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
-        <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100">
+      <div className="w-1/4 border-r border-gray-200 dark:border-gray-700 px-2 flex flex-col" style={{ height: '100%', overflow: 'hidden' }}>
+        <div className="sticky top-0 z-20 bg-white dark:bg-gray-950 p-4 border-b border-gray-100 dark:border-gray-700">
           <CampaignHeader 
             title="Campaigns"
             onCreate={handleCreateCampaign}
@@ -126,7 +126,7 @@ const CampaignDashboard: React.FC = () => {
       </div>
 
       {/* Campaign details section (approximately 60% width) */}
-      <div className="w-3/4 overflow-auto">
+      <div className="w-3/4 overflow-auto bg-white dark:bg-gray-950">
         {isCreateCampaignPage ? (
           <CampaignForm />
         ) : selectedCampaign ? (
@@ -137,7 +137,7 @@ const CampaignDashboard: React.FC = () => {
             setSelectedCampaign={setSelectedCampaign}
           />
         ) : (
-          <div className="h-full flex items-center justify-center text-gray-500">
+          <div className="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
             Select a campaign to view details
           </div>
         )}

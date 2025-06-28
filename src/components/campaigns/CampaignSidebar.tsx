@@ -80,9 +80,9 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
   };
 
   return (
-    <div className="border-r border-gray-200 flex flex-col h-full">
+    <div className="border-r border-gray-200 dark:border-gray-700 flex flex-col h-full bg-white dark:bg-gray-950">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100">
+      <div className="sticky top-0 z-20 bg-white dark:bg-gray-950 p-4 border-b border-gray-100 dark:border-gray-700">
         <CampaignHeader 
           title="Campaigns"
           onCreate={handleCreateCampaign}
@@ -90,31 +90,31 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
       </div>
 
       {/* Tabs and Campaign List */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden bg-white dark:bg-gray-950">
         <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-          <div className="sticky top-0 z-10 bg-white p-2 pb-2">
-            <TabsList className="bg-white border border-gray-200 rounded-lg p-0.5 shadow-sm w-full">
+          <div className="sticky top-0 z-10 bg-white dark:bg-gray-950 p-2 pb-2">
+            <TabsList className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-0.5 shadow-sm w-full">
               <TabsTrigger 
                 value="all" 
-                className="data-[state=active]:bg-slate-100 data-[state=active]:shadow-none rounded-md text-xs"
+                className="data-[state=active]:bg-slate-100 dark:data-[state=active]:bg-gray-700 data-[state=active]:shadow-none rounded-md text-xs text-gray-700 dark:text-gray-300"
               >
                 All
               </TabsTrigger>
               <TabsTrigger 
                 value="outgoing" 
-                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none rounded-md text-xs"
+                className="data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/30 data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300 data-[state=active]:shadow-none rounded-md text-xs text-gray-700 dark:text-gray-300"
               >
                 Outgoing
               </TabsTrigger>
               <TabsTrigger 
                 value="draft" 
-                className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700 data-[state=active]:shadow-none rounded-md text-xs"
+                className="data-[state=active]:bg-gray-50 dark:data-[state=active]:bg-gray-700 data-[state=active]:text-gray-700 dark:data-[state=active]:text-gray-300 data-[state=active]:shadow-none rounded-md text-xs text-gray-700 dark:text-gray-300"
               >
                 Draft
               </TabsTrigger>
               <TabsTrigger 
                 value="completed" 
-                className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 data-[state=active]:shadow-none rounded-md text-xs"
+                className="data-[state=active]:bg-green-50 dark:data-[state=active]:bg-green-900/30 data-[state=active]:text-green-700 dark:data-[state=active]:text-green-300 data-[state=active]:shadow-none rounded-md text-xs text-gray-700 dark:text-gray-300"
               >
                 Completed
               </TabsTrigger>
@@ -122,7 +122,7 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
           </div>
 
           {/* Campaign Lists */}
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-auto bg-white dark:bg-gray-950">
             {['all', 'outgoing', 'draft', 'completed'].map(tab => (
               <TabsContent key={tab} value={tab} className="h-full m-0 p-2">
                 <CampaignList 
@@ -161,7 +161,7 @@ const CampaignList: React.FC<CampaignListProps> = ({
   onDeleteCampaign
 }) => {
   if (campaigns.length === 0) {
-    return <div className="text-center py-8 text-gray-500 text-sm">{emptyMessage}</div>;
+    return <div className="text-center py-8 text-gray-500 dark:text-gray-400 text-sm">{emptyMessage}</div>;
   }
   
   return (

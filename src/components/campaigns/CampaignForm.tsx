@@ -246,15 +246,15 @@ const CampaignForm: React.FC = () => {
   };
 
   return (
-    <div className="h-full overflow-auto">
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold">Create New Campaign</h2>
+    <div className="h-full overflow-auto bg-white dark:bg-gray-950">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-950">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Create New Campaign</h2>
       </div>
-      <div className="p-4">
+      <div className="p-4 bg-white dark:bg-gray-950">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Campaign Name */}
           <div className="space-y-2">
-            <label htmlFor="campaignName" className="block text-sm font-medium">
+            <label htmlFor="campaignName" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               Campaign Name
             </label>
             <input
@@ -263,7 +263,7 @@ const CampaignForm: React.FC = () => {
               name="campaignName"
               value={formData.campaignName}
               onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               placeholder="Enter campaign name"
               required
             />
@@ -271,7 +271,7 @@ const CampaignForm: React.FC = () => {
 
           {/* Agent Selection */}
           <div className="space-y-2">
-            <label htmlFor="agent" className="block text-sm font-medium">
+            <label htmlFor="agent" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               Select Agent
             </label>
             <select
@@ -279,7 +279,7 @@ const CampaignForm: React.FC = () => {
               name="agent"
               value={formData.agent}
               onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               required
             >
               <option value="">Select an agent</option>
@@ -293,7 +293,7 @@ const CampaignForm: React.FC = () => {
 
           {/* From Number */}
           <div className="space-y-2">
-            <label htmlFor="fromNumber" className="block text-sm font-medium">
+            <label htmlFor="fromNumber" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
               From Number
             </label>
             <select
@@ -301,7 +301,7 @@ const CampaignForm: React.FC = () => {
               name="fromNumber"
               value={formData.fromNumber}
               onChange={handleInputChange}
-              className="w-full rounded-md border border-gray-300 p-2"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               required
             >
               <option value="">Select a phone number</option>
@@ -315,27 +315,27 @@ const CampaignForm: React.FC = () => {
 
           {/* Send Options */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Send Options</label>
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">Send Options</label>
             <div className="flex gap-4">
-              <label className="flex items-center">
+              <label className="flex items-center text-gray-900 dark:text-gray-100">
                 <input
                   type="radio"
                   name="sendOption"
                   value="now"
                   checked={formData.sendOption === "now"}
                   onChange={handleInputChange}
-                  className="mr-2"
+                  className="mr-2 text-indigo-600 dark:text-indigo-400"
                 />
                 Send Now
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center text-gray-900 dark:text-gray-100">
                 <input
                   type="radio"
                   name="sendOption"
                   value="schedule"
                   checked={formData.sendOption === "schedule"}
                   onChange={handleInputChange}
-                  className="mr-2"
+                  className="mr-2 text-indigo-600 dark:text-indigo-400"
                 />
                 Schedule
               </label>
@@ -348,14 +348,14 @@ const CampaignForm: React.FC = () => {
                   name="scheduleDate"
                   value={formData.scheduleDate}
                   onChange={handleInputChange}
-                  className="rounded-md border border-gray-300 p-2"
+                  className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                   required={formData.sendOption === "schedule"}
                 />
                 <select
                   name="timeZone"
                   value={formData.timeZone}
                   onChange={handleInputChange}
-                  className="w-full rounded-md border border-gray-300 p-2"
+                  className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                   required={formData.sendOption === "schedule"}
                 >
                   <option value="">Select Time Zone</option>
@@ -371,17 +371,17 @@ const CampaignForm: React.FC = () => {
 
           {/* Recipients File */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Recipients</label>
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">Recipients</label>
             <label
               htmlFor="recipientsFile"
-              className="block p-4 border-2 border-dashed border-gray-300 rounded-md text-center cursor-pointer"
+              className="block p-4 border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 rounded-md text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               onDrop={handleDrop}
               onDragOver={handleDragOver}
             >
               {fileName ? (
-                <span className="text-green-600">{fileName}</span>
+                <span className="text-green-600 dark:text-green-400">{fileName}</span>
               ) : (
-                <span className="text-gray-500">
+                <span className="text-gray-500 dark:text-gray-400">
                   Drop CSV file here or click to upload
                 </span>
               )}
@@ -403,27 +403,27 @@ const CampaignForm: React.FC = () => {
 
           {/* Follow-up Options */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium">Follow-ups</label>
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-100">Follow-ups</label>
             <div className="flex gap-4">
-              <label className="flex items-center">
+              <label className="flex items-center text-gray-900 dark:text-gray-100">
                 <input
                   type="radio"
                   name="followUp"
                   value="Yes"
                   checked={formData.followUp === true}
                   onChange={handleFollowUpChange}
-                  className="mr-2"
+                  className="mr-2 text-indigo-600 dark:text-indigo-400"
                 />
                 Yes
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center text-gray-900 dark:text-gray-100">
                 <input
                   type="radio"
                   name="followUp"
                   value="No"
                   checked={formData.followUp === false}
                   onChange={handleFollowUpChange}
-                  className="mr-2"
+                  className="mr-2 text-indigo-600 dark:text-indigo-400"
                 />
                 No
               </label>
@@ -431,7 +431,7 @@ const CampaignForm: React.FC = () => {
 
             {formData.followUp === true && (
               <div className="mt-2">
-                <label htmlFor="noOfFollowUps" className="block text-sm font-medium">
+                <label htmlFor="noOfFollowUps" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
                   Number of Follow-ups
                 </label>
                 <input
@@ -442,7 +442,7 @@ const CampaignForm: React.FC = () => {
                   min="1"
                   max="5"
                   onChange={handleInputChange}
-                  className="rounded-md border border-gray-300 p-2 w-24"
+                  className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2 w-24 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                 />
               </div>
             )}
@@ -457,7 +457,7 @@ const CampaignForm: React.FC = () => {
               type="button"
               variant="secondary"
               onClick={handleSaveAsDraft}
-              className="bg-gray-200 text-gray-800"
+              className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
             >
               Save as Draft
             </Button>
@@ -465,7 +465,7 @@ const CampaignForm: React.FC = () => {
               type="button"
               variant="ghost"
               onClick={handleCancel}
-              className="border border-gray-300"
+              className="border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               Cancel
             </Button>

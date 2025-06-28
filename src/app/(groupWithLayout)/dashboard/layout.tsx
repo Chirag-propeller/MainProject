@@ -8,14 +8,13 @@ interface DashboardLayoutProps {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className=''>
-    <div className="flex">
-      <Sidebar/>
-      <main className="ml-52 w-full">{children}</main>
-      
+    <div className='bg-white dark:bg-gray-950 min-h-screen'>
+      <div className="flex">
+        <Sidebar/>
+        <main className="ml-52 w-full bg-white dark:bg-gray-950">{children}</main>
       </div>
       {/* <Footer/> */}
-      </div>
+    </div>
   );
 }
 

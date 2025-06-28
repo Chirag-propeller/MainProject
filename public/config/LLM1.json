@@ -78,6 +78,7 @@
                 {
                     "name": "Polly-Generative",
                     "value": "generative",
+                    "features": "Realistic, expressive AI voices",
                     "languages": [
                         {
                             "name": "English (British)",
@@ -133,6 +134,7 @@
                 {
                     "name": "Polly-Neural",
                     "value": "neural",
+                    "features": "Natural-sounding speech",
                     "languages": [
                         {
                             "name": "English (British)",
@@ -218,6 +220,7 @@
                 {
                     "name": "Polly-Standard",
                     "value": "standard",
+                    "features": "Basic synthetic voice, fast",
                     "languages": [
                         {
                             "name": "English (British)",
@@ -303,6 +306,7 @@
                 {
                     "name": "Chirp3-HD",
                     "value": "Chirp3-HD",
+                    "features": "High fidelity, human-like clarity",
                     "languages": [
                         {
                             "name": "English (India)",
@@ -501,6 +505,7 @@
                 {
                     "name": "Neural2",
                     "value": "Neural2",
+                    "features": "Smooth, clear neural voices",
                     "languages": [
                         {
                             "name": "English (India)",
@@ -603,6 +608,7 @@
                 {
                     "name": "Standard",
                     "value": "Standard",
+                    "features": "Fast, traditional TTS",
                     "languages": [
                         {
                             "name": "English (India)",
@@ -710,6 +716,7 @@
                 {
                     "name": "Wavenet",
                     "value": "Wavenet",
+                    "features": "Natural rhythm and intonation",
                     "languages": [
                         {
                             "name": "English (India)",
@@ -819,6 +826,7 @@
         {
             "name": "Sarvam",
             "value": "sarvam",
+            "features": "High-accuracy Indian language TTS",
             "models": [
                 {
                     "name": "Bulbul v2",
@@ -1111,6 +1119,7 @@
                 {
                     "name": "Eleven Monolingual v1",
                     "value": "eleven_monolingual_v1",
+                    "features": "Clear English voice cloning",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1163,6 +1172,7 @@
                 {
                     "name": "Eleven Multilingual v1",
                     "value": "eleven_multilingual_v1",
+                    "features": "Supports multiple languages",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1215,6 +1225,7 @@
                 {
                     "name": "Eleven Multilingual v2",
                     "value": "eleven_multilingual_v2",
+                    "features": "Improved multilingual support",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1267,6 +1278,7 @@
                 {
                     "name": "Eleven Turbo v2",
                     "value": "eleven_turbo_v2",
+                    "features": "Faster response, good quality",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1319,6 +1331,7 @@
                 {
                     "name": "Eleven Turbo v2.5",
                     "value": "eleven_turbo_v2_5",
+                    "features": "Turbo speed, clearer voice",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1371,6 +1384,7 @@
                 {
                     "name": "Eleven Flash v2.5",
                     "value": "eleven_flash_v2_5",
+                    "features": "Ultra-fast, low latency TTS",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1423,6 +1437,7 @@
                 {
                     "name": "Eleven Flash v2",
                     "value": "eleven_flash_v2",
+                    "features": "Fast response, decent clarity",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1475,6 +1490,7 @@
                 {
                     "name": "Eleven v3",
                     "value": "eleven_v3",
+                    "features": "Latest, most natural voices",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1534,6 +1550,7 @@
                 {
                     "name": "Sonic",
                     "value": "sonic",
+                    "features": "Fast and basic output",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1574,6 +1591,7 @@
                 {
                     "name": "Sonic-2",
                     "value": "sonic-2",
+                    "features": "Improved quality over Sonic",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1614,6 +1632,7 @@
                 {
                     "name": "Sonic Lite",
                     "value": "sonic-lite",
+                    "features": "Lightweight, efficient TTS",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1654,6 +1673,7 @@
                 {
                     "name": "Sonic Preview",
                     "value": "sonic-preview",
+                    "features": "Preview voices, early access",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1694,6 +1714,7 @@
                 {
                     "name": "Sonic Turbo",
                     "value": "sonic-turbo",
+                    "features": "High-speed voice synthesis",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1742,6 +1763,7 @@
                 {
                     "name": "Nova-2-General",
                     "value": "nova-2-general",
+                    "features": "Fast, multilingual support",
                     "languages": [
                         { "name": "Multilingual (Spanish + English)", "value": "multi" },
                         { "name": "Bulgarian", "value": "bg" },
@@ -1775,6 +1797,7 @@
                 {
                     "name": "Nova-3",
                     "value": "nova-3",
+                    "features": "High accuracy, latest model",
                     "languages": [
                         { "name": "English General", "value": "en" },
                         { "name": "English-US", "value": "en-US" },
@@ -1784,6 +1807,7 @@
                 {
                     "name": "Nova-3-Medical",
                     "value": "nova-3-medical",
+                    "features": "Optimized for medical terms",
                     "languages": [
                         { "name": "English General", "value": "en" },
                         { "name": "English-US", "value": "en-US" }
@@ -1792,6 +1816,7 @@
                 {
                     "name": "Nova-2-Phonecall",
                     "value": "nova-2-phonecall",
+                    "features": "Best for phone call audio",
                     "languages": [
                         { "name": "English General", "value": "en" },
                         { "name": "English-US", "value": "en-US" }
@@ -1800,6 +1825,7 @@
                 {
                     "name": "Nova-2-Conversational AI",
                     "value": "nova-2-conversationalai",
+                    "features": "Designed for virtual assistants",
                     "languages": [
                         { "name": "English General", "value": "en" },
                         { "name": "English-US", "value": "en-US" }
@@ -1814,6 +1840,7 @@
                 {
                     "name": "Chirp-2",
                     "value": "chirp_2",
+                    "features": "Versatile, wide language range",
                     "languages": [
                         { "name": "Assamese (India)", "value": "as-IN" },
                         { "name": "Bengali (India)", "value": "bn-IN" },
@@ -1833,6 +1860,7 @@
                 {
                     "name": "Long",
                     "value": "long",
+                    "features": "Best for long recordings",
                     "languages": [
                         { "name": "English (India)", "value": "en-IN" },
                         { "name": "Hindi (India)", "value": "hi-IN" },
@@ -1846,6 +1874,7 @@
                 {
                     "name": "Telephony",
                     "value": "telephony",
+                    "features": "Tuned for call-quality audio",
                     "languages": [
                         { "name": "English (India)", "value": "en-IN" },
                         { "name": "Hindi (India)", "value": "hi-IN" }
@@ -1856,6 +1885,7 @@
         {
             "name": "Sarvam",
             "value": "sarvam",
+            "features": "Indian languages, general use",
             "models": [
                 {
                     "name": "Saarika v1",
@@ -1877,6 +1907,7 @@
                 {
                     "name": "Saarika v2",
                     "value": "saarika:v2",
+                    "features": "Improved accuracy, Indian focus",
                     "languages": [
                         { "name": "Bengali (India)", "value": "bn-IN" },
                         { "name": "English (India)", "value": "en-IN" },
@@ -1894,6 +1925,7 @@
                 {
                     "name": "Saarika Flash",
                     "value": "saarika:flash",
+                    "features": "Fastest response, low latency",
                     "languages": [
                         { "name": "Bengali (India)", "value": "bn-IN" },
                         { "name": "English (India)", "value": "en-IN" },
