@@ -23,7 +23,7 @@ const Logo: React.FC<LogoProps> = ({ className = '' }) => {
         {/* Dark mode logo */}
         <Image
           alt="proPAL AI Logo"
-          src="/assets/logo.png"
+          src="/assets/logo2.png"
           width={720}
           height={720}
           className="h-12 w-auto object-contain hidden dark:block" // visible only in dark mode

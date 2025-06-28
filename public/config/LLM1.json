@@ -1225,9 +1225,9 @@
                     ]
                 },
                 {
-                    "name": "Eleven Turbo v2.5",
-                    "value": "eleven_turbo_v2_5",
-                    "features": "Turbo speed, clearer voice",
+                    "name": "Eleven Multilingual v2",
+                    "value": "eleven_multilingual_v2",
+                    "features": "Improved multilingual support",
                     "languages": [
                         {
                             "name": "English (US)",
@@ -1796,11 +1796,11 @@
         {
             "name": "Sarvam",
             "value": "sarvam",
-            "features": "Indian languages, general use",
             "models": [
                 {
                     "name": "Saarika v1",
                     "value": "saarika:v1",
+                    "features": "Indian languages, general use",
                     "languages": [
                         { "name": "Bengali (India)", "value": "bn-IN" },
                         { "name": "English (India)", "value": "en-IN" },
