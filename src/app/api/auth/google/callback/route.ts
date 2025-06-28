@@ -68,6 +68,14 @@ export async function GET(req: NextRequest) {
       sameSite: 'lax', 
     });
 
+    response.cookies.set("lastLoginMethod", "google", {
+      httpOnly: false,
+      path: "/",
+      secure: isProduction,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
     return response;
   } catch (err) {
     console.error("Google OAuth Error:", err);
