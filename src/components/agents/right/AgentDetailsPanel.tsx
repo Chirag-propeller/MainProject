@@ -103,7 +103,11 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({ agent, setAgent }
                 ref={nameRef} 
               />
             ) : (
+<<<<<<< HEAD
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{name}</h2>
+=======
+              <h2 className="text-2xl text-ellipsis overflow-hidden max-w-124 text-nowrap font-semibold">{name}</h2>
+>>>>>>> a2f18058b4f1cb1ed665767a6fa853a8c8362d3e
             )}
             <Pencil className='w-4 h-4 text-gray-500 dark:text-gray-300 cursor-pointer hover:text-gray-700 dark:hover:text-gray-100' onClick={() => setIsNameUpdating(true)} />
           </div>

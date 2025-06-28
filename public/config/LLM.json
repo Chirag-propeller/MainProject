@@ -55,29 +55,20 @@
         }
       },
       "ElevenLabs": {
-        "English-IN": {
-          "Female": ["Anika", "Riya"],
-          "Male": ["Krishna"]
-        },
-        "Hindi": {
-          "Female": ["Anika", "Riya"],
-          "Male": ["Krishna"]
-        },
         "English-US": {
           "Female": [
-            "Rachel", "Aria", "Domi", "Sarah", "Laura",
-            "Emily", "Elli", "River", "Matilda", "Jessica"
+            "Aria", "Sarah", "Laura", "Carlie", "Charlotte", 
+            "Alice", "Matilda", "Jessica", "Riya"
           ],
           "Male": [
-            "Edward", "Drew", "Clyde", "Paul", "Dave",
-            "Roger", "Fin", "Antoni", "Thomas", "Charlie",
-            "Callum", "Patrick", "Harry", "Joseph", "Jeremy"
-          ],
-          "English-UK":{
-            "Female":["Rachel","Aria","Domi","Sarah","Laura","Emily","Elli","River","Matilda","Jessica"],
-            "Male":["Edward","Drew","Clyde","Paul","Dave","Roger","Fin","Antoni","Thomas","Charlie","Callum","Patrick","Harry","Joseph","Jeremy"]
-          }
-        }        
+            "George", "Callum", "River", "Liam", 
+            "Chris", "Brian", "Krishna"
+          ]
+        },
+        "Hindi": {
+          "Female": ["Sarah", "Jessica", "Alice", "Riya"],
+          "Male": ["George", "Callum", "Chris", "Liam", "Brian", "Krishna"]
+        }
       },
       "OpenAI": {
         "English-US": {
@@ -175,18 +166,13 @@
       "Cartesia": {
         "English-US": {
           "Female": [
-            "Indian Lady", "Pooja", "Anu", "Janvi", "Priya", "Kiara",
-            "Sophie", "Savannah", "Brooke", "Zia"
+            "Savannah", "Zia", "Brooke", "Wise Lady", "Sophie", "Southern Woman", "Welcoming Lady"
           ],
-          "Male": ["Griffin"]
-        },
-        "English-IN": {
-          "Female": ["Charvi", "Parvati"],
-          "Male": ["Mehul", "Ishan", "Mihir"]
+          "Male": ["Griffin", "Carson", "Ethan"]
         },
         "Hindi": {
-          "Female": ["Charvi", "Parvati"],
-          "Male": ["Mehul", "Ishan", "Mihir"]
+          "Female": ["Aadhya", "Apoorva", "Ananya", "Parvati", "Astha", "Janvi", "Priya", "Kiara", "Maya"],
+          "Male": ["Mihir", "Ayush", "Amit", "Ishan", "Hindi Reporter Man", "Hindi Narrator Man"]
         }
       }
     },

@@ -57,4 +57,47 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* body styles removed to let Tailwind handle dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+@layer utilities {
+  .animate-fade-in {
+    @apply transition-opacity duration-300 opacity-0;
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* globals.css */
+@keyframes border-spin {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-border-spin {
+  background-size: 200% 200%;
+  animation: border-spin 4s linear infinite;
+}

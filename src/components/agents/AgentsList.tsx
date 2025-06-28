@@ -25,7 +25,11 @@ const AgentListItem = ({
     }`}>
       <div className="flex justify-between items-start ">
         <div>
+<<<<<<< HEAD
           <h3 className="text-xs text-gray-900 dark:text-gray-100">{agent.agentName}</h3>
+=======
+          <h3 className="text-xs overflow-hidden text-ellipsis max-w-48 text-gray-900 text-nowrap">{agent.agentName}</h3>
+>>>>>>> a2f18058b4f1cb1ed665767a6fa853a8c8362d3e
           {/* <p className="text-[10px] overflow-hidden text-ellipsis w-32 text-gray-600 mt-1 text-nowrap">ID: {agent._id}</p> */}
           <p className="text-[10px] text-gray-600 dark:text-gray-400 mt-0.5">
             Created At: {agent.createdAt ? new Date(agent.createdAt).toLocaleDateString() : 'Unknown'}

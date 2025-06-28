@@ -63,6 +63,13 @@ export async function POST(req : NextRequest){
             },
 
         )
+response.cookies.set("lastLoginMethod", "email", {
+  httpOnly: false,
+  path: "/",
+  secure: isProduction,
+  sameSite: "lax",
+  maxAge: 60 * 60 * 24 * 30,
+});
         return response;
     }catch(err:any){
         return NextResponse.json({error: err}, {status: 500})

@@ -119,15 +119,19 @@ export default function ContactForm() {
         <div className="flex items-center gap-4">
           <label className="w-32 text-sm font-medium text-gray-700 dark:text-gray-300">From Number</label>
           <select
-            className="flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+
+            className="flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed w-[375px]"
+
             value={fromNumber}
             onChange={(e) => setFromNumber(e.target.value)}
             required
             disabled={isSending}  // Disable while sending
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
           >
             <option value="" className="dark:bg-gray-700">Select Number</option>
             {fromNumberList.map((option, idx) => (
               <option key={idx} value={option} className="p-1 dark:bg-gray-700">{option}</option>
+
             ))}
           </select>
         </div>
@@ -140,7 +144,7 @@ export default function ContactForm() {
             placeholder="Enter phone number"
             value={toNumber}
             onChange={(e) => setToNumber(e.target.value)}
-            className="flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[375px] flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             required
             disabled={isSending}  // Disable while sending
           />
@@ -150,11 +154,12 @@ export default function ContactForm() {
         <div className="flex items-center gap-4">
           <label className="w-32 text-sm font-medium text-gray-700 dark:text-gray-300">From Agent</label>
           <select
-            className="flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[375px] flex-1 p-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             value={fromAgent}
             onChange={handleAgentChange}
             required
             disabled={isSending}  // Disable while sending
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
           >
             <option value="" className="dark:bg-gray-700">Select agent</option>
             {agentList.map((agent: any) => (

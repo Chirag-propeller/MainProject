@@ -89,7 +89,7 @@ const page = () => {
         <div className='text-xl py-2 my-2'>Call History</div>
       </div> */}
     
-      <div className='flex justify-start'>
+      <div className=''>
         <FunctionalityBar 
           customiseField={customiseField} 
           setCustomiseField={setCustomiseField} 
