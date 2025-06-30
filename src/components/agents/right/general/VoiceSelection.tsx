@@ -1,8 +1,18 @@
-import { useState, useRef, useEffect } from 'react';
-import { Play } from 'lucide-react'; // Adjust import path
-import axios from 'axios';
+import { useState, useRef, useEffect } from "react";
+import { Play } from "lucide-react"; // Adjust import path
+import axios from "axios";
 
-const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voices: any, selectedVoice: any, setSelectedVoice: any, agent: any }) => {
+const VoiceSelector = ({
+  voices,
+  selectedVoice,
+  setSelectedVoice,
+  agent,
+}: {
+  voices: any;
+  selectedVoice: any;
+  setSelectedVoice: any;
+  agent: any;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<string | null>(null); // Track which voice is loading
@@ -17,20 +27,21 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        setAudioUrl(null);
-        // Stop any playing audio when component unmounts
-        if (currentAudioRef.current) {
-          currentAudioRef.current.pause();
-          currentAudioRef.current = null;
-        }
-    }
+      document.removeEventListener("mousedown", handleClickOutside);
+      setAudioUrl(null);
+      // Stop any playing audio when component unmounts
+      if (currentAudioRef.current) {
+        currentAudioRef.current.pause();
+        currentAudioRef.current = null;
+      }
+    };
   }, []);
 
   // Find selected voice name
-  const selectedName = voices.find((v: any) => v.value === selectedVoice)?.name || 'Select voice';
+  const selectedName =
+    voices.find((v: any) => v.value === selectedVoice)?.name || "Select voice";
 
   const playAudio = (url: string) => {
     // Stop any currently playing audio safely
@@ -48,28 +59,28 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
     // Create and play new audio
     const audio = new Audio(url);
     currentAudioRef.current = audio;
-    
+
     // Clean up reference when audio ends
-    audio.addEventListener('ended', () => {
+    audio.addEventListener("ended", () => {
       if (currentAudioRef.current === audio) {
         currentAudioRef.current = null;
       }
     });
 
     // Handle any errors during playback
-    audio.addEventListener('error', () => {
+    audio.addEventListener("error", () => {
       if (currentAudioRef.current === audio) {
         currentAudioRef.current = null;
       }
     });
 
-    audio.play().catch(error => {
+    audio.play().catch((error) => {
       console.error("Audio playback failed:", error);
       if (currentAudioRef.current === audio) {
         currentAudioRef.current = null;
       }
       // Only show alert for actual playback failures, not interruptions
-      if (!error.message.includes('interrupted')) {
+      if (!error.message.includes("interrupted")) {
         alert("Please click the play button again to hear the preview");
       }
     });
@@ -77,10 +88,10 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
 
   const PlayHandler = (e: any, option: any) => {
     e.stopPropagation();
-    
+
     // Prevent multiple simultaneous requests for the same voice
     if (isLoading === option.value) return;
-    
+
     // Stop any currently playing audio immediately and safely
     if (currentAudioRef.current) {
       try {
@@ -94,15 +105,16 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
     }
 
     setIsLoading(option.value);
-    
-    const playVoice = axios.post(`/api/agents/voice`, {
+
+    const playVoice = axios
+      .post(`/api/agents/voice`, {
         provider: agent.tts,
         model: agent.ttsModel,
         voice: option.value,
         text: "Hello! I'm here to help you get things done, one step at a time.It's currently 3:30 PM, and your next meeting starts in 15 minutes.",
-        language: agent.ttsLanguage
-    })
-    .then((res: any) => {
+        language: agent.ttsLanguage,
+      })
+      .then((res: any) => {
         // console.log("res", res)
         const url = res.data.audioUrl;
         // console.log("url", url)
@@ -112,30 +124,35 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
         // const url = URL.createObjectURL(blob);
         // setAudioUrl(url);
         // console.log("url", url)
-    })
-    .catch((err) => {
-        console.log("err", err)
-    })
-    .finally(() => {
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
         setIsLoading(null);
-    });
-  }
+      });
+  };
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
       {/* Custom dropdown trigger */}
       <div
-        className="p-1.5 rounded-lg w-full text-sm bg-gray-100 border border-gray-300 flex items-center justify-between cursor-pointer"
+        className="p-2.25 rounded-[6px] w-full text-sm bg-white border border-gray-300 flex items-center justify-between cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span>{selectedName}</span>
-        <svg 
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-0' : 'rotate-0'}`}
-          fill="none" 
-          viewBox="0 0 24 24" 
+        <svg
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-0" : "rotate-0"}`}
+          fill="none"
+          viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </div>
 
@@ -147,9 +164,9 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
               <div
                 key={idx}
                 className={`flex items-center gap-4 p-2 cursor-pointer text-sm py-1 ${
-                  option.value === selectedVoice 
-                    ? 'bg-indigo-500 text-white ' 
-                    : 'hover:bg-gray-100'
+                  option.value === selectedVoice
+                    ? "bg-indigo-500 text-white "
+                    : "hover:bg-gray-100"
                 }`}
                 onClick={() => {
                   setSelectedVoice(option.value);
@@ -158,19 +175,29 @@ const VoiceSelector = ({ voices, selectedVoice, setSelectedVoice, agent }: { voi
               >
                 {/* <span className={option.value === selectedVoice ? 'font-medium' : ''}>{option.name}</span> */}
                 <button
-                  className={`p-2  rounded-full hover:bg-gray-200 focus:outline-none flex items-center gap-1 border  cursor-pointer  ${option.value === selectedVoice ? 'border-white' : 'border-indigo-500'} ${
-                    isLoading === option.value ? 'opacity-50 cursor-not-allowed' : ''
+                  className={`p-2  rounded-full hover:bg-gray-200 focus:outline-none flex items-center gap-1 border  cursor-pointer  ${option.value === selectedVoice ? "border-white" : "border-indigo-500"} ${
+                    isLoading === option.value
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                   onClick={(e) => PlayHandler(e, option)}
                   disabled={isLoading === option.value}
                 >
                   {/* <p className={option.value === selectedVoice ? 'text-white text-sm' : 'text-gray-900 text-sm'}>Play</p> */}
-                  
-                  <Play className={`${option.value === selectedVoice ? ' text-white w-4 h-4' : 'text-indigo-500 w-4 h-4'} ${
-                    isLoading === option.value ? 'animate-spin' : ''
-                  }`} />
+
+                  <Play
+                    className={`${option.value === selectedVoice ? " text-white w-4 h-4" : "text-indigo-500 w-4 h-4"} ${
+                      isLoading === option.value ? "animate-spin" : ""
+                    }`}
+                  />
                 </button>
-                <span className={option.value === selectedVoice ? 'font-medium' : ''}>{option.name}</span>
+                <span
+                  className={
+                    option.value === selectedVoice ? "font-medium" : ""
+                  }
+                >
+                  {option.name}
+                </span>
                 {/* {audioUrl && (
                         <audio 
                         // controls 
