@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { User } from './UserDataContext';
 import { User as UserIcon, Mail, Phone, Save, X } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface EditProfileFormProps {
   user: User;
@@ -19,6 +20,47 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, onSave, onCance
   });
   const [errors, setErrors] = useState<{name?: string; email?: string; phone?: string}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Email verification states
+  const [originalEmail, setOriginalEmail] = useState(user.email);
+  const [isEmailVerified, setIsEmailVerified] = useState(true);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [emailOtp, setEmailOtp] = useState('');
+  const [showOtpInput, setShowOtpInput] = useState(false);
+
+  // Reset form data when user prop changes (e.g., after successful update)
+  useEffect(() => {
+    console.log('EditProfileForm: User prop changed, updating form data:', {
+      newEmail: user.email,
+      newName: user.name,
+      timestamp: new Date().toISOString()
+    });
+    
+    setFormData({
+      name: user.name,
+      email: user.email,
+      phone: user.phone || '',
+    });
+    setOriginalEmail(user.email);
+    setIsEmailVerified(true);
+    setShowOtpInput(false);
+    setEmailOtp('');
+    
+    console.log('EditProfileForm: Form data updated, new originalEmail:', user.email);
+  }, [user]);
+
+  // Check if email has changed
+  useEffect(() => {
+    if (formData.email !== originalEmail) {
+      setIsEmailVerified(false);
+      setShowOtpInput(false);
+      setEmailOtp('');
+    } else {
+      setIsEmailVerified(true);
+      setShowOtpInput(false);
+      setEmailOtp('');
+    }
+  }, [formData.email, originalEmail]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,22 +93,111 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, onSave, onCance
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleEmailVerification = async () => {
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+      return;
+    }
+
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/user/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          name: formData.name,
+          emailChangeVerification: true
+        })
+      });
+
+      if (response.ok) {
+        setShowOtpInput(true);
+        setErrors(prev => ({ ...prev, email: undefined }));
+        toast.success(`OTP sent to ${formData.email}`);
+      } else {
+        const error = await response.json();
+        setErrors(prev => ({ ...prev, email: error.error || 'Failed to send verification email' }));
+        toast.error('Failed to send verification email');
+      }
+    } catch (error) {
+      setErrors(prev => ({ ...prev, email: 'Failed to send verification email' }));
+      toast.error('Failed to send verification email');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  const handleOtpVerification = async () => {
+    if (!emailOtp.trim()) {
+      return;
+    }
+
+    setIsVerifying(true);
+    try {
+      const response = await fetch('/api/user/verifyOtp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          otp: emailOtp,
+          emailChangeVerification: true
+        })
+      });
+
+      if (response.ok) {
+        setIsEmailVerified(true);
+        setShowOtpInput(false);
+        setEmailOtp('');
+        toast.success('Email verified successfully!');
+      } else {
+        const error = await response.json();
+        console.error('OTP verification failed:', error.message);
+        toast.error('Incorrect OTP');
+      }
+    } catch (error) {
+      console.error('OTP verification error:', error);
+      toast.error('Incorrect OTP');
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
+
+    // Check if email has changed and needs verification
+    if (formData.email !== originalEmail && !isEmailVerified) {
+      setErrors(prev => ({ ...prev, email: 'Please verify the email address' }));
+      toast.error('Please verify the email address');
+      return;
+    }
     
     setIsSubmitting(true);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      onSave({
+    try {
+      console.log('Saving profile with data:', {
         name: formData.name,
         email: formData.email,
-        phone: formData.phone || undefined
+        phone: formData.phone.trim() === "" ? "" : formData.phone,
+        emailChanged: formData.email !== originalEmail,
+        isEmailVerified
       });
+      
+      await onSave({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone.trim() === "" ? "" : formData.phone
+      });
+      
+      toast.success('Profile updated successfully!');
+    } catch (error: any) {
+      console.error('Error saving profile:', error);
+      toast.error(error.message || 'Failed to update profile');
+    } finally {
       setIsSubmitting(false);
-    }, 500);
+    }
   };
 
   return (
@@ -106,17 +237,61 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({ user, onSave, onCance
             <Mail className="w-3 h-3 mr-1 text-gray-500" />
             Email Address
           </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={`w-full px-3 py-2 border rounded text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors ${
-              errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
-            }`}
-            placeholder="Enter your email address"
-          />
+          <div className="flex space-x-2">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`flex-1 px-3 py-2 border rounded text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 transition-colors ${
+                errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'
+              }`}
+              placeholder="Enter your email address"
+            />
+            {formData.email !== originalEmail && !isEmailVerified && (
+              <Button
+                type="button"
+                onClick={handleEmailVerification}
+                disabled={isVerifying}
+                className="px-3 py-2 text-xs bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+              >
+                {isVerifying ? 'Sending...' : 'Verify'}
+              </Button>
+            )}
+          </div>
+          {showOtpInput && (
+            <div className="mt-2 space-y-2">
+              <label htmlFor="emailOtp" className="block text-xs font-medium text-gray-700">
+                Enter verification code sent to {formData.email}
+              </label>
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  id="emailOtp"
+                  value={emailOtp}
+                  onChange={(e) => setEmailOtp(e.target.value)}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Enter 6-digit code"
+                  maxLength={6}
+                />
+                <Button
+                  type="button"
+                  onClick={handleOtpVerification}
+                  disabled={isVerifying || !emailOtp.trim()}
+                  className="px-3 py-2 text-xs bg-green-500 text-white hover:bg-green-600 transition-colors"
+                >
+                  {isVerifying ? 'Verifying...' : 'Verify'}
+                </Button>
+              </div>
+            </div>
+          )}
+          {isEmailVerified && formData.email !== originalEmail && (
+            <p className="mt-1 text-xs text-green-600 flex items-center">
+              <Save className="w-3 h-3 mr-1" />
+              Email verified successfully
+            </p>
+          )}
           {errors.email && (
             <p className="mt-1 text-xs text-red-600 flex items-center">
               <X className="w-3 h-3 mr-1" />

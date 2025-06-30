@@ -28,6 +28,7 @@ import {
   Lock,
   Mail,
   User,
+  Phone,
 } from "lucide-react";
 
 const features = [
@@ -65,6 +66,7 @@ const SignupAndVerifyPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    phone: "",
   });
 
   const [activeFeature, setActiveFeature] = useState(0);
@@ -268,6 +270,25 @@ const SignupAndVerifyPage = () => {
                         className="bg-transparent text-[#1f2937] placeholder:text-gray-700 rounded-xl h-10 shadow-indigo-400"
                         placeholder="Enter your email address"
                         required
+                      />
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="phone"
+                        className="text-indigo-500 font-medium flex items-center"
+                      >
+                        <Phone className="w-4 h-4 mr-2" /> Phone Number (Optional)
+                      </Label>
+                      <Input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={form.phone}
+                        onChange={handleChange}
+                        className="bg-transparent text-[#1f2937] placeholder:text-gray-700 rounded-xl h-10 shadow-indigo-400"
+                        placeholder="Enter your phone number"
                       />
                     </div>
 

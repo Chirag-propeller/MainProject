@@ -4,13 +4,15 @@ import OutBoundCall from "@/model/call/outBoundCall";
 import { getUserFromRequest } from "@/lib/auth";
 import mongoose from "mongoose";
 import { unparse } from "papaparse";
+import Agent from "@/model/agent";
+import { format, parse } from "date-fns";
 
 export async function POST(req: NextRequest) {
   await dbConnect();
 
   try {
     const user = await getUserFromRequest(req);
-    const { filters, dateRange } = await req.json();
+    const { filters, dateRange, selectedFields } = await req.json();
     
     const userId = new mongoose.Types.ObjectId(user.userId);
 
@@ -120,25 +122,133 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Flatten the data for CSV export
-    const flattenedData = data.map(item => {
-      const flatItem: any = { ...item };
-      if (item.call_analysis) {
-        Object.keys(item.call_analysis).forEach(key => {
-          flatItem[`call_analysis_${key}`] = item.call_analysis[key];
-        });
-        delete flatItem.call_analysis;
-      }
-      if (item.metadata) {
-        Object.keys(item.metadata).forEach(key => {
-          flatItem[`metadata_${key}`] = item.metadata[key];
-        });
-        delete flatItem.metadata;
-      }
-      return flatItem;
-    });
 
-    const csv = unparse(flattenedData);
+
+
+
+    // Fetch agent data for field resolution
+    const agentOptions = await Agent.find({ userId: user.userId });
+
+    // Helper functions for data transformation (same as Table component)
+    function formatDateTime(dateStr: string): string {
+      const parsed = parse(dateStr, "yyyy-MM-dd HH:mm", new Date());
+      return format(parsed, "hh:mm a - dd MMM, yyyy");
+    }
+    
+    function parseApiDate(dateStr: string): Date {
+      return parse(dateStr, "yyyy-MM-dd HH:mm", new Date());
+    }
+
+    // Format transcript for CSV export
+    function formatTranscriptForCSV(transcript: any): string {
+      if (!transcript?.items || !Array.isArray(transcript.items)) {
+        return "No transcript available";
+      }
+      
+      return transcript.items.map((item: any) => {
+        if (!item.content?.length) return '';
+        const role = item.role === 'user' ? 'User' : 'Agent';
+        const content = Array.isArray(item.content) ? item.content.join(' ') : item.content;
+        return `${role}: ${content}`;
+      }).filter(Boolean).join(' | ');
+    }
+
+    // Transform data same as Table component
+    const mappedData = data
+      .filter((item: any) => item.call_analysis)
+      .map((item: any) => {
+        const callAnalysis = item.call_analysis || {};
+        const metadata = item.metadata || {};
+        const parsedDate = parseApiDate(item.started_at);
+        const agent = agentOptions.find((agent: any) => agent.agentId === metadata.agentid);
+        const llm = agent?.llm ? `${agent?.llm} (${agent?.llmModel})` : "N/A";
+        const stt = agent?.stt ? `${agent?.stt} ` : "N/A";
+        const tts = agent?.tts ? `${agent?.tts} (${agent?.ttsModel})` : "N/A";
+        let call_duration = "-";
+        if (item.call_duration_in_sec) {
+          const minutes = Math.floor(item.call_duration_in_sec / 60);
+          const seconds = item.call_duration_in_sec % 60;
+          if (minutes > 0) {
+            call_duration = `${minutes}m ${seconds.toFixed(0)}s`;
+          } else {
+            call_duration = `${seconds.toFixed(0)}s`;
+          }
+        }
+
+        return {
+          // Root-level
+          id: item._id,
+          rawDate: parsedDate,
+          started_at: formatDateTime(item.started_at),
+          phonenumber: item.phonenumber,
+          room_name: item.room_name,
+          user_id: item.user_id,
+          from_phonenumber: metadata.fromPhone,
+
+          // Metadata
+          agent: agent?.agentName,
+          llm: llm,
+          stt: stt,
+          tts: tts,
+          fromPhone: metadata.fromPhone,
+          numberoffollowup: metadata.numberoffollowup,
+          total_followup_count: metadata.total_followup_count,
+          average_latency: item.avg_total_latency,
+
+          // Call Analysis
+          status: callAnalysis.STATUS,
+          language: callAnalysis.LANGUAGE,
+          call_quality_score: callAnalysis.CALL_QUALITY_SCORE,
+          sentiment: callAnalysis.SENTIMENT,
+          script_adherence_score: callAnalysis.SCRIPT_ADHERENCE_SCORE,
+          call_disposition: callAnalysis.CALL_DISPOSITION,
+          call_transfer: callAnalysis.CALL_TRANSFER,
+          escalation_flag: callAnalysis.ESCALATION_FLAG,
+          ai_confidence_score: callAnalysis.AI_CONFIDENCE_SCORE,
+          nlp_error_rate: callAnalysis.NLP_ERROR_RATE,
+          intent_detected: callAnalysis.INTENT_DETECTED,
+          intent_success_rate: callAnalysis.INTENT_SUCCESS_RATE,
+          average_intent_turn: callAnalysis.AVERAGE_INTENT_TURN,
+          lead_score: callAnalysis.LEAD_SCORE,
+          conversion_flag: callAnalysis.CONVERSION_FLAG,
+          upsell_flag: callAnalysis.UPSELL_FLAG,
+          cross_sell_flag: callAnalysis.CROSS_SELL_FLAG,
+          survey_score: callAnalysis.SURVEY_SCORE,
+          compliance_risk_score: callAnalysis.COMPLIANCE_RISK_SCORE,
+          keyword_alert_count: callAnalysis.KEYWORD_ALERT_COUNT,
+          pci_dss_sensitive_data_detected: callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
+          gdpr_data_request: callAnalysis.GDPR_DATA_REQUEST,
+          customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
+          interruption_count: callAnalysis.INTERRUPTION_COUNT,
+          reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
+          violations: callAnalysis.VIOLATIONS?.length || 0,
+          cost: item.cost,
+          call_direction: item.call_direction,
+          call_duration: call_duration,
+          call_type: item.call_type,
+          transcript: formatTranscriptForCSV(item.call_transcript),
+          llm_cost: item.llm_cost_rupees ? Number(item.llm_cost_rupees.toString()).toFixed(2) : "0.00",
+          stt_cost: item.stt_cost_rupees ? Number(item.stt_cost_rupees.toString()).toFixed(2) : "0.00", 
+          tts_cost: item.tts_cost_rupees ? Number(item.tts_cost_rupees.toString()).toFixed(2) : "0.00",
+          goal_completion_status: callAnalysis.GOAL_COMPLETION_STATUS,
+        };
+      });
+
+    // Filter data by selected fields if provided
+    let finalData = mappedData;
+    if (selectedFields && selectedFields.length > 0) {
+      finalData = mappedData.map(item => {
+        const filteredItem: any = {};
+        selectedFields.forEach((field: string) => {
+          if (item.hasOwnProperty(field)) {
+            filteredItem[field] = (item as any)[field];
+          }
+        });
+        return filteredItem;
+      });
+    }
+
+    const csv = unparse(finalData);
 
     const response = new NextResponse(csv, {
       status: 200,
