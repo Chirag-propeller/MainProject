@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 // This component is now just a redirect to the new URL structure
 const AgentsDashboard: React.FC = () => {
@@ -8,7 +8,7 @@ const AgentsDashboard: React.FC = () => {
 
   // Redirect to the new agents dashboard page
   useEffect(() => {
-    router.push('/dashboard/agents');
+    router.push("/dashboard/agents");
   }, [router]);
 
   return (
@@ -19,4 +19,4 @@ const AgentsDashboard: React.FC = () => {
   );
 };
 
-export default AgentsDashboard; 
+export default AgentsDashboard;
