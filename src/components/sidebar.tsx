@@ -104,6 +104,7 @@ const navItemsMain = [
   { name: 'Billing', href: '/dashboard/billing', icon: CreditCard },
   { name: 'Campaigns', href: '/dashboard/campaigns', icon: Folder },
   { name: 'Integration', href: '/dashboard/integration', icon: Headphones },
+  { name: 'Workflows', href: '/dashboard/workflows', icon: Headphones },
 ];
 
 // const navItemsTool = [
