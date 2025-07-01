@@ -24,7 +24,8 @@ export async function POST (req: NextRequest){
             );
           }
 
-        let {name, email, password} = body;
+        const {name, password, phone} = body;
+        let {email} = body;
         console.log(body);
         email = email.toLowerCase();
         // Check if user exists
@@ -50,6 +51,7 @@ export async function POST (req: NextRequest){
             name,
             email,
             password: hashPass,
+            phone,
             isVerified:false,
         })
         return successResponse(
