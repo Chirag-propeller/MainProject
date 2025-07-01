@@ -16,7 +16,7 @@ const AgentGeneralTab: React.FC<AgentGeneralTabProps> = ({
   setAgent,
 }) => {
   return (
-    <div className="flex flex-col gap-3 bg-gray-50 p-5">
+    <div className="flex flex-col gap-6 bg-gray-50 p-5 pt-5 ">
       <Model agent={agent} setAgent={setAgent} />
       <Transcriber agent={agent} setAgent={setAgent} />
       <Voice agent={agent} setAgent={setAgent} />

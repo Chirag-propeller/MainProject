@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Agent } from "@/components/agents/types";
 import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectOptions from "@/components/agent/newAgent/SelectOptions";
-import { Triangle, Speaker, Music, Speech, Play } from "lucide-react";
+import { MdKeyboardArrowDown, MdRecordVoiceOver } from "react-icons/md";
 import SelectionDropdown from "@/components/agents/SelectionDropdown";
 import VoiceSelector from "./VoiceSelection";
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -340,82 +340,95 @@ const Voice = ({
   }, [selectedVoice]);
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm">
+    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
       <header
-        className="cursor-pointer bg-white p-2 rounded-[6px] border-b border-gray-200"
+        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
         <div className="flex justify-between m-1.5">
           <div className="flex gap-2 items-center">
-            <Speech className="w-5 h-5 text-gray-900 self-center" />
+            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+              <span className="text-indigo-300 text-lg">
+                <MdRecordVoiceOver />
+              </span>
+            </div>
             {/* <Music className='w-4 h-4 text-gray-900 self-center' /> */}
             {/* <Speaker className='w-4 h-4 text-gray-900 self-center' /> */}
-            <h2 className="text-md text-gray-900 font-semibold">Voice</h2>
+            <div>
+              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+                Voice
+              </h2>
+              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+                Voice synthesis settings
+              </p>
+            </div>
           </div>
 
-          <RiArrowDropDownLine
-            className={`w-10 h-10 transform transition-transform duration-200 ${
+          <MdKeyboardArrowDown
+            className={`w-8 h-8 transform transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
             }`}
-            style={{ fill: "black" }}
+            style={{ fill: "gray" }}
           />
         </div>
       </header>
       {isOpen && (
-        <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl">
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Provider" fieldKey="voiceProvider" />
-              <SelectionDropdown
-                options={providers}
-                selectedOption={selectedProvider}
-                setOption={setSelectedProvider}
-              />
+        <>
+          <hr className="border-t border-gray-200 my-2" />
+          <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl">
+            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel label="Provider" fieldKey="voiceProvider" />
+                <SelectionDropdown
+                  options={providers}
+                  selectedOption={selectedProvider}
+                  setOption={setSelectedProvider}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Model" fieldKey="voiceModel" />
-              <SelectionDropdown
-                options={models}
-                selectedOption={selectedModel}
-                setOption={setSelectedModel}
-              />
+            <div className="flex flex-col gap-2 mx-1 ml-20 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel label="Model" fieldKey="voiceModel" />
+                <SelectionDropdown
+                  options={models}
+                  selectedOption={selectedModel}
+                  setOption={setSelectedModel}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Language" fieldKey="voiceLang" />
-              <SelectionDropdown
-                options={availableLanguages}
-                selectedOption={language}
-                setOption={setLanguage}
-              />
+            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel label="Language" fieldKey="voiceLang" />
+                <SelectionDropdown
+                  options={availableLanguages}
+                  selectedOption={language}
+                  setOption={setLanguage}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Gender" fieldKey="voiceGender" />
-              <SelectionDropdown
-                options={availableGenders.map((g) => ({ name: g, value: g }))}
-                selectedOption={gender}
-                setOption={setGender}
-              />
+            <div className="flex flex-col gap-2 mx-1 ml-20 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel label="Gender" fieldKey="voiceGender" />
+                <SelectionDropdown
+                  options={availableGenders.map((g) => ({ name: g, value: g }))}
+                  selectedOption={gender}
+                  setOption={setGender}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2 mx-1 w-9/11">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Voice" fieldKey="voiceVoice" />
-              <VoiceSelector
-                voices={voices}
-                selectedVoice={selectedVoice}
-                setSelectedVoice={setSelectedVoice}
-                agent={agent}
-              />
+            <div className="flex flex-col gap-2 mx-1 w-full">
+              <div className="mx-1 p-1 pb-2">
+                <TooltipLabel label="Voice" fieldKey="voiceVoice" />
+                <VoiceSelector
+                  voices={voices}
+                  selectedVoice={selectedVoice}
+                  setSelectedVoice={setSelectedVoice}
+                  agent={agent}
+                />
 
-              {/* <select 
+                {/* <select 
                         className='p-1.5  rounded-lg w-full text-sm bg-gray-100 border border-gray-300 '
                         value={selectedVoice}
                         onChange={(e) => setSelectedVoice(e.target.value)}
@@ -428,10 +441,11 @@ const Voice = ({
                              </option>
                         )) : <option value="">No options available</option>}
                     </select> */}
-              {/* <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} /> */}
+                {/* <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} /> */}
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

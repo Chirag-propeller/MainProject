@@ -6,6 +6,7 @@ import AgentGeneralTab from "./AgentGeneralTab";
 import AgentPromptTab from "./AgentPromptTab";
 import { useRouter } from "next/navigation";
 import Test from "./Test";
+import { MdKeyboardArrowRight } from "react-icons/md";
 import { Play, Pencil } from "lucide-react";
 
 interface AgentDetailsPanelProps {
@@ -94,7 +95,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   }, [agent, name, setAgent]);
 
   return (
-    <div className="flex flex-col bg-white rounded-xl border border-t-0 border-gray-200 h-full ">
+    <div className="flex flex-col bg-gray-50 rounded-xl border border-t-0 border-gray-200 h-full p-5">
       {/* Header with agent name, ID and buttons */}
       <div className="flex justify-between items-start p-4 pb-1">
         <div className="flex flex-col">
@@ -124,7 +125,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             />
           </div>
 
-          <p className="text-xs text-gray-500 mb-1 ">ID: {agent._id}</p>
+          <p className="text-xs text-gray-500 mb-3 mt-2">ID: {agent._id}</p>
         </div>
         <div className="flex space-x-2 gap-1">
           <Button
@@ -132,7 +133,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             size="md"
             onClick={handleUpdate}
             // className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 bg-indigo-600/50 hover:bg-indigo-600/50  border-gray-300'
-            className="px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 "
+            className="px-5 py-1 text-md rounded-[4px]"
           >
             Update
           </Button>
@@ -148,10 +149,10 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             variant="secondary"
             size="md"
             onClick={handleTest}
-            className="px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 border-1 text-indigo-600 border-indigo-500 hover:bg-indigo-50"
+            className="px-3 py-1 text-md rounded-[4px] border-1 text-indigo-600 border-indigo-500 hover:bg-indigo-50 bg-white"
           >
             Test
-            <Play className="text-indigo-600 pl-1 w-4 h-4 ml-0.5" />
+            <MdKeyboardArrowRight className="text-indigo-600 pl-1 w-7 h-7 ml-0.5 font-light" />
           </Button>
         </div>
       </div>
