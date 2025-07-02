@@ -34,7 +34,12 @@ const page = () => {
       endDate: new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString(),
     })
     
-    setLoading(false);
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1200);
+
+    return () => clearTimeout(timer);
   },[])
   const [data, setData] = useState(null);
   const [agents, setAgents] = useState([]);
