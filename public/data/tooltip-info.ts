@@ -14,5 +14,6 @@ export const tooltipDescriptions: { [key: string]: string } = {
   voiceVoice:"Choose a voice that matches your brand and user expectations.",
   MaxmCallDuration:"Defines the maximum time (in seconds) the voice agent is allowed to stay in a single call session.",
   NumberTransfer:"Allow calls to be transferred to another number",
-  CallHangup:"Automatically end calls when specific phrases are detected"
+  CallHangup:"Automatically end calls when specific phrases are detected",
+  costPer:"These calculations are estimates. They may not reflect the actual cost of the assistant."
 };

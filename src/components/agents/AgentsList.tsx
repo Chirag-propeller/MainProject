@@ -5,19 +5,23 @@ import Link from "next/link";
 import { Agent } from "./types";
 import { createAgent, deleteAgent } from "./api";
 import { Button } from "@/components/ui/button";
-import { Trash2, Users } from "lucide-react";
-
+import { Copy, Users } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 // Simple agent card component for the list
 const AgentListItem = ({
   agent,
   isSelected,
   onDelete,
+  onDuplicate, // NEW
   isDeleting,
+  isDuplicating,
 }: {
   agent: Agent;
   isSelected: boolean;
   onDelete: (id: string) => Promise<void>;
+  onDuplicate: (agent: Agent) => Promise<void>; // NEW
   isDeleting: string | null;
+  isDuplicating: string | null;
 }) => {
   const [showConfirm, setShowConfirm] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -45,17 +49,17 @@ const AgentListItem = ({
   return (
     <Link href={`/dashboard/agents/${agent._id}`} className="block relative">
       <div
-        className={`p-2 px-2 border rounded-[6px] mb-2 hover:border-indigo-500 transition-colors ${
+        className={`p-2 px-2 border rounded-[6px] mb-1 hover:border-indigo-500 transition-colors ${
           isSelected ? "border-indigo-500 bg-indigo-50" : "border-gray-200"
         }`}
       >
         <div className="flex justify-between items-start ">
           {/* Left: Agent Info */}
           <div>
-            <h3 className="text-[14px] overflow-hidden text-ellipsis max-w-48 text-gray-900 text-nowrap p-2">
+            <h3 className="text-[14px] overflow-hidden text-ellipsis max-w-32 text-gray-900 text-nowrap p-1">
               {agent.agentName}
             </h3>
-            <p className="text-[10px] text-gray-600 pl-2">
+            <p className="text-xs text-gray-600 pl-1">
               Created At:{" "}
               {agent.createdAt
                 ? new Date(agent.createdAt).toLocaleDateString()
@@ -64,7 +68,24 @@ const AgentListItem = ({
           </div>
 
           {/* Right: Trash Icon + Confirm */}
-          <div className="relative" ref={popoverRef}>
+          <div className="relative gap-2" ref={popoverRef}>
+            <button
+              disabled={isDuplicating === agent._id}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onDuplicate(agent);
+              }}
+              className="text-gray-500 hover:text-indigo-600 transition-colors p-1 pt-1"
+            >
+              {isDuplicating === agent._id ? (
+                <div className="w-6 h-6 border-t-transparent animate-spin"></div>
+              ) : (
+                <div className="w-6 h-6 relative">
+                  <Copy className="pr-2" />
+                </div>
+              )}
+            </button>
             <button
               disabled={isDeleting === agent._id}
               onClick={(e) => {
@@ -72,7 +93,7 @@ const AgentListItem = ({
                 e.stopPropagation();
                 setShowConfirm((prev) => !prev);
               }}
-              className="text-gray-500 hover:text-red-600 transition-colors p-3 pt-5 group"
+              className="text-gray-500 hover:text-red-600 transition-colors p-1 pt-5 group"
             >
               {isDeleting === agent._id ? (
                 <div className="w-4 h-4 border-t-transparent animate-spin"></div>
@@ -106,7 +127,7 @@ const AgentListItem = ({
 
             {/* Confirmation Box */}
             {showConfirm && (
-              <div className="absolute top-8 right-0 w-max bg-white border border-gray-300 shadow-lg rounded-md z-50">
+              <div className="absolute top-8 right-0 w-max bg-white border border-gray-300 shadow-lg rounded-[6px] z-25">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -114,7 +135,7 @@ const AgentListItem = ({
                     onDelete(agent._id);
                     setShowConfirm(false);
                   }}
-                  className="text-red-600 hover:text-red-700 text-sm font-normal px-4 py-2 m-0.5 hover:bg-gray-100 rounded-md transition-colors"
+                  className="text-red-600 hover:text-red-700 text-[10px] font-light px-1 pb-1 transition-colors rounded-[6px]"
                 >
                   Delete Agent
                 </button>
@@ -137,15 +158,48 @@ const AgentsList = ({
   selectedId?: string;
   setAgents: (agents: Agent[]) => void;
 }) => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  const [dupLoading, setDupLoading] = useState<string | null>(null);
   const router = useRouter();
 
   // Handle creating a new agent
+  // const handleCreateAgent = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const newAgent = await createAgent({
+  //       agentName: "New Agent",
+  //       llm: "OpenAI",
+  //       llmModel: "gpt-4o-mini",
+  //       inputLanguage: "en-US",
+  //       stt: "Deepgram",
+  //       sttModel: "nova-2",
+  //       sttLanguage: "en-US",
+  //       tts: "AWS",
+  //       ttsVoiceName: "Amy",
+  //       ttsModel: "generative",
+  //       speed: 1,
+  //       welcomeMessage: "Hi",
+  //       knowledgeBaseAttached: false,
+  //       knowledgeBase: [],
+  //       prompt: "You are a helpful assistant",
+  //       gender: "Female",
+  //       ttsLanguage: "en-GB",
+  //     });
+  //     // Navigate to the new agent page
+  //     setAgents([newAgent.data, ...agents]);
+  //     router.push(`/dashboard/agents/${newAgent.data._id}`);
+  //   } catch (err) {
+  //     console.error("Failed to create agent:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleCreateAgent = async () => {
+    setCreateLoading(true);
     try {
-      setLoading(true);
-      const newAgent = await createAgent({
+      const res = await createAgent({
         agentName: "New Agent",
         llm: "OpenAI",
         llmModel: "gpt-4o-mini",
@@ -164,13 +218,48 @@ const AgentsList = ({
         gender: "Female",
         ttsLanguage: "en-GB",
       });
-      // Navigate to the new agent page
-      setAgents([newAgent.data, ...agents]);
-      router.push(`/dashboard/agents/${newAgent.data._id}`);
+
+      setAgents([res.data, ...agents]);
+      router.push(`/dashboard/agents/${res.data._id}`);
     } catch (err) {
-      console.error("Failed to create agent:", err);
+      console.error("Create failed:", err);
     } finally {
-      setLoading(false);
+      setCreateLoading(false);
+    }
+  };
+
+  const handleDuplicateAgent = async (src: Agent) => {
+    setDupLoading(src._id);
+    try {
+      const {
+        _id,
+        createdAt,
+        updatedAt,
+        __v, // mongoose version field if any
+        ...cloneable
+      } = src as any;
+
+      const duplicatedAgent = {
+        ...cloneable,
+        agentName: `${src.agentName} (copy)`,
+        agentId: Date.now().toString(), // generate new unique agentId
+        knowledgeBase: Array.isArray(src.knowledgeBase)
+          ? [...src.knowledgeBase]
+          : [],
+        knowledgeBaseAttached: src.knowledgeBaseAttached ?? false,
+      };
+
+      console.log("Duplicated agent payload →", duplicatedAgent);
+
+      const res = await createAgent(duplicatedAgent);
+
+      setAgents([res.data, ...agents]);
+      router.push(`/dashboard/agents/${res.data._id}`);
+    } catch (err) {
+      console.error("Duplication failed:", err);
+      alert("Could not duplicate agent.");
+    } finally {
+      setDupLoading(null);
     }
   };
 
@@ -190,26 +279,22 @@ const AgentsList = ({
 
     try {
       const success = await deleteAgent(id);
-      //   console.log("Agent deleted successfully handleDeleteAgent" , success);
-
       if (success) {
-        alert("Agent deleted successfully");
-        setAgents(agents.filter((agent) => agent._id !== id));
-        router.push(`/dashboard/agents/${agents[0]._id}`);
-        // router.refresh();
-        // Refresh the page to get updated data
-        // router.push('/dashboard/agents');
-        // const agent = agents[0];
-        // setSelectedId(agentId);
-        // router.push(`/dashboard/agents/${agentId}`);
+        const updatedAgents = agents.filter((agent) => agent._id !== id);
+        setAgents(updatedAgents);
 
-        // If we deleted the currently viewed agent, go back to the main agents page
         if (selectedId === id) {
-          router.push("/dashboard/agents");
+          // If the deleted agent was the selected one
+          if (updatedAgents.length > 0) {
+            // Navigate to the first available agent
+            router.push(`/dashboard/agents/${updatedAgents[0]._id}`);
+          } else {
+            // No agents left
+            router.push(`/dashboard/agents`);
+          }
         }
       } else {
         alert("Failed to delete agent");
-        // router.refresh();
       }
     } catch (err) {
       console.error("Delete failed:", err);
@@ -232,10 +317,10 @@ const AgentsList = ({
 
         <Button
           onClick={handleCreateAgent}
-          disabled={loading}
+          disabled={createLoading}
           className="px-5 py-1 text-md rounded-[4px]"
         >
-          {loading ? "Creating..." : "Create"}
+          {createLoading ? "Creating..." : "Create"}
         </Button>
       </div>
 
@@ -252,7 +337,9 @@ const AgentsList = ({
               agent={agent}
               isSelected={selectedId === agent._id}
               onDelete={handleDeleteAgent}
+              onDuplicate={handleDuplicateAgent}
               isDeleting={deleteLoading}
+              isDuplicating={dupLoading}
             />
           ))
         )}

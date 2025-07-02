@@ -18,14 +18,14 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const user = await getUserFromRequest(req);
     console.log(user);
-    let {agentName} = body;
+    const {agentName} = body;
     // console.log(agentName);
     // if(agentName.trim() === ""){
     //   agentName = "Agent 1"
     // }
     // console.log(agentName);
     const newAgent = await Agent.create({
-      agentId: Date.now().toString(), // Temp incremental ID
+      agentId: body.agentId || Date.now().toString(), // Temp incremental ID
       userId: user.userId,
       ...body,
       agentName: agentName.trim() === "" ? "Agent 1" : agentName,

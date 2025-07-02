@@ -23,6 +23,7 @@ export interface Agent {
   backgroundSound?: string;
   welcomeMessage?: string;
   knowledgeBaseAttached?: boolean;
+  knowledgeBaseUrl?:string;
   knowledgeBase: mongoose.Types.ObjectId[];
   maxCallDuration?: number;
   numberTransfer?: boolean;

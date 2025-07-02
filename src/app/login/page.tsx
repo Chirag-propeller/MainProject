@@ -274,7 +274,7 @@ const LoginPage = () => {
                     Sign in with Google
                   </Button>
                   {lastMethod === "google" && (
-                    <span className="absolute -top-2 -right-2 bg-gray-200 text-xs text-indigo-950 px-2 py-[2px] rounded-full shadow-md">
+                    <span className="absolute -top-2 -right-2 bg-purple-300 text-xs text-indigo-950 px-2 font-semibold py-[2px] rounded-full shadow-md">
                       Last Used
                     </span>
                   )}

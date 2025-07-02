@@ -47,11 +47,11 @@ const Navbar = () => {
         <nav className="hidden md:flex items-center gap-8">
           <div className="relative group">
             <button
-                onClick={() => scrollToSection("use-cases")}
-                className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
-              >
-                Use Cases
-              </button>
+              onClick={() => scrollToSection("use-cases")}
+              className="text-sm font-medium text-gray-700 hover:text-decagon-primary cursor-pointer"
+            >
+              Use Cases
+            </button>
             {/* <button className="flex items-center text-sm font-medium text-gray-700 hover:text-decagon-primary transition">
               Platform <ChevronDown className="ml-1 h-4 w-4" />
             </button> */}
@@ -94,7 +94,7 @@ const Navbar = () => {
             href="/legal/privacy"
             className="text-sm font-medium text-gray-700 hover:text-decagon-primary"
           >
-           Privacy
+            Privacy
           </Link>
 
           {/* <Link
@@ -115,7 +115,7 @@ const Navbar = () => {
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/signup"
+            href="/login"
             className="text-sm font-medium text-gray-700 hover:text-decagon-primary"
           >
             Sign in
@@ -134,7 +134,11 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-gray-700 hover:text-decagon-primary"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
       </div>
@@ -161,8 +165,6 @@ const Navbar = () => {
             Enterprise
           </Link> */}
 
-
-
           <Link
             href="/legal/privacy"
             className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-decagon-primary"
@@ -177,7 +179,7 @@ const Navbar = () => {
             Terms of Service
           </Link>
           <Link
-            href="/signup"
+            href="/login"
             className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-decagon-primary"
           >
             Sign in

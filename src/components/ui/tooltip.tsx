@@ -7,6 +7,7 @@ interface TooltipLabelProps {
   fieldKey: string;
   htmlFor?: string;
   className?: string;
+  position?: "top" | "bottom";
 }
 
 const TooltipLabel: React.FC<TooltipLabelProps> = ({
@@ -14,11 +15,12 @@ const TooltipLabel: React.FC<TooltipLabelProps> = ({
   fieldKey,
   htmlFor,
   className,
+  position,
 }) => {
   return (
     <label
       htmlFor={htmlFor}
-      className={`flex items-center gap-1 text-sm font-medium text-gray-700 mb-1 ${className}`}
+      className={`flex items-center gap-1 text-sm font-medium text-black mb-1 ${className}`}
     >
       {label}
       {tooltipDescriptions[fieldKey] && (
@@ -26,7 +28,9 @@ const TooltipLabel: React.FC<TooltipLabelProps> = ({
           <span className="text-gray-400 cursor-pointer">
             <IoAlertCircleOutline className="w-4 h-4" />
           </span>
-          <div className="absolute z-10 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 bottom-full left-1/2 transform -translate-x-1/2 mb-2 whitespace-nowrap">
+          <div
+            className={`absolute z-10 hidden group-hover:block bg-gray-50 text-black border border-gray-200 shadow-sm text-xs rounded py-1 px-2 ${position === "bottom" ? "top-full font-light" : "bottom-full"} transform mb-2 w-[250px] max-w-[300px] break-words leading-tight`}
+          >
             {tooltipDescriptions[fieldKey]}
           </div>
         </div>

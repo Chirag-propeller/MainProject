@@ -377,8 +377,8 @@ const Voice = ({
       {isOpen && (
         <>
           <hr className="border-t border-gray-200 my-2" />
-          <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl">
-            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+          <div className="p-2 flex flex-row flex-wrap justify-between gap-2 w-full bg-white rounded-xl">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
                 <TooltipLabel label="Provider" fieldKey="voiceProvider" />
                 <SelectionDropdown
@@ -388,7 +388,7 @@ const Voice = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 ml-20 w-2/5">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
                 <TooltipLabel label="Model" fieldKey="voiceModel" />
                 <SelectionDropdown
@@ -398,7 +398,7 @@ const Voice = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
                 <TooltipLabel label="Language" fieldKey="voiceLang" />
                 <SelectionDropdown
@@ -408,7 +408,7 @@ const Voice = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 ml-20 w-2/5">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
                 <TooltipLabel label="Gender" fieldKey="voiceGender" />
                 <SelectionDropdown
