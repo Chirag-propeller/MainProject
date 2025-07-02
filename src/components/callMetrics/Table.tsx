@@ -157,7 +157,58 @@ export default function CallAnalysisTable({
   return (
     <div className="w-full max-w-[80vw]  overflow-hidden relative">
       {loading ? (
-        <p className="text-gray-600">Loading call analysis...</p>
+        <>
+          {/* Skeleton Table */}
+          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 text-sm">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
+                    S.No
+                  </th>
+                  {customiseField.map((key) => (
+                    <th
+                      key={key}
+                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
+                    >
+                      {CALL_ANALYSIS_FIELD_LABELS[key] ||
+                        key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y text-sm divide-gray-100">
+                {/* Skeleton Rows */}
+                {Array.from({ length: 7 }).map((_, index) => (
+                  <tr key={index} className="animate-pulse">
+                    <td className="px-3 py-2 whitespace-nowrap">
+                      <div className="h-4 bg-gray-200 rounded w-8"></div>
+                    </td>
+                    {customiseField.map((key, colIndex) => (
+                      <td key={colIndex} className="px-6 py-2 whitespace-nowrap text-center">
+                        <div className="h-4 bg-gray-200 rounded mx-auto" style={{
+                          width: key === 'started_at' ? '120px' : 
+                                key === 'phonenumber' ? '100px' :
+                                key === 'agent' ? '80px' :
+                                key === 'status' ? '70px' :
+                                key === 'call_duration' ? '60px' :
+                                '80px'
+                        }}></div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Skeleton Pagination */}
+          <div className='flex justify-center gap-2 py-4'>
+            <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-4 w-16 bg-gray-200 rounded self-center animate-pulse"></div>
+            <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </>
       ) : (
         <>
           <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200">

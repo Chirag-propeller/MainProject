@@ -4,6 +4,7 @@ import CampaignHeader from './CampaignHeader';
 import CampaignTabs from './CampaignTabs';
 import CampaignDetails from './right/CampaignDetails';
 import CampaignForm from './CampaignForm';
+import CampaignSkeleton from './CampaignSkeleton';
 import { Campaign, Agent } from './types';
 import { fetchCampaigns, fetchAgents, deleteCampaign } from './api';
 import { createCampaign } from '@/utils/api';
@@ -25,6 +26,8 @@ const CampaignDashboard: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
+      
+      // await new Promise(resolve=> setTimeout(resolve,20
       
       // Load campaigns and agents in parallel
       const [campaignsData, agentsData] = await Promise.all([
@@ -97,6 +100,10 @@ const CampaignDashboard: React.FC = () => {
       alert('Failed to create campaign');
     }
   };
+
+  if (loading) {
+    return <CampaignSkeleton />;
+  }
 
   return (
     <div className="flex h-[calc(100vh-12px)]">

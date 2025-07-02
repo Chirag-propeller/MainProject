@@ -59,8 +59,64 @@ const AgentConfiguration: React.FC<AgentConfigurationProps> = ({ campaign, agent
       {isOpen && (
         <div className='p-4 bg-gray-50'>
           {loading ? (
-            <div className="flex justify-center items-center py-4">
-              <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+            <div className="animate-pulse space-y-4">
+              {/* Basic Agent Info skeleton */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white p-3 rounded-md border border-gray-200">
+                  <div className="h-3 bg-gray-200 rounded w-20 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-32"></div>
+                </div>
+                <div className="bg-white p-3 rounded-md border border-gray-200">
+                  <div className="h-3 bg-gray-200 rounded w-16 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-24"></div>
+                </div>
+              </div>
+
+              {/* Model Configuration skeleton */}
+              <div className="border-t pt-4">
+                <div className="h-4 bg-gray-200 rounded w-32 mb-3"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-white p-3 rounded-md border border-gray-200">
+                    <div className="h-3 bg-gray-200 rounded w-20 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-16"></div>
+                  </div>
+                  <div className="bg-white p-3 rounded-md border border-gray-200">
+                    <div className="h-3 bg-gray-200 rounded w-18 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-20"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Voice Configuration skeleton */}
+              <div className="border-t pt-4">
+                <div className="h-4 bg-gray-200 rounded w-36 mb-3"></div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white p-3 rounded-md border border-gray-200">
+                    <div className="h-3 bg-gray-200 rounded w-18 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-12"></div>
+                  </div>
+                  <div className="bg-white p-3 rounded-md border border-gray-200">
+                    <div className="h-3 bg-gray-200 rounded w-16 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-14"></div>
+                  </div>
+                  <div className="bg-white p-3 rounded-md border border-gray-200">
+                    <div className="h-3 bg-gray-200 rounded w-10 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-16"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Welcome Message skeleton */}
+              <div className="border-t pt-4">
+                <div className="h-4 bg-gray-200 rounded w-28 mb-3"></div>
+                <div className="bg-white p-4 rounded-md border border-gray-200">
+                  <div className="space-y-2">
+                    <div className="h-3 bg-gray-200 rounded w-full"></div>
+                    <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : !campaign.agentId ? (
             <div className="text-center py-4 text-gray-500">

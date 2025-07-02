@@ -14,6 +14,7 @@ export default function ContactForm() {
   const [selectedAgent, setSelectedAgent] = useState<any | null>(null);
   const [isSending, setIsSending] = useState(false);  // State to track if the call is being sent
   const [callSent, setCallSent] = useState(false);  // State to track if the call was sent successfully
+  const [loading, setLoading] = useState(true);
 
   const handleAgentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const agentId = e.target.value;
@@ -106,9 +107,25 @@ export default function ContactForm() {
   };
 
   useEffect(() => {
-    fetchNumbers();
-    fetchAgents();
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([fetchNumbers(), fetchAgents()]);
+      setLoading(false);
+    };
+    
+    loadData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        <h2 className="text-2xl font-bold mb-6">Send a Call</h2>
+        <div className="flex justify-center items-center h-32">
+          <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
