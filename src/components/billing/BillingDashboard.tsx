@@ -20,8 +20,6 @@ const BillingDashboard = () => {
     
     const fetchUserBalance = async () => {
       setLoading(true);
-      // await new Promise(resolve=> setTimeout(resolve,2000))
-      // const user = await axios.get('/api/user/getCurrentUser');
       const user = await axios.get('/api/user/getCurrentUser');
       console.log(user);
       const credits = parseFloat(user.data?.credits?.$numberDecimal) || 0;

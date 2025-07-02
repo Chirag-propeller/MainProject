@@ -4,7 +4,6 @@ import CampaignHeader from './CampaignHeader';
 import CampaignTabs from './CampaignTabs';
 import CampaignDetails from './right/CampaignDetails';
 import CampaignForm from './CampaignForm';
-import CampaignSkeleton from './CampaignSkeleton';
 import { Campaign, Agent } from './types';
 import { fetchCampaigns, fetchAgents, deleteCampaign } from './api';
 import { createCampaign } from '@/utils/api';
@@ -101,9 +100,7 @@ const CampaignDashboard: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return <CampaignSkeleton />;
-  }
+  
 
   return (
     <div className="flex h-[calc(100vh-12px)]">
