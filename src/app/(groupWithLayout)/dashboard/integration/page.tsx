@@ -65,6 +65,8 @@ const page = () => {
     console.error('Integration error:', error);
   };
 
+  const url = "https://numbersfetchfastapi-f4hba2arduckbmf8.eastus2-01.azurewebsites.net/create-token"
+  
   const handleIntegrationClick = (provider: string) => {
     switch (provider) {
       case 'googleCalendar':
