@@ -24,6 +24,9 @@ const ToolsContent = ({
     agent.knowledgeBaseAttached
   );
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [fileUrl, setFileUrl] = useState<string | null>(
+    agent.knowledgeBaseUrl ?? null // fallback if you already store it on the agent
+  );
 
   const uploadFile = async (file: File) => {
     const formData = new FormData();
@@ -39,6 +42,7 @@ const ToolsContent = ({
 
       if (response.status === 200) {
         azureUrl = response.data.url;
+        setFileUrl(azureUrl);
         formData2.append("url", azureUrl);
         console.log("File uploaded successfully");
       } else {
@@ -71,6 +75,7 @@ const ToolsContent = ({
         setAgent({
           ...agent,
           knowledgeBaseAttached: true,
+          knowledgeBaseUrl: azureUrl,
         });
         setIsFileUploaded(true);
         toast.success("File uploaded successfully");
@@ -129,6 +134,17 @@ const ToolsContent = ({
             <p className="text-sm text-gray-500">
               Tools and integrations are configured
             </p>
+            {fileUrl && (
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-1 inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+              >
+                <RiArrowDropDownLine className="w-5 h-5" />
+                View file
+              </a>
+            )}
           </div>
         ) : (
           <div className="flex flex-col gap-2 items-center">

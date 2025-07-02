@@ -233,15 +233,10 @@ const Transcriber = ({
       {isOpen && (
         <>
           <hr className="border-t border-gray-200 my-2" />
-          <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl ">
-            <hr className="border-t border-gray-200 my-4" />
-            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+          <div className="p-2 flex flex-row flex-wrap justify-between gap-2 w-full bg-white rounded-xl ">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
-                <TooltipLabel
-                  label="Provider"
-                  fieldKey="transProvider"
-                  className="font-semibold"
-                />
+                <TooltipLabel label="Provider" fieldKey="transProvider" />
                 <SelectionDropdown
                   options={provider}
                   selectedOption={selectedProvider}
@@ -249,13 +244,9 @@ const Transcriber = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 ml-15 w-2/5">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
-                <TooltipLabel
-                  label="Model"
-                  fieldKey="transModel"
-                  className="font-semibold"
-                />
+                <TooltipLabel label="Model" fieldKey="transModel" />
                 <SelectionDropdown
                   options={models}
                   selectedOption={selectedModel}
@@ -263,13 +254,9 @@ const Transcriber = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 w-2/5 ml-3">
+            <div className="flex flex-col gap-2 mx-1 w-2/5">
               <div className="mx-1 p-1">
-                <TooltipLabel
-                  label="Language"
-                  fieldKey="transLang"
-                  className="font-semibold"
-                />
+                <TooltipLabel label="Language" fieldKey="transLang" />
                 <SelectionDropdown
                   options={availableLanguages}
                   selectedOption={selectedLanguage}

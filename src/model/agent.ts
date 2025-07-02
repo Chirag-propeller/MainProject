@@ -11,6 +11,7 @@ export interface IAgent extends Document {
   gender?: string;
   inputLanguage?: string;
   knowledgeBaseAttached?: boolean;
+  knowledgeBaseUrl?: string;
   knowledgeBase: mongoose.Types.ObjectId[];
   llm?: string;
   llmModel?: string;
@@ -40,6 +41,7 @@ const AgentSchema: Schema = new Schema({
   gender: { type: String },
   inputLanguage: { type: String },
   knowledgeBaseAttached: { type: Boolean, default: false },
+  knowledgeBaseUrl:{type:String,default:false},
   knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase' , default: []}],
   llm: { type: String },
   llmModel: { type: String },

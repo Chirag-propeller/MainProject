@@ -7,7 +7,8 @@ import AgentPromptTab from "./AgentPromptTab";
 import { useRouter } from "next/navigation";
 import Test from "./Test";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { Play, Pencil } from "lucide-react";
+import { FaRegEdit } from "react-icons/fa";
+import _ from "lodash";
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -24,6 +25,11 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   const [isTesting, setIsTesting] = useState(false);
   const [isNameUpdating, setIsNameUpdating] = useState(false);
   const [name, setName] = useState(agent.agentName);
+  const [initialAgent, setInitialAgent] = useState<Agent>(() =>
+    _.cloneDeep(agent)
+  );
+  const [isModified, setIsModified] = useState(false);
+
   const nameRef = useRef<HTMLInputElement>(null);
 
   // Tabs available for this agent
@@ -34,9 +40,14 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
     // { id: "conversations", label: "Conversations" },
     // { id: "analytics", label: "Analytics" },
   ];
+  useEffect(() => {
+    setInitialAgent(_.cloneDeep(agent));
+    setIsModified(false);
+  }, [agent._id]);
 
   const handleUpdate = async () => {
     setIsUpdating(true);
+    const newBaseline = _.cloneDeep(agent);
     const res = await fetch(`/api/agent/${agent._id}`, {
       method: "PUT", // or PATCH if your backend prefers
       headers: { "Content-Type": "application/json" },
@@ -44,17 +55,28 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
     });
 
     if (res.ok) {
+      const data = await res.json();
+      setInitialAgent(newBaseline);
+      setIsModified(false);
       setIsUpdating(false);
       alert("Agent updated successfully");
-      const data = await res.json();
       console.log("Agent updated:", data);
       router.refresh();
       // router.push('/dashboard/agents');
     } else {
+      // setIsUpdating(false);
       alert("Failed to update agent");
     }
     // setActiveTab('settings'); // Navigate to settings tab for updating
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsModified(!_.isEqual(agent, initialAgent));
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [agent, initialAgent]);
 
   const handleTest = () => {
     setIsTesting(true);
@@ -95,7 +117,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   }, [agent, name, setAgent]);
 
   return (
-    <div className="flex flex-col bg-gray-50 rounded-xl border border-t-0 border-gray-200 h-full p-5">
+    <div className="flex flex-col bg-gray-50 border border-t-0 border-gray-200 h-full p-5">
       {/* Header with agent name, ID and buttons */}
       <div className="flex justify-between items-start p-4 pb-1">
         <div className="flex flex-col">
@@ -119,7 +141,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
                 {name}
               </h2>
             )}
-            <Pencil
+            <FaRegEdit
               className="w-4 h-4 text-gray-500 cursor-pointer"
               onClick={() => setIsNameUpdating(true)}
             />
@@ -134,6 +156,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             onClick={handleUpdate}
             // className='px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 bg-indigo-600/50 hover:bg-indigo-600/50  border-gray-300'
             className="px-5 py-1 text-md rounded-[4px]"
+            disabled={!isModified}
           >
             Update
           </Button>

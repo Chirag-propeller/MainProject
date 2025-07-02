@@ -252,7 +252,7 @@ const Model = ({
     if (agent.llm !== selectedProvider) {
       setAgent({ ...agent, llm: selectedProvider });
     }
-  }, [selectedProvider]);
+  }, [selectedProvider, agent, setAgent]);
 
   useEffect(() => {
     if (agent.llmModel !== selectedModel) {
@@ -295,9 +295,9 @@ const Model = ({
               </span>
             </div>
             <div>
-              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+              <h2 className="text-[16px] text-gray-900 font-semibold ml-1.5">
                 Model{" "}
-                <span className="text-[14px] text-gray-500 font-medium pl-1">
+                <span className="text-[16px] text-gray-500 font-medium pl-1">
                   (Large Language Model)
                 </span>
               </h2>

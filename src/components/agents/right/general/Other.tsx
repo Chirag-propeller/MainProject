@@ -112,6 +112,7 @@ const OtherContent = ({
           fieldKey="MaxmCallDuration"
           htmlFor="callDuration"
           className="font-semibold"
+          position="bottom"
         />
         <input
           id="callDuration"
@@ -134,7 +135,7 @@ const OtherContent = ({
             <h4 className=" text-sm font-semibold text-gray-900">
               Number Transfer
             </h4>
-            <p className="font-light text-gray-600">
+            <p className="font-light text-gray-600 text-sm">
               Allow calls to be transferred to another number
             </p>
           </div>
@@ -181,7 +182,7 @@ const OtherContent = ({
         <div className="flex items-center justify-between mb-3">
           <div>
             <h4 className="font-semibold text-gray-900 text-sm">Call Hangup</h4>
-            <p className="font-light text-gray-600">
+            <p className="font-light text-gray-600 text-sm">
               Automatically end calls when specific phrases are detected
             </p>
           </div>
