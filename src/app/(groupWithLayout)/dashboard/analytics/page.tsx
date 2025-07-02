@@ -13,6 +13,7 @@ interface AnalyticsFilters extends FilterState {
 }
 
 const page = () => {
+  const [loading, setLoading] = useState(true);
   // Initialize with empty filters
   const now = new Date();
   const initialStartDate = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -32,6 +33,8 @@ const page = () => {
       startDate: new Date(now.getFullYear(), now.getMonth(), 1).toISOString(),
       endDate: new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString(),
     })
+    
+    setLoading(false);
   },[])
   const [data, setData] = useState(null);
   const [agents, setAgents] = useState([]);
@@ -48,6 +51,25 @@ const page = () => {
   const handleFilterChange = useCallback((newFilters: AnalyticsFilters) => {
     setFilters(newFilters);
   }, []);
+
+  if (loading) {
+    return (
+      <div className='w-full h-[200vh] overflow-y-auto px-4'>
+        <div className='flex gap-1.5 py-4'>
+          <LineChart className='w-3.5 h-3.5 self-center text-indigo-600' />
+          <h1 className="text-lg self-center text-indigo-600">Analytics</h1>
+        </div>
+        <div className='flex flex-col gap-2'>
+          <Filters onChange={handleFilterChange} />
+          
+          <div className="flex flex-col items-center justify-center h-96 bg-white rounded-lg border border-gray-200">
+            <div className="w-8 h-8 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+            <p className="mt-4 text-gray-600">Loading analytics data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='w-full h-[200vh] overflow-y-auto px-4'>

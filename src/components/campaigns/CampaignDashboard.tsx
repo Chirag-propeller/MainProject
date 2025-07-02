@@ -26,6 +26,8 @@ const CampaignDashboard: React.FC = () => {
     const loadData = async () => {
       setLoading(true);
       
+      // await new Promise(resolve=> setTimeout(resolve,20
+      
       // Load campaigns and agents in parallel
       const [campaignsData, agentsData] = await Promise.all([
         fetchCampaigns(),
@@ -97,6 +99,8 @@ const CampaignDashboard: React.FC = () => {
       alert('Failed to create campaign');
     }
   };
+
+  
 
   return (
     <div className="flex h-[calc(100vh-12px)]">

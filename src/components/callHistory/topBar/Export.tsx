@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FilterState } from './Filter'
 import { DateRangeFilter } from './DateFilter'
 import axios from 'axios';
-import { X, ChevronDown, ChevronRight } from 'lucide-react';
+import { X, ChevronDown, ChevronRight, Loader2 } from 'lucide-react';
 
 const EXPORT_FIELDS = {
   callOverview: {
@@ -67,6 +67,8 @@ interface ExportProps {
 
 const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
     const [showModal, setShowModal] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
+    const [exportError, setExportError] = useState<string | null>(null);
     const [expandedSections, setExpandedSections] = useState({
         callOverview: true,
         agentPerformance: true,
@@ -121,6 +123,9 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
 
     const handleExport = async () => {
         try {
+            setIsExporting(true);
+            setExportError(null);
+            
             const selectedFieldsList = Object.keys(selectedFields).filter(field => selectedFields[field]);
             
             const response = await axios.post('/api/callHistory/download', {
@@ -144,11 +149,16 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
             setShowModal(false);
         } catch (error) {
             console.error('Error exporting CSV:', error);
+            setExportError('Failed to export CSV. Please try again.');
+        } finally {
+            setIsExporting(false);
         }
     };
 
     const openModal = () => {
         setSelectedFields(initializeSelectedFields());
+        setExportError(null);
+        setIsExporting(false);
         setShowModal(true);
     };
 
@@ -224,20 +234,31 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
                         ))}
                     </div>
 
+                    {/* Error Message */}
+                    {exportError && (
+                        <div className="pt-2 pb-4">
+                            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                                <p className="text-sm text-red-600">{exportError}</p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Footer */}
                     <div className="pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
                         <button 
                             onClick={() => setShowModal(false)}
                             className="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            disabled={isExporting}
                         >
-                            Cancel
+                            {isExporting ? 'Close' : 'Cancel'}
                         </button>
                         <button 
                             onClick={handleExport}
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                            disabled={Object.values(selectedFields).every(val => !val)}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                            disabled={Object.values(selectedFields).every(val => !val) || isExporting}
                         >
-                            Export
+                            {isExporting && <Loader2 className="w-4 h-4 animate-spin" />}
+                            {isExporting ? 'Exporting...' : 'Export'}
                         </button>
                     </div>
                 </div>
