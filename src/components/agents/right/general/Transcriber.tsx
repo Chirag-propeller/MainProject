@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Agent } from "@/components/agents/types";
 import useLLMConfig from "@/hooks/useLLMConfig";
-import SelectOptions from "@/components/agent/newAgent/SelectOptions";
-import { Triangle, Mic } from "lucide-react";
+import { GiMicrophone } from "react-icons/gi";
 import SelectionDropdown from "../../SelectionDropdown";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import TooltipLabel from "@/components/ui/tooltip";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 interface Languages {
   name: string;
@@ -198,60 +198,88 @@ const Transcriber = ({
   }, [agent]);
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm">
+    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
       <header
-        className="cursor-pointer bg-white p-2 rounded-[6px] border-b border-gray-200"
+        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
         <div className="flex justify-between m-1.5">
           <div className="flex items-center gap-2">
-            <Mic className="w-5 h-5 text-gray-900" />
-            <h2 className="text-md text-gray-900 font-semibold">Transcriber</h2>
+            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+              <span className="text-blue-400 text-lg">
+                <GiMicrophone />
+              </span>
+            </div>
+            <div>
+              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+                Transcriber
+              </h2>
+              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+                Speech-to-text configuration
+              </p>
+            </div>
           </div>
 
-          <RiArrowDropDownLine
-            className={`w-10 h-10 transform transition-transform duration-200 ${
+          <MdKeyboardArrowDown
+            className={`w-8 h-8 transform transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
             }`}
-            style={{ fill: "black" }}
+            style={{ fill: "gray" }}
           />
         </div>
       </header>
       {isOpen && (
-        <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl ">
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Provider" fieldKey="transProvider" />
-              <SelectionDropdown
-                options={provider}
-                selectedOption={selectedProvider}
-                setOption={setSelectedProvider}
-              />
+        <>
+          <hr className="border-t border-gray-200 my-2" />
+          <div className="p-2 flex flex-row flex-wrap gap-2 w-full bg-white rounded-xl ">
+            <hr className="border-t border-gray-200 my-4" />
+            <div className="flex flex-col gap-2 mx-1 mr-20 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel
+                  label="Provider"
+                  fieldKey="transProvider"
+                  className="font-semibold"
+                />
+                <SelectionDropdown
+                  options={provider}
+                  selectedOption={selectedProvider}
+                  setOption={setSelectedProvider}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mx-1 ml-15 w-2/5">
+              <div className="mx-1 p-1">
+                <TooltipLabel
+                  label="Model"
+                  fieldKey="transModel"
+                  className="font-semibold"
+                />
+                <SelectionDropdown
+                  options={models}
+                  selectedOption={selectedModel}
+                  setOption={setSelectedModel}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 mx-1 w-2/5 ml-3">
+              <div className="mx-1 p-1">
+                <TooltipLabel
+                  label="Language"
+                  fieldKey="transLang"
+                  className="font-semibold"
+                />
+                <SelectionDropdown
+                  options={availableLanguages}
+                  selectedOption={selectedLanguage}
+                  setOption={setSelectedLanguage}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Model" fieldKey="transModel" />
-              <SelectionDropdown
-                options={models}
-                selectedOption={selectedModel}
-                setOption={setSelectedModel}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 mx-1 w-2/5">
-            <div className="mx-1 p-1">
-              <TooltipLabel label="Language" fieldKey="transLang" />
-              <SelectionDropdown
-                options={availableLanguages}
-                selectedOption={selectedLanguage}
-                setOption={setSelectedLanguage}
-              />
-            </div>
-          </div>
-        </div>
+        </>
       )}
     </div>
   );

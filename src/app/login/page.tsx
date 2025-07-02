@@ -184,12 +184,19 @@ const LoginPage = () => {
               <CardContent className="space-y-4 px-0">
                 {/* Email */}
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="email"
-                    className="text-indigo-500 font-medium flex items-center"
-                  >
-                    <Mail className="w-4 h-4 mr-2" /> Email Address
-                  </Label>
+                  <div className="flex items-center text-indigo-500 font-medium">
+                    <Label htmlFor="email" className="flex items-center">
+                      <Mail className="w-4 h-4 mr-2" />
+                      Email Address
+                    </Label>
+
+                    {lastMethod === "email" && (
+                      <span className="ml-2 bg-gray-200 text-xs text-indigo-950 px-2 py-[2px] rounded-full shadow-md">
+                        Last Used
+                      </span>
+                    )}
+                  </div>
+
                   <Input
                     id="email"
                     name="email"

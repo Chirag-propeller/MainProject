@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Agent } from "./types";
@@ -18,69 +18,114 @@ const AgentListItem = ({
   isSelected: boolean;
   onDelete: (id: string) => Promise<void>;
   isDeleting: string | null;
-}) => (
-  <Link href={`/dashboard/agents/${agent._id}`} className={`block`}>
-    <div
-      className={`group p-2 px-2 border rounded-[6px] mb-2 hover:border-indigo-500 transition-colors ${
-        isSelected ? "border-indigo-500 bg-indigo-50" : "border-gray-200"
-      }`}
-    >
-      <div className="flex justify-between items-start ">
-        <div>
-          <h3 className="text-xs overflow-hidden text-ellipsis max-w-48 text-gray-900 text-nowrap">
-            {agent.agentName}
-          </h3>
-          {/* <p className="text-[10px] overflow-hidden text-ellipsis w-32 text-gray-600 mt-1 text-nowrap">ID: {agent._id}</p> */}
-          <p className="text-[10px] text-gray-600 mt-1 ">
-            Created At:{" "}
-            {agent.createdAt
-              ? new Date(agent.createdAt).toLocaleDateString()
-              : "Unknown"}
-          </p>
-        </div>
+}) => {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-        {/* Delete button with animation */}
-        <div
-        // className={
-        //     `absolute right-2 top-2 transition-all duration-200  scale-75 opacity-0 group-hover:opacity-100 group-hover:scale-100`
+  // Hide on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(e.target as Node)
+      ) {
+        setShowConfirm(false);
+      }
+    };
 
-        // }
-        //     ${
-        //   isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-        // }`   }
-        >
-          <button
-            disabled={isDeleting === agent._id}
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete(agent._id);
-            }}
-            className="text-gray-500 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50"
-          >
-            {isDeleting === agent._id ? (
-              <div className="w-4 h-4 border-2 border-t-transparent border-red-600 rounded-full animate-spin"></div>
-            ) : (
-              <Trash2 className="w-4 h-4" />
+    if (showConfirm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showConfirm]);
+
+  return (
+    <Link href={`/dashboard/agents/${agent._id}`} className="block relative">
+      <div
+        className={`p-2 px-2 border rounded-[6px] mb-2 hover:border-indigo-500 transition-colors ${
+          isSelected ? "border-indigo-500 bg-indigo-50" : "border-gray-200"
+        }`}
+      >
+        <div className="flex justify-between items-start ">
+          {/* Left: Agent Info */}
+          <div>
+            <h3 className="text-[14px] overflow-hidden text-ellipsis max-w-48 text-gray-900 text-nowrap p-2">
+              {agent.agentName}
+            </h3>
+            <p className="text-[10px] text-gray-600 pl-2">
+              Created At:{" "}
+              {agent.createdAt
+                ? new Date(agent.createdAt).toLocaleDateString()
+                : "Unknown"}
+            </p>
+          </div>
+
+          {/* Right: Trash Icon + Confirm */}
+          <div className="relative" ref={popoverRef}>
+            <button
+              disabled={isDeleting === agent._id}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setShowConfirm((prev) => !prev);
+              }}
+              className="text-gray-500 hover:text-red-600 transition-colors p-3 pt-5 group"
+            >
+              {isDeleting === agent._id ? (
+                <div className="w-4 h-4 border-t-transparent animate-spin"></div>
+              ) : (
+                <div className="w-6 h-6 relative">
+                  <svg
+                    viewBox="0 0 30 30"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-full h-full text-current"
+                  >
+                    {/* Lid */}
+                    <g className="transition-transform duration-300 ease-in-out group-hover:-translate-y-0.5 group-hover:-rotate-20 origin-center">
+                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                      <path d="M3 6h18" />
+                    </g>
+
+                    {/* Body */}
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+
+                    {/* Trash lines */}
+                    <line x1="10" y1="11" x2="10" y2="17" />
+                    <line x1="14" y1="11" x2="14" y2="17" />
+                  </svg>
+                </div>
+              )}
+            </button>
+
+            {/* Confirmation Box */}
+            {showConfirm && (
+              <div className="absolute top-8 right-0 w-max bg-white border border-gray-300 shadow-lg rounded-md z-50">
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onDelete(agent._id);
+                    setShowConfirm(false);
+                  }}
+                  className="text-red-600 hover:text-red-700 text-sm font-normal px-4 py-2 m-0.5 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  Delete Agent
+                </button>
+              </div>
             )}
-          </button>
+          </div>
         </div>
-
-        {/* <Button 
-          variant="ghost" 
-          size="sm"
-          className="text-red-500 hover:text-red-700 hover:bg-red-50"
-          onClick={(e) => {
-            e.preventDefault(); // Prevent navigation
-            onDelete(agent._id);
-          }}
-          disabled={isDeleting === agent._id}
-        >
-          {isDeleting === agent._id ? 'Deleting...' : 'Delete'}
-        </Button> */}
       </div>
-    </div>
-  </Link>
-);
+    </Link>
+  );
+};
 
 // Main AgentsList component
 const AgentsList = ({
@@ -188,7 +233,7 @@ const AgentsList = ({
         <Button
           onClick={handleCreateAgent}
           disabled={loading}
-          className="px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-300 "
+          className="px-5 py-1 text-md rounded-[4px]"
         >
           {loading ? "Creating..." : "Create"}
         </Button>

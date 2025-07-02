@@ -15,7 +15,7 @@ const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
   return (
     <Link
       href={href}
-      className={`flex group items-center p-1 gap-2 rounded  ${
+      className={`flex group  items-center p-1 gap-2 rounded  ${
         isActive
           ? "bg-indigo-100 text-indigo-700"
           : "text-gray-600 hover:text-black"
@@ -28,7 +28,7 @@ const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
             : "text-gray-400 group-hover:text-indigo-500"
         }`}
       />
-      <span className="text-md">{name}</span>
+      <span className="text-[14px]">{name}</span>
     </Link>
   );
 };

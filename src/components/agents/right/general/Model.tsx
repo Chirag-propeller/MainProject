@@ -5,8 +5,9 @@ import useLLMConfig from "@/hooks/useLLMConfig";
 import SelectionDropdown from "@/components/agents/SelectionDropdown";
 import { GiBrain } from "react-icons/gi";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { IoAlertCircleOutline } from "react-icons/io5";
+import { FaBrain } from "react-icons/fa";
 import TooltipLabel from "@/components/ui/tooltip";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 interface LLMProvider {
   name: string;
@@ -51,7 +52,7 @@ const ModelLeft = ({
     <div className="flex flex-col gap-4">
       <div>
         <TooltipLabel
-          label="First Message"
+          label="Welcome Message"
           fieldKey="firstMessage"
           htmlFor="firstMessage"
         />
@@ -73,7 +74,7 @@ const ModelLeft = ({
           <textarea
             id="systemPrompt"
             rows={6}
-            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+            className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm pr-16"
             value={systemPrompt}
             onChange={(e) => {
               const text = e.target.value;
@@ -82,9 +83,10 @@ const ModelLeft = ({
               }
             }}
           />
-          <p className="text-sm text-gray-500 pl-4 pt-2">
-            {systemPrompt.length} / {maxChars} characters
-          </p>
+          {/* Character counter inside the bottom-right of the textarea box */}
+          <span className="absolute bottom-2 right-3 text-xs text-gray-400 bg-white px-1">
+            {systemPrompt.length} / {maxChars}
+          </span>
         </div>
       </div>
     </div>
@@ -280,47 +282,59 @@ const Model = ({
   }, [systemPrompt]);
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm">
+    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
       <header
-        className="cursor-pointer bg-white border-b border-gray-200 px-2 py-3 rounded-[6px]"
+        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-between items-center m-1.5">
           <div className="flex items-center gap-2">
-            <GiBrain className="w-5 h-5 text-gray-900 self-center" />
-            <h2 className="text-md text-gray-900 font-semibold">
-              Model{" "}
-              <span className="text-sm text-gray-400">
-                (Large Language Model)
+            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+              <span className="text-fuchsia-400 text-lg">
+                <FaBrain />
               </span>
-            </h2>
+            </div>
+            <div>
+              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+                Model{" "}
+                <span className="text-[14px] text-gray-500 font-medium pl-1">
+                  (Large Language Model)
+                </span>
+              </h2>
+              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+                Configure the AI model settings
+              </p>
+            </div>
           </div>
-          <RiArrowDropDownLine
-            className={`w-10 h-10 transform transition-transform duration-200 ${
+          <MdKeyboardArrowDown
+            className={`w-8 h-8 transform transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
             }`}
-            style={{ fill: "black" }}
+            style={{ fill: "gray" }}
           />
         </div>
       </header>
 
       {isOpen && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-5">
-          <ModelLeft
-            firstMessage={firstMessage}
-            setFirstMessage={setFirstMessage}
-            systemPrompt={systemPrompt}
-            setSystemPrompt={setSystemPrompt}
-          />
-          <ModelRight
-            llmProviders={providers}
-            selectedProvider={selectedProvider}
-            setSelectedProvider={setSelectedProvider}
-            models={models}
-            selectedModel={selectedModel}
-            setSelectedModel={setSelectedModel}
-          />
-        </div>
+        <>
+          <hr className="border-t border-gray-200 my-2" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-5">
+            <ModelLeft
+              firstMessage={firstMessage}
+              setFirstMessage={setFirstMessage}
+              systemPrompt={systemPrompt}
+              setSystemPrompt={setSystemPrompt}
+            />
+            <ModelRight
+              llmProviders={providers}
+              selectedProvider={selectedProvider}
+              setSelectedProvider={setSelectedProvider}
+              models={models}
+              selectedModel={selectedModel}
+              setSelectedModel={setSelectedModel}
+            />
+          </div>
+        </>
       )}
     </div>
   );
