@@ -96,7 +96,7 @@ const page = () => {
                             </div>
                             <Button
                                 onClick={() => setShowConfirmDialog(true)}
-                                variant="outline"
+                                variant="secondary"
                                 size="sm"
                                 className="text-red-600 border-red-300 hover:bg-red-50 hover:border-red-400"
                                 disabled={disconnecting}
@@ -175,13 +175,13 @@ const page = () => {
                             </div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">Disconnect Calendly</h3>
                             <p className="text-gray-600 text-sm leading-relaxed">
-                                Are you sure you want to disconnect your Calendly? This will remove access to your scheduled events and you'll need to reconnect to use this integration again.
+                                Are you sure you want to disconnect your Calendly? This will remove access to your scheduled events and you&#39;ll need to reconnect to use this integration again.
                             </p>
                         </div>
                         <div className="flex justify-end space-x-3">
                             <Button
                                 onClick={() => setShowConfirmDialog(false)}
-                                variant="outline"
+                                variant="secondary"
                                 className="px-4 py-2"
                                 disabled={disconnecting}
                             >
