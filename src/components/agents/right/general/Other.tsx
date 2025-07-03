@@ -168,7 +168,7 @@ const OtherContent = ({
               placeholder="+1234567890"
               value={transferNumber}
               onChange={(e) => setTransferNumber(e.target.value)}
-              className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 shadow-sm text-sm"
+              className=" max-w-xs p-2 rounded-[6px] border border-gray-300 text-sm w-1/2"
             />
             <p className="text-xs text-gray-500">
               Include country code (e.g., +91 for India)

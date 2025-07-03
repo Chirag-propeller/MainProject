@@ -161,8 +161,8 @@ const Pricing = ({ agent }: { agent: Agent }) => {
   ];
 
   return (
-    <div className="border border-gray-200 rounded-[6px] w-1/3 hover:border-gray-300 shadow-sm overflow-visible">
-      <div className="px-3 py-2 bg-white rounded-[6px] justify-between flex flex-row">
+    <div className=" rounded-[6px] w-1/2 bg-gray-50">
+      <div className="px-3 pb-1 justify-between flex flex-row">
         <div className="flex items-center space-x-1 group relative">
           {/* <h3 className="text-sm font-semibold text-gray-900">
           Cost per minute:
@@ -170,22 +170,22 @@ const Pricing = ({ agent }: { agent: Agent }) => {
           <TooltipLabel
             label="Cost per minute: "
             fieldKey="costPer"
-            className="font-semibold text-black"
+            className="font-light text-black text-xs"
             position="bottom"
           />
         </div>
-        <h3 className="text-sm font-semibold text-gray-900">
+        <h3 className="text-xs font-light text-gray-900 pt-2">
           {formatCost(costBreakdown.total)}
         </h3>
       </div>
 
       {!pricingData ? (
-        <div className="px-3 pb-2 bg-white rounded-[6px]">
+        <div className="px-3 pb-2 bg-white">
           <div className="animate-pulse text-gray-500 text-xs">Loading...</div>
         </div>
       ) : (
         <div
-          className="px-3 pb-3 bg-white
+          className="px-3 pb-2
          relative rounded-[6px]"
         >
           {/* Small stacked bar */}
@@ -208,11 +208,8 @@ const Pricing = ({ agent }: { agent: Agent }) => {
                 >
                   {/* Tooltip */}
                   <div
-                    className={`absolute top-full mt-2 ${tooltipPosition} left-1/2 transform -translate-x-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-max max-w-[160px] text-center px-3 py-2 rounded-[6px] bg-gray-700 text-white text-[10px] shadow-lg border border-gray-700 overflow-visible `}
+                    className={`absolute top-full mt-1 ${tooltipPosition} left-1/2 transform -translate-x-1/2 z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none w-max max-w-[160px] text-center px-1 py-1 rounded-[6px] bg-gray-700 text-white text-[10px] shadow-lg border border-gray-700 overflow-visible `}
                   >
-                    <div className="font-semibold">
-                      {item.label}: {item.description}
-                    </div>
                     <div className="text-gray-300 text-[10px]">
                       {item?.details}
                     </div>
