@@ -5,21 +5,54 @@ import GmailCard from '@/components/integration/card/Gmail';
 import React, { useState, useEffect } from 'react'
 import { ChevronDown, ChevronRight, Calendar, Building2, Mail, Zap, Check } from 'lucide-react';
 
+interface OpenSections {
+    calendar: boolean;
+    crm: boolean;
+    email: boolean;
+    [key: string]: boolean;
+  }
+
+interface ConnectedIntegrations {
+    [provider: string]: boolean;
+  }
+
+interface AccordionSectionProps {
+    id: string;
+    title: string;
+    icon: React.ReactNode;
+    children: React.ReactNode;
+    isOpen: boolean;
+    onToggle: () => void;
+  }
+
+interface Integration {
+    provider: string;
+    name: string;
+    description: string;
+    icon: React.ComponentType<{ className?: string }>;
+  }
+
+interface IntegrationRowProps {
+    integration: Integration;
+    isConnected: boolean;
+    onConnect: (provider: string) => void;
+  }
+
 const page = () => {
   const [loading, setLoading] = useState(true);
-  const [openSections, setOpenSections] = useState({
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     calendar: true,
     crm: true,
     email: true
   });
-  const [connectedIntegrations, setConnectedIntegrations] = useState({});
+  const [connectedIntegrations, setConnectedIntegrations] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const checkConnections = async () => {
       try {
         // Check for existing integrations by checking if we have tokens stored
         const providers = ['googleCalendar', 'outlookCalendar', 'calendly', 'zoho', 'gmail', 'googleSheets'];
-        const connections = {};
+        const connections: Record<string, boolean> = {};
         
         for (const provider of providers) {
           try {
@@ -46,7 +79,9 @@ const page = () => {
     checkConnections();
   }, []);
 
-  const toggleSection = (sectionId) => {
+  
+
+  const toggleSection = (sectionId: string) => {
     setOpenSections(prev => ({
       ...prev,
       [sectionId]: !prev[sectionId]
@@ -91,7 +126,7 @@ const page = () => {
   };
 
   // Accordion Section Component
-  const AccordionSection = ({ id, title, icon, children, isOpen, onToggle }) => (
+  const AccordionSection: React.FC<AccordionSectionProps> = ({ id, title, icon, children, isOpen, onToggle }) => (
     <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
       <button
         onClick={onToggle}
@@ -116,7 +151,7 @@ const page = () => {
   );
 
   // Integration Row Component
-  const IntegrationRow = ({ integration, isConnected, onConnect }) => (
+  const IntegrationRow: React.FC<IntegrationRowProps> = ({ integration, isConnected, onConnect }) => (
     <div className="flex items-center justify-between p-4 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors">
       <div className="flex items-center space-x-4">
         <div className="flex items-center justify-center w-10 h-10 bg-orange-100 rounded-lg">
