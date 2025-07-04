@@ -153,10 +153,12 @@ const AgentsList = ({
   agents,
   selectedId,
   setAgents,
+  collapsed,
 }: {
   agents: Agent[];
   selectedId?: string;
   setAgents: (agents: Agent[]) => void;
+  collapsed?: boolean;
 }) => {
   // const [loading, setLoading] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);

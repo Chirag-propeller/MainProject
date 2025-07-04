@@ -198,7 +198,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-x-hidden">
         {activeTab === "general" && (
           <AgentGeneralTab agent={agent} setAgent={setAgent} />
         )}

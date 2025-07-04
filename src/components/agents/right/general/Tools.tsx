@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Agent } from "@/components/agents/types";
 import { Upload } from "lucide-react";
@@ -92,6 +93,28 @@ const ToolsContent = ({
     }
   };
 
+  const handleDownloadKnowledgeBase = async () => {
+    if (!fileUrl) return;
+    // Extract filename from the Azure URL or however you store it
+    const filename = fileUrl.split("/").pop();
+    try {
+      const response = await axios.get(
+        `/api/knowledgeBase/download?filename=${encodeURIComponent(filename!)}`
+      );
+      if (response.data.url) {
+        const link = document.createElement("a");
+        link.href = response.data.url;
+        link.download = filename || "knowledge-base.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        toast.error("Download link not available.");
+      }
+    } catch (error) {
+      toast.error("Failed to get download link.");
+    }
+  };
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -135,15 +158,14 @@ const ToolsContent = ({
               Tools and integrations are configured
             </p>
             {fileUrl && (
-              <a
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={handleDownloadKnowledgeBase}
                 className="mt-1 inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
               >
                 <RiArrowDropDownLine className="w-5 h-5" />
-                View file
-              </a>
+                Download file
+              </button>
             )}
           </div>
         ) : (

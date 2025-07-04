@@ -5,9 +5,15 @@ type SidebarLinkProps = {
   href: string;
   name: string;
   icon: React.ElementType;
+  collapsed: boolean;
 };
 
-const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
+const SidebarLink = ({
+  href,
+  name,
+  icon: Icon,
+  collapsed,
+}: SidebarLinkProps) => {
   const pathname = usePathname();
   const isActive = pathname?.includes(href);
   // console.log(pathname, href, pathname?.includes(href));
@@ -15,7 +21,9 @@ const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
   return (
     <Link
       href={href}
-      className={`flex group  items-center p-1 gap-2 rounded  ${
+      className={`flex group  items-center rounded ${
+        !collapsed ? "gap-2 p-1" : "p-1.5"
+      }  ${
         isActive
           ? "bg-indigo-100 text-indigo-700"
           : "text-gray-600 hover:text-black"
@@ -28,7 +36,7 @@ const SidebarLink = ({ href, name, icon: Icon }: SidebarLinkProps) => {
             : "text-gray-400 group-hover:text-indigo-500"
         }`}
       />
-      <span className="text-[14px]">{name}</span>
+      {!collapsed && <span className="text-[14px]">{name}</span>}
     </Link>
   );
 };

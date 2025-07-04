@@ -2,6 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Agent } from "@/components/agents/types";
 import { PRICING } from "@/components/agents/Constants";
 import TooltipLabel from "@/components/ui/tooltip";
+import { useUserData } from "@/components/profile/UserDataContext";
+import {
+  convert,
+  format,
+  CURRENCY_SYMBOLS,
+  CurrencyCode,
+} from "@/lib/currency";
 
 interface CostBreakdown {
   propal: number;
@@ -18,6 +25,8 @@ interface PricingData {
 }
 
 const Pricing = ({ agent }: { agent: Agent }) => {
+  const { user } = useUserData();
+  const currency = user?.currency || "INR";
   const [pricingData, setPricingData] = useState<PricingData | null>(null);
   const [costBreakdown, setCostBreakdown] = useState<CostBreakdown>({
     propal: PRICING.PropalCost,
@@ -90,16 +99,18 @@ const Pricing = ({ agent }: { agent: Agent }) => {
       }
     }
 
-    const total = PRICING.PropalCost + sttCost + llmCost + ttsCost;
+    const totalP = PRICING.PropalCost + sttCost + llmCost + ttsCost;
+
+    const conv = (usd: number) => convert(usd, currency as CurrencyCode); // 👈 convert once per value
 
     setCostBreakdown({
-      propal: PRICING.PropalCost,
-      stt: sttCost,
-      llm: llmCost,
-      tts: ttsCost,
-      total: total,
+      propal: conv(PRICING.PropalCost),
+      stt: conv(sttCost),
+      llm: conv(llmCost),
+      tts: conv(ttsCost),
+      total: conv(totalP),
     });
-  }, [pricingData, agent]);
+  }, [pricingData, agent, currency]);
 
   useEffect(() => {
     if (pricingData && agent) {
@@ -121,9 +132,10 @@ const Pricing = ({ agent }: { agent: Agent }) => {
     calculateCosts,
   ]);
 
-  const formatCost = (cost: number) => {
-    return `$${cost.toFixed(4)}`;
-  };
+  // const formatCost = (cost: number) => {
+  //   return `$${cost.toFixed(4)}`;
+  // };
+  const formatCost = (cost: number) => format(cost, currency as CurrencyCode);
 
   const getPercentage = (cost: number) => {
     if (costBreakdown.total === 0) return 0;
@@ -174,7 +186,8 @@ const Pricing = ({ agent }: { agent: Agent }) => {
             position="bottom"
           />
         </div>
-        <h3 className="text-xs font-light text-gray-900 pt-2">
+        <h3 className="text-xs font-medium text-gray-900 pt-2 pb-1 flex items-center gap-1">
+          {/* {CURRENCY_SYMBOLS[currency as CurrencyCode]} */}
           {formatCost(costBreakdown.total)}
         </h3>
       </div>

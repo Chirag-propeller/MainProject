@@ -11,6 +11,7 @@ const updateProfileSchema = z.object({
   phone: z.string().optional().transform(val => val === "" ? undefined : val),
   language: z.string().optional(),
   timezone: z.string().optional(),
+  currency:z.string().optional(),
   emailUpdates: z.boolean().optional(),
   productNews: z.boolean().optional(),
   usageAlerts: z.boolean().optional(),

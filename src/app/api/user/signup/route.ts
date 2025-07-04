@@ -1,9 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import User from "@/model/user/user.model";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest} from "next/server";
 import bcryptjs from "bcryptjs"
-// import { StatusCodes, ErrorCodes } from '@/constants/status-codes';
-import { ApiResponse } from "@/types/api-response";
 import { signUpSchema } from "@/lib/validators/auth.schema";
 import { ErrorCodes,StatusCodes } from "@/constants/status-codes";
 import { successResponse, errorResponse } from "@/lib/api/response";
@@ -24,7 +22,7 @@ export async function POST (req: NextRequest){
             );
           }
 
-        const {name, password, phone} = body;
+        const {name, password, phone,timezone,currency} = body;
         let {email} = body;
         console.log(body);
         email = email.toLowerCase();
@@ -52,6 +50,8 @@ export async function POST (req: NextRequest){
             email,
             password: hashPass,
             phone,
+            timezone,
+            currency,
             isVerified:false,
         })
         return successResponse(
