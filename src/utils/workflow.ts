@@ -5,6 +5,7 @@ interface WorkflowData {
   edges: Edge[];
   nodeCounter: number;
   edgeCounter: number;
+  globalPrompt: string;
 }
 
 interface SaveWorkflowParams {
@@ -14,6 +15,7 @@ interface SaveWorkflowParams {
   edges: Edge[];
   nodeCounter: number;
   edgeCounter: number;
+  globalPrompt: string;
 }
 
 interface LoadWorkflowResponse {
@@ -87,7 +89,8 @@ export const loadWorkflow = async (userId: string): Promise<LoadWorkflowResponse
         nodes: [],
         edges: [],
         nodeCounter: 1,
-        edgeCounter: 1
+        edgeCounter: 1,
+        globalPrompt: ''
       },
       message: error instanceof Error ? error.message : 'Failed to load workflow'
     };
@@ -122,7 +125,8 @@ export const convertMongoDataToFlow = (mongoData: any): WorkflowData => {
       nodes,
       edges,
       nodeCounter: mongoData.nodeCounter || 1,
-      edgeCounter: mongoData.edgeCounter || 1
+      edgeCounter: mongoData.edgeCounter || 1,
+      globalPrompt: mongoData.globalPrompt || ''
     };
   } catch (error) {
     console.error('Error converting MongoDB data to flow:', error);
@@ -130,7 +134,8 @@ export const convertMongoDataToFlow = (mongoData: any): WorkflowData => {
       nodes: [],
       edges: [],
       nodeCounter: 1,
-      edgeCounter: 1
+      edgeCounter: 1,
+      globalPrompt: ''
     };
   }
 };

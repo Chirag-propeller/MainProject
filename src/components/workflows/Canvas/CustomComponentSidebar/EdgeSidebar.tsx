@@ -1,27 +1,16 @@
-import React from 'react';
-import { Edge } from 'reactflow';
+import React from 'react'
+import { useWorkflowStore } from '@/store/workflowStore'
 
-interface EdgeData {
-  label?: string;
-  labelPosition?: 'up' | 'down' | 'center';
-}
+const EdgeSidebar: React.FC = () => {
+  const { selectedEdge, updateEdge } = useWorkflowStore()
 
-interface EdgeSidebarProps {
-  selectedEdge: Edge<EdgeData> | null;
-  onEdgeUpdate: (edgeId: string, data: Partial<EdgeData>) => void;
-}
-
-const EdgeSidebar: React.FC<EdgeSidebarProps> = ({ 
-  selectedEdge, 
-  onEdgeUpdate 
-}) => {
   if (!selectedEdge) {
-    return null; // Don't render anything when no edge is selected
+    return null
   }
 
-  const handleFieldChange = (field: keyof EdgeData, value: string) => {
-    onEdgeUpdate(selectedEdge.id, { [field]: value });
-  };
+  const handleFieldChange = (field: string, value: string) => {
+    updateEdge(selectedEdge.id, { [field]: value })
+  }
 
   return (
     <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">

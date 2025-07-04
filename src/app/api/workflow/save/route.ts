@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     
     const body = await req.json();
-    const { userId, name, nodes, edges, nodeCounter, edgeCounter } = body;
+    const { userId, name, nodes, edges, nodeCounter, edgeCounter, globalPrompt } = body;
 
     // Validate required fields
     if (!userId) {
@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
       workflow.edges = edges || [];
       workflow.nodeCounter = nodeCounter || 1;
       workflow.edgeCounter = edgeCounter || 1;
+      workflow.globalPrompt = globalPrompt || '';
       workflow.updatedAt = new Date();
       
       await workflow.save();
@@ -39,7 +40,8 @@ export async function POST(req: NextRequest) {
         nodes: nodes || [],
         edges: edges || [],
         nodeCounter: nodeCounter || 1,
-        edgeCounter: edgeCounter || 1
+        edgeCounter: edgeCounter || 1,
+        globalPrompt: globalPrompt || ''
       });
       
       await workflow.save();
@@ -53,7 +55,8 @@ export async function POST(req: NextRequest) {
         nodes: workflow.nodes,
         edges: workflow.edges,
         nodeCounter: workflow.nodeCounter,
-        edgeCounter: workflow.edgeCounter
+        edgeCounter: workflow.edgeCounter,
+        globalPrompt: workflow.globalPrompt
       }
     });
 

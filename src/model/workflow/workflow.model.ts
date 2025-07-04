@@ -3,6 +3,7 @@ import { Schema, model, models, Document } from 'mongoose';
 interface IWorkflowNode {
   id: string;
   type: string;
+
   position: {
     x: number;
     y: number;
@@ -11,6 +12,10 @@ interface IWorkflowNode {
     name: string;
     prompt: string;
     type: string;
+    isGlobalNode?: boolean;
+    globalNodePathwayCondition?: string;
+    globalNodePathwayDescription?: string;
+    global?: Record<string, any>;
   };
   style?: {
     width: number;
@@ -31,6 +36,7 @@ interface IWorkflowEdge {
 interface IWorkflow extends Document {
   userId: string;
   name: string;
+  globalPrompt: string;
   nodes: IWorkflowNode[];
   edges: IWorkflowEdge[];
   nodeCounter: number;
@@ -44,6 +50,10 @@ const WorkflowSchema = new Schema<IWorkflow>({
     type: String,
     required: true,
     index: true
+  },
+  globalPrompt: {
+    type: String,
+    default: ''
   },
   name: {
     type: String,
@@ -60,7 +70,11 @@ const WorkflowSchema = new Schema<IWorkflow>({
     data: {
       name: { type: String, required: true },
       prompt: { type: String, default: '' },
-      type: { type: String, required: true }
+      type: { type: String, required: true },
+      isGlobalNode: { type: Boolean, default: false },
+      globalNodePathwayCondition: { type: String, default: '' },
+      globalNodePathwayDescription: { type: String, default: '' },
+      global: { type: Object, default: {} }
     },
     style: {
       width: { type: Number },
