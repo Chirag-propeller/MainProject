@@ -100,6 +100,7 @@ export async function getVoiceUrl(
 function generateFilename(provider: string, model: string, voice: string): string {
   return `${provider.toLowerCase()}/${model}/${voice}.mp3`.replace(/\s+/g, '-');
 }
+
 export async function getKnowledgeBaseFileUrl(filename: string): Promise<string | null> {
   const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME);
   try {
@@ -111,6 +112,7 @@ export async function getKnowledgeBaseFileUrl(filename: string): Promise<string 
         permissions,
         expiresOn: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
       });
+      console.log("sasUrl", sasUrl);
       return sasUrl;
     }
     return null;

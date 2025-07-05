@@ -21,8 +21,8 @@ const SidebarLink = ({
   return (
     <Link
       href={href}
-      className={`flex group  items-center rounded ${
-        !collapsed ? "gap-2 p-1" : "p-1.5"
+      className={`flex group  items-center ${
+        !collapsed ? "gap-2 p-1 rounded-[6px]" : "gap-2 p-2 pl-3 rounded-full"
       }  ${
         isActive
           ? "bg-indigo-100 text-indigo-700"

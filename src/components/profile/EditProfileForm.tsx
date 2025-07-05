@@ -17,9 +17,49 @@ interface EditProfileFormProps {
 // Major timezones with GMT offsets and primary cities
 const timezones = [
   {
+    label: "GMT-11:00 Midway (US)",
+    tzCode: "Pacific/Midway",
+    offset: "-11:00",
+  },
+  {
+    label: "GMT-10:00 Hawaii Time (US)",
+    tzCode: "Pacific/Honolulu",
+    offset: "-10:00",
+  },
+  {
+    label: "GMT-09:00 Alaska Time (US)",
+    tzCode: "America/Anchorage",
+    offset: "-09:00",
+  },
+  {
     label: "GMT-08:00 Pacific Time (US)",
     tzCode: "America/Los_Angeles",
     offset: "-08:00",
+  },
+  {
+    label: "GMT-07:00 Mountain Time (US)",
+    tzCode: "America/Denver",
+    offset: "-07:00",
+  },
+  {
+    label: "GMT-06:00 Central Time (US)",
+    tzCode: "America/Chicago",
+    offset: "-06:00",
+  },
+  {
+    label: "GMT-05:00 Eastern Time (US)",
+    tzCode: "America/New_York",
+    offset: "-05:00",
+  },
+  {
+    label: "GMT-04:00 Venezuela Time (VE)",
+    tzCode: "America/Caracas",
+    offset: "-04:00",
+  },
+  {
+    label: "GMT-03:00 Brazil Time (BR)",
+    tzCode: "America/Sao_Paulo",
+    offset: "-03:00",
   },
   {
     label: "GMT-02:00 South Georgia (GS)",
@@ -289,7 +329,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
   };
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 overflow-visible relative">
+    <div className="bg-gray-50 rounded-lg p-4 relative">
       <div className="flex items-center mb-4">
         <UserIcon className="w-4 h-4 mr-2 text-indigo-600" />
         <h3 className="text-sm font-semibold text-gray-800">

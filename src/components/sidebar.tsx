@@ -16,6 +16,9 @@ import {
   Mail,
   Zap,
   Workflow,
+  ChevronsLeftRightEllipsis,
+  Unplug,
+  UserIcon,
 } from "lucide-react";
 import SidebarLink from "./sidebar/SidebarLink";
 import Logo from "./sidebar/Logo";
@@ -28,7 +31,7 @@ interface SidebarProps {
 }
 
 // UserCard component for bottom of sidebar
-const UserCard = () => {
+const UserCard = ({ collapsed }: { collapsed: boolean }) => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -81,12 +84,22 @@ const UserCard = () => {
 
   const creditBalance = user.credits - user.creditsUsed;
 
+  if (collapsed) {
+    return (
+      <Link href="/dashboard/profile">
+        <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 hover:bg-indigo-200 transition-colors">
+          <UserIcon className="w-5 h-5 text-indigo-600" />
+        </div>
+      </Link>
+    );
+  }
+
   return (
     <Link href="/dashboard/profile">
       <div className="w-39 p-3 bg-gray-50 hover:bg-gray-100 transition-colors rounded-[6px] border border-gray-200 cursor-pointer">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 bg-indigo-100 rounded-full flex items-center justify-center">
-            <User className="w-4 h-4 text-indigo-600" />
+            <UserIcon className="w-4 h-4 text-indigo-600" />
           </div>
           <div className="flex-1 min-w-0">
             <h4 className="text-sm font-medium text-gray-900 truncate">
@@ -131,20 +144,8 @@ const navItemsMain = [
   { name: "Campaigns", href: "/dashboard/campaigns", icon: Folder },
   { name: "Integration", href: "/dashboard/integration", icon: Headphones },
   { name: "Workflows", href: "/dashboard/workflows", icon: Workflow },
+  { name: "APIs", href: "/dashboard/apiTool", icon: Unplug },
 ];
-
-// const navItemsTool = [
-//   { name: 'Campaigns', href: '/dashboard/campaigns', icon: Folder },
-//   { name: 'Integration', href: '/dashboard/integration', icon: Headphones },
-//   { name: 'Call Logs', href: '/dashboard/callLogs', icon: ChartArea },
-// ];
-
-// const navItems = [
-//   { name: 'Home', href: '/dashboard' },
-//   { name: 'Analysis', href: '/dashboard/analysis' },
-//   { name: 'Agent', href: '/dashboard/agent' },
-//   { name: 'Contact', href: '/dashboard/contact' },
-// ];
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
   const pathname = usePathname();
@@ -194,7 +195,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
           />
         ))} */}
 
-        <div className="absolute bottom-3">{!collapsed && <UserCard />}</div>
+        <div className="absolute bottom-3">
+          <UserCard collapsed={collapsed} />
+        </div>
       </nav>
     </aside>
   );
