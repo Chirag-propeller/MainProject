@@ -61,31 +61,31 @@ const OtherContent = ({
   );
 
   // Updates
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (agent.maxCallDuration !== callDuration)
-        setAgent({ ...agent, maxCallDuration: callDuration });
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [callDuration, agent, setAgent]);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     if (agent.maxCallDuration !== callDuration)
+  //       setAgent({ ...agent, maxCallDuration: callDuration });
+  //   }, 500);
+  //   return () => clearTimeout(timeout);
+  // }, [callDuration, agent, setAgent]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (agent.numberTransferNumber !== transferNumber)
-        setAgent({ ...agent, numberTransferNumber: transferNumber });
-    }, 500);
-    return () => clearTimeout(timeout);
-  }, [transferNumber, agent, setAgent]);
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     if (agent.numberTransferNumber !== transferNumber)
+  //       setAgent({ ...agent, numberTransferNumber: transferNumber });
+  //   }, 500);
+  //   return () => clearTimeout(timeout);
+  // }, [transferNumber, agent, setAgent]);
 
-  useEffect(() => {
-    if (agent.numberTransfer !== numberTransfer)
-      setAgent({ ...agent, numberTransfer: numberTransfer });
-  }, [numberTransfer, agent, setAgent]);
+  // useEffect(() => {
+  //   if (agent.numberTransfer !== numberTransfer)
+  //     setAgent({ ...agent, numberTransfer: numberTransfer });
+  // }, [numberTransfer, agent, setAgent]);
 
-  useEffect(() => {
-    if (agent.callHangup !== callHangup)
-      setAgent({ ...agent, callHangup: callHangup });
-  }, [callHangup, agent, setAgent]);
+  // useEffect(() => {
+  //   if (agent.callHangup !== callHangup)
+  //     setAgent({ ...agent, callHangup: callHangup });
+  // }, [callHangup, agent, setAgent]);
 
   useEffect(() => {
     if (
@@ -120,7 +120,11 @@ const OtherContent = ({
           min="20"
           max="3600"
           value={callDuration}
-          onChange={(e) => setCallDuration(parseInt(e.target.value) || 150)}
+          onChange={(e) => {
+            const value = parseInt(e.target.value) || 150;
+            setCallDuration(value);
+            setAgent({ ...agent, maxCallDuration: value });
+          }}
           className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 text-sm"
         />
         <p className="text-xs text-gray-500 mt-1">
@@ -145,7 +149,12 @@ const OtherContent = ({
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
               numberTransfer ? "bg-indigo-600" : "bg-gray-200"
             }`}
-            onClick={() => setNumberTransfer(!numberTransfer)}
+            onClick={() => {
+              setNumberTransfer((prev) => {
+                setAgent({ ...agent, numberTransfer: !prev });
+                return !prev;
+              });
+            }}
           >
             <span
               className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -167,8 +176,11 @@ const OtherContent = ({
               type="tel"
               placeholder="+1234567890"
               value={transferNumber}
-              onChange={(e) => setTransferNumber(e.target.value)}
-              className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 shadow-sm text-sm"
+              onChange={(e) => {
+                setTransferNumber(e.target.value);
+                setAgent({ ...agent, numberTransferNumber: e.target.value });
+              }}
+              className=" max-w-xs p-2 rounded-[6px] border border-gray-300 text-sm w-1/2"
             />
             <p className="text-xs text-gray-500">
               Include country code (e.g., +91 for India)
@@ -190,7 +202,12 @@ const OtherContent = ({
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
               callHangup ? "bg-indigo-600" : "bg-gray-200"
             }`}
-            onClick={() => setCallHangup(!callHangup)}
+            onClick={() => {
+              setCallHangup((prev) => {
+                setAgent({ ...agent, callHangup: !prev });
+                return !prev;
+              });
+            }}
           >
             <span
               className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${

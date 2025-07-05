@@ -377,9 +377,10 @@ const Voice = ({
       {isOpen && (
         <>
           <hr className="border-t border-gray-200 my-2" />
-          <div className="p-2 flex flex-row flex-wrap justify-between gap-2 w-full bg-white rounded-xl">
-            <div className="flex flex-col gap-2 mx-1 w-2/5">
-              <div className="mx-1 p-1">
+          <div className="w-full bg-white rounded-xl flex flex-col gap-4 p-5">
+            {/* Provider & Model side by side */}
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="w-full md:w-1/2">
                 <TooltipLabel label="Provider" fieldKey="voiceProvider" />
                 <SelectionDropdown
                   options={providers}
@@ -387,9 +388,7 @@ const Voice = ({
                   setOption={setSelectedProvider}
                 />
               </div>
-            </div>
-            <div className="flex flex-col gap-2 mx-1 w-2/5">
-              <div className="mx-1 p-1">
+              <div className="w-full md:w-1/2">
                 <TooltipLabel label="Model" fieldKey="voiceModel" />
                 <SelectionDropdown
                   options={models}
@@ -398,8 +397,9 @@ const Voice = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 w-2/5">
-              <div className="mx-1 p-1">
+            {/* Language & Gender side by side */}
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="w-full md:w-1/2">
                 <TooltipLabel label="Language" fieldKey="voiceLang" />
                 <SelectionDropdown
                   options={availableLanguages}
@@ -407,9 +407,7 @@ const Voice = ({
                   setOption={setLanguage}
                 />
               </div>
-            </div>
-            <div className="flex flex-col gap-2 mx-1 w-2/5">
-              <div className="mx-1 p-1">
+              <div className="w-full md:w-1/2">
                 <TooltipLabel label="Gender" fieldKey="voiceGender" />
                 <SelectionDropdown
                   options={availableGenders.map((g) => ({ name: g, value: g }))}
@@ -418,31 +416,15 @@ const Voice = ({
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2 mx-1 w-full">
-              <div className="mx-1 p-1 pb-2">
-                <TooltipLabel label="Voice" fieldKey="voiceVoice" />
-                <VoiceSelector
-                  voices={voices}
-                  selectedVoice={selectedVoice}
-                  setSelectedVoice={setSelectedVoice}
-                  agent={agent}
-                />
-
-                {/* <select 
-                        className='p-1.5  rounded-lg w-full text-sm bg-gray-100 border border-gray-300 '
-                        value={selectedVoice}
-                        onChange={(e) => setSelectedVoice(e.target.value)}
-                    >
-                        {voices.length > 0 ? voices?.map((option: any, idx:any) => (
-                            <option key={idx} value={option.value} className='p-1 flex flex-row '> <p>{option.name}</p>
-                            <Play className='w-4 h-4 text-gray-900 self-center' onClick={() => {
-                                console.log("option", option)
-                            }}/>
-                             </option>
-                        )) : <option value="">No options available</option>}
-                    </select> */}
-                {/* <SelectionDropdown options={voices} selectedOption={selectedVoice} setOption={setSelectedVoice} /> */}
-              </div>
+            {/* Voice full width */}
+            <div>
+              <TooltipLabel label="Voice" fieldKey="voiceVoice" />
+              <VoiceSelector
+                voices={voices}
+                selectedVoice={selectedVoice}
+                setSelectedVoice={setSelectedVoice}
+                agent={agent}
+              />
             </div>
           </div>
         </>

@@ -318,21 +318,68 @@ const Model = ({
       {isOpen && (
         <>
           <hr className="border-t border-gray-200 my-2" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-5">
-            <ModelLeft
-              firstMessage={firstMessage}
-              setFirstMessage={setFirstMessage}
-              systemPrompt={systemPrompt}
-              setSystemPrompt={setSystemPrompt}
-            />
-            <ModelRight
-              llmProviders={providers}
-              selectedProvider={selectedProvider}
-              setSelectedProvider={setSelectedProvider}
-              models={models}
-              selectedModel={selectedModel}
-              setSelectedModel={setSelectedModel}
-            />
+          <div className="px-4 py-5 flex flex-col gap-6">
+            {/* Welcome Message - full width */}
+            <div>
+              <TooltipLabel
+                label="Welcome Message"
+                fieldKey="firstMessage"
+                htmlFor="firstMessage"
+              />
+              <input
+                id="firstMessage"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                value={firstMessage}
+                onChange={(e) => setFirstMessage(e.target.value)}
+              />
+            </div>
+
+            {/* Provider & Model dropdowns - side by side */}
+            <div className="flex flex-col md:flex-row gap-4 justify-between">
+              <div className="w-full md:w-1/2">
+                <TooltipLabel label="LLM Provider" fieldKey="llmProvider" />
+                <SelectionDropdown
+                  options={providers}
+                  selectedOption={selectedProvider}
+                  setOption={setSelectedProvider}
+                />
+              </div>
+              <div className="w-full md:w-1/2">
+                <TooltipLabel label="LLM Model" fieldKey="llmModel" />
+                <SelectionDropdown
+                  options={models}
+                  selectedOption={selectedModel}
+                  setOption={setSelectedModel}
+                />
+              </div>
+            </div>
+
+            {/* System Prompt - full width */}
+            <div>
+              <TooltipLabel
+                label="System Prompt"
+                fieldKey="systemPrompt"
+                htmlFor="systemPrompt"
+              />
+              <div className="relative">
+                <textarea
+                  id="systemPrompt"
+                  rows={6}
+                  className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm pr-16"
+                  value={systemPrompt}
+                  onChange={(e) => {
+                    const text = e.target.value;
+                    if (text.length <= 3000) {
+                      setSystemPrompt(text);
+                    }
+                  }}
+                />
+                <span className="absolute bottom-2 right-3 text-xs text-gray-400 bg-white px-1">
+                  {systemPrompt.length} / 3000
+                </span>
+              </div>
+            </div>
           </div>
         </>
       )}

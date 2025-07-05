@@ -1,27 +1,30 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 interface LogoProps {
   className?: string;
+  collapsed: boolean;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = '' }) => {
+const Logo: React.FC<LogoProps> = ({ className = "", collapsed }) => {
   return (
-      <div className="">
+    <div className="flex items-center justify-center">
+      {!collapsed ? (
         <Image
           alt="proPAL AI Logo"
           src="/assets/logo1.png"
           width={720}
           height={720}
-        //   width={60} // smaller width
-        //   height={40} // smaller height
-          className="h-12 w-auto object-contain" // fixed height, auto width
+          className="h-12 w-auto object-contain"
           priority
         />
-      </div>
+      ) : (
+        <div className="h-12"></div>
+      )}
+    </div>
   );
 };
 

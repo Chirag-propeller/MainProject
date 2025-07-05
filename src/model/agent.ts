@@ -5,8 +5,8 @@ export interface IAgent extends Document {
   agentId: string;
   agentName: string;
   backgroundSound?: string;
-  callHangup:boolean;
-  callHangupPhase:string[];
+  callHangup: boolean;
+  callHangupPhase: string[];
   createdAt: Date;
   gender?: string;
   inputLanguage?: string;
@@ -27,6 +27,7 @@ export interface IAgent extends Document {
   ttsVoiceName?: string;
   ttsLanguage?: string;
   ttsModel?: string;
+  apis: mongoose.Types.ObjectId[];
   userId: mongoose.Types.ObjectId;
   welcomeMessage?: string;
 }
@@ -34,15 +35,15 @@ export interface IAgent extends Document {
 const AgentSchema: Schema = new Schema({
   // userId : {}
   agentId: { type: String, required: true, unique: true },
-  agentName: { type: String, required: false , default: "Agent 1"},
+  agentName: { type: String, required: false, default: "Agent 1" },
   callHangup: { type: Boolean, default: false },
   callHangupPhase: [{ type: String, default: [] }],
   backgroundSound: { type: String },
   gender: { type: String },
   inputLanguage: { type: String },
   knowledgeBaseAttached: { type: Boolean, default: false },
-  knowledgeBaseUrl:{type:String,default:false},
-  knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase' , default: []}],
+  knowledgeBaseUrl: { type: String, default: false },
+  knowledgeBase: [{ type: Schema.Types.ObjectId, ref: 'KnowledgeBase', default: [] }],
   llm: { type: String },
   llmModel: { type: String },
   maxCallDuration: { type: Number, default: 120 },
@@ -54,11 +55,12 @@ const AgentSchema: Schema = new Schema({
   sttModel: { type: String },
   sttLanguage: { type: String },
   tts: { type: String },
+  apis: [{ type: Schema.Types.ObjectId, ref: 'Api', default: [] }],
   ttsLanguage: { type: String },
   ttsModel: { type: String },
   ttsVoiceName: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   welcomeMessage: { type: String },
-}, {timestamps:true});
+}, { timestamps: true });
 
 export default models.Agent || model<IAgent>('Agent', AgentSchema);

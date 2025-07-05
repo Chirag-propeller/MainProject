@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export interface User {
   _id: string;
@@ -28,6 +34,7 @@ export interface User {
   credits: number;
   creditsUsed: number;
   callHistoryFields: string[];
+  currency: string;
 }
 
 interface UserDataContextType {
@@ -38,63 +45,78 @@ interface UserDataContextType {
   refreshUser: () => void;
 }
 
-const UserDataContext = createContext<UserDataContextType | undefined>(undefined);
+const UserDataContext = createContext<UserDataContextType | undefined>(
+  undefined
+);
 
-export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState(false); // Prevent double updates
 
-  const fetchUserData = async (source = 'unknown') => {
-    console.log('🔄 fetchUserData called from:', source, 'at:', new Date().toISOString());
+  const fetchUserData = async (source = "unknown") => {
+    console.log(
+      "🔄 fetchUserData called from:",
+      source,
+      "at:",
+      new Date().toISOString()
+    );
     try {
       setLoading(true);
       setError(null);
-      
+
       // Fetch all data in parallel using Promise.all
-      const [userResponse, agentsResponse, phoneNumbersResponse, knowledgeBasesResponse, campaignsResponse] = await Promise.all([
-        fetch('/api/user/getCurrentUser'),
-        fetch('/api/agents/get'),
-        fetch('/api/phoneNumber/get'),
-        fetch('/api/knowledgeBase/get'),
-        fetch('/api/createCampaign/get')
+      const [
+        userResponse,
+        agentsResponse,
+        phoneNumbersResponse,
+        knowledgeBasesResponse,
+        campaignsResponse,
+      ] = await Promise.all([
+        fetch("/api/user/getCurrentUser"),
+        fetch("/api/agents/get"),
+        fetch("/api/phoneNumber/get"),
+        fetch("/api/knowledgeBase/get"),
+        fetch("/api/createCampaign/get"),
       ]);
-      
+
       // Check if all requests were successful
       if (!userResponse.ok) {
-        throw new Error('Failed to fetch user data');
+        throw new Error("Failed to fetch user data");
       }
       if (!agentsResponse.ok) {
-        throw new Error('Failed to fetch agents data');
+        throw new Error("Failed to fetch agents data");
       }
       if (!phoneNumbersResponse.ok) {
-        throw new Error('Failed to fetch phone numbers data');
+        throw new Error("Failed to fetch phone numbers data");
       }
       if (!knowledgeBasesResponse.ok) {
-        throw new Error('Failed to fetch knowledge bases data');
+        throw new Error("Failed to fetch knowledge bases data");
       }
       if (!campaignsResponse.ok) {
-        throw new Error('Failed to fetch campaigns data');
+        throw new Error("Failed to fetch campaigns data");
       }
-      
+
       // Parse all responses
       const userData = await userResponse.json();
       const agentsData = await agentsResponse.json();
       const phoneNumbersData = await phoneNumbersResponse.json();
       const knowledgeBasesData = await knowledgeBasesResponse.json();
       const campaignsData = await campaignsResponse.json();
-      
-      console.log('Fetched user data from API:', {
+
+      console.log("Fetched user data from API:", {
         email: userData.email,
         name: userData.name,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
+
       // Process credits like in billing page
       const credits = parseFloat(userData.credits?.$numberDecimal) || 0;
       const creditsUsed = parseFloat(userData.creditsUsed?.$numberDecimal) || 0;
-      
+
       // Combine all data into user object
       const processedUser = {
         ...userData,
@@ -105,61 +127,62 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
         knowledgeBases: knowledgeBasesData?.knowledgeBases || [],
         campaigns: campaignsData || [],
       };
-      console.log('Processed user data:', {
+      console.log("Processed user data:", {
         email: processedUser.email,
         name: processedUser.name,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
-      console.log('🔥 Setting user state with email:', processedUser.email);
+
+      console.log("🔥 Setting user state with email:", processedUser.email);
       setUser(processedUser);
     } catch (err: any) {
-      console.error('Error fetching user data:', err);
-      setError(err.message || 'Failed to load user data. Please try again later.');
+      console.error("Error fetching user data:", err);
+      setError(
+        err.message || "Failed to load user data. Please try again later."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log('🚀 UserDataProvider initial mount - calling fetchUserData');
-    fetchUserData('initial-mount');
+    console.log("🚀 UserDataProvider initial mount - calling fetchUserData");
+    fetchUserData("initial-mount");
   }, []);
 
   const updateUser = async (userData: Partial<User>) => {
     if (user && !isUpdating) {
       try {
         setIsUpdating(true);
-        console.log('Starting user update with data:', userData);
-        console.log('Current user email before update:', user.email);
-        
+        console.log("Starting user update with data:", userData);
+        console.log("Current user email before update:", user.email);
+
         // Make API call to update the user
-        const response = await fetch('/api/user/update', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(userData)
+        const response = await fetch("/api/user/update", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
         });
-        
+
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to update user');
+          throw new Error(errorData.error || "Failed to update user");
         }
 
         const result = await response.json();
-        console.log('Profile update API response:', result);
-        console.log('Updated user from API:', result.user);
-        
+        console.log("Profile update API response:", result);
+        console.log("Updated user from API:", result.user);
+
         // Force a fresh fetch to get the updated data from database
         // This ensures we get the latest data without conflicts
-        console.log('Refreshing user data to get latest from database...');
-        await new Promise(resolve => setTimeout(resolve, 200)); // Ensure DB write is committed
-        await fetchUserData('after-update');
-        console.log('User data refresh completed');
-        
+        console.log("Refreshing user data to get latest from database...");
+        await new Promise((resolve) => setTimeout(resolve, 200)); // Ensure DB write is committed
+        await fetchUserData("after-update");
+        console.log("User data refresh completed");
       } catch (err: any) {
-        console.error('Error updating user:', err);
+        console.error("Error updating user:", err);
         // Revert local state on error
-        await fetchUserData('error-recovery');
+        await fetchUserData("error-recovery");
         throw err; // Re-throw so EditProfileForm can handle the error
       } finally {
         setIsUpdating(false);
@@ -168,7 +191,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const refreshUser = () => {
-    fetchUserData('manual-refresh');
+    fetchUserData("manual-refresh");
   };
 
   const value = {
@@ -176,7 +199,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
     loading,
     error,
     updateUser,
-    refreshUser
+    refreshUser,
   };
 
   return (
@@ -189,7 +212,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({ children }
 export const useUserData = (): UserDataContextType => {
   const context = useContext(UserDataContext);
   if (context === undefined) {
-    throw new Error('useUserData must be used within a UserDataProvider');
+    throw new Error("useUserData must be used within a UserDataProvider");
   }
   return context;
-}; 
+};
