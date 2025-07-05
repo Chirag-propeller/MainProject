@@ -1,7 +1,7 @@
-import React from 'react'
+﻿import React from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
 
-const ConversationNodeSidebar: React.FC = () => {
+const EndCallNodeSidebar: React.FC = () => {
   const { selectedNode, updateNodeGlobal, updateNode, nodes } = useWorkflowStore()
 
   if (!selectedNode) {
@@ -16,46 +16,34 @@ const ConversationNodeSidebar: React.FC = () => {
     updateNode(selectedNode.id, { [field]: value })
   }
 
-  // Type guard to check if this is a conversation node
-  const isConversationNode = (node: any): node is any => {
-    return node.data.type === 'Conversation'
-  }
-
-  // Get the conversation node data safely
-  const getConversationData = () => {
-    if (isConversationNode(selectedNode)) {
-      return selectedNode.data as any
-    }
-    return null
-  }
-
   const globalData = selectedNode.data.global || {}
 
   return (
     <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Node Properties</h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-2">End Call Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
           <strong>ID:</strong> {selectedNode.id} (unchangeable)
+        </div>
+        <div className="text-sm text-red-600 bg-red-50 p-2 rounded-lg mb-2">
+          <strong>Note:</strong> This node will end the call when reached
         </div>
       </div>
 
       <div className="space-y-4">
-        {/* Type Field */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Type
           </label>
           <select
-            value={selectedNode.data.type || 'Conversation'}
+            value={selectedNode.data.type || 'End Call'}
             onChange={(e) => handleNodeFieldChange('type', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
-            <option value="Conversation">Conversation</option>
+            <option value="End Call">End Call</option>
           </select>
         </div>
 
-        {/* Name Field */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Node Name (Editable)
@@ -69,23 +57,6 @@ const ConversationNodeSidebar: React.FC = () => {
           />
         </div>
 
-        {/* Prompt Field - only show for conversation nodes */}
-        {isConversationNode(selectedNode) && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Prompt
-            </label>
-            <textarea
-              value={getConversationData()?.prompt || ''}
-              onChange={(e) => handleNodeFieldChange('prompt', e.target.value)}
-              placeholder="Enter your prompt here..."
-              rows={6}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
-            />
-          </div>
-        )}
-
-        {/* Global Node Toggle */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
             Make this node global
@@ -103,10 +74,8 @@ const ConversationNodeSidebar: React.FC = () => {
             </label>
           </div>
 
-          {/* Global Node Options - shown only when toggle is true */}
           {globalData.isGlobal && (
             <div className="space-y-4 pl-6 border-l-2 border-indigo-200">
-              {/* Global Node Pathway Condition */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Global Node Pathway Condition
@@ -120,7 +89,6 @@ const ConversationNodeSidebar: React.FC = () => {
                 />
               </div>
 
-              {/* Global Node Pathway Description */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Global Node Pathway Description
@@ -134,7 +102,6 @@ const ConversationNodeSidebar: React.FC = () => {
                 />
               </div>
 
-              {/* Automatically Go Back to Previous Node Toggle */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Automatically Go Back to Previous Node
@@ -143,7 +110,7 @@ const ConversationNodeSidebar: React.FC = () => {
                   <input
                     type="checkbox"
                     id="autoGoBackToggle"
-                    checked={globalData.autoGoBackToPrevious !== false} // Default to true
+                    checked={globalData.autoGoBackToPrevious !== false}
                     onChange={(e) => handleGlobalFieldChange('autoGoBackToPrevious', e.target.checked)}
                     className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                   />
@@ -152,7 +119,6 @@ const ConversationNodeSidebar: React.FC = () => {
                   </label>
                 </div>
 
-                {/* Create Pathway Label to Previous Node - only shown when autoGoBackToPrevious is false */}
                 {!globalData.autoGoBackToPrevious && (
                   <div className="ml-6 space-y-3">
                     <div className="flex items-center space-x-2">
@@ -168,7 +134,6 @@ const ConversationNodeSidebar: React.FC = () => {
                       </label>
                     </div>
 
-                    {/* Previous Node Pathway Options - shown only when createPathwayLabelToPrevious is true */}
                     {globalData.createPathwayLabelToPrevious && (
                       <div className="space-y-3 pl-4 border-l border-indigo-100">
                         <div>
@@ -202,7 +167,6 @@ const ConversationNodeSidebar: React.FC = () => {
                 )}
               </div>
 
-              {/* Redirect to another node Toggle */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Redirect to another node
@@ -220,7 +184,6 @@ const ConversationNodeSidebar: React.FC = () => {
                   </label>
                 </div>
 
-                {/* Node Selection Dropdown - shown only when redirectToNode is true */}
                 {globalData.redirectToNode && (
                   <div className="ml-6">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -233,7 +196,7 @@ const ConversationNodeSidebar: React.FC = () => {
                     >
                       <option value="">Select a node...</option>
                       {nodes
-                        .filter(node => node.id !== selectedNode.id) // Exclude current node
+                        .filter(node => node.id !== selectedNode.id)
                         .map(node => (
                           <option key={node.id} value={node.id}>
                             {node.data.name || `Node ${node.id}`}
@@ -247,7 +210,6 @@ const ConversationNodeSidebar: React.FC = () => {
           )}
         </div>
 
-        {/* Additional Fields */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Position
@@ -262,4 +224,4 @@ const ConversationNodeSidebar: React.FC = () => {
   );
 };
 
-export default ConversationNodeSidebar; 
+export default EndCallNodeSidebar;

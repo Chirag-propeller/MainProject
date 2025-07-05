@@ -30,7 +30,8 @@ export async function GET(req: NextRequest) {
           edges: [],
           nodeCounter: 1,
           edgeCounter: 1,
-          globalPrompt: ''
+          globalPrompt: '',
+          globalNodes: []
         }
       });
     }
@@ -46,6 +47,7 @@ export async function GET(req: NextRequest) {
         workflowId: workflow._id,
         name: workflow.name,
         globalPrompt: workflow.globalPrompt,
+        globalNodes: workflow.globalNodes,
         updatedAt: workflow.updatedAt
       }
     });

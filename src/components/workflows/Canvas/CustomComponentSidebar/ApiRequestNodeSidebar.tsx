@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
 
-const ConversationNodeSidebar: React.FC = () => {
+const ApiRequestNodeSidebar: React.FC = () => {
   const { selectedNode, updateNodeGlobal, updateNode, nodes } = useWorkflowStore()
 
   if (!selectedNode) {
@@ -16,14 +16,14 @@ const ConversationNodeSidebar: React.FC = () => {
     updateNode(selectedNode.id, { [field]: value })
   }
 
-  // Type guard to check if this is a conversation node
-  const isConversationNode = (node: any): node is any => {
-    return node.data.type === 'Conversation'
+  // Type guard to check if this is an API node
+  const isApiNode = (node: any): node is any => {
+    return node.data.type === 'API'
   }
 
-  // Get the conversation node data safely
-  const getConversationData = () => {
-    if (isConversationNode(selectedNode)) {
+  // Get the API node data safely
+  const getApiData = () => {
+    if (isApiNode(selectedNode)) {
       return selectedNode.data as any
     }
     return null
@@ -34,9 +34,12 @@ const ConversationNodeSidebar: React.FC = () => {
   return (
     <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Node Properties</h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-2">API Request Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
           <strong>ID:</strong> {selectedNode.id} (unchangeable)
+        </div>
+        <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg mb-2">
+          <strong>Note:</strong> This node will make an API request
         </div>
       </div>
 
@@ -47,11 +50,11 @@ const ConversationNodeSidebar: React.FC = () => {
             Type
           </label>
           <select
-            value={selectedNode.data.type || 'Conversation'}
+            value={selectedNode.data.type || 'API'}
             onChange={(e) => handleNodeFieldChange('type', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
-            <option value="Conversation">Conversation</option>
+            <option value="API">API</option>
           </select>
         </div>
 
@@ -69,19 +72,39 @@ const ConversationNodeSidebar: React.FC = () => {
           />
         </div>
 
-        {/* Prompt Field - only show for conversation nodes */}
-        {isConversationNode(selectedNode) && (
+        {/* Endpoint Field - only show for API nodes */}
+        {isApiNode(selectedNode) && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Prompt
+              API Endpoint
             </label>
-            <textarea
-              value={getConversationData()?.prompt || ''}
-              onChange={(e) => handleNodeFieldChange('prompt', e.target.value)}
-              placeholder="Enter your prompt here..."
-              rows={6}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+            <input
+              type="text"
+              value={getApiData()?.endpoint || ''}
+              onChange={(e) => handleNodeFieldChange('endpoint', e.target.value)}
+              placeholder="https://api.example.com/endpoint"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
+          </div>
+        )}
+
+        {/* Method Field - only show for API nodes */}
+        {isApiNode(selectedNode) && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              HTTP Method
+            </label>
+            <select
+              value={getApiData()?.method || 'GET'}
+              onChange={(e) => handleNodeFieldChange('method', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            >
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+              <option value="PATCH">PATCH</option>
+            </select>
           </div>
         )}
 
@@ -262,4 +285,4 @@ const ConversationNodeSidebar: React.FC = () => {
   );
 };
 
-export default ConversationNodeSidebar; 
+export default ApiRequestNodeSidebar; 

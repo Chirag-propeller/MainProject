@@ -31,7 +31,7 @@ export interface UserDocument extends Document {
   agents: mongoose.Types.ObjectId[];
   phoneNumbers: mongoose.Types.ObjectId[];
   knowledgeBases: mongoose.Types.ObjectId[];
-  campigns: mongoose.Types.ObjectId[];
+  campaigns: mongoose.Types.ObjectId[];
   otp?: string;
   otpExpiry?: Date;
   credits: mongoose.Types.Decimal128;
@@ -66,7 +66,7 @@ const userSchema = new Schema<UserDocument>(
     verifyToken: { type: String },
     verifyTokenExpiry: { type: Date },
     agents: [{ type: Schema.Types.ObjectId, ref: 'Agent' , default: []}],
-    campigns: [{ type: Schema.Types.ObjectId, ref: 'CampaignCall' , default: []}],
+    campaigns: [{ type: Schema.Types.ObjectId, ref: 'CampaignCall' , default: []}],
     phoneNumbers:  [{ type: Schema.Types.ObjectId, ref: 'PhoneNumber' , default: []}],
     knowledgeBases:  [{ type: Schema.Types.ObjectId, ref: 'PhoneNumber' , default: []}],
     credits: { type: mongoose.Schema.Types.Decimal128, default: 0 },    

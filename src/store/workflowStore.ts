@@ -6,15 +6,23 @@ import { saveWorkflow, loadWorkflow, convertMongoDataToFlow, autoSaveWorkflow } 
 interface BaseNodeData {
   name: string
   type: string
-  global?: Record<string, any> // Global object for any additional data
+  global?: {
+    isGlobal?: boolean
+    pathwayCondition?: string
+    pathwayDescription?: string
+    autoGoBackToPrevious?: boolean
+    createPathwayLabelToPrevious?: boolean
+    previousNodePathwayLabel?: string
+    previousNodePathwayDescription?: string
+    redirectToNode?: boolean
+    redirectTargetNodeId?: string
+    [key: string]: any // Allow additional global properties
+  }
 }
 
 interface ConversationNodeData extends BaseNodeData {
   prompt: string
   type: 'Conversation'
-  isGlobalNode?: boolean
-  globalNodePathwayCondition?: string
-  globalNodePathwayDescription?: string
 }
 
 // Future node types can extend BaseNodeData
@@ -29,8 +37,12 @@ interface ConditionalNodeData extends BaseNodeData {
   type: 'Conditional'
 }
 
+interface EndCallNodeData extends BaseNodeData {
+  type: 'End Call'
+}
+
 // Union type for all possible node data types
-type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData
+type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCallNodeData
 
 interface EdgeData {
   label?: string
@@ -42,6 +54,7 @@ interface WorkflowState {
   nodes: Node<NodeData>[]
   edges: Edge<EdgeData>[]
   globalPrompt: string
+  globalNodes: string[] // Array of node IDs that are global
   
   // Counters
   nodeCounter: number
@@ -61,6 +74,7 @@ interface WorkflowState {
   setNodes: (nodes: Node<NodeData>[]) => void
   setEdges: (edges: Edge<EdgeData>[]) => void
   setGlobalPrompt: (prompt: string) => void
+  setGlobalNodes: (globalNodes: string[]) => void
   setSelectedNode: (node: Node<NodeData> | null) => void
   setSelectedEdge: (edge: Edge<EdgeData> | null) => void
   setIsGlobalPromptOpen: (open: boolean) => void
@@ -93,8 +107,8 @@ interface WorkflowState {
 // Helper function to create node based on type
 const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: number): Node<NodeData> => {
   const basePosition = {
-    x: 100 + (nodeCount * 200),
-    y: 100 + (nodeCount * 100)
+    x: 100 + (nodeCount * 50),
+    y: 100 + (nodeCount * 50)
   }
   
   const baseStyle = { width: 220, height: 120 }
@@ -110,10 +124,17 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Custom Node',
           prompt: '',
           type: 'Conversation',
-          isGlobalNode: false,
-          globalNodePathwayCondition: '',
-          globalNodePathwayDescription: '',
-          global: {}
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
         } as ConversationNodeData,
         style: baseStyle,
       }
@@ -129,7 +150,17 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           endpoint: '',
           method: 'GET',
           type: 'API',
-          global: {}
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
         } as APINodeData,
         style: baseStyle,
       }
@@ -144,8 +175,42 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Conditional Node',
           condition: '',
           type: 'Conditional',
-          global: {}
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
         } as ConditionalNodeData,
+        style: baseStyle,
+      }
+    
+    case 'End Call Node':
+    case 'endcall':
+      return {
+        id: `N${nodeCounter}`,
+        type: 'endcall',
+        position: basePosition,
+        data: {
+          name: 'End Call Node',
+          type: 'End Call',
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
+        } as EndCallNodeData,
         style: baseStyle,
       }
     
@@ -159,10 +224,17 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Custom Node',
           prompt: '',
           type: 'Conversation',
-          isGlobalNode: false,
-          globalNodePathwayCondition: '',
-          globalNodePathwayDescription: '',
-          global: {}
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
         } as ConversationNodeData,
         style: baseStyle,
       }
@@ -174,6 +246,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   nodes: [],
   edges: [],
   globalPrompt: '',
+  globalNodes: [],
   nodeCounter: 1,
   edgeCounter: 1,
   selectedNode: null,
@@ -187,6 +260,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   setNodes: (nodes) => set({ nodes }),
   setEdges: (edges) => set({ edges }),
   setGlobalPrompt: (globalPrompt) => set({ globalPrompt }),
+  setGlobalNodes: (globalNodes) => set({ globalNodes }),
   setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null }),
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
   setIsGlobalPromptOpen: (isGlobalPromptOpen) => set({ isGlobalPromptOpen }),
@@ -234,9 +308,25 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       
       const updatedSelected = updatedNodes.find((n) => n.id === nodeId)
       
+      // Update globalNodes array if isGlobal status changed
+      let updatedGlobalNodes = [...state.globalNodes]
+      const node = updatedNodes.find((n) => n.id === nodeId)
+      
+      if (node) {
+        const isGlobal = node.data.global?.isGlobal || false
+        const isCurrentlyGlobal = state.globalNodes.includes(nodeId)
+        
+        if (isGlobal && !isCurrentlyGlobal) {
+          updatedGlobalNodes.push(nodeId)
+        } else if (!isGlobal && isCurrentlyGlobal) {
+          updatedGlobalNodes = updatedGlobalNodes.filter(id => id !== nodeId)
+        }
+      }
+      
       return {
         nodes: updatedNodes,
-        selectedNode: updatedSelected || state.selectedNode
+        selectedNode: updatedSelected || state.selectedNode,
+        globalNodes: updatedGlobalNodes
       }
     })
   },
@@ -245,6 +335,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     set({
       nodes: [],
       edges: [],
+      globalNodes: [],
       selectedNode: null,
       selectedEdge: null,
       nodeCounter: 1,
@@ -287,7 +378,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   // Workflow actions
   saveWorkflow: async () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, userId } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, userId } = get()
     
     set({ isLoading: true })
     
@@ -298,7 +389,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         edges,
         nodeCounter,
         edgeCounter,
-        globalPrompt
+        globalPrompt,
+        globalNodes
       })
       
       if (result.success) {
@@ -332,6 +424,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           nodeCounter: flowData.nodeCounter,
           edgeCounter: flowData.edgeCounter,
           globalPrompt: flowData.globalPrompt,
+          globalNodes: flowData.globalNodes || [],
           selectedNode: null,
           selectedEdge: null
         })
@@ -350,7 +443,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
   
   autoSave: () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, userId } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, userId } = get()
     
     if (nodes.length > 0 || edges.length > 0) {
       autoSaveWorkflow({
@@ -359,7 +452,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         edges,
         nodeCounter,
         edgeCounter,
-        globalPrompt
+        globalPrompt,
+        globalNodes
       })
     }
   },
@@ -404,4 +498,4 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
 }))
 
 // Export types for use in components
-export type { NodeData, ConversationNodeData, APINodeData, ConditionalNodeData, EdgeData }
+export type { NodeData, ConversationNodeData, APINodeData, ConditionalNodeData, EndCallNodeData, EdgeData }

@@ -3,19 +3,28 @@ import { Schema, model, models, Document } from 'mongoose';
 interface IWorkflowNode {
   id: string;
   type: string;
-
   position: {
     x: number;
     y: number;
   };
   data: {
     name: string;
-    prompt: string;
+    prompt?: string;
+    endpoint?: string;
+    method?: string;
     type: string;
-    isGlobalNode?: boolean;
-    globalNodePathwayCondition?: string;
-    globalNodePathwayDescription?: string;
-    global?: Record<string, any>;
+    global?: {
+      isGlobal?: boolean;
+      pathwayCondition?: string;
+      pathwayDescription?: string;
+      autoGoBackToPrevious?: boolean;
+      createPathwayLabelToPrevious?: boolean;
+      previousNodePathwayLabel?: string;
+      previousNodePathwayDescription?: string;
+      redirectToNode?: boolean;
+      redirectTargetNodeId?: string;
+      [key: string]: any; // Allow additional global properties
+    };
   };
   style?: {
     width: number;
@@ -41,6 +50,7 @@ interface IWorkflow extends Document {
   edges: IWorkflowEdge[];
   nodeCounter: number;
   edgeCounter: number;
+  globalNodes: string[]; // Array of node IDs that are global
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,11 +80,23 @@ const WorkflowSchema = new Schema<IWorkflow>({
     data: {
       name: { type: String, required: true },
       prompt: { type: String, default: '' },
+      endpoint: { type: String, default: '' },
+      method: { type: String, default: 'GET' },
       type: { type: String, required: true },
-      isGlobalNode: { type: Boolean, default: false },
-      globalNodePathwayCondition: { type: String, default: '' },
-      globalNodePathwayDescription: { type: String, default: '' },
-      global: { type: Object, default: {} }
+      global: { 
+        type: Object, 
+        default: {
+          isGlobal: false,
+          pathwayCondition: '',
+          pathwayDescription: '',
+          autoGoBackToPrevious: true,
+          createPathwayLabelToPrevious: false,
+          previousNodePathwayLabel: '',
+          previousNodePathwayDescription: '',
+          redirectToNode: false,
+          redirectTargetNodeId: ''
+        }
+      }
     },
     style: {
       width: { type: Number },
@@ -97,6 +119,10 @@ const WorkflowSchema = new Schema<IWorkflow>({
   edgeCounter: {
     type: Number,
     default: 1
+  },
+  globalNodes: {
+    type: [String],
+    default: []
   }
 }, {
   timestamps: true

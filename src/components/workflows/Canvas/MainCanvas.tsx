@@ -9,6 +9,8 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import ConversationNode from './CustomNodes/ConversationNode'
+import EndCallNode from './CustomNodes/EndCallNode'
+import ApiRequestNode from './CustomNodes/ApiRequestNode'
 import LabeledEdge from './CustomEdges/LabeledEdge'
 import { useWorkflowStore } from '@/store/workflowStore'
 
@@ -26,6 +28,8 @@ const MainCanvas: React.FC = () => {
   // Memoize nodeTypes to prevent React Flow warnings
   const nodeTypes = useMemo(() => ({
     conversation: ConversationNode,
+    endcall: EndCallNode,
+    api: ApiRequestNode,
   }), []);
 
   // Memoize edgeTypes to prevent React Flow warnings

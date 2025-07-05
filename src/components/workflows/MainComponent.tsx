@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import SideBar from './Canvas/SideBar'
 import MainCanvas from './Canvas/MainCanvas'
 import ConversationNodeSidebar from './Canvas/CustomComponentSidebar/ConversationNodeSidebar'
+import ApiRequestNodeSidebar from './Canvas/CustomComponentSidebar/ApiRequestNodeSidebar'
+import EndCallNodeSidebar from './Canvas/CustomComponentSidebar/EndCallNodeSidebar'
 import EdgeSidebar from './Canvas/CustomComponentSidebar/EdgeSidebar'
 import { useWorkflowStore } from '@/store/workflowStore'
 
@@ -15,6 +17,7 @@ const MainComponent = () => {
     isLoading,
     lastSaved,
     globalPrompt,
+    globalNodes,
     loadWorkflow,
     saveWorkflow,
     clearNodes,
@@ -77,9 +80,11 @@ const MainComponent = () => {
       nodes,
       edges,
       globalPrompt,
+      globalNodes,
       metadata: {
         nodeCount: nodes.length,
         edgeCount: edges.length,
+        globalNodeCount: globalNodes.length,
         exportedAt: new Date().toISOString(),
         lastSaved: lastSaved?.toISOString()
       }
@@ -90,6 +95,7 @@ const MainComponent = () => {
     console.log('=== SUMMARY ===')
     console.log(`Nodes: ${nodes.length}`)
     console.log(`Edges: ${edges.length}`)
+    console.log(`Global Nodes: ${globalNodes.length}`)
     
     // Also copy to clipboard if possible
     if (navigator.clipboard) {
@@ -122,7 +128,9 @@ const MainComponent = () => {
         {/* Sidebars section */}
         {(selectedNode || selectedEdge) ? (
           <div className="flex flex-col gap-2">
-            {selectedNode && <ConversationNodeSidebar />}
+            {selectedNode && selectedNode.data.type === 'Conversation' && <ConversationNodeSidebar />}
+            {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
+            {selectedNode && selectedNode.data.type === 'End Call' && <EndCallNodeSidebar />}
             {selectedEdge && <EdgeSidebar />}
           </div>
         ) : (
@@ -163,7 +171,7 @@ const MainComponent = () => {
         
         {/* Status info */}
         <div className='absolute bottom-10 left-10 bg-white p-3 rounded z-20 text-sm border shadow'>
-          <div>Nodes: {nodes.length} | Edges: {edges.length}</div>
+          <div>Nodes: {nodes.length} | Edges: {edges.length} | Global: {globalNodes.length}</div>
           {lastSaved && (
             <div className="text-xs text-gray-500">
               Last saved: {lastSaved.toLocaleTimeString()}
