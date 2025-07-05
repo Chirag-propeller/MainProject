@@ -38,6 +38,7 @@ export interface UserDocument extends Document {
   creditsUsed: mongoose.Types.Decimal128;
   callHistoryFields: string[];
   premium: boolean;
+  currency:string;
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -73,6 +74,7 @@ const userSchema = new Schema<UserDocument>(
     creditsUsed: { type: mongoose.Schema.Types.Decimal128, default: 0 },
     callHistoryFields: { type: [String], default: [] },
     premium: { type: Boolean, default: false },
+    currency: {type:String,default:'INR',required:false}
   },
   { timestamps: true }
 );

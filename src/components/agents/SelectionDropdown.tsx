@@ -32,7 +32,7 @@ const SelectionDropdown: React.FC<SelectionDropdownProps> = ({
           {selectedOption}
         </SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent sideOffset={4} side="bottom">
         {options.map((option) =>
           option.value ? (
             <SelectItem key={option.value} value={option.value}>

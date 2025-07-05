@@ -190,7 +190,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         <div className="h-full overflow-auto ">
           <div className="sticky top-0 flex justify-between items-center mb-6">
             {/* <h2 className="text-xl font-semibold">Test Agent</h2> */}
-            <Logo/>
+            <Logo collapsed={false}/>
             <button 
               onClick={onClose}
               className="p-2 rounded-full hover:bg-gray-100"

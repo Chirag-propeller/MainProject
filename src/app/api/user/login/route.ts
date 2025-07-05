@@ -2,8 +2,7 @@ import dbConnect from "@/lib/mongodb";
 import User from "@/model/user/user.model";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken"
-import { cookies } from 'next/headers'
+import jwt from "jsonwebtoken";
 
 
 

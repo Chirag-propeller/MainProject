@@ -26,7 +26,7 @@ const TooltipLabel: React.FC<TooltipLabelProps> = ({
       {tooltipDescriptions[fieldKey] && (
         <div className="relative group">
           <span className="text-gray-400 cursor-pointer">
-            <IoAlertCircleOutline className="w-4 h-4" />
+            <IoAlertCircleOutline className={`w-4 h-4`} />
           </span>
           <div
             className={`absolute z-10 hidden group-hover:block bg-gray-50 text-black border border-gray-200 shadow-sm text-xs rounded py-1 px-2 ${position === "bottom" ? "top-full font-light" : "bottom-full"} transform mb-2 w-[250px] max-w-[300px] break-words leading-tight`}

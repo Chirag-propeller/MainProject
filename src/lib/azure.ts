@@ -1,5 +1,5 @@
 // lib/azure.ts
-import { BlobSASPermissions, BlobServiceClient } from '@azure/storage-blob'
+import { BlobSASPermissions, BlobServiceClient, generateBlobSASQueryParameters, SASProtocol, StorageSharedKeyCredential } from '@azure/storage-blob'
 
 const AZURE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING!
 const CONTAINER_NAME = 'knowledgebase'
@@ -100,6 +100,29 @@ export async function getVoiceUrl(
 function generateFilename(provider: string, model: string, voice: string): string {
   return `${provider.toLowerCase()}/${model}/${voice}.mp3`.replace(/\s+/g, '-');
 }
+
+export async function getKnowledgeBaseFileUrl(filename: string): Promise<string | null> {
+  const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME);
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    if (await blockBlobClient.exists()) {
+      const permissions = new BlobSASPermissions();
+      permissions.read = true;
+      const sasUrl = await blockBlobClient.generateSasUrl({
+        permissions,
+        expiresOn: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      });
+      console.log("sasUrl", sasUrl);
+      return sasUrl;
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error getting knowledge base file URL for ${filename}:`, error);
+    return null;
+  }
+}
+
+
 
 
 // import { BlobServiceClient } from '@azure/storage-blob'

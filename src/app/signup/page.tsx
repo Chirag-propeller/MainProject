@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -67,6 +67,8 @@ const SignupAndVerifyPage = () => {
     password: "",
     confirmPassword: "",
     phone: "",
+    timezone: "",
+    currency: "",
   });
 
   const [activeFeature, setActiveFeature] = useState(0);
@@ -124,6 +126,26 @@ const SignupAndVerifyPage = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        setForm((prev) => ({
+          ...prev,
+          timezone:
+            data.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+          currency: data.currency || "USD",
+        }));
+      })
+      .catch(() => {
+        setForm((prev) => ({
+          ...prev,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          currency: "USD",
+        }));
+      });
+  }, []);
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -279,7 +301,8 @@ const SignupAndVerifyPage = () => {
                         htmlFor="phone"
                         className="text-indigo-500 font-medium flex items-center"
                       >
-                        <Phone className="w-4 h-4 mr-2" /> Phone Number (Optional)
+                        <Phone className="w-4 h-4 mr-2" /> Phone Number
+                        (Optional)
                       </Label>
                       <Input
                         id="phone"
@@ -420,7 +443,7 @@ const SignupAndVerifyPage = () => {
                       type="text"
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl text-center text-lg tracking-widest h-10"
+                      className="bg-white/5 border-white/20 text-black placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 rounded-xl text-center text-lg tracking-widest h-10"
                       placeholder="Enter 6-digit code"
                       maxLength={6}
                       required

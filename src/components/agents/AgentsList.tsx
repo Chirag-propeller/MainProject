@@ -153,10 +153,12 @@ const AgentsList = ({
   agents,
   selectedId,
   setAgents,
+  collapsed,
 }: {
   agents: Agent[];
   selectedId?: string;
   setAgents: (agents: Agent[]) => void;
+  collapsed?: boolean;
 }) => {
   // const [loading, setLoading] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
@@ -309,7 +311,7 @@ const AgentsList = ({
       style={{ height: "100%", overflow: "hidden" }}
     >
       {/* Header with title and create button */}
-      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-200 flex justify-between items-center">
+      <div className="sticky top-0 z-20 bg-white p-4 pt-6 border-b border-gray-200 flex justify-between items-center">
         <div className="flex gap-1.5">
           <Users className="w-3.5 h-3.5  self-center text-indigo-600" />
           <h1 className="text-lg  self-center text-indigo-600">Agents</h1>
