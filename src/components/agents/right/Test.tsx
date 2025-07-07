@@ -19,6 +19,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
   const [token, setToken] = useState("");
   const [roomName, setRoomName] = useState("");
+  const [apis, setApis] = useState([]);
 
   // Ensure the component is mounted before animations start
   useEffect(() => {
@@ -27,6 +28,12 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   }, []);
 
   useEffect(() => {
+
+    const fetchApis = async () => {
+      const response = await axios.get('/api/apiTool/get');
+      setApis(response.data);
+    }
+    fetchApis();
     // Add body overflow hidden when modal is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -123,6 +130,8 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         gender : agent.gender,
         ttsLanguage : agent.ttsLanguage,     
         roomName,
+        apis : apis,
+        
       };
       console.log(dataToSend);
       console.log("run");
