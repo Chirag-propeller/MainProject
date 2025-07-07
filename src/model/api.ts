@@ -15,6 +15,8 @@ export interface IVoiceAgentApi extends Document {
     required: boolean;
     description: string;
   }>;
+  variableToExtract?: string;
+  promptToExtractVariable?: string;
   response?: any;
   userId: mongoose.Types.ObjectId;
   usedByAgents?: mongoose.Types.ObjectId[];
@@ -35,6 +37,8 @@ const VoiceAgentApiSchema: Schema = new Schema(
     },
     headers: { type: Map, of: String, default: {} },
     urlParams: { type: Map, of: String, default: {} },
+    variableToExtract: { type: String },
+    promptToExtractVariable: { type: String },
     params: [
       {
         name: { type: String, required: true },

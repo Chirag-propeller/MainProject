@@ -9,6 +9,8 @@ export interface Api {
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"; // HTTP method
   headers?: Record<string, string>; // Optional headers for the API call
   urlParams?: Record<string, string>; // Optional URL parameters for the API call
+  variableToExtract?: string;
+  promptToExtractVariable?: string;
   params?: Array<{                // Query or body parameters
     name: string;
     type: string;

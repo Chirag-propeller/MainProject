@@ -93,6 +93,8 @@ const ApiRequestConfig = ({
   const [params, setParams] = useState<ParamItem[]>(
     paramsApiToArray(api.params)
   );
+  const [variableToExtract, setVariableToExtract] = useState(api.variableToExtract?.split("|") || []);
+  const [promptToExtractVariable, setPromptToExtractVariable] = useState(api.promptToExtractVariable?.split("|") || []);
 
   
   useEffect(() => {
@@ -245,6 +247,9 @@ const ApiRequestConfig = ({
                   fieldKey="endpoint"
                   htmlFor="endpoint"
                 />
+                <p className="text-xs font-medium text-gray-600 mt-0.5">
+                  Example: https://api.test.com/v1/user?userID=1234&CustomerMobile=&#123;&#123;phonenumber&#125;&#125;
+                </p>
                 <input
                   id="endpoint"
                   type="url"
@@ -254,7 +259,9 @@ const ApiRequestConfig = ({
                   onChange={(e) => setEndpoint(e.target.value)}
                 />
               </div>
-              <div className="lg:w-48 space-y-3">
+
+            </div>
+            <div className="lg:w-48 space-y-3">
                 <TooltipLabel label="HTTP Method" fieldKey="httpMethod" />
                 <SelectionDropdown
                   options={HTTP_METHODS}
@@ -262,7 +269,64 @@ const ApiRequestConfig = ({
                   setOption={(val) => setMethod(val as Api["method"])}
                 />
               </div>
+
+            {/* URL Params --------------------------------------------- */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <TooltipLabel label="Variable URL Parameters" fieldKey="urlParams" />
+                <button
+                  type="button"
+                  onClick={addUrlParam}
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center gap-2"
+                >
+                  <span className="text-lg">+</span>
+                  Add URL Params
+                </button>
+              </div>
+
+              {urlParams.length === 0 ? (
+                <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+                  <p className="text-sm font-medium text-gray-500 text-center">
+                    No URL params configured. Click "Add URL Params" to create one.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {urlParams.map((h) => (
+                    <div
+                      key={h.id}
+                      className="flex gap-3 items-center border-2 border-gray-200 rounded-lg p-4 bg-white hover:border-gray-300 transition-all duration-200"
+                    >
+                      <input
+                        type="text"
+                        placeholder="URL Param Key"
+                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        value={h.key}
+                        onChange={(e) =>
+                          updateUrlParam(h.id, "key", e.target.value)
+                        }
+                      />
+                      <input
+                        type="text"
+                        placeholder="Description"
+                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        value={h.value}
+                        onChange={(e) =>
+                          updateUrlParam(h.id, "value", e.target.value)
+                        }
+                      />
+                      <button
+                        onClick={() => deleteUrlParam(h.id)}
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200"
+                      >
+                        <MdDelete className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
 
             {/* Headers ------------------------------------------------ */}
             <div className="space-y-4">
@@ -277,6 +341,8 @@ const ApiRequestConfig = ({
                   Add Header
                 </button>
               </div>
+
+
 
               {headers.length === 0 ? (
                 <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
@@ -322,62 +388,7 @@ const ApiRequestConfig = ({
             </div>
 
 
-            {/* URL Params --------------------------------------------- */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <TooltipLabel label="URL Parameters" fieldKey="urlParams" />
-                <button
-                  type="button"
-                  onClick={addUrlParam}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center gap-2"
-                >
-                  <span className="text-lg">+</span>
-                  Add URL Params
-                </button>
-              </div>
 
-              {urlParams.length === 0 ? (
-                <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
-                  <p className="text-sm font-medium text-gray-500 text-center">
-                    No URL params configured. Click "Add URL Params" to create one.
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {urlParams.map((h) => (
-                    <div
-                      key={h.id}
-                      className="flex gap-3 items-center border-2 border-gray-200 rounded-lg p-4 bg-white hover:border-gray-300 transition-all duration-200"
-                    >
-                      <input
-                        type="text"
-                        placeholder="URL Param Key"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
-                        value={h.key}
-                        onChange={(e) =>
-                          updateUrlParam(h.id, "key", e.target.value)
-                        }
-                      />
-                      <input
-                        type="text"
-                        placeholder="Params Value"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
-                        value={h.value}
-                        onChange={(e) =>
-                          updateUrlParam(h.id, "value", e.target.value)
-                        }
-                      />
-                      <button
-                        onClick={() => deleteUrlParam(h.id)}
-                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200"
-                      >
-                        <MdDelete className="w-5 h-5" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
 
             {/* Params ------------------------------------------------- */}
             <div className="space-y-4">

@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
       urlParams: body.urlParams,
       params: body.params,
       response: body.response,
+      variableToExtract: "",
+      promptToExtractVariable: "",
     };
 
     const newApi = await VoiceAgentApi.create(createData);
