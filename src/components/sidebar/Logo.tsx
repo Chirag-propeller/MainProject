@@ -16,10 +16,10 @@ const Logo: React.FC<LogoProps> = ({ className = "", collapsed }) => {
         {!collapsed ? (
           <Image
             alt="proPAL AI Logo"
-            src="/assets/logo.png"
-            width={120}
-            height={50}
-            className="w-auto object-contain"
+            src="/assets/logo1.png"
+            width={240}
+            height={240}
+            className="h-12 w-auto object-contain"
             priority
           />
         ) : (
