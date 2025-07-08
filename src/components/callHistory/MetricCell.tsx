@@ -21,6 +21,7 @@ type MetricCellProps = {
   export default function MetricCell({ value, field }: MetricCellProps) {
     let displayValue = value;
   
+    
     if (typeof value === 'number') {
     //   displayValue = value.toFixed(5);
     const isInteger = Number.isInteger(value);

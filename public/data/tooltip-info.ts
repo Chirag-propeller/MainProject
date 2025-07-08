@@ -15,5 +15,8 @@ export const tooltipDescriptions: { [key: string]: string } = {
   MaxmCallDuration:"Defines the maximum time (in seconds) the voice agent is allowed to stay in a single call session.",
   NumberTransfer:"Allow calls to be transferred to another number",
   CallHangup:"Automatically end calls when specific phrases are detected",
-  costPer:"These calculations are estimates. They may not reflect the actual cost of the assistant."
+  costPer:"These calculations are estimates. They may not reflect the actual cost of the assistant.",
+  call_quality_score:"Based on audio clarity, conversation flow, and overall call experience. Score 7-10: Good, 5-6: Average, 1-4: Bad",
+  script_adherence_score:"Measures how well the agent followed the predefined script and conversation guidelines. Score 7-10: Good, 5-6: Average, 1-4: Bad",
+  compliance_risk_score:"Assesses potential compliance violations and regulatory risks. Score 5-10: High Risk, 3-4: Medium Risk, 1-2: Low Risk"
 };

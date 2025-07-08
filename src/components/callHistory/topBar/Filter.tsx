@@ -1,6 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Filter as FilterIcon, X, CheckSquare, Square, UserRound, BarChart3, ThumbsUp } from 'lucide-react';
-import { Agent } from '@/components/agents/types';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Filter as FilterIcon,
+  X,
+  CheckSquare,
+  Square,
+  UserRound,
+  BarChart3,
+  ThumbsUp,
+} from "lucide-react";
+import { Agent } from "@/components/agents/types";
 
 type FilterOption = {
   label: string;
@@ -26,7 +34,7 @@ const Filter: React.FC<FilterProps> = ({
   setFilters,
   agentOptions,
   statusOptions,
-  sentimentOptions
+  sentimentOptions,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -36,15 +44,18 @@ const Filter: React.FC<FilterProps> = ({
   // Handle outside click to close the filter
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
         setActiveMenu(null);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -60,16 +71,16 @@ const Filter: React.FC<FilterProps> = ({
   };
 
   const toggleOption = (category: keyof FilterState, value: string) => {
-    setFilters(prev => {
+    setFilters((prev) => {
       if (prev[category].includes(value)) {
         return {
           ...prev,
-          [category]: prev[category].filter(item => item !== value)
+          [category]: prev[category].filter((item) => item !== value),
         };
       } else {
         return {
           ...prev,
-          [category]: [...prev[category], value]
+          [category]: [...prev[category], value],
         };
       }
     });
@@ -79,22 +90,24 @@ const Filter: React.FC<FilterProps> = ({
     setFilters({
       agent: [],
       status: [],
-      sentiment: []
+      sentiment: [],
     });
   };
 
   const getActiveFilterCount = () => {
-    return filters.agent.length + filters.status.length + filters.sentiment.length;
+    return (
+      filters.agent.length + filters.status.length + filters.sentiment.length
+    );
   };
 
   return (
     <div className="relative" ref={filterRef}>
       <button
         onClick={toggleFilter}
-        className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors  ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm transition-colors  ${
           isOpen || getActiveFilterCount() > 0
-            ? 'bg-indigo-100 text-indigo-700'
-            : 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200'
+            ? "bg-indigo-100 text-indigo-700"
+            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm"
         }`}
       >
         <FilterIcon size={16} />
@@ -107,9 +120,9 @@ const Filter: React.FC<FilterProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-md shadow-lg z-50 border border-gray-200 overflow-hidden">
-          <div className="flex justify-between items-center p-2 border-b border-gray-200">
-            <h3 className="font-medium text-sm text-gray-700">Filters</h3>
+        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-[4px] shadow-lg z-50 border border-gray-200 overflow-hidden">
+          <div className="flex justify-between items-center pt-2 pb-1 px-2 border-b border-gray-200">
+            <h4 className="font-medium text-sm text-gray-700">Filters</h4>
             {getActiveFilterCount() > 0 && (
               <button
                 onClick={clearFilters}
@@ -126,7 +139,7 @@ const Filter: React.FC<FilterProps> = ({
             <div className="">
               <button
                 className="w-full flex items-center justify-between p-2 py-1 hover:bg-gray-50 rounded-md"
-                onClick={() => toggleMenu('agent')}
+                onClick={() => toggleMenu("agent")}
               >
                 <div className="flex items-center gap-2">
                   <UserRound size={16} className="text-gray-500" />
@@ -137,16 +150,18 @@ const Filter: React.FC<FilterProps> = ({
                     </span>
                   )}
                 </div>
-                <span className="text-gray-400">{activeMenu === 'agent' ? '−' : '+'}</span>
+                <span className="text-gray-400">
+                  {activeMenu === "agent" ? "−" : "+"}
+                </span>
               </button>
-              
-              {activeMenu === 'agent' && (
+
+              {activeMenu === "agent" && (
                 <div className="ml-8 border-l border-gray-200 pl-2 py-1">
                   {agentOptions.map((option: Agent, key: number) => (
                     <div
                       key={key}
                       className="flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer"
-                      onClick={() => toggleOption('agent', option.agentId)}
+                      onClick={() => toggleOption("agent", option.agentId)}
                     >
                       {filters.agent.includes(option.agentId) ? (
                         <CheckSquare size={16} className="text-indigo-600" />
@@ -164,7 +179,7 @@ const Filter: React.FC<FilterProps> = ({
             <div className="">
               <button
                 className="w-full flex items-center justify-between py-1 p-2 hover:bg-gray-50 rounded-md"
-                onClick={() => toggleMenu('status')}
+                onClick={() => toggleMenu("status")}
               >
                 <div className="flex items-center gap-2">
                   <BarChart3 size={16} className="text-gray-500" />
@@ -175,16 +190,18 @@ const Filter: React.FC<FilterProps> = ({
                     </span>
                   )}
                 </div>
-                <span className="text-gray-400">{activeMenu === 'status' ? '−' : '+'}</span>
+                <span className="text-gray-400">
+                  {activeMenu === "status" ? "−" : "+"}
+                </span>
               </button>
-              
-              {activeMenu === 'status' && (
+
+              {activeMenu === "status" && (
                 <div className="ml-8 border-l border-gray-200 pl-2 py-1">
-                  {statusOptions.map(option => (
+                  {statusOptions.map((option) => (
                     <div
                       key={option.value}
                       className="flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer"
-                      onClick={() => toggleOption('status', option.value)}
+                      onClick={() => toggleOption("status", option.value)}
                     >
                       {filters.status.includes(option.value) ? (
                         <CheckSquare size={16} className="text-indigo-600" />
@@ -202,7 +219,7 @@ const Filter: React.FC<FilterProps> = ({
             <div className="">
               <button
                 className="w-full flex items-center justify-between py-1 p-2 hover:bg-gray-50 rounded-md"
-                onClick={() => toggleMenu('sentiment')}
+                onClick={() => toggleMenu("sentiment")}
               >
                 <div className="flex items-center gap-2">
                   <ThumbsUp size={16} className="text-gray-500" />
@@ -213,16 +230,18 @@ const Filter: React.FC<FilterProps> = ({
                     </span>
                   )}
                 </div>
-                <span className="text-gray-400">{activeMenu === 'sentiment' ? '−' : '+'}</span>
+                <span className="text-gray-400">
+                  {activeMenu === "sentiment" ? "−" : "+"}
+                </span>
               </button>
-              
-              {activeMenu === 'sentiment' && (
+
+              {activeMenu === "sentiment" && (
                 <div className="ml-8 border-l border-gray-200 pl-2 py-1">
-                  {sentimentOptions.map(option => (
+                  {sentimentOptions.map((option) => (
                     <div
                       key={option.value}
                       className="flex items-center gap-2 p-1.5 hover:bg-gray-50 rounded cursor-pointer"
-                      onClick={() => toggleOption('sentiment', option.value)}
+                      onClick={() => toggleOption("sentiment", option.value)}
                     >
                       {filters.sentiment.includes(option.value) ? (
                         <CheckSquare size={16} className="text-indigo-600" />
@@ -243,4 +262,3 @@ const Filter: React.FC<FilterProps> = ({
 };
 
 export default Filter;
-
