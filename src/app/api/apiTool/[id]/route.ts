@@ -12,6 +12,7 @@ export async function GET(
   const user = await getUserFromRequest(req);
   const { id } = await params;
 
+
   const api = await VoiceAgentApi.findOne({
     _id: id,
     userId: user.userId,
@@ -32,8 +33,24 @@ export async function PUT(
   const user = await getUserFromRequest(req);
   const { id } = await params;
   const body = await req.json();
+  console.log('body', body);
+  // let variableToExtract = "";
+  // let promptToExtractVariable = "";
+  // for (let url of body.urlParams) {
+  //   for(let key in url) {
+  //     variableToExtract += key + "|";
+  //     promptToExtractVariable += url[key] + "|";
+  //   }
+  // }
+  // body.variableToExtract = variableToExtract;
+  // body.promptToExtractVariable = promptToExtractVariable;
 
+  const variableToExtract = Object.keys(body.urlParams).join('|');
+  const promptToExtractVariable = Object.values(body.urlParams).join('|');
+  body.variableToExtract = variableToExtract;
+  body.promptToExtractVariable = promptToExtractVariable;
   // Parse params field if sent as string
+  console.log('body', body);
   if (body.params && typeof body.params === 'string') {
     try {
       body.params = JSON.parse(body.params);
@@ -63,6 +80,8 @@ export async function PUT(
     urlParams: body.urlParams,
     params: body.params,
     response: body.response,
+    variableToExtract: body.variableToExtract,
+    promptToExtractVariable: body.promptToExtractVariable,
     updatedAt: new Date()
   };
 

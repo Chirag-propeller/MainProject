@@ -31,7 +31,11 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
 
     const fetchApis = async () => {
       const response = await axios.get('/api/apiTool/get');
-      setApis(response.data);
+      const apis = response.data;
+      const agentApis = apis.filter((api: any) => agent.apis?.includes(api._id));
+      console.log(agentApis);
+      setApis(agentApis);
+
     }
     fetchApis();
     // Add body overflow hidden when modal is open
