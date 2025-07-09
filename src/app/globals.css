@@ -97,3 +97,40 @@ body {
   background-size: 200% 200%;
   animation: border-spin 4s linear infinite;
 }
+
+
+/* For Firefox */
+.custom-scrollbar {
+  scrollbar-width:thin;
+  scrollbar-color: #5557b4 #eeeded;
+}
+
+.bubble-user::before,
+.bubble-agent::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: inherit;
+  transform: rotate(45deg);
+  top: 10px;
+}
+
+.bubble-user::before {
+  right: -5px; /* Tail on right */
+}
+
+.bubble-agent::before {
+  left: -5px; /* Tail on left */
+}
+
+.light-only {
+  background-color: white !important;
+  color: #1f2937 !important; /* text-gray-800 */
+}
+
+.light-only * {
+  color: #1f2937 !important;
+  background-color: white !important;
+}
+

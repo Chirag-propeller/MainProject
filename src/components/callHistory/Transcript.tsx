@@ -2,53 +2,49 @@
 // import { Transcript } from "@/types";
 
 export type TranscriptItem = {
-    id: string;
-    type: 'message';
-    role: 'assistant' | 'user';
-    content: string[];
-    interrupted?: boolean;
-  };
-  
-  export type Transcript = {
-    items: TranscriptItem[];
-  };
+  id: string;
+  type: "message";
+  role: "assistant" | "user";
+  content: string[];
+  interrupted?: boolean;
+};
 
-  
+export type Transcript = {
+  items: TranscriptItem[];
+};
+
 type Props = {
-    transcript: Transcript;
-  };
+  transcript: Transcript;
+};
 
 export default function TranscriptBox({ transcript }: Props) {
   return (
-    // <div className="bg-white overflow-y-scroll h-100 border-2 border-gray-200 shadow-md rounded-sm p-2 space-y-2 ">
-    <div className="bg-white overflow-y-scroll h-100 border-2 border-gray-200 shadow-md rounded-sm p-2 w-full space-y-2 ">
-        <div className="">
-      {transcript.items.map((item: any) => {
-        if (!item.content?.length) return null;
-        // if (item.content?.trim() === "") return null;
-        // if (item.content.trim() === "") return null;
-        if (item.content?.join("").trim() === "") return null;
+    <div className="bg-white overflow-y-scroll h-100 border-2 border-gray-200 shadow-md rounded-sm p-2 w-full space-y-2 custom-scrollbar">
+      <div>
+        {transcript.items.map((item: any) => {
+          if (!item.content?.length || item.content.join("").trim() === "")
+            return null;
 
-        const isUser = item.role === "user";
-        // if (item.content.trim() === "") return null;
-        return (
-          <div
-            key={item.id}
-            className={`flex gap-0 justify-start mb-1
-            }`}
-          >
+          const isUser = item.role === "user";
+          return (
             <div
-              className={` px-1 text-xs
-              `}
+              key={item.id}
+              className={`flex mb-1 ${isUser ? "justify-end" : "justify-start"}`}
             >
-            
-              {isUser ? <span className=" font-semibold">User: </span> : <span className="text-indigo-700 font-semibold">Agent: </span>}
-              {isUser ?<span className="text-gray-500">{item.content.join(" ")}</span> : <span className="text-indigo-500">{item.content.join(" ")}</span>}
-              {/* {item.interrupted && <span className="text-red-500 ml-1">[Interrupted]</span>} */}
+              <div
+                className={`
+      relative max-w-[70%] px-3 py-2 rounded-[6px] shadow-sm my-1
+      ${isUser ? "bg-green-100 text-green-900 bubble-user" : "bg-indigo-100 text-indigo-800 bubble-agent"}
+    `}
+              >
+                <span className="block text-xs font-semibold mb-1">
+                  {isUser ? "User" : "Agent"}
+                </span>
+                <span className="block text-xs">{item.content.join(" ")}</span>
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
       </div>
     </div>
   );
