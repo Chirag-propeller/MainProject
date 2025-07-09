@@ -1,5 +1,5 @@
 import { formatDuration } from "date-fns";
-import DownloadButton from "./DownloadButton";
+// import DownloadButton from "./DownloadButton";
 
 // app/components/CallAnalysisCell.tsx
 type CallAnalysisCellProps = {
@@ -106,14 +106,14 @@ export default function CallAnalysisCell({
     );
   }
 
-  // Handle download transcript field
-  if (field === "download_transcript") {
-    return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
-        <DownloadButton callId={callId || ""} disabled={!callId} />
-      </td>
-    );
-  }
+  // // Handle download transcript field
+  // if (field === "download_transcript") {
+  //   return (
+  //     <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+  //       <DownloadButton callId={callId || ""} disabled={!callId} />
+  //     </td>
+  //   );
+  // }
 
   let displayValue = value;
   if (typeof value === "number") {

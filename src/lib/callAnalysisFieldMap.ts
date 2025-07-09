@@ -40,7 +40,6 @@ export const CALL_ANALYSIS_FIELD_LABELS: Record<string, string> = {
   call_direction: "Call Direction",
   call_duration: "Call Duration(sec)",
   average_latency: "Avg. Latency(sec)",
-  download_transcript: "Download",
   phonenumber: "Phone Number",
   from_phonenumber: "From Phone Number",
   agent: "Agent",
