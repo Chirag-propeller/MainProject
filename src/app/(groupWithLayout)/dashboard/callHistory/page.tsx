@@ -34,6 +34,7 @@ const allFields = [
   "llm_cost",
   "stt_cost",
   "tts_cost",
+  "download_transcript",
 ];
 
 // Sample data for filters
@@ -67,6 +68,7 @@ const page = () => {
     "script_adherence_score",
     "ai_confidence_score",
     "phonenumber",
+    "download_transcript",
   ]);
   const [filters, setFilters] = useState<FilterState>({
     agent: [],
@@ -86,8 +88,13 @@ const page = () => {
       const userData = response.data;
       console.log(userData);
       if (userData.callHistoryFields && userData.callHistoryFields.length > 0) {
+        // Ensure download_transcript is always included
         const userFields = userData.callHistoryFields;
-        setCustomiseField(userFields);
+        if (!userFields.includes("download_transcript")) {
+          setCustomiseField([...userFields, "download_transcript"]);
+        } else {
+          setCustomiseField(userFields);
+        }
       }
     };
     fetchCustomiseField();

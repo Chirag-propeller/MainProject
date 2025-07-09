@@ -278,7 +278,9 @@ export default function CallAnalysisTable({
                                       ? "70px"
                                       : key === "call_duration"
                                         ? "60px"
-                                        : "80px",
+                                        : key === "download_transcript"
+                                          ? "40px"
+                                          : "80px",
                           }}
                         ></div>
                       </td>
