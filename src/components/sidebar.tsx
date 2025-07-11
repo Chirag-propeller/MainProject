@@ -96,16 +96,14 @@ const UserCard = ({ collapsed }: { collapsed: boolean }) => {
 
   return (
     <Link href="/dashboard/profile">
-      <div className="w-39 p-3 bg-gray-50 hover:bg-gray-100 transition-colors rounded-[6px] border border-gray-200 cursor-pointer">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-6 h-6 bg-indigo-100 rounded-full flex items-center justify-center">
-            <UserIcon className="w-4 h-4 text-indigo-600" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-medium text-gray-900 truncate">
-              {user.name}
-            </h4>
-          </div>
+      <div className="w-39 p-3 bg-gray-50  hover:bg-gray-100  transition-colors rounded-[6px] border border-gray-200  cursor-pointer">
+        <div className="w-6 h-6 bg-indigo-100  rounded-full flex items-center justify-center">
+          <UserIcon className="w-4 h-4 text-indigo-600" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h4 className="text-sm font-medium text-gray-900  truncate">
+            {user.name}
+          </h4>
         </div>
 
         <div className="space-y-1">
@@ -152,12 +150,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
 
   return (
     <aside
-      className={`transition-all duration-200 ${collapsed ? "w-16" : "w-45"} h-screen overflow-y-auto text-gray-600 p-2 ps-0 pt-0 pb-10 fixed border-r border-gray-200`}
+      className={`transition-all duration-200 ${collapsed ? "w-16" : "w-45"} h-screen overflow-y-auto text-gray-600 p-2 ps-0 pt-0 pb-10 fixed border-r border-gray-200 bg-white`}
     >
-      {/* <aside className="w-64 h-screen fixed left-0 top-0 bg-white text-gray-600"> */}
-
       <div
-        className={`bg-white fixed border-b border-gray-200 flex items-center justify-between ${collapsed ? "w-16" : "w-45"}`}
+        className={`fixed border-b border-gray-200 flex items-center justify-between ${
+          collapsed ? "w-16" : "w-45"
+        } bg-white`}
       >
         <div className="flex items-center justify-center w-full">
           <Logo collapsed={collapsed} />
@@ -169,12 +167,13 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? (
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-5 h-5 text-gray-600" />
           ) : (
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-5 h-5 text-gray-600" />
           )}
         </button>
       </div>
+
       <nav className="flex flex-col gap-1 ps-3 mt-3 pt-10 h-[64px]">
         {navItemsMain.map((item) => (
           <SidebarLink
@@ -185,15 +184,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
             collapsed={collapsed}
           />
         ))}
-        {/* <h1 className='p-2 text-sm mt-4 pb-0 text-gray-500'> TOOLS </h1> */}
-        {/* {navItemsTool.map(item => (
-          <SidebarLink
-            key={item.href}
-            href={item.href}
-            name={item.name}
-            icon={item.icon}
-          />
-        ))} */}
 
         <div className="absolute bottom-3">
           <UserCard collapsed={collapsed} />

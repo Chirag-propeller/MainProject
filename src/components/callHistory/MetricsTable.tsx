@@ -27,7 +27,6 @@ export default function MetricsTable() {
 
   return (
     <div className="w-[70vw] overflow-hidden mx-auto">
-      {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">Metrics</h2> */}
 
       {loading ? (
         <p className="text-gray-600">Loading metrics...</p>

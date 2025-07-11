@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const limit = parseInt(req.nextUrl.searchParams.get("limit") || "20");
     // console.log(page, limit);
     // console.log(dateRange);
-  
+
     const userId = new mongoose.Types.ObjectId(user.userId);
 
     // Start building the match object
@@ -39,10 +39,10 @@ export async function POST(req: NextRequest) {
     if (dateRange.startDate && dateRange.endDate) {
       const start = new Date(dateRange.startDate);
       start.setHours(0, 0, 0, 0); // Start of day (local)
-    
+
       const end = new Date(dateRange.endDate);
       end.setHours(23, 59, 59, 999); // End of day (local)
-    
+
       matchStage["started_at_date"] = {
         $gte: start,
         $lte: end,
@@ -87,10 +87,10 @@ export async function POST(req: NextRequest) {
             }
           }
         }
-      },      
+      },
       { $match: matchStage },
       { $sort: { started_at_date: -1 as const } },
-      
+
       // Lookup to join with AggregatedMetrics collection
       {
         $lookup: {
@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
           as: "Metrics" // output array field
         }
       },
-      
+
       // Add cost field from the joined data
       {
         $addFields: {
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
           }
         }
       },
-      
+
       // Remove the temporary costMetrics array to clean up the output
       {
         $project: {

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 type SidebarLinkProps = {
   href: string;
   name: string;
@@ -16,18 +17,18 @@ const SidebarLink = ({
 }: SidebarLinkProps) => {
   const pathname = usePathname();
   const isActive = pathname?.includes(href);
-  // console.log(pathname, href, pathname?.includes(href));
 
   return (
     <Link
       href={href}
-      className={`flex group  items-center ${
+      className={`flex group items-center transition-colors ${
         !collapsed ? "gap-2 p-1 rounded-[6px]" : "gap-2 p-2 pl-3 rounded-full"
-      }  ${
-        isActive
-          ? "bg-indigo-100 text-indigo-700"
-          : "text-gray-600 hover:text-black"
-      }`}
+      } 
+        ${
+          isActive
+            ? "bg-indigo-100 text-indigo-700"
+            : "text-gray-600 hover:text-black"
+        }`}
     >
       <Icon
         className={`w-4 h-4 transition-colors ${
@@ -40,4 +41,5 @@ const SidebarLink = ({
     </Link>
   );
 };
+
 export default SidebarLink;
