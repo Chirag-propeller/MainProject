@@ -130,7 +130,7 @@ const MainComponent = () => {
           <div className="flex flex-col gap-2">
             {selectedNode && selectedNode.data.type === 'Conversation' && <ConversationNodeSidebar />}
             {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
-            {selectedNode && selectedNode.data.type === 'End Call' && <EndCallNodeSidebar />}
+            {selectedNode && selectedNode.data.type === 'endcall' && <EndCallNodeSidebar />}
             {selectedEdge && <EdgeSidebar />}
           </div>
         ) : (

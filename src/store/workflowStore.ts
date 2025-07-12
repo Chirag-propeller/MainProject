@@ -38,7 +38,7 @@ interface ConditionalNodeData extends BaseNodeData {
 }
 
 interface EndCallNodeData extends BaseNodeData {
-  type: 'End Call'
+  type: 'endcall'
 }
 
 // Union type for all possible node data types
@@ -198,7 +198,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
         position: basePosition,
         data: {
           name: 'End Call Node',
-          type: 'End Call',
+          type: 'endcall',
           global: {
             isGlobal: false,
             pathwayCondition: '',

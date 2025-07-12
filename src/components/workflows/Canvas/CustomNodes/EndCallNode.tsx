@@ -22,6 +22,8 @@ interface EndCallNodeData {
 const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data }) => {
   const isGlobal = data.global?.isGlobal || false;
 
+  const displayType = data.type === 'endcall' ? 'End Call' : data.type;
+
   return (
     <div className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
       isGlobal ? 'border-purple-500 bg-purple-50' : 'border-red-500 bg-red-50'
@@ -51,7 +53,7 @@ const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data }) => {
         <div className={`text-sm font-semibold mb-1 ${
           isGlobal ? 'text-purple-600' : 'text-red-600'
         }`}>
-          {data.type || 'End Call'}
+          {displayType}
         </div>
         <div className="text-lg font-bold text-gray-800 mb-2">
           {data.name || 'End Call Node'}

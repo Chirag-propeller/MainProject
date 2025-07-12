@@ -36,11 +36,11 @@ const EndCallNodeSidebar: React.FC = () => {
             Type
           </label>
           <select
-            value={selectedNode.data.type || 'End Call'}
+            value={selectedNode.data.type || 'endcall'}
             onChange={(e) => handleNodeFieldChange('type', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
-            <option value="End Call">End Call</option>
+            <option value="endcall">End Call</option>
           </select>
         </div>
 
