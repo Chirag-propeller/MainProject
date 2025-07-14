@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Agent } from "@/components/agents/types";
-import { Upload, Code, X } from "lucide-react";
+import { Upload, Code, X, Trash2 } from "lucide-react";
 import { FaScrewdriverWrench } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
@@ -13,15 +13,14 @@ import { Api } from "@/components/apiTool/types";
 import { fetchApis } from "@/components/apiTool/api";
 
 const ToolsContent = ({
-  agentId,
   agent,
   setAgent,
 }: {
-  agentId: string;
   agent: Agent;
   setAgent: (agent: Agent) => void;
 }) => {
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isFileUploaded, setIsFileUploaded] = useState(
@@ -29,8 +28,9 @@ const ToolsContent = ({
   );
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [fileUrl, setFileUrl] = useState<string | null>(
-    agent.knowledgeBaseUrl ?? null // fallback if you already store it on the agent
+    agent.knowledgeBaseUrl ?? null
   );
+  const [fileName, setFileName] = useState<string | null>(null);
   
   // API-related state
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
@@ -55,21 +55,32 @@ const ToolsContent = ({
     initializeSelectedApis();
   }, [agent.apis]);
 
+  // Extract filename from URL when component mounts
+  useEffect(() => {
+    if (fileUrl && !fileName) {
+      const extractedName = fileUrl.split("/").pop()?.split("?")[0] || "Unknown file";
+      setFileName(extractedName);
+    }
+  }, [fileUrl, fileName]);
+
   const uploadFile = async (file: File) => {
     const formData = new FormData();
     const formData2 = new FormData();
     setIsUploading(true);
-    formData.append("agent_id", agentId);
+    formData.append("agentId", agent._id);
     formData.append("file", file);
-    formData2.append("agentId", agentId);
+    formData2.append("agentId", agent._id);
     const url = process.env.NEXT_PUBLIC_AZURE_URL;
     let azureUrl = null;
+    let uploadedFileName = null;
     try {
       const response = await axios.post("/api/agents/file", formData);
 
       if (response.status === 200) {
         azureUrl = response.data.url;
+        uploadedFileName = response.data.filename || file.name;
         setFileUrl(azureUrl);
+        setFileName(uploadedFileName);
         formData2.append("url", azureUrl);
         console.log("File uploaded successfully");
       } else {
@@ -87,7 +98,7 @@ const ToolsContent = ({
       const response = await axios.post(
         `${url}/upload-pdf`,
         {
-          agentId: agentId,
+          agentId: agent._id,
           url: azureUrl,
         },
         {
@@ -106,7 +117,6 @@ const ToolsContent = ({
         });
         setIsFileUploaded(true);
         toast.success("File uploaded successfully");
-        // setTimeout(() => setIsFileUploaded(false), 5000);
       } else {
         console.error("Failed to upload file");
         toast.error("Failed to upload file");
@@ -119,10 +129,41 @@ const ToolsContent = ({
     }
   };
 
+  const handleDeleteKnowledgeBase = async () => {
+    if (!window.confirm("Are you sure you want to delete the knowledge base file? This action cannot be undone.")) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await axios.delete("/api/agents/file", {
+        data: { agentId: agent._id }
+      });
+
+      if (response.data.success) {
+        setAgent({
+          ...agent,
+          knowledgeBaseAttached: false,
+          knowledgeBaseUrl: "",
+        });
+        setIsFileUploaded(false);
+        setFileUrl(null);
+        setFileName(null);
+        toast.success("Knowledge base deleted successfully");
+      } else {
+        toast.error("Failed to delete knowledge base");
+      }
+    } catch (error) {
+      console.error("Error deleting knowledge base:", error);
+      toast.error("Error deleting knowledge base. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const handleDownloadKnowledgeBase = async () => {
     if (!fileUrl) return;
-    // Extract filename from the Azure URL or however you store it
-    const filename = fileUrl.split("/").pop();
+    const filename = fileName || fileUrl.split("/").pop();
     try {
       const response = await axios.get(
         `/api/knowledgeBase/download?filename=${encodeURIComponent(filename!)}`
@@ -157,20 +198,18 @@ const ToolsContent = ({
   // API-related handlers
   const handleApiSelect = (api: Api) => {
     setSelectedApis(prev => [...prev, api]);
-    // Update agent with the new API
     setAgent({
       ...agent,
-      apis: [...(agent.apis || []), api._id as any], // Add API ID to agent's apis array
+      apis: [...(agent.apis || []), api._id as any],
     });
   };
 
   const handleRemoveApi = (apiId: string) => {
     const apiToRemove = selectedApis.find(api => api._id === apiId);
     setSelectedApis(prev => prev.filter(api => api._id !== apiId));
-    // Update agent to remove the API
     setAgent({
       ...agent,
-      apis: (agent.apis || []).filter(id => id.toString() !== apiId), // Remove API ID from agent's apis array
+      apis: (agent.apis || []).filter(id => id.toString() !== apiId),
     });
     if (apiToRemove) {
       toast.success(`${apiToRemove.apiName} removed from agent tools`);
@@ -207,19 +246,36 @@ const ToolsContent = ({
               <p className="text-green-600 font-semibold text-sm">
                 File uploaded successfully
               </p>
+              {fileName && (
+                <p className="text-sm text-gray-700 font-medium bg-gray-50 px-3 py-1 rounded">
+                  📄 {fileName}
+                </p>
+              )}
               <p className="text-sm text-gray-500">
                 Knowledge base is configured
               </p>
-              {fileUrl && (
+              <div className="flex gap-2 mt-2">
+                {fileUrl && (
+                  <button
+                    type="button"
+                    onClick={handleDownloadKnowledgeBase}
+                    className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline cursor-pointer"
+                  >
+                    {/* <RiArrowDropDownLine className="w-5 h-5" /> */}
+
+                    Download file
+                  </button>
+                )}
                 <button
                   type="button"
-                  onClick={handleDownloadKnowledgeBase}
-                  className="mt-1 inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                  onClick={handleDeleteKnowledgeBase}
+                  disabled={isDeleting}
+                  className="inline-flex items-center gap-1 text-sm text-red-600 hover:underline disabled:opacity-50 cursor-pointer"
                 >
-                  <RiArrowDropDownLine className="w-5 h-5" />
-                  Download file
+                  <Trash2 className="w-4 h-4" />
+                  {isDeleting ? "Deleting..." : "Delete"}
                 </button>
-              )}
+              </div>
             </div>
           ) : (
             <div className="flex flex-col gap-2 items-center">
@@ -390,7 +446,6 @@ const Tools = ({
           <hr className="border-t border-gray-200 my-2" />
           <div className="p-4">
             <ToolsContent
-              agentId={agent.agentId}
               agent={agent}
               setAgent={setAgent}
             />
