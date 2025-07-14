@@ -7,7 +7,8 @@ export interface IFile extends Document {
     size: number
     type: string
     source: 'upload' | 'text'
-    knowledgeBaseId: mongoose.Types.ObjectId
+    knowledgeBaseId?: mongoose.Types.ObjectId
+    agentId?: mongoose.Types.ObjectId
     userId: mongoose.Types.ObjectId
   }
   
@@ -20,6 +21,7 @@ export interface IFile extends Document {
       type: { type: String },
       source: { type: String, enum: ['upload', 'text'], default: 'upload' },
       knowledgeBaseId: { type: Schema.Types.ObjectId, ref: 'KnowledgeBase' },
+      agentId: { type: Schema.Types.ObjectId, ref: 'Agent' },
       userId: { type: Schema.Types.ObjectId, ref: 'User' },
     },
     { timestamps: true }

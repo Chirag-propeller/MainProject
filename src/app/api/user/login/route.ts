@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 
-
 dbConnect()
 
 export async function POST(req : NextRequest){
@@ -18,7 +17,7 @@ export async function POST(req : NextRequest){
         // console.log(email, password);
         const emailToCheck = email.toLowerCase();
         const user = await User.findOne({email: emailToCheck});
-        console.log(user);
+        // console.log(user);
         if(user === null){
             return NextResponse.json({ error:"User don't Exist"}, {status: 400});
         }
@@ -32,7 +31,7 @@ export async function POST(req : NextRequest){
         }
 
         const checkPass = await bcrypt.compare(password, user.password);
-        console.log(checkPass);
+        // console.log(checkPass);
         if (!checkPass) {
             return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
           }
@@ -61,13 +60,15 @@ export async function POST(req : NextRequest){
                 sameSite: 'lax', 
             },
         )
-response.cookies.set("lastLoginMethod", "email", {
-  httpOnly: false,
-  path: "/",
-  secure: isProduction,
-  sameSite: "lax",
-  maxAge: 60 * 60 * 24 * 30,
-});
+        response.cookies.set("lastLoginMethod", "email", {
+        httpOnly: false,
+        path: "/",
+        secure: isProduction,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30,
+        });
+
+
         return response;
     }catch(err:any){
         return NextResponse.json({error: err}, {status: 500})

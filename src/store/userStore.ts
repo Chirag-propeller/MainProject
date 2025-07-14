@@ -19,7 +19,7 @@ export interface User {
     oauthProviderId?: string;
     emailVerified: boolean;
     lastLoginAt?: Date;
-    createdAt: Date;
+    createdAt?: Date;
     updatedAt?: Date;
     language?: string;
     timezone?: string;
@@ -42,7 +42,69 @@ export interface User {
     premium: boolean;
 }
 
-export const useUserStore = create<User>((set, get) => ({
+interface UserStore extends User {
+    setUser: (user: User) => void;
+    setName: (name: string) => void;
+    setEmail: (email: string) => void;
+    setPassword: (password: string) => void;
+    setIsVerified: (isVerified: boolean) => void;
+    setProfilePicture: (profilePicture: string) => void;
+    setPhone: (phone: string) => void;
+    setRole: (role: UserRole) => void;
+    setStatus: (status: UserStatus) => void;
+    setAuthProvider: (authProvider: AuthProvider) => void;
+    setEmailVerified: (emailVerified: boolean) => void;
+    setCreatedAt: (createdAt: Date) => void;
+    setUpdatedAt: (updatedAt: Date) => void;
+    setLanguage: (language: string) => void;
+    setTimezone: (timezone: string) => void;
+    setEmailUpdates: (emailUpdates: boolean) => void;
+    setProductNews: (productNews: boolean) => void;
+    setUsageAlerts: (usageAlerts: boolean) => void;
+    setForgotPasswordToken: (forgotPasswordToken: string) => void;
+    setForgotPasswordTokenExpiry: (forgotPasswordTokenExpiry: Date) => void;
+    setVerifyToken: (verifyToken: string) => void;
+    setVerifyTokenExpiry: (verifyTokenExpiry: Date) => void;
+    setAgents: (agents: Types.ObjectId[]) => void;
+    setPhoneNumbers: (phoneNumbers: Types.ObjectId[]) => void;
+    setKnowledgeBases: (knowledgeBases: Types.ObjectId[]) => void;
+    setCampaigns: (campaigns: Types.ObjectId[]) => void;
+    setOtp: (otp: string) => void;
+    setOtpExpiry: (otpExpiry: Date) => void;
+    setCredits: (credits: Types.Decimal128) => void;
+    setCreditsUsed: (creditsUsed: Types.Decimal128) => void;
+    setCallHistoryFields: (callHistoryFields: string[]) => void;
+    setPremium: (premium: boolean) => void;
+    getUser: () => User;
+    getUserId: () => string;
+    getUserRole: () => UserRole;
+    getUserStatus: () => UserStatus;
+    getUserAuthProvider: () => AuthProvider;
+    getUserEmailVerified: () => boolean;
+    getUserCreatedAt: () => Date | undefined;
+    getUserUpdatedAt: () => Date | undefined;
+    getUserLanguage: () => string | undefined;
+    getUserTimezone: () => string | undefined;
+    getUserEmailUpdates: () => boolean;
+    getUserProductNews: () => boolean;
+    getUserUsageAlerts: () => boolean;
+    getUserForgotPasswordToken: () => string | undefined;
+    getUserForgotPasswordTokenExpiry: () => Date | undefined;
+    getUserVerifyToken: () => string | undefined;
+    getUserVerifyTokenExpiry: () => Date | undefined;
+    getUserAgents: () => Types.ObjectId[];
+    getUserPhoneNumbers: () => Types.ObjectId[];
+    getUserKnowledgeBases: () => Types.ObjectId[];
+    getUserCampaigns: () => Types.ObjectId[];
+    getUserOtp: () => string | undefined;
+    getUserOtpExpiry: () => Date | undefined;
+    getUserCredits: () => Types.Decimal128;
+    getUserCreditsUsed: () => Types.Decimal128;
+    getUserCallHistoryFields: () => string[];
+    getUserPremium: () => boolean;
+}
+
+export const useUserStore = create<UserStore>((set, get) => ({
     _id: '',
     name: '',
     email: '',
@@ -55,22 +117,22 @@ export const useUserStore = create<User>((set, get) => ({
     authProvider: 'email',
     emailVerified: false,
     createdAt: new Date(),
-    updatedAt: new Date(),
-    language: 'en',
-    timezone: 'IST',
+    updatedAt: undefined,
+    language: undefined,
+    timezone: undefined,
     emailUpdates: true,
     productNews: true,
     usageAlerts: true,
-    forgotPasswordToken: '',
-    forgotPasswordTokenExpiry: new Date(),
-    verifyToken: '',
-    verifyTokenExpiry: new Date(),
+    forgotPasswordToken: undefined,
+    forgotPasswordTokenExpiry: undefined,
+    verifyToken: undefined,
+    verifyTokenExpiry: undefined,
     agents: [],
     phoneNumbers: [],
     knowledgeBases: [],
     campaigns: [],
-    otp: '',
-    otpExpiry: new Date(),
+    otp: undefined,
+    otpExpiry: undefined,
     credits: Types.Decimal128.fromString('0'),
     creditsUsed: Types.Decimal128.fromString('0'),
     callHistoryFields: [],

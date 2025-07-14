@@ -36,7 +36,7 @@ const ModelLeft = ({
   systemPrompt: string;
   setSystemPrompt: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const maxChars = 3000;
+  const maxChars = 30000;
 
   return (
     // <div className='w-3/4'>
@@ -370,13 +370,13 @@ const Model = ({
                   value={systemPrompt}
                   onChange={(e) => {
                     const text = e.target.value;
-                    if (text.length <= 3000) {
+                    if (text.length <= 30000) {
                       setSystemPrompt(text);
                     }
                   }}
                 />
                 <span className="absolute bottom-2 right-3 text-xs text-gray-400 bg-white px-1">
-                  {systemPrompt.length} / 3000
+                  {systemPrompt.length} / 30000
                 </span>
               </div>
             </div>
