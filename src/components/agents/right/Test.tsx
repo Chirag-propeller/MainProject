@@ -28,6 +28,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   }, []);
 
   useEffect(() => {
+    console.log(agent);
 
     const fetchApis = async () => {
       const response = await axios.get('/api/apiTool/get');
@@ -135,7 +136,11 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         ttsLanguage : agent.ttsLanguage,     
         roomName,
         apis : apis,
-        
+        callHangup: agent.callHangup || false,
+        callHangupPhase: agent.callHangupPhase || [],
+        maxCallDuration: agent.maxCallDuration,
+        numberTransfer: agent.numberTransfer || false,
+        numberTransferNumber: agent.numberTransferNumber || "",
       };
       console.log(dataToSend);
       console.log("run");

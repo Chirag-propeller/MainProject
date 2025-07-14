@@ -1,14 +1,21 @@
 'use client'
 import React, { useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import SideBar from './Canvas/SideBar'
 import MainCanvas from './Canvas/MainCanvas'
 import ConversationNodeSidebar from './Canvas/CustomComponentSidebar/ConversationNodeSidebar'
 import ApiRequestNodeSidebar from './Canvas/CustomComponentSidebar/ApiRequestNodeSidebar'
 import EndCallNodeSidebar from './Canvas/CustomComponentSidebar/EndCallNodeSidebar'
 import EdgeSidebar from './Canvas/CustomComponentSidebar/EdgeSidebar'
+import WorkflowTopBar from './WorkflowTopBar'
 import { useWorkflowStore } from '@/store/workflowStore'
 
-const MainComponent = () => {
+interface MainComponentProps {
+  workflowId?: string;
+}
+
+const MainComponent = ({ workflowId }: MainComponentProps) => {
+  const searchParams = useSearchParams()
   const { 
     nodes, 
     edges, 
@@ -18,16 +25,32 @@ const MainComponent = () => {
     lastSaved,
     globalPrompt,
     globalNodes,
+    currentWorkflowId,
     loadWorkflow,
     saveWorkflow,
     clearNodes,
-    autoSave
+    autoSave,
+    setCurrentWorkflowId,
+    initializeUser,
+    updateWorkflowName
   } = useWorkflowStore()
 
-  // Load workflow on component mount
+  // Initialize user and load workflow on component mount
   useEffect(() => {
-    loadWorkflow()
-  }, [loadWorkflow])
+    const initialize = async () => {
+      // First initialize the user
+      await initializeUser()
+      
+      // Then load the workflow if we have an ID
+      const targetWorkflowId = workflowId || searchParams?.get('workflowId')
+      if (targetWorkflowId) {
+        setCurrentWorkflowId(targetWorkflowId)
+        loadWorkflow(targetWorkflowId)
+      }
+    }
+    
+    initialize()
+  }, [loadWorkflow, workflowId, searchParams, setCurrentWorkflowId, initializeUser])
 
   // Auto-save when nodes or edges change
   useEffect(() => {
@@ -62,8 +85,13 @@ const MainComponent = () => {
   }
 
   const handleManualLoad = async () => {
+    if (!currentWorkflowId) {
+      alert('No workflow ID available to load')
+      return
+    }
+    
     try {
-      const result = await loadWorkflow()
+      const result = await loadWorkflow(currentWorkflowId)
       if (result.success) {
         alert('Workflow loaded successfully!')
       } else {
@@ -119,15 +147,17 @@ const MainComponent = () => {
   }
 
   return (
-    <div className='relative w-full h-full flex'>
-      <SideBar />
-      <MainCanvas />
+    <div className='relative w-full h-screen flex flex-col overflow-hidden'>
+      <WorkflowTopBar />
+      <div className='relative w-full flex-1 flex overflow-hidden'>
+        <SideBar />
+        <MainCanvas />
       
       {/* Right panel container */}
-      <div className="absolute top-4 right-4 flex flex-col gap-4 z-20">
+      <div className="absolute top-4 right-4 flex flex-col gap-4 z-20 max-h-[calc(100vh-8rem)] overflow-hidden">
         {/* Sidebars section */}
         {(selectedNode || selectedEdge) ? (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 max-h-full overflow-hidden">
             {selectedNode && selectedNode.data.type === 'Conversation' && <ConversationNodeSidebar />}
             {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
             {selectedNode && selectedNode.data.type === 'endcall' && <EndCallNodeSidebar />}
@@ -170,7 +200,7 @@ const MainComponent = () => {
         </div>
         
         {/* Status info */}
-        <div className='absolute bottom-10 left-10 bg-white p-3 rounded z-20 text-sm border shadow'>
+        <div className='absolute bottom-4 left-4 bg-white p-3 rounded z-20 text-sm border shadow'>
           <div>Nodes: {nodes.length} | Edges: {edges.length} | Global: {globalNodes.length}</div>
           {lastSaved && (
             <div className="text-xs text-gray-500">
@@ -178,6 +208,7 @@ const MainComponent = () => {
             </div>
           )}
         </div>
+      </div>
     </div>
   )
 }

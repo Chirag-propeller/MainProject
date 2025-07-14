@@ -10,7 +10,7 @@ interface WorkflowData {
 }
 
 interface SaveWorkflowParams {
-  userId: string;
+  workflowId: string;
   name?: string;
   nodes: Node[];
   edges: Edge[];
@@ -18,6 +18,10 @@ interface SaveWorkflowParams {
   edgeCounter: number;
   globalPrompt: string;
   globalNodes: string[];
+}
+
+interface CreateWorkflowParams {
+  name?: string;
 }
 
 interface LoadWorkflowResponse {
@@ -30,11 +34,43 @@ interface LoadWorkflowResponse {
   message: string;
 }
 
+// Create a new workflow
+export const createWorkflow = async (params: CreateWorkflowParams): Promise<{ success: boolean; data?: any; message: string }> => {
+  try {
+    const response = await fetch('/api/workflow/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || 'Failed to create workflow');
+    }
+
+    return {
+      success: true,
+      data: result.data,
+      message: result.message || 'Workflow created successfully'
+    };
+
+  } catch (error) {
+    console.error('Error creating workflow:', error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Failed to create workflow'
+    };
+  }
+};
+
 // Save workflow to MongoDB
 export const saveWorkflow = async (params: SaveWorkflowParams): Promise<{ success: boolean; message: string }> => {
   try {
-    const response = await fetch('/api/workflow/save', {
-      method: 'POST',
+    const response = await fetch(`/api/workflow/${params.workflowId}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -62,9 +98,9 @@ export const saveWorkflow = async (params: SaveWorkflowParams): Promise<{ succes
 };
 
 // Load workflow from MongoDB
-export const loadWorkflow = async (userId: string): Promise<LoadWorkflowResponse> => {
+export const loadWorkflow = async (workflowId: string): Promise<LoadWorkflowResponse> => {
   try {
-    const response = await fetch(`/api/workflow/load?userId=${encodeURIComponent(userId)}`, {
+    const response = await fetch(`/api/workflow/${workflowId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -2,18 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import Workflow from '@/model/workflow/workflow.model';
 import dbConnect from '@/lib/mongodb';
+import { getUserFromRequest } from '@/lib/auth';
 
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
     
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
+    const user = await getUserFromRequest(req);
+    const userId = user.userId;
 
     // Validate required fields
     if (!userId) {
       return NextResponse.json(
-        { error: 'User ID is required' },
+        { error: 'User ID is required to load workflows from database' },
         { status: 400 }
       );
     }

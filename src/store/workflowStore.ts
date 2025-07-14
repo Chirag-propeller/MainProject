@@ -1,11 +1,27 @@
 import { create } from 'zustand'
 import { Node, Edge, Connection, applyNodeChanges, applyEdgeChanges } from 'reactflow'
-import { saveWorkflow, loadWorkflow, convertMongoDataToFlow, autoSaveWorkflow } from '@/utils/workflow'
+import { saveWorkflow, loadWorkflow as loadWorkflowUtil, convertMongoDataToFlow, autoSaveWorkflow, createWorkflow } from '@/utils/workflow'
 
 // Base interfaces for extensible node types
 interface BaseNodeData {
   name: string
   type: string
+  llm?: {
+    provider: string
+    model: string
+  }
+  tts?: {
+    provider: string
+    model: string
+    language: string
+    gender: string
+    voice: string
+  }
+  stt?: {
+    provider: string
+    model: string
+    language: string
+  }
   global?: {
     isGlobal?: boolean
     pathwayCondition?: string
@@ -70,6 +86,8 @@ interface WorkflowState {
   isLoading: boolean
   lastSaved: Date | null
   userId: string
+  currentWorkflowId: string | null
+  workflowName: string
   
   // Setters
   setNodes: (nodes: Node<NodeData>[]) => void
@@ -80,6 +98,14 @@ interface WorkflowState {
   setSelectedEdge: (edge: Edge<EdgeData> | null) => void
   setIsGlobalPromptOpen: (open: boolean) => void
   setUserId: (userId: string) => void
+  setCurrentWorkflowId: (workflowId: string | null) => void
+  setWorkflowName: (name: string) => void
+  
+  // Workflow creation
+  createWorkflow: (name?: string) => Promise<any>
+  
+  // User initialization
+  initializeUser: () => Promise<void>
   
   // Node actions
   addNode: (nodeType: string) => void
@@ -93,7 +119,8 @@ interface WorkflowState {
   
   // Workflow actions
   saveWorkflow: () => Promise<any>
-  loadWorkflow: () => Promise<any>
+  loadWorkflow: (workflowId: string) => Promise<any>
+  updateWorkflowName: (name: string) => Promise<any>
   autoSave: () => void
   
   // ReactFlow handlers
@@ -255,7 +282,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   isGlobalPromptOpen: false,
   isLoading: false,
   lastSaved: null,
-  userId: 'user-123', // TODO: Get from auth
+  userId: '',
+  currentWorkflowId: null,
+  workflowName: '',
   
   // Setters
   setNodes: (nodes) => set({ nodes }),
@@ -266,6 +295,57 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
   setIsGlobalPromptOpen: (isGlobalPromptOpen) => set({ isGlobalPromptOpen }),
   setUserId: (userId) => set({ userId }),
+  setCurrentWorkflowId: (currentWorkflowId) => set({ currentWorkflowId }),
+  setWorkflowName: (workflowName) => set({ workflowName }),
+  
+  // Workflow creation
+  createWorkflow: async (name?: string) => {
+    set({ isLoading: true })
+    
+    try {
+      const result = await createWorkflow({ name })
+      if (result.success && result.data) {
+        set({ 
+          currentWorkflowId: result.data._id,
+          workflowName: result.data.name || 'New Workflow',
+          nodes: [],
+          edges: [],
+          nodeCounter: 1,
+          edgeCounter: 1,
+          globalPrompt: '',
+          globalNodes: [],
+          selectedNode: null,
+          selectedEdge: null
+        })
+        console.log('Workflow created successfully!')
+        return result
+      } else {
+        console.error('Failed to create workflow:', result.message)
+        throw new Error(result.message)
+      }
+    } catch (error) {
+      console.error('Create error:', error)
+      throw error
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+  
+  // User initialization
+  initializeUser: async () => {
+    try {
+      const response = await fetch('/api/user/getCurrentUser');
+      if (response.ok) {
+        const userData = await response.json();
+        set({ userId: userData._id });
+        console.log('User initialized with ID:', userData._id);
+      } else {
+        console.error('Failed to fetch user data');
+      }
+    } catch (error) {
+      console.error('Error initializing user:', error);
+    }
+  },
   
   // Node actions
   addNode: (nodeType) => {
@@ -297,6 +377,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         selectedNode: updatedSelected || state.selectedNode
       }
     })
+    
+    // Trigger auto-save after updating node
+    setTimeout(() => get().autoSave(), 500)
   },
   
   updateNodeGlobal: (nodeId, globalData) => {
@@ -330,6 +413,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         globalNodes: updatedGlobalNodes
       }
     })
+    
+    // Trigger auto-save after updating node global data
+    setTimeout(() => get().autoSave(), 500)
   },
   
   clearNodes: () => {
@@ -383,13 +469,17 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   // Workflow actions
   saveWorkflow: async () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, userId } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId } = get()
+    
+    if (!currentWorkflowId) {
+      throw new Error('No workflow ID available for saving')
+    }
     
     set({ isLoading: true })
     
     try {
       const result = await saveWorkflow({
-        userId,
+        workflowId: currentWorkflowId,
         nodes,
         edges,
         nodeCounter,
@@ -414,16 +504,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     }
   },
   
-  loadWorkflow: async () => {
-    const { userId } = get()
-    
+  loadWorkflow: async (workflowId: string) => {
     set({ isLoading: true })
     
     try {
-      const result = await loadWorkflow(userId)
+      const result = await loadWorkflowUtil(workflowId)
       if (result.success && result.data) {
         const flowData = convertMongoDataToFlow(result.data)
         set({
+          currentWorkflowId: workflowId,
+          workflowName: result.data.name || 'Untitled Workflow',
           nodes: flowData.nodes,
           edges: flowData.edges,
           nodeCounter: flowData.nodeCounter,
@@ -447,12 +537,42 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     }
   },
   
-  autoSave: () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, userId } = get()
+  updateWorkflowName: async (name: string) => {
+    const { currentWorkflowId } = get()
     
-    if (nodes.length > 0 || edges.length > 0) {
+    if (!currentWorkflowId) {
+      throw new Error('No workflow ID available for updating name')
+    }
+    
+    try {
+      const response = await fetch(`/api/workflow/${currentWorkflowId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      })
+      
+      const result = await response.json()
+      
+      if (result.success) {
+        set({ workflowName: name })
+        return result
+      } else {
+        throw new Error(result.error || 'Failed to update workflow name')
+      }
+    } catch (error) {
+      console.error('Error updating workflow name:', error)
+      throw error
+    }
+  },
+  
+  autoSave: () => {
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId } = get()
+    
+    if (currentWorkflowId && (nodes.length > 0 || edges.length > 0)) {
       autoSaveWorkflow({
-        userId,
+        workflowId: currentWorkflowId,
         nodes,
         edges,
         nodeCounter,

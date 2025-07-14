@@ -1,10 +1,10 @@
 import React from 'react'
-import MainComponent from '@/components/workflows/MainComponent'
+import WorkflowTable from '@/components/workflows/WorkflowTable'
 
 const page = () => {
   return (
     <div className='w-full h-full'>
-        <MainComponent />
+        <WorkflowTable />
     </div>
   )
 }

@@ -11,18 +11,18 @@ const SideBar: React.FC = () => {
   const [isAddNodeModalOpen, setIsAddNodeModalOpen] = useState(false)
 
   return (
-    <div className='absolute top-10 left-10 bg-transparent z-10'>
-        <div className='flex flex-col gap-4 items-start '>
+    <div className='absolute top-3 left-5 bg-transparent z-10'>
+        <div className='flex flex-col gap-2 items-start '>
 
         <Button className='rounded-[4px]' size='sm' onClick={() => setIsAddNodeModalOpen(true)}>
             <PlusIcon className='w-4 h-4 mr-2' />
             Add Node
         </Button>
         
-        <Button variant='secondary' className='rounded-[4px]' size='sm' onClick={() => setIsGlobalPromptOpen(!isGlobalPromptOpen)}>
+        <Button variant='secondary' className='rounded-[4px] border-1 border-indigo-500' size='sm' onClick={() => setIsGlobalPromptOpen(!isGlobalPromptOpen)}>
             Global Prompt
         </Button>
-        {isGlobalPromptOpen && <GlobalPromptBox />}
+        {!!isGlobalPromptOpen && <GlobalPromptBox />}
         
         <AddNodeModal 
           isOpen={isAddNodeModalOpen} 

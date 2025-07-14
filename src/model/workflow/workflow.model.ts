@@ -13,6 +13,22 @@ interface IWorkflowNode {
     endpoint?: string;
     method?: string;
     type: string;
+    llm?: {
+      provider: string;
+      model: string;
+    };
+    tts?: {
+      provider: string;
+      model: string;
+      language: string;
+      gender: string;
+      voice: string;
+    };
+    stt?: {
+      provider: string;
+      model: string;
+      language: string;
+    };
     global?: {
       isGlobal?: boolean;
       pathwayCondition?: string;
@@ -85,6 +101,22 @@ const WorkflowSchema = new Schema<IWorkflow>({
       endpoint: { type: String, default: '' },
       method: { type: String, default: 'GET' },
       type: { type: String, required: true },
+      llm: {
+        provider: { type: String, default: 'OpenAI' },
+        model: { type: String, default: 'gpt-4o-mini' }
+      },
+      tts: {
+        provider: { type: String, default: 'AWS' },
+        model: { type: String, default: 'generative' },
+        language: { type: String, default: 'en-GB' },
+        gender: { type: String, default: 'Female' },
+        voice: { type: String, default: 'Amy' }
+      },
+      stt: {
+        provider: { type: String, default: 'Deepgram' },
+        model: { type: String, default: 'nova-2' },
+        language: { type: String, default: 'en-US' }
+      },
       global: { 
         type: Object, 
         default: {

@@ -53,7 +53,7 @@ const MainCanvas: React.FC = () => {
   }, [nodes.length]) // Only log when number of nodes changes
 
   return (
-    <div className='flex-1 h-[100vh]'>
+    <div className='flex-1 h-[100vh] '>
     <ReactFlowProvider>
       <div className='w-full h-full'>
         <ReactFlow

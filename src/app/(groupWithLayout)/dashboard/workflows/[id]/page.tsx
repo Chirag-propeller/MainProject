@@ -1,10 +1,18 @@
 import React from 'react'
 import MainComponent from '@/components/workflows/MainComponent'
 
-const page = () => {
+interface WorkflowPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+const page = async ({ params }: WorkflowPageProps) => {
+  const { id } = await params;
+  
   return (
     <div className='w-full h-full'>
-        <MainComponent />
+        <MainComponent workflowId={id} />
     </div>
   )
 }

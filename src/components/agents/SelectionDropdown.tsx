@@ -26,11 +26,9 @@ const SelectionDropdown: React.FC<SelectionDropdownProps> = ({
   className = "",
 }) => {
   return (
-    <Select defaultValue={selectedOption} onValueChange={setOption}>
+    <Select value={selectedOption} onValueChange={setOption}>
       <SelectTrigger>
-        <SelectValue placeholder="Select an option">
-          {selectedOption}
-        </SelectValue>
+        <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent sideOffset={4} side="bottom">
         {options.map((option) =>
