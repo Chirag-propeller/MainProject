@@ -58,12 +58,12 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
   const [isUpdating, setIsUpdating] = useState(false); // Prevent double updates
 
   const fetchUserData = async (source = "unknown") => {
-    console.log(
-      "🔄 fetchUserData called from:",
-      source,
-      "at:",
-      new Date().toISOString()
-    );
+    // console.log(
+    //   "🔄 fetchUserData called from:",
+    //   source,
+    //   "at:",
+    //   new Date().toISOString()
+    // );
     try {
       setLoading(true);
       setError(null);
@@ -107,11 +107,11 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
       const knowledgeBasesData = await knowledgeBasesResponse.json();
       const campaignsData = await campaignsResponse.json();
 
-      console.log("Fetched user data from API:", {
-        email: userData.email,
-        name: userData.name,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log("Fetched user data from API:", {
+      //   email: userData.email,
+      //   name: userData.name,
+      //   timestamp: new Date().toISOString(),
+      // });
 
       // Process credits like in billing page
       const credits = parseFloat(userData.credits?.$numberDecimal) || 0;
@@ -127,13 +127,13 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
         knowledgeBases: knowledgeBasesData?.knowledgeBases || [],
         campaigns: campaignsData || [],
       };
-      console.log("Processed user data:", {
-        email: processedUser.email,
-        name: processedUser.name,
-        timestamp: new Date().toISOString(),
-      });
+      // console.log("Processed user data:", {
+      //   email: processedUser.email,
+      //   name: processedUser.name,
+      //   timestamp: new Date().toISOString(),
+      // });
 
-      console.log("🔥 Setting user state with email:", processedUser.email);
+      // console.log("🔥 Setting user state with email:", processedUser.email);
       setUser(processedUser);
     } catch (err: any) {
       console.error("Error fetching user data:", err);
@@ -146,7 +146,7 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   useEffect(() => {
-    console.log("🚀 UserDataProvider initial mount - calling fetchUserData");
+    // console.log("🚀 UserDataProvider initial mount - calling fetchUserData");
     fetchUserData("initial-mount");
   }, []);
 
@@ -154,8 +154,8 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
     if (user && !isUpdating) {
       try {
         setIsUpdating(true);
-        console.log("Starting user update with data:", userData);
-        console.log("Current user email before update:", user.email);
+        // console.log("Starting user update with data:", userData);
+        // console.log("Current user email before update:", user.email);
 
         // Make API call to update the user
         const response = await fetch("/api/user/update", {
@@ -170,15 +170,15 @@ export const UserDataProvider: React.FC<{ children: ReactNode }> = ({
         }
 
         const result = await response.json();
-        console.log("Profile update API response:", result);
-        console.log("Updated user from API:", result.user);
+        // console.log("Profile update API response:", result);
+        // console.log("Updated user from API:", result.user);
 
         // Force a fresh fetch to get the updated data from database
         // This ensures we get the latest data without conflicts
-        console.log("Refreshing user data to get latest from database...");
+        // console.log("Refreshing user data to get latest from database...");
         await new Promise((resolve) => setTimeout(resolve, 200)); // Ensure DB write is committed
         await fetchUserData("after-update");
-        console.log("User data refresh completed");
+        // console.log("User data refresh completed");
       } catch (err: any) {
         console.error("Error updating user:", err);
         // Revert local state on error

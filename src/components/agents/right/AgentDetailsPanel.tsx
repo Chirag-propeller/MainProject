@@ -9,7 +9,6 @@ import Test from "./Test";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import _ from "lodash";
-import Pricing from "./general/Pricing";
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -48,36 +47,54 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
 
   const handleUpdate = async () => {
     setIsUpdating(true);
-    const newBaseline = _.cloneDeep(agent);
-    const res = await fetch(`/api/agent/${agent._id}`, {
-      method: "PUT", // or PATCH if your backend prefers
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(agent),
-    });
+    try {
+      // Only update if name has actually changed
+      if (agent.agentName === name) {
+        setIsUpdating(false);
+        return;
+      }
 
-    if (res.ok) {
-      const data = await res.json();
-      setInitialAgent(newBaseline);
-      setIsModified(false);
+      // Create updated agent with current name
+      const updatedAgent = { ...agent, agentName: name };
+      const newBaseline = _.cloneDeep(updatedAgent);
+
+      const res = await fetch(`/api/agent/${agent._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedAgent),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        // Update the agent in the parent component to reflect in the agents list
+        setAgent(updatedAgent);
+        setInitialAgent(newBaseline);
+        setIsModified(false);
+        setIsUpdating(false);
+        alert("Agent updated successfully");
+        // console.log("Agent updated:", data);
+        router.refresh();
+      } else {
+        setIsUpdating(false);
+        alert("Failed to update agent");
+      }
+    } catch (error) {
       setIsUpdating(false);
-      alert("Agent updated successfully");
-      console.log("Agent updated:", data);
-      router.refresh();
-      // router.push('/dashboard/agents');
-    } else {
-      // setIsUpdating(false);
       alert("Failed to update agent");
+      console.error("Update error:", error);
     }
-    // setActiveTab('settings'); // Navigate to settings tab for updating
   };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsModified(!_.isEqual(agent, initialAgent));
+      // Check if agent has changed OR if name has changed
+      const agentChanged = !_.isEqual(agent, initialAgent);
+      const nameChanged = agent.agentName !== name;
+      setIsModified(agentChanged || nameChanged);
     }, 300);
 
     return () => clearTimeout(timeout);
-  }, [agent, initialAgent]);
+  }, [agent, initialAgent, name]);
 
   const handleTest = () => {
     setIsTesting(true);
@@ -107,23 +124,23 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   }, [agent.agentName]);
 
   // Debounced update for name input (avoids updating on every keystroke)
-  useEffect(() => {
-    const timeout = setTimeout(async () => {
-      if (agent.agentName !== name) {
-        const updatedAgent = { ...agent, agentName: name };
-        setAgent(updatedAgent); // local update
+  // useEffect(() => {
+  //   const timeout = setTimeout(async () => {
+  //     if (agent.agentName !== name) {
+  //       const updatedAgent = { ...agent, agentName: name };
+  //       setAgent(updatedAgent); // local update
 
-        // Backend update
-        await fetch(`/api/agent/${agent._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedAgent),
-        });
-      }
-    }, 500);
+  //       // Backend update
+  //       await fetch(`/api/agent/${agent._id}`, {
+  //         method: "PUT",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(updatedAgent),
+  //       });
+  //     }
+  //   }, 500);
 
-    return () => clearTimeout(timeout);
-  }, [agent, name, setAgent]);
+  //   return () => clearTimeout(timeout);
+  // }, [agent, name, setAgent]);
 
   return (
     <div className="flex flex-col bg-gray-50 border border-t-0 border-gray-200 h-full p-5">

@@ -37,7 +37,7 @@ const Transcriber = ({
   setAgent: (agent: Agent) => void;
 }) => {
   const { sttOptions, sttModels } = useLLMConfig() as LLMConfig;
-  console.log("sttModels", sttModels);
+  // console.log("sttModels", sttModels);
 
   // Create provider options from sttModels
   const provider: { name: string; value: string }[] = [];
@@ -61,25 +61,25 @@ const Transcriber = ({
     agent.sttLanguage || ""
   );
 
-  console.log("provider", provider);
+  // console.log("provider", provider);
 
   // Effect 1: Update models when provider changes
   useEffect(() => {
-    console.log("selectedProvider:", selectedProvider);
-    console.log("sttModels:", sttModels);
+    // console.log("selectedProvider:", selectedProvider);
+    // console.log("sttModels:", sttModels);
     const modelOptions: { name: string; value: string }[] = [];
     for (let i = 0; i < sttModels.length; i++) {
-      console.log(
-        "Checking provider:",
-        sttModels[i].name,
-        "vs selected:",
-        selectedProvider
-      );
+      // console.log(
+      //   "Checking provider:",
+      //   sttModels[i].name,
+      //   "vs selected:",
+      //   selectedProvider
+      // );
       if (
         sttModels[i].value === selectedProvider ||
         sttModels[i].name === selectedProvider
       ) {
-        console.log("Found matching provider:", sttModels[i]);
+        // console.log("Found matching provider:", sttModels[i]);
         for (let j = 0; j < sttModels[i].models.length; j++) {
           modelOptions.push({
             name: sttModels[i]?.models[j]?.name,
@@ -88,7 +88,7 @@ const Transcriber = ({
         }
       }
     }
-    console.log("Final models:", modelOptions);
+    // console.log("Final models:", modelOptions);
     setModels(modelOptions);
 
     // If agent has a saved model that exists in new provider, keep it; otherwise use first available
@@ -123,7 +123,7 @@ const Transcriber = ({
         }
       }
     }
-    console.log("languages", languageOptions);
+    // console.log("languages", languageOptions);
     setAvailableLanguages(languageOptions);
 
     // If agent has a saved language that exists in new model, keep it; otherwise use first available
@@ -139,7 +139,7 @@ const Transcriber = ({
 
   // Update agent when provider changes
   useEffect(() => {
-    console.log("Inside useEffect of selectedProvider for STT");
+    // console.log("Inside useEffect of selectedProvider for STT");
     let newModel = selectedModel;
 
     // Find models for the new provider
@@ -175,7 +175,7 @@ const Transcriber = ({
 
   // Update agent when model changes
   useEffect(() => {
-    console.log("Inside useEffect of selectedModel for STT");
+    // console.log("Inside useEffect of selectedModel for STT");
     if (agent.sttModel !== selectedModel) {
       setAgent({ ...agent, sttModel: selectedModel });
     }
@@ -183,7 +183,7 @@ const Transcriber = ({
 
   // Update agent when language changes
   useEffect(() => {
-    console.log("Inside useEffect of selectedLanguage for STT");
+    // console.log("Inside useEffect of selectedLanguage for STT");
     if (agent.sttLanguage !== selectedLanguage) {
       setAgent({
         ...agent,
@@ -194,7 +194,7 @@ const Transcriber = ({
   }, [selectedLanguage]);
 
   useEffect(() => {
-    console.log("STT agent", agent);
+    // console.log("STT agent", agent);
   }, [agent]);
 
   return (

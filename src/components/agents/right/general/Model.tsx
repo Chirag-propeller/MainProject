@@ -187,10 +187,10 @@ const Model = ({
       const provider = llmProviders.find(
         (p: LLMProvider) => p.value === selectedProvider
       );
-      console.log("provider without if", provider);
+      // console.log("provider without if", provider);
 
       if (provider && provider.models) {
-        console.log("provider", provider);
+        // console.log("provider", provider);
         const modelOptions = provider.models.map((model: LLMModel) => ({
           name: model.name,
           value: model.value,
