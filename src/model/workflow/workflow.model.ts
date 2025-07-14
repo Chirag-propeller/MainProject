@@ -39,6 +39,8 @@ interface IWorkflowEdge {
   type: string;
   data: {
     label?: string;
+    labelPosition?: 'up' | 'down' | 'center';
+    pathOffset?: number;
   };
 }
 
@@ -109,7 +111,9 @@ const WorkflowSchema = new Schema<IWorkflow>({
     target: { type: String, required: true },
     type: { type: String, required: true },
     data: {
-      label: { type: String, default: '' }
+      label: { type: String, default: '' },
+      labelPosition: { type: String, enum: ['up', 'down', 'center'], default: 'center' },
+      pathOffset: { type: Number, default: 0 }
     }
   }],
   nodeCounter: {

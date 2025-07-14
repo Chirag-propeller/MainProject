@@ -47,6 +47,7 @@ type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCa
 interface EdgeData {
   label?: string
   labelPosition?: 'up' | 'down' | 'center'
+  pathOffset?: number
 }
 
 interface WorkflowState {
@@ -352,7 +353,11 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       source: connection.source!,
       target: connection.target!,
       type: 'labeled',
-      data: { label: 'Custom Edge' },
+      data: { 
+        label: 'Custom Edge',
+        labelPosition: 'center',
+        pathOffset: 0
+      },
     }
     
     set((state) => ({
