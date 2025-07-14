@@ -110,18 +110,18 @@ export default function CallAnalysisTable({
           dateRange: dateRange,
         }
       );
-      console.log("API full response:", data.data);
+      // console.log("API full response:", data.data);
 
       const pagination = data.data.pagination;
       setHasNextPage(pagination.hasNextPage);
       setHasPreviousPage(pagination.hasPreviousPage);
       setTotalPages(Math.ceil(pagination.totalRecords / limit));
-      console.log(
-        "DEBUG: totalRecords =",
-        pagination.totalRecords,
-        "limit =",
-        limit
-      );
+      // console.log(
+      //   "DEBUG: totalRecords =",
+      //   pagination.totalRecords,
+      //   "limit =",
+      //   limit
+      // );
 
       let mappedData = data.data.data
         .filter((item: any) => item.call_analysis)

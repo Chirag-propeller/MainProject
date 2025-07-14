@@ -86,7 +86,7 @@ const page = () => {
     const fetchCustomiseField = async () => {
       const response = await axios.get("/api/user/getCurrentUser");
       const userData = response.data;
-      console.log(userData);
+      // console.log(userData);
       if (userData.callHistoryFields && userData.callHistoryFields.length > 0) {
         // Ensure download_transcript is always included
         const userFields = userData.callHistoryFields;
@@ -105,7 +105,7 @@ const page = () => {
     const fetchAgents = async () => {
       const response = await axios.get("/api/agents/get");
       const agents = response.data;
-      console.log(agents);
+      // console.log(agents);
       setAgentOptions(agents);
     };
     fetchAgents();

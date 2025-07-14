@@ -77,7 +77,7 @@ const Pricing = ({ agent }: { agent: Agent }) => {
           (model: any) => model.value === agent.ttsModel
         );
         if (ttsModel && ttsModel.pricing) {
-          ttsCost = ttsModel.pricing.per_character * PRICING.avgOutputToken; // Using output tokens only
+          ttsCost = ttsModel.pricing.per_character * PRICING.avgOutputToken;
         }
       }
     }
@@ -137,9 +137,19 @@ const Pricing = ({ agent }: { agent: Agent }) => {
   // };
   const formatCost = (cost: number) => format(cost, currency as CurrencyCode);
 
-  const getPercentage = (cost: number) => {
+  const getPercentage = (cost: number, isPropal: boolean = false) => {
     if (costBreakdown.total === 0) return 0;
-    return (cost / costBreakdown.total) * 100;
+
+    if (isPropal) {
+      // Propal always gets 10% of the width
+      return 10;
+    } else {
+      // For STT, LLM, TTS: calculate their percentage of the remaining 90%
+      const remainingCost =
+        costBreakdown.stt + costBreakdown.llm + costBreakdown.tts;
+      if (remainingCost === 0) return 0;
+      return (cost / remainingCost) * 90;
+    }
   };
 
   const costItems = [
@@ -147,6 +157,7 @@ const Pricing = ({ agent }: { agent: Agent }) => {
       label: "ProPal",
       cost: costBreakdown.propal,
       color: "bg-indigo-500",
+      details: "ProPal Cost",
       description: "Platform Fee",
     },
     {
@@ -210,7 +221,10 @@ const Pricing = ({ agent }: { agent: Agent }) => {
                   : index === costItems.length - 1
                     ? ""
                     : "left-1/2 -translate-x-1/2";
-              const percentage = getPercentage(item.cost);
+              const percentage = getPercentage(
+                item.cost,
+                item.label === "ProPal"
+              );
               if (percentage === 0) return null;
 
               return (
@@ -227,7 +241,7 @@ const Pricing = ({ agent }: { agent: Agent }) => {
                       {item?.details}
                     </div>
                     <div className="text-yellow-300 font-bold mt-1 text-[10px]">
-                      {formatCost(item.cost)} ({percentage.toFixed(1)}%)
+                      {formatCost(item.cost)}
                     </div>
                   </div>
                 </div>

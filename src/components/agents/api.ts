@@ -44,7 +44,7 @@ export const fetchAgentById = async (id: string): Promise<Agent | null> => {
     }
     
     const data = await res.json();
-    console.log("data", data);
+    // console.log("data", data);
     return data;
   } catch (err) {
     console.error(`Failed to fetch agent with ID ${id}:`, err);
@@ -77,7 +77,7 @@ export const deleteAgent = async (id: string): Promise<boolean> => {
       data: { id },
     });
     
-    console.log("Agent deleted successfully api", res);
+    // console.log("Agent deleted successfully api", res);
 
     return true;
   } catch (err) {

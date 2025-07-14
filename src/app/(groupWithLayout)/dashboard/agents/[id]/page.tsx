@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { Agent } from '@/components/agents/types';
-import { fetchAgentById } from '@/components/agents/api';
-import { useParams } from 'next/navigation';
-import AgentDetailsPanel from '@/components/agents/right/AgentDetailsPanel';
+import React, { useEffect, useState } from "react";
+import { Agent } from "@/components/agents/types";
+import { fetchAgentById } from "@/components/agents/api";
+import { useParams } from "next/navigation";
+import AgentDetailsPanel from "@/components/agents/right/AgentDetailsPanel";
+import { useAgentsContext } from "../layout";
 
 // This component displays the details of a single agent
 export default function AgentDetailsPage() {
@@ -11,6 +12,7 @@ export default function AgentDetailsPage() {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const agentId = params?.id as string;
+  const { updateAgentInList } = useAgentsContext();
 
   // Fetch the agent details when the component mounts or ID changes
   useEffect(() => {
@@ -19,10 +21,10 @@ export default function AgentDetailsPage() {
       try {
         // This is a new function we need to add to the API
         const agentData = await fetchAgentById(agentId);
-        console.log("agentData --  --- ", agentData);
+        // console.log("agentData --  --- ", agentData);
         setAgent(agentData);
       } catch (error) {
-        console.error('Failed to load agent:', error);
+        console.error("Failed to load agent:", error);
       } finally {
         setLoading(false);
       }
@@ -32,6 +34,12 @@ export default function AgentDetailsPage() {
       loadAgent();
     }
   }, [agentId]);
+
+  // Function to handle agent updates and propagate to the list
+  const handleAgentUpdate = (updatedAgent: Agent) => {
+    setAgent(updatedAgent);
+    updateAgentInList(updatedAgent);
+  };
 
   // Show loading state
   if (loading) {
@@ -52,5 +60,5 @@ export default function AgentDetailsPage() {
   }
 
   // Show agent details panel
-  return <AgentDetailsPanel agent={agent} setAgent={setAgent} />;
-} 
+  return <AgentDetailsPanel agent={agent} setAgent={handleAgentUpdate} />;
+}

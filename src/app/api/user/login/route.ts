@@ -24,7 +24,8 @@ export async function POST(req : NextRequest){
         if(!user.password){
             return NextResponse.json({ error:"Please provide the password."}, {status: 401});
         }
-
+        // console.log(password);
+        // console.log(user.password);
         if(!user.isVerified ){
             return NextResponse.json({error: "User is not verified"}, {status: 402});
         }
@@ -58,7 +59,6 @@ export async function POST(req : NextRequest){
                 secure: isProduction, 
                 sameSite: 'lax', 
             },
-
         )
         response.cookies.set("lastLoginMethod", "email", {
         httpOnly: false,
