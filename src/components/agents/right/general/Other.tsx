@@ -87,21 +87,35 @@ const OtherContent = ({
   //     setAgent({ ...agent, callHangup: callHangup });
   // }, [callHangup, agent, setAgent]);
 
-  useEffect(() => {
-    if (
-      JSON.stringify(agent.callHangupPhase) !== JSON.stringify(selectedPhases)
-    ) {
-      setAgent({ ...agent, callHangupPhase: selectedPhases });
-    }
-  }, [selectedPhases, agent, setAgent]);
+  // useEffect(() => {
+  //   if (
+  //     JSON.stringify(agent.callHangupPhase) !== JSON.stringify(selectedPhases)
+  //   ) {
+  //     setAgent({ ...agent, callHangupPhase: selectedPhases });
+  //   }
+  // }, [selectedPhases, agent, setAgent]);
 
-  const handlePhaseToggle = (phrase: string) => {
-    setSelectedPhases((prev) =>
-      prev.includes(phrase)
-        ? prev.filter((p) => p !== phrase)
-        : [...prev, phrase]
-    );
+  const handleAddPhrase = (phrase: string) => {
+    if (!selectedPhases.includes(phrase)) {
+      const updated = [...selectedPhases, phrase];
+      setSelectedPhases(updated);
+      setAgent({ ...agent, callHangupPhase: updated });
+    }
   };
+
+  const handleRemovePhrase = (phrase: string) => {
+    const updated = selectedPhases.filter((p) => p !== phrase);
+    setSelectedPhases(updated);
+    setAgent({ ...agent, callHangupPhase: updated });
+  };
+
+  // const handlePhaseToggle = (phrase: string) => {
+  //   setSelectedPhases((prev) =>
+  //     prev.includes(phrase)
+  //       ? prev.filter((p) => p !== phrase)
+  //       : [...prev, phrase]4
+  //   );
+  // };
 
   return (
     <div className="p-4 flex flex-col gap-6">
@@ -149,11 +163,16 @@ const OtherContent = ({
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
               numberTransfer ? "bg-indigo-600" : "bg-gray-200"
             }`}
+            // onClick={() => {
+            //   setNumberTransfer((prev) => {
+            //     setAgent({ ...agent, numberTransfer: !prev });
+            //     return !prev;
+            //   });
+            // }}
             onClick={() => {
-              setNumberTransfer((prev) => {
-                setAgent({ ...agent, numberTransfer: !prev });
-                return !prev;
-              });
+              const newValue = !numberTransfer;
+              setNumberTransfer(newValue); // local update
+              setAgent({ ...agent, numberTransfer: newValue }); // parent update
             }}
           >
             <span
@@ -202,11 +221,16 @@ const OtherContent = ({
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
               callHangup ? "bg-indigo-600" : "bg-gray-200"
             }`}
+            // onClick={() => {
+            //   setCallHangup((prev) => {
+            //     setAgent({ ...agent, callHangup: !prev });
+            //     return !prev;
+            //   });
+            // }}
             onClick={() => {
-              setCallHangup((prev) => {
-                setAgent({ ...agent, callHangup: !prev });
-                return !prev;
-              });
+              const newValue = !callHangup;
+              setCallHangup(newValue); // local update
+              setAgent({ ...agent, callHangup: newValue }); // parent update
             }}
           >
             <span
@@ -236,11 +260,7 @@ const OtherContent = ({
                     >
                       {phrase}
                       <button
-                        onClick={() =>
-                          setSelectedPhases((prev) =>
-                            prev.filter((p) => p !== phrase)
-                          )
-                        }
+                        onClick={() => handleRemovePhrase(phrase)}
                         className="ml-2 hover:bg-blue-200 rounded-[6px] p-0.5 transition-colors"
                       >
                         <X className="w-3 h-3" />
@@ -262,7 +282,7 @@ const OtherContent = ({
                     e.preventDefault();
                     const trimmed = inputPhrase.trim();
                     if (trimmed && !selectedPhases.includes(trimmed)) {
-                      setSelectedPhases([...selectedPhases, trimmed]);
+                      handleAddPhrase(trimmed);
                       setInputPhrase("");
                     }
                   }
@@ -273,8 +293,8 @@ const OtherContent = ({
                 onClick={() => {
                   const trimmed = inputPhrase.trim();
                   if (trimmed && !selectedPhases.includes(trimmed)) {
-                    setSelectedPhases([...selectedPhases, trimmed]);
-                    setInputPhrase(""); // Clear input
+                    handleAddPhrase(trimmed);
+                    setInputPhrase("");
                   }
                 }}
                 className="px-3 py-1 bg-indigo-200 text-black text-lg rounded-[6px] font-bold"
