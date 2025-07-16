@@ -48,11 +48,11 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   const handleUpdate = async () => {
     setIsUpdating(true);
     try {
-      // Only update if name has actually changed
-      if (agent.agentName === name) {
-        setIsUpdating(false);
-        return;
-      }
+      // // Only update if name has actually changed
+      // if (agent.agentName === name) {
+      //   setIsUpdating(false);
+      //   return;
+      // }
 
       // Create updated agent with current name
       const updatedAgent = { ...agent, agentName: name };
