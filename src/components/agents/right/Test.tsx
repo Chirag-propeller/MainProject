@@ -141,6 +141,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         maxCallDuration: agent.maxCallDuration,
         numberTransfer: agent.numberTransfer || false,
         numberTransferNumber: agent.numberTransferNumber || "",
+        userAwayTimeOut: agent.userAwayTimeOut || 5,
       };
       console.log(dataToSend);
       console.log("run");

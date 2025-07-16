@@ -5,6 +5,7 @@ import { getUserFromRequest } from '@/lib/auth';
 
 
 export async function GET(req: NextRequest) {
+  // console.log(req);
   await dbConnect();
   const user = await getUserFromRequest(req);
 

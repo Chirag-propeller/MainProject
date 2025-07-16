@@ -30,6 +30,7 @@ export interface IAgent extends Document {
   apis: mongoose.Types.ObjectId[];
   userId: mongoose.Types.ObjectId;
   welcomeMessage?: string;
+  userAwayTimeOut?: number;
 }
 
 const AgentSchema: Schema = new Schema({
@@ -61,6 +62,7 @@ const AgentSchema: Schema = new Schema({
   ttsVoiceName: { type: String },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   welcomeMessage: { type: String },
+  userAwayTimeOut: { type: Number, default: 5 },
 }, { timestamps: true });
 
 export default models.Agent || model<IAgent>('Agent', AgentSchema);

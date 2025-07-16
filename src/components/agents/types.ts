@@ -31,4 +31,5 @@ export interface Agent {
   numberTransferNumber?: string;
   callHangup?: boolean;
   callHangupPhase?: string[];
+  userAwayTimeOut?: number;
 } 
