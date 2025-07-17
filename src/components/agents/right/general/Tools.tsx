@@ -67,9 +67,9 @@ const ToolsContent = ({
     const formData = new FormData();
     const formData2 = new FormData();
     setIsUploading(true);
-    formData.append("agentId", agent.agentId);
+    formData.append("agentId", agent._id);
     formData.append("file", file);
-    formData2.append("agentId", agent.agentId);
+    formData2.append("agentId", agent._id);
     const url = process.env.NEXT_PUBLIC_AZURE_URL;
     let azureUrl = null;
     let uploadedFileName = null;
