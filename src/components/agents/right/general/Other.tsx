@@ -40,7 +40,9 @@ const OtherContent = ({
     agent.callHangupPhase || []
   );
   const [inputPhrase, setInputPhrase] = useState<string>("");
-
+  const [userAwayTimeOut, setUserAwayTimeOut] = useState<number>(
+    agent.userAwayTimeOut || 5
+  );
   // Sync effects
   useEffect(
     () => setCallDuration(agent.maxCallDuration || 150),
@@ -146,6 +148,33 @@ const OtherContent = ({
         </p>
       </div>
 
+      {/* User Away Time Out */}
+      <div className="bg-gray-50 p-4 rounded-[6px] shadown-sm">
+        <TooltipLabel
+          label="User Away Time Out (seconds)"
+          fieldKey="UserAwayTimeOut"
+          htmlFor="userAwayTimeOut"
+          className="font-semibold"
+          position="bottom"
+        />
+        <input
+          id="userAwayTimeOut"
+          type="number"
+          min="1"
+          max="60"
+          value={userAwayTimeOut}
+          onChange={(e) => {
+            const value = parseInt(e.target.value) || 5;
+            setUserAwayTimeOut(value);
+            setAgent({ ...agent, userAwayTimeOut: value });
+          }}
+          className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 text-sm"
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          Default: 5 seconds
+        </p>
+      </div>
+
       {/* Number Transfer */}
       <div className="bg-gray-50 p-4 rounded-[6px]">
         <div className="flex items-center justify-between mb-3">
@@ -163,12 +192,6 @@ const OtherContent = ({
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
               numberTransfer ? "bg-indigo-600" : "bg-gray-200"
             }`}
-            // onClick={() => {
-            //   setNumberTransfer((prev) => {
-            //     setAgent({ ...agent, numberTransfer: !prev });
-            //     return !prev;
-            //   });
-            // }}
             onClick={() => {
               const newValue = !numberTransfer;
               setNumberTransfer(newValue); // local update

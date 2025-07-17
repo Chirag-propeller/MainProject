@@ -209,16 +209,16 @@ const AgentsList = ({
         stt: "Deepgram",
         sttModel: "nova-2",
         sttLanguage: "en-US",
-        tts: "AWS",
-        ttsVoiceName: "Amy",
-        ttsModel: "generative",
+        tts: "Google",
+        ttsVoiceName: "en-IN-Chirp3-HD-Aoede",
+        ttsModel: "Chirp3-HD",
         speed: 1,
         welcomeMessage: "Hi",
         knowledgeBaseAttached: false,
         knowledgeBase: [],
         prompt: "You are a helpful assistant",
         gender: "Female",
-        ttsLanguage: "en-GB",
+        ttsLanguage: "en-IN",
       });
 
       setAgents([res.data, ...agents]);

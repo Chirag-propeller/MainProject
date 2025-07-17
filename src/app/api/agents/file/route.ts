@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
     await dbConnect()
     const user = await getUserFromRequest(req);
     const formData = await req.formData()
+    console.log(formData);
     const file = formData.get('file') as File
     const agentId = formData.get('agentId') as string
 

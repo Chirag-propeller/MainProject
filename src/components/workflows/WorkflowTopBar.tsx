@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, GitBranch, Edit3, Check, X } from 'lucide-react';
+import { ArrowLeft, GitBranch, Edit3, Check, X, AudioLines } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useWorkflowStore } from '@/store/workflowStore';
+import { AudioTrack } from '@livekit/components-react';
 
-const WorkflowTopBar: React.FC = () => {
+interface WorkflowTopBarProps {
+  clearNode : ()=> void ,
+  handleSave : ()=> Promise<void>,
+  isLoading: boolean,
+}
+
+const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave , isLoading}) => {
   const router = useRouter();
   const { workflowName, updateWorkflowName } = useWorkflowStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -126,7 +133,29 @@ const WorkflowTopBar: React.FC = () => {
 
         {/* Right side: Additional actions (future use) */}
         <div className="flex items-center gap-2">
-          {/* Space for future actions like save status, etc. */}
+
+          <Button variant='ghost' size='sm' className='border-1 rounded-[4px]' onClick={clearNode}>
+            Clear All
+          </Button>
+
+          <Button 
+              onClick={handleSave}
+              disabled={isLoading}
+              size='sm' 
+              className='rounded-[4px]'
+              // className='bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
+          >
+          {isLoading ? 'Saving...' : 'Save Workflow'}
+          </Button>
+          <Button
+              size='sm' 
+              className='rounded-[4px] px-6 ml-4'
+          >
+            Test
+            <AudioLines className='pl-2 w-5 h-5'/>
+          </Button>
+
+
         </div>
       </div>
     </div>

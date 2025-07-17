@@ -98,7 +98,7 @@ const ToolsContent = ({
       const response = await axios.post(
         `${url}/upload-pdf`,
         {
-          agentId: agent._id,
+          agentId: agent.agentId,
           url: azureUrl,
         },
         {
