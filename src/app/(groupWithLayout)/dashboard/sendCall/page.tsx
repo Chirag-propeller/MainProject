@@ -1,61 +1,68 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import AgentDetail from '@/components/sendCall/AgentDetail';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import AgentDetail from "@/components/sendCall/AgentDetail";
+import axios from "axios";
+import SelectionDropdown from "@/components/agents/SelectionDropdown";
 
 export default function ContactForm() {
-  const [fromNumber, setFromNumber] = useState('');
+  const [fromNumber, setFromNumber] = useState("");
   const [fromNumberList, setFromNumberList] = useState<string[]>([]);
   const [agentList, setAgentList] = useState([]);
-  const [toNumber, setToNumber] = useState('');
-  const [fromAgent, setFromAgent] = useState('');
+  const [toNumber, setToNumber] = useState("");
+  const [fromAgent, setFromAgent] = useState("");
   const [selectedAgent, setSelectedAgent] = useState<any | null>(null);
-  const [isSending, setIsSending] = useState(false);  // State to track if the call is being sent
-  const [callSent, setCallSent] = useState(false);  // State to track if the call was sent successfully
+  const [isSending, setIsSending] = useState(false); // State to track if the call is being sent
+  const [callSent, setCallSent] = useState(false); // State to track if the call was sent successfully
   const [loading, setLoading] = useState(true);
 
-  const handleAgentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const agentId = e.target.value;
-    setFromAgent(agentId);
-  
-    const agent = agentList.find((a: any) => a.agentId === agentId);
+  // Prepare options for SelectionDropdown
+  const fromNumberOptions = fromNumberList.map((num) => ({
+    name: num,
+    value: num,
+  }));
+  const agentOptions = agentList.map((agent: any) => ({
+    name: agent.agentName,
+    value: agent.agentId,
+  }));
+  useEffect(() => {
+    const agent = agentList.find((a: any) => a.agentId === fromAgent);
     setSelectedAgent(agent || null);
-  };
+  }, [fromAgent, agentList]);
 
   const fetchNumbers = async () => {
     try {
-      const res = await fetch('/api/phoneNumber/get');
+      const res = await fetch("/api/phoneNumber/get");
       const data = await res.json();
       const numbers = data.map((item: any) => item.phoneNumber);
       setFromNumberList(numbers);
     } catch (err) {
-      console.error('Failed to fetch numbers:', err);
+      console.error("Failed to fetch numbers:", err);
     }
   };
 
   const fetchAgents = async () => {
     try {
-      const res = await fetch('/api/agent/get');
+      const res = await fetch("/api/agent/get");
       const data = await res.json();
       setAgentList(data);
     } catch (err) {
-      console.error('Failed to fetch agents:', err);
+      console.error("Failed to fetch agents:", err);
     }
   };
 
   const API_URL = process.env.NEXT_PUBLIC_CALL_URL!;
-  const API_KEY = 'supersecretapikey123';
-  
+  const API_KEY = "supersecretapikey123";
+
   const triggerFastApiCall = async () => {
-    const user = await axios.get('/api/user/getCurrentUser');
+    const user = await axios.get("/api/user/getCurrentUser");
     console.log(user);
     const credits = parseFloat(user.data?.credits?.$numberDecimal) || 0;
-    const creditsUsed = parseFloat(user.data?.creditsUsed?.$numberDecimal) || 0;  
+    const creditsUsed = parseFloat(user.data?.creditsUsed?.$numberDecimal) || 0;
     // const credits = user.data?.credits || 0 ;
     // const creditsUsed = user.data?.creditsUsed || 0;
-    if(credits - creditsUsed <= 0){
+    if (credits - creditsUsed <= 0) {
       alert("You have no credits left");
       return;
     }
@@ -71,39 +78,39 @@ export default function ContactForm() {
         },
         {
           headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY,
+            accept: "application/json",
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY,
           },
         }
       );
-      console.log('🚀 FastAPI response:', response.data);
+      console.log("🚀 FastAPI response:", response.data);
       return response.data;
     } catch (error: any) {
-      console.error('❌ Axios Error:', error.response?.data || error.message);
+      console.error("❌ Axios Error:", error.response?.data || error.message);
       throw error;
     }
   };
 
   const handleClicker = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSending(true);  // Disable the button and show loading message
-    setCallSent(false);  // Reset the "call sent" state
+    setIsSending(true); // Disable the button and show loading message
+    setCallSent(false); // Reset the "call sent" state
 
     try {
       await triggerFastApiCall();
-      setCallSent(true);  // Successfully sent the call
+      setCallSent(true); // Successfully sent the call
     } catch (error) {
-      setCallSent(false);  // Handle error scenario
+      setCallSent(false); // Handle error scenario
     }
 
     setTimeout(() => {
-      setIsSending(false);  // Re-enable the button after 10 seconds
-      setFromNumber('');
-      setToNumber('');
-      setFromAgent('');
-      setSelectedAgent(null);  // Reset form to default values
-    }, 10000);  // Wait for 10 seconds before allowing another call
+      setIsSending(false); // Re-enable the button after 10 seconds
+      setFromNumber("");
+      setToNumber("");
+      setFromAgent("");
+      setSelectedAgent(null); // Reset form to default values
+    }, 10000); // Wait for 10 seconds before allowing another call
   };
 
   useEffect(() => {
@@ -112,7 +119,7 @@ export default function ContactForm() {
       await Promise.all([fetchNumbers(), fetchAgents()]);
       setLoading(false);
     };
-    
+
     loadData();
   }, []);
 
@@ -131,58 +138,56 @@ export default function ContactForm() {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">Send a Call</h2>
 
-      <form onSubmit={handleClicker} className="bg-white rounded-2xl p-6 space-y-6 max-w-xl">
+      <form
+        onSubmit={handleClicker}
+        className="bg-white rounded-2xl p-6 space-y-6 max-w-xl"
+      >
         {/* From Number */}
         <div className="flex items-center gap-4">
-          <label className="w-32 text-sm font-medium text-gray-700">From Number</label>
-          <select
-            className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
-            value={fromNumber}
-            onChange={(e) => setFromNumber(e.target.value)}
-            required
-            disabled={isSending}  // Disable while sending
-            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
-          >
-            <option value="">Select Number</option>
-            {fromNumberList.map((option, idx) => (
-              <option key={idx} value={option}>{option}</option>
-            ))}
-          </select>
+          <label className="w-32 text-sm font-medium text-gray-700">
+            From Number
+          </label>
+          <div className="w-[375px]">
+            <SelectionDropdown
+              options={fromNumberOptions}
+              selectedOption={fromNumber}
+              setOption={setFromNumber}
+              loading={isSending}
+            />
+          </div>
         </div>
 
         {/* To Number */}
         <div className="flex items-center gap-4">
-          <label className="w-32 text-sm font-medium text-gray-700">To Number</label>
-          <input
-            type="text"
-            placeholder="Enter phone number"
-            value={toNumber}
-            onChange={(e) => setToNumber(e.target.value)}
-            className="w-[375px] p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
-            required
-            disabled={isSending}  // Disable while sending
-          />
+          <label className="w-32 text-sm font-medium text-gray-700">
+            To Number
+          </label>
+          <div className="w-[375px]">
+            <input
+              type="text"
+              placeholder="Enter phone number"
+              value={toNumber}
+              onChange={(e) => setToNumber(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+              required
+              disabled={isSending}
+            />
+          </div>
         </div>
 
         {/* From Agent */}
         <div className="flex items-center gap-4">
-          <label className="w-32 text-sm font-medium text-gray-700 text-nowrap ">From Agent</label>
-          <select
-            className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
-            value={fromAgent}
-            onChange={handleAgentChange}
-            required
-            disabled={isSending}  // Disable while sending
-            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
-          >
-            <option value="">Select agent</option>
-            {agentList.map((agent: any) => (
-              <option key={agent._id} value={agent.agentId}>
-                {agent.agentName}
-              </option>
-            ))}
-          </select>
+          <label className="w-32 text-sm font-medium text-gray-700 text-nowrap ">
+            From Agent
+          </label>
+          <div className="w-[375px]">
+            <SelectionDropdown
+              options={agentOptions}
+              selectedOption={fromAgent}
+              setOption={setFromAgent}
+              loading={isSending}
+            />
+          </div>
         </div>
 
         {/* Agent Details */}
@@ -192,16 +197,16 @@ export default function ContactForm() {
         <Button
           type="submit"
           className="w-full"
-          disabled={isSending}  // Disable the button while sending
+          disabled={isSending} // Disable the button while sending
         >
-          {isSending ? 'Sending Call... Please wait' : 'Submit'}
+          {isSending ? "Sending Call... Please wait" : "Submit"}
         </Button>
 
         {/* Feedback Message */}
-        {callSent && !isSending 
-        // && (<div className="mt-4 text-green-600">Call has been sent successfully. Please wait...</div>)
+        {
+          callSent && !isSending
+          // && (<div className="mt-4 text-green-600">Call has been sent successfully. Please wait...</div>)
         }
-        
       </form>
     </div>
   );

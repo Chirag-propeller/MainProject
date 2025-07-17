@@ -1,8 +1,8 @@
 "use client";
-import React from 'react';
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CampaignCard from './CampaignCard';
-import { Campaign } from './types';
+import CampaignCard from "./CampaignCard";
+import { Campaign } from "./types";
 
 interface CampaignTabsProps {
   campaigns: Campaign[];
@@ -25,39 +25,44 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
   setSelectedCampaign,
   deleteLoading,
   onDeleteCampaign,
-  setNewCampaign
+  setNewCampaign,
 }) => {
   // Filter campaigns based on active tab
-  const filteredCampaigns = campaigns.filter(campaign => {
+  const filteredCampaigns = campaigns.filter((campaign) => {
     if (activeTab === "all") return true;
     return campaign.status === activeTab;
   });
 
   return (
     <div className="h-full">
-      <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+      <Tabs
+        defaultValue="all"
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="h-full flex flex-col"
+      >
         <div className="sticky top-0 z-10 bg-white pb-2">
           <TabsList className="bg-white border border-gray-200 rounded-lg p-0.5 shadow-sm w-full">
-            <TabsTrigger 
-              value="all" 
+            <TabsTrigger
+              value="all"
               className="data-[state=active]:bg-slate-100 data-[state=active]:shadow-none rounded-md"
             >
               All
             </TabsTrigger>
-            <TabsTrigger 
-              value="ongoing" 
+            <TabsTrigger
+              value="ongoing"
               className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none rounded-md"
             >
               Ongoing
             </TabsTrigger>
-            <TabsTrigger 
-              value="completed" 
+            <TabsTrigger
+              value="completed"
               className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 data-[state=active]:shadow-none rounded-md"
             >
               Completed
             </TabsTrigger>
-            <TabsTrigger 
-              value="draft" 
+            <TabsTrigger
+              value="draft"
               className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700 data-[state=active]:shadow-none rounded-md"
             >
               Drafts
@@ -68,7 +73,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
         {/* Simple tabs content with scroll */}
         <div className="h-[calc(100%-50px)] overflow-hidden">
           <TabsContent value="all" className="h-full">
-            <CampaignList 
+            <CampaignList
               loading={loading}
               campaigns={filteredCampaigns}
               emptyMessage="No campaigns found"
@@ -81,7 +86,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
           </TabsContent>
 
           <TabsContent value="ongoing" className="h-full">
-            <CampaignList 
+            <CampaignList
               loading={loading}
               campaigns={filteredCampaigns}
               emptyMessage="No ongoing campaigns found"
@@ -94,7 +99,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
           </TabsContent>
 
           <TabsContent value="completed" className="h-full">
-            <CampaignList 
+            <CampaignList
               loading={loading}
               campaigns={filteredCampaigns}
               emptyMessage="No completed campaigns found"
@@ -107,7 +112,7 @@ const CampaignTabs: React.FC<CampaignTabsProps> = ({
           </TabsContent>
 
           <TabsContent value="draft" className="h-full">
-            <CampaignList 
+            <CampaignList
               loading={loading}
               campaigns={filteredCampaigns}
               emptyMessage="No draft campaigns found"
@@ -144,31 +149,35 @@ const CampaignList: React.FC<CampaignListProps> = ({
   setSelectedCampaign,
   deleteLoading,
   onDeleteCampaign,
-  setNewCampaign
+  setNewCampaign,
 }) => {
   if (loading) {
     return <div className="text-center py-8">Loading campaigns...</div>;
   }
-  
+
   if (campaigns.length === 0) {
     return <div className="text-center py-8 text-gray-500">{emptyMessage}</div>;
   }
-  
+
   return (
     <div className="overflow-y-auto h-full py-2">
       {campaigns.map((campaign) => (
-        <CampaignCard 
-          key={campaign._id} 
+        <CampaignCard
+          key={campaign._id}
           campaign={campaign}
           isSelected={selectedCampaign?._id === campaign._id}
           onSelect={setSelectedCampaign}
           onDelete={onDeleteCampaign}
           isDeleting={deleteLoading}
           setNewCampaign={setNewCampaign}
+          onDuplicate={function (campaign: Campaign): void {
+            throw new Error("Function not implemented.");
+          }}
+          isDuplicating={null}
         />
       ))}
     </div>
   );
 };
 
-export default CampaignTabs; 
+export default CampaignTabs;
