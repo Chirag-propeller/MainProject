@@ -26,7 +26,7 @@ const ConversationNode: React.FC<NodeProps<ConversationNodeData>> = ({ data }) =
 
   return (
     <div className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
-      isGlobal ? 'border-purple-500 bg-purple-50' : 'border-indigo-500'
+      isGlobal ? 'border-purple-500 bg-purple-50' : 'border-indigo-200'
     }`}>
       <Handle 
         type="target" 

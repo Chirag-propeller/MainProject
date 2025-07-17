@@ -9,8 +9,13 @@ export default function ContactForm() {
   const [fromNumber, setFromNumber] = useState('');
   const [fromNumberList, setFromNumberList] = useState<string[]>([]);
   const [agentList, setAgentList] = useState([]);
+  const [workflowList, setWorkflowList] = useState<any[]>([]);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<any|null>(null);
+  const [agentName , setAgentName] = useState("");
+  
   const [toNumber, setToNumber] = useState('');
   const [fromAgent, setFromAgent] = useState('');
+  const [fromWorkflow, setFromWorkflow] = useState('');
   const [selectedAgent, setSelectedAgent] = useState<any | null>(null);
   const [isSending, setIsSending] = useState(false);  // State to track if the call is being sent
   const [callSent, setCallSent] = useState(false);  // State to track if the call was sent successfully
@@ -22,7 +27,22 @@ export default function ContactForm() {
   
     const agent = agentList.find((a: any) => a.agentId === agentId);
     setSelectedAgent(agent || null);
+    setSelectedWorkflow(null);
+    setAgentName("outbound-caller");
   };
+  const handleWorkflowChange = (e: React.ChangeEvent<HTMLSelectElement>)=>{
+    const workflowId = e.target.value;
+
+    const workflow = workflowList.find((flow)=> flow._id == workflowId)
+    setSelectedWorkflow(workflow);
+    setFromAgent("");
+    setSelectedAgent(null);
+    setAgentName("outbound-workflow");
+  }
+
+  useEffect (
+    ()=> console.log(selectedWorkflow)
+  ,[selectedWorkflow])
 
   const fetchNumbers = async () => {
     try {
@@ -34,6 +54,18 @@ export default function ContactForm() {
       console.error('Failed to fetch numbers:', err);
     }
   };
+  const fetchWorkflows = async () => {
+    try {
+      const res = await fetch('/api/workflow/get-all');
+      const data = await res.json();
+      // const workflows = data.map((item: any) => item.phoneNumber);
+      // setWorkflowList(workflows);
+      setWorkflowList(data.data);
+      console.log(data.data);
+    } catch (err) {
+      console.error('Failed to fetch numbers:', err);
+    }
+  }
 
   const fetchAgents = async () => {
     try {
@@ -57,16 +89,25 @@ export default function ContactForm() {
     // const creditsUsed = user.data?.creditsUsed || 0;
     if(credits - creditsUsed <= 0){
       alert("You have no credits left");
+      setIsSending(false);
+      return;
+    }
+    if((!selectedAgent) && (!selectedWorkflow)){
+      alert("Select either agent or workflow.");
+      setIsSending(false);
       return;
     }
     try {
       const response = await axios.post(
-        API_URL,
+        // API_URL,
+        "www.google.com",
         {
-          agentId: selectedAgent.agentId,
+          agentId: selectedAgent?.agentId ? selectedAgent?.agentId : selectedWorkflow?._id,
           fromPhone: fromNumber,
           numberofFollowup: "0",
           campaignid: "",
+          agentName: agentName ,
+          // agentName : agentName ? "outbound-call" : "outbound-workflow",
           contacts: [{ phonenumber: toNumber, metadata: {} }],
         },
         {
@@ -103,13 +144,14 @@ export default function ContactForm() {
       setToNumber('');
       setFromAgent('');
       setSelectedAgent(null);  // Reset form to default values
+      setSelectedWorkflow(null);
     }, 10000);  // Wait for 10 seconds before allowing another call
   };
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      await Promise.all([fetchNumbers(), fetchAgents()]);
+      await Promise.all([fetchNumbers(), fetchAgents(), fetchWorkflows()]);
       setLoading(false);
     };
     
@@ -172,7 +214,7 @@ export default function ContactForm() {
             className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
             value={fromAgent}
             onChange={handleAgentChange}
-            required
+            // required
             disabled={isSending}  // Disable while sending
             style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
           >
@@ -185,9 +227,28 @@ export default function ContactForm() {
           </select>
         </div>
 
-        {/* Agent Details */}
-        {selectedAgent && <AgentDetail selectedAgent={selectedAgent} />}
-
+        {/* Select workflow */}
+        <div className="flex items-center gap-4">
+          <label className="w-32 text-sm font-medium text-gray-700 text-nowrap ">From Workflow</label>
+          <select
+            className="w-[375px] p-2.5 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none truncate"
+            value={selectedWorkflow?._id || ""}
+            onChange={handleWorkflowChange}
+            // required
+            disabled={isSending}  // Disable while sending
+            style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
+            >
+            <option value="">Select workflow</option>
+            {workflowList.map((workflow: any) => (
+              <option key={workflow._id} value={workflow._id}>
+                {workflow.name}
+              </option>
+            ))}
+          </select>
+        </div>
+            
+                    {/* Agent Details */}
+                    {selectedAgent && <AgentDetail selectedAgent={selectedAgent} />}
         {/* Submit Button */}
         <Button
           type="submit"
@@ -196,6 +257,7 @@ export default function ContactForm() {
         >
           {isSending ? 'Sending Call... Please wait' : 'Submit'}
         </Button>
+
 
         {/* Feedback Message */}
         {callSent && !isSending 

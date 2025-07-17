@@ -4,7 +4,13 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useWorkflowStore } from '@/store/workflowStore';
 
-const WorkflowTopBar: React.FC = () => {
+interface WorkflowTopBarProps {
+  clearNode : ()=> void ,
+  handleSave : ()=> Promise<void>,
+  isLoading: boolean,
+}
+
+const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave , isLoading}) => {
   const router = useRouter();
   const { workflowName, updateWorkflowName } = useWorkflowStore();
   const [isEditing, setIsEditing] = useState(false);
@@ -126,7 +132,22 @@ const WorkflowTopBar: React.FC = () => {
 
         {/* Right side: Additional actions (future use) */}
         <div className="flex items-center gap-2">
-          {/* Space for future actions like save status, etc. */}
+
+          <Button variant='ghost' size='sm' className='border-1 rounded-[4px]' onClick={clearNode}>
+            Clear All
+          </Button>
+
+          <Button 
+              onClick={handleSave}
+              disabled={isLoading}
+              size='sm' 
+              className='rounded-[4px]'
+              // className='bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
+          >
+          {isLoading ? 'Saving...' : 'Save Workflow'}
+          </Button>
+
+
         </div>
       </div>
     </div>

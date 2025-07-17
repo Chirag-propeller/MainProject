@@ -13,7 +13,7 @@ const EdgeSidebar: React.FC = () => {
   }
 
   return (
-    <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="w-120 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">Edge Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
@@ -23,18 +23,19 @@ const EdgeSidebar: React.FC = () => {
         <div className="text-sm text-gray-500">To: {selectedEdge.target}</div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 text-sm">
         {/* Label Field */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Edge Label (Editable)
           </label>
-          <input
-            type="text"
+          <textarea
+            // type="text"
             value={selectedEdge.data?.label || ''}
             onChange={(e) => handleFieldChange('label', e.target.value)}
             placeholder="Enter custom edge label"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-1 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+            cols={7}
           />
           <div className="text-xs text-gray-500 mt-1">
             This label will appear on the connection line
@@ -49,7 +50,7 @@ const EdgeSidebar: React.FC = () => {
           <select
             value={selectedEdge.data?.labelPosition || 'center'}
             onChange={(e) => handleFieldChange('labelPosition', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-1 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           >
             <option value="center">Center</option>
             <option value="up">Above Line</option>
@@ -67,7 +68,7 @@ const EdgeSidebar: React.FC = () => {
             value={selectedEdge.data?.pathOffset || 0}
             onChange={(e) => handleFieldChange('pathOffset', parseFloat(e.target.value) || 0)}
             placeholder="0"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-1 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
           <div className="text-xs text-gray-500 mt-1">
             Offset in pixels to separate multiple edges between same nodes (positive/negative values)
