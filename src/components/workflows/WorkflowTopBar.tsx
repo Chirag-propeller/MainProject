@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, GitBranch, Edit3, Check, X } from 'lucide-react';
+import { ArrowLeft, GitBranch, Edit3, Check, X, AudioLines } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useWorkflowStore } from '@/store/workflowStore';
+import { AudioTrack } from '@livekit/components-react';
 
 interface WorkflowTopBarProps {
   clearNode : ()=> void ,
@@ -145,6 +146,13 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
               // className='bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
           >
           {isLoading ? 'Saving...' : 'Save Workflow'}
+          </Button>
+          <Button
+              size='sm' 
+              className='rounded-[4px] px-6 ml-4'
+          >
+            Test
+            <AudioLines className='pl-2 w-5 h-5'/>
           </Button>
 
 
