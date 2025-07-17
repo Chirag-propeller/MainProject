@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { Campaign, Agent } from '@/components/campaigns/types';
-import { useParams } from 'next/navigation';
-import { fetchCampaigns, fetchAgents } from '@/components/campaigns/api';
+import React, { useEffect, useState } from "react";
+import { Campaign, Agent } from "@/components/campaigns/types";
+import { useParams } from "next/navigation";
+import { fetchCampaigns, fetchAgents } from "@/components/campaigns/api";
 // import CampaignDetailsPanel from '@/components/campaigns/right/CampaignDetailsPanel';
-import CampaignDetailsPanel from '@/components/campaigns/right/CampaignDetailsPanel';
+import CampaignDetailsPanel from "@/components/campaigns/right/CampaignDetailsPanel";
 
 // This component displays the details of a single campaign
 export default function CampaignDetailsPage() {
@@ -21,14 +21,14 @@ export default function CampaignDetailsPage() {
       try {
         const [campaignsData, agentsData] = await Promise.all([
           fetchCampaigns(),
-          fetchAgents()
+          fetchAgents(),
         ]);
-        
-        const foundCampaign = campaignsData.find(c => c._id === campaignId);
+
+        const foundCampaign = campaignsData.find((c) => c._id === campaignId);
         setCampaign(foundCampaign || null);
         setAgents(agentsData);
       } catch (error) {
-        console.error('Failed to load campaign:', error);
+        console.error("Failed to load campaign:", error);
       } finally {
         setLoading(false);
       }
@@ -75,7 +75,10 @@ export default function CampaignDetailsPage() {
               <div className="p-4 bg-white">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[...Array(6)].map((_, i) => (
-                    <div key={i} className="bg-gray-50 p-3 rounded-md border border-gray-200">
+                    <div
+                      key={i}
+                      className="bg-gray-50 p-3 rounded-md border border-gray-200"
+                    >
                       <div className="h-3 bg-gray-200 rounded w-20 mb-2"></div>
                       <div className="h-4 bg-gray-200 rounded w-32"></div>
                     </div>
@@ -120,5 +123,5 @@ export default function CampaignDetailsPage() {
   }
 
   // Show campaign details panel
-  return <CampaignDetailsPanel campaign={campaign} setCampaign={setCampaign} agents={agents} />;
-} 
+  return <CampaignDetailsPanel campaign={campaign} agents={agents} />;
+}
