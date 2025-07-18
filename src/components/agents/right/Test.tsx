@@ -149,6 +149,8 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         numberTransferNumber: agent.numberTransferNumber || "",
         userAwayTimeOut: agent.userAwayTimeOut || 5,
         languageFillers: languageFillers,
+        isLanguageFillersActive: agent.isLanguageFillersActive || true,
+        whenToCallRag: agent.whenToCallRag || "",
       };
       console.log(dataToSend);
       console.log("run");
