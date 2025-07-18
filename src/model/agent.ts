@@ -32,6 +32,8 @@ export interface IAgent extends Document {
   welcomeMessage?: string;
   userAwayTimeOut?: number;
   languageFillers?: object;
+  isLanguageFillersActive?: boolean;
+  whenToCallRag?: string;
 }
 
 const AgentSchema: Schema = new Schema({
@@ -65,6 +67,8 @@ const AgentSchema: Schema = new Schema({
   welcomeMessage: { type: String },
   userAwayTimeOut: { type: Number, default: 5 },
   languageFillers: { type: Object, default: {} },
+  isLanguageFillersActive: { type: Boolean, default: true },
+  whenToCallRag: { type: String },
 }, { timestamps: true });
 
 export default models.Agent || model<IAgent>('Agent', AgentSchema);

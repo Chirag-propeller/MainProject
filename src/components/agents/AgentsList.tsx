@@ -7,6 +7,7 @@ import { createAgent, deleteAgent } from "./api";
 import { Button } from "@/components/ui/button";
 import { Copy, Users } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
+import { languageFillers as fillers } from "./Constants";
 // Simple agent card component for the list
 const AgentListItem = ({
   agent,
@@ -200,6 +201,7 @@ const AgentsList = ({
   // };
   const handleCreateAgent = async () => {
     setCreateLoading(true);
+    const languageFillers =  fillers["en-IN"]["Female"]
     try {
       const res = await createAgent({
         agentName: "New Agent",
@@ -219,6 +221,7 @@ const AgentsList = ({
         prompt: "You are a helpful assistant",
         gender: "Female",
         ttsLanguage: "en-IN",
+        languageFillers: languageFillers, 
       });
 
       setAgents([res.data, ...agents]);

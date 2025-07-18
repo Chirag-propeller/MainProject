@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     // Find all workflows for the user
     const workflows = await Workflow.find({ userId })
       .sort({ updatedAt: -1 })
-      .select('_id name globalPrompt nodes edges nodeCounter edgeCounter globalNodes createdAt updatedAt');
+      .select('_id name globalPrompt nodes edges nodeCounter edgeCounter globalNodes config createdAt updatedAt');
 
     return NextResponse.json({
       success: true,

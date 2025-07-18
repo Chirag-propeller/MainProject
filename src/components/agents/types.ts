@@ -33,4 +33,6 @@ export interface Agent {
   callHangupPhase?: string[];
   userAwayTimeOut?: number;
   languageFillers?: object;
+  isLanguageFillersActive?: boolean;
+  whenToCallRag?: string;
 } 

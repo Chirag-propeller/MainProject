@@ -25,7 +25,7 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data }) => {
 
   return (
     <div className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[220px] ${
-      isGlobal ? 'border-purple-500 bg-purple-50' : 'border-blue-500 bg-blue-50'
+      isGlobal ? 'border-purple-500 bg-purple-50' : 'border-blue-200 bg-blue-50'
     }`}>
       <Handle 
         type="target" 
@@ -47,7 +47,8 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data }) => {
           {data.type || 'API'}
         </div>
         <div className="text-lg font-bold text-gray-800 mb-2">
-          {data.name || 'API Request Node'}
+          
+          <p className='text-sm'>{data.name || 'API Request Node'}</p>
         </div>  
         <div className="text-xs text-gray-600 bg-gray-100 p-2 rounded-lg">
           <div><strong>Endpoint:</strong> {data.endpoint || '/api/endpoint'}</div>

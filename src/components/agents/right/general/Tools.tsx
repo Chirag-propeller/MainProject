@@ -26,6 +26,7 @@ const ToolsContent = ({
   const [isFileUploaded, setIsFileUploaded] = useState(
     agent.knowledgeBaseAttached
   );
+  const [whenToCallRag, setWhenToCallRag] = useState(agent.whenToCallRag);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [fileUrl, setFileUrl] = useState<string | null>(
     agent.knowledgeBaseUrl ?? null
@@ -225,6 +226,23 @@ const ToolsContent = ({
     }
   }, [showSuccessMessage]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (whenToCallRag) {
+        setAgent({
+          ...agent,
+          whenToCallRag: whenToCallRag,
+        });
+      }
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(handler);
+  }, [whenToCallRag]);
+
+  useEffect(() => {
+    console.log(agent)
+  }, [agent]);
+
   return (
     <div className="w-full bg-white rounded-xl">
       <div className="flex flex-col gap-6">
@@ -309,6 +327,11 @@ const ToolsContent = ({
               </p>
             </div>
           )}
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700">When to call RAG</label>
+          <textarea className="w-full h-20 border border-gray-200 rounded-lg p-2" placeholder="Enter the when to call RAG" value={whenToCallRag} onChange={(e) => setWhenToCallRag(e.target.value)}/>
+
         </div>
 
         {/* API Tools Section */}

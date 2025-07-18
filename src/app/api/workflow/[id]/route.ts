@@ -32,6 +32,7 @@ export async function GET(
         name: workflow.name,
         globalPrompt: workflow.globalPrompt,
         globalNodes: workflow.globalNodes,
+        config: workflow.config,
         updatedAt: workflow.updatedAt
       }
     });
