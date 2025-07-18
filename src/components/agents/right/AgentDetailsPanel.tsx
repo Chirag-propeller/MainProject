@@ -9,6 +9,7 @@ import Test from "./Test";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import _ from "lodash";
+import { languageFillers as fillers } from '../Constants';
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -31,6 +32,8 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   const [isModified, setIsModified] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
+  // const languageFillers = fillers[agent.ttsLanguage as keyof typeof fillers][agent.gender as keyof typeof fillers["en-IN"]] 
+  // console.log(languageFillers);
 
   // Tabs available for this agent
   const tabs = [
@@ -55,7 +58,8 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
       // }
 
       // Create updated agent with current name
-      const updatedAgent = { ...agent, agentName: name };
+      const languageFillers = fillers[agent?.ttsLanguage as keyof typeof fillers]?.[agent?.gender as keyof typeof fillers["en-IN"]] || fillers["en-IN"]["Male"]
+      const updatedAgent = { ...agent, agentName: name, languageFillers: languageFillers };
       const newBaseline = _.cloneDeep(updatedAgent);
 
       const res = await fetch(`/api/agent/${agent._id}`, {

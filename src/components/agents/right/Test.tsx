@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Agent } from '../types';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/sidebar/Logo';
+import { languageFillers as fillers } from '../Constants';
 
 
 
@@ -63,6 +64,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
   if (!mounted) {
     return null;
   }
+  
   const url = process.env.NEXT_PUBLIC_AZURE_URL;
 
   // llm?: string;
@@ -112,8 +114,12 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
       
   //   }
   // };
+  // console.log(fillers);
+
+  // console.log(languageFillers);
   
   const fetchToken = async () => {
+    const languageFillers = fillers[agent?.ttsLanguage as keyof typeof fillers]?.[agent?.gender as keyof typeof fillers["en-IN"]] || fillers["en-IN"]["Male"]
     try {
       const dataToSend = {
         agentId: agent.agentId,
@@ -142,6 +148,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         numberTransfer: agent.numberTransfer || false,
         numberTransferNumber: agent.numberTransferNumber || "",
         userAwayTimeOut: agent.userAwayTimeOut || 5,
+        languageFillers: languageFillers,
       };
       console.log(dataToSend);
       console.log("run");
