@@ -290,7 +290,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   }, [campaign.noOfFollowUps, campaign.followUp, campaign, setCampaign]);
 
   return (
-    <div className="p-4 bg-gray-50 h-screen overflow-y-visible">
+    <div className="p-4 bg-gray-50 h-full overflow-y-auto">
       <div className="flex flex-col gap-2">
         {/* Campaign Details Section */}
         <CollapsibleSection

@@ -31,7 +31,7 @@ const ToolsContent = ({
     agent.knowledgeBaseUrl ?? null
   );
   const [fileName, setFileName] = useState<string | null>(null);
-  
+
   // API-related state
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
   const [selectedApis, setSelectedApis] = useState<Api[]>([]);
@@ -42,8 +42,8 @@ const ToolsContent = ({
       if (agent.apis && agent.apis.length > 0) {
         try {
           const apisData = await fetchApis();
-          const agentApis = apisData.filter((api: Api) => 
-            agent.apis?.some(agentApiId => agentApiId.toString() === api._id)
+          const agentApis = apisData.filter((api: Api) =>
+            agent.apis?.some((agentApiId) => agentApiId.toString() === api._id)
           );
           setSelectedApis(agentApis);
         } catch (error) {
@@ -58,7 +58,8 @@ const ToolsContent = ({
   // Extract filename from URL when component mounts
   useEffect(() => {
     if (fileUrl && !fileName) {
-      const extractedName = fileUrl.split("/").pop()?.split("?")[0] || "Unknown file";
+      const extractedName =
+        fileUrl.split("/").pop()?.split("?")[0] || "Unknown file";
       setFileName(extractedName);
     }
   }, [fileUrl, fileName]);
@@ -130,14 +131,18 @@ const ToolsContent = ({
   };
 
   const handleDeleteKnowledgeBase = async () => {
-    if (!window.confirm("Are you sure you want to delete the knowledge base file? This action cannot be undone.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete the knowledge base file? This action cannot be undone."
+      )
+    ) {
       return;
     }
 
     setIsDeleting(true);
     try {
       const response = await axios.delete("/api/agents/file", {
-        data: { agentId: agent._id }
+        data: { agentId: agent._id },
       });
 
       if (response.data.success) {
@@ -197,7 +202,7 @@ const ToolsContent = ({
 
   // API-related handlers
   const handleApiSelect = (api: Api) => {
-    setSelectedApis(prev => [...prev, api]);
+    setSelectedApis((prev) => [...prev, api]);
     setAgent({
       ...agent,
       apis: [...(agent.apis || []), api._id as any],
@@ -205,11 +210,11 @@ const ToolsContent = ({
   };
 
   const handleRemoveApi = (apiId: string) => {
-    const apiToRemove = selectedApis.find(api => api._id === apiId);
-    setSelectedApis(prev => prev.filter(api => api._id !== apiId));
+    const apiToRemove = selectedApis.find((api) => api._id === apiId);
+    setSelectedApis((prev) => prev.filter((api) => api._id !== apiId));
     setAgent({
       ...agent,
-      apis: (agent.apis || []).filter(id => id.toString() !== apiId),
+      apis: (agent.apis || []).filter((id) => id.toString() !== apiId),
     });
     if (apiToRemove) {
       toast.success(`${apiToRemove.apiName} removed from agent tools`);
@@ -226,32 +231,34 @@ const ToolsContent = ({
   }, [showSuccessMessage]);
 
   return (
-    <div className="w-full bg-white rounded-xl">
+    <div className="w-full bg-white dark:bg-gray-900 rounded-[6px]">
       <div className="flex flex-col gap-6">
         {/* Knowledge Base Section */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900">Knowledge Base</h3>
+          <h3 className="text-[16px] font-semibold text-gray-900 dark:text-gray-400">
+            Knowledge Base
+          </h3>
           {isFileUploaded ? (
             <div
-              className="border-2 border-dashed border-gray-200 rounded-xl py-10 px-4 
+              className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl py-3 px-4 
                     flex flex-col items-center justify-center text-center gap-2"
             >
-              <div className="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
                 <img
                   src="https://img.icons8.com/fluency/48/folder-invoices.png"
                   alt="Uploaded"
                   className="w-8 h-8"
                 />
               </div>
-              <p className="text-green-600 font-semibold text-sm">
+              <p className="text-green-600 dark:text-green-400 font-semibold text-sm">
                 File uploaded successfully
               </p>
               {fileName && (
-                <p className="text-sm text-gray-700 font-medium bg-gray-50 px-3 py-1 rounded">
+                <p className="text-sm text-gray-700 dark:text-gray-200 font-medium bg-gray-50 dark:bg-gray-800 px-3 py-1 rounded">
                   📄 {fileName}
                 </p>
               )}
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Knowledge base is configured
               </p>
               <div className="flex gap-2 mt-2">
@@ -259,10 +266,9 @@ const ToolsContent = ({
                   <button
                     type="button"
                     onClick={handleDownloadKnowledgeBase}
-                    className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
                   >
                     {/* <RiArrowDropDownLine className="w-5 h-5" /> */}
-
                     Download file
                   </button>
                 )}
@@ -270,7 +276,7 @@ const ToolsContent = ({
                   type="button"
                   onClick={handleDeleteKnowledgeBase}
                   disabled={isDeleting}
-                  className="inline-flex items-center gap-1 text-sm text-red-600 hover:underline disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-1 text-sm text-red-600 dark:text-red-400 hover:underline disabled:opacity-50 cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                   {isDeleting ? "Deleting..." : "Delete"}
@@ -279,7 +285,7 @@ const ToolsContent = ({
             </div>
           ) : (
             <div className="flex flex-col gap-2 items-center">
-              <label className="text-sm font-medium text-gray-700">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-200">
                 Upload PDF for Knowledge Base
               </label>
               <div className="flex gap-2">
@@ -287,7 +293,7 @@ const ToolsContent = ({
                   onClick={handleUploadClick}
                   variant="default"
                   size="sm"
-                  className="rounded-lg"
+                  className="rounded-[6px]"
                   disabled={isUploading}
                 >
                   <Upload className="w-4 h-4 mr-2" />
@@ -301,10 +307,10 @@ const ToolsContent = ({
                   accept=".pdf"
                 />
               </div>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 Supported formats: .pdf only
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 {selectedFile?.name || "No file selected"}
               </p>
             </div>
@@ -314,12 +320,14 @@ const ToolsContent = ({
         {/* API Tools Section */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">API Tools</h3>
+            <h3 className="text-[16px] font-semibold text-gray-900 dark:text-gray-400">
+              API Tools
+            </h3>
             <Button
               onClick={() => setIsApiModalOpen(true)}
               variant="secondary"
               size="sm"
-              className="rounded-lg"
+              className="rounded-[6px] bg-indigo-500 text-white hover:bg-indigo-600"
             >
               <Code className="w-4 h-4 mr-2" />
               Add API
@@ -327,9 +335,10 @@ const ToolsContent = ({
           </div>
 
           {selectedApis.length === 0 ? (
-            <div className="p-6 border-2 border-dashed border-gray-200 rounded-[6px] bg-white text-center">
-              <p className="text-sm text-gray-500">
-                No APIs added yet. Click "Add API" to select from your saved APIs.
+            <div className="p-3 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-[6px] bg-white dark:bg-gray-900 text-center">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                No APIs added yet. Click "Add API" to select from your saved
+                APIs.
               </p>
             </div>
           ) : (
@@ -337,42 +346,42 @@ const ToolsContent = ({
               {selectedApis.map((api) => (
                 <div
                   key={api._id}
-                  className="p-4 border border-gray-200 rounded-lg bg-white hover:border-gray-300 transition-all duration-200"
+                  className="p-3 border border-gray-200 dark:border-gray-700 rounded-[6px] bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-500 transition-all duration-200"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h4 className="text-base font-semibold text-gray-900">
+                        <h4 className="text-base font-semibold text-gray-900 dark:text-white">
                           {api.apiName}
                         </h4>
                         <span
                           className={`px-2 py-1 text-xs font-medium rounded-full ${
                             api.method === "GET"
-                              ? "bg-green-100 text-green-800"
+                              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                               : api.method === "POST"
-                              ? "bg-blue-100 text-blue-800"
-                              : api.method === "PUT"
-                              ? "bg-yellow-100 text-yellow-800"
-                              : api.method === "DELETE"
-                              ? "bg-red-100 text-red-800"
-                              : "bg-gray-100 text-gray-800"
+                                ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                                : api.method === "PUT"
+                                  ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                                  : api.method === "DELETE"
+                                    ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                                    : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
                           }`}
                         >
                           {api.method}
                         </span>
                       </div>
                       {api.description && (
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                           {api.description}
                         </p>
                       )}
-                      <p className="text-sm text-gray-500 font-mono bg-gray-50 px-2 py-1 rounded">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 font-mono bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                         {api.endpoint}
                       </p>
                     </div>
                     <button
                       onClick={() => handleRemoveApi(api._id)}
-                      className="ml-4 p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                      className="ml-4 p-1 text-gray-400 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900 rounded transition-colors"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -389,7 +398,7 @@ const ToolsContent = ({
         isOpen={isApiModalOpen}
         onClose={() => setIsApiModalOpen(false)}
         onApiSelect={handleApiSelect}
-        selectedApis={selectedApis.map(api => api._id)}
+        selectedApis={selectedApis.map((api) => api._id)}
       />
     </div>
   );
@@ -412,23 +421,23 @@ const Tools = ({
   };
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-[6px] bg-white dark:bg-gray-900 shadow-sm hover:border-gray-300 dark:hover:border-gray-500 mr-2">
       <header
-        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
+        className="cursor-pointer bg-white dark:bg-gray-900 border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-between m-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
-              <span className="text-cyan-950 text-lg">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-[6px] flex items-center justify-center">
+              <span className="text-cyan-950 dark:text-cyan-200 text-lg">
                 <FaScrewdriverWrench />
               </span>
             </div>
             <div>
-              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+              <h2 className="text-[14px] text-gray-900 dark:text-white font-semibold ml-1.5">
                 Tools
               </h2>
-              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+              <p className="font-light text-gray-500 dark:text-gray-300 text-sm pt-1 ml-1.5">
                 Available tools and integrations
               </p>
             </div>
@@ -436,19 +445,16 @@ const Tools = ({
           <MdKeyboardArrowDown
             className={`w-8 h-8 transform transition-transform duration-200 ${
               isOpen ? "rotate-180" : ""
-            }`}
+            } text-gray-700 dark:text-gray-200`}
             style={{ fill: "gray" }}
           />
         </div>
       </header>
       {isOpen && (
         <>
-          <hr className="border-t border-gray-200 my-2" />
-          <div className="p-4">
-            <ToolsContent
-              agent={agent}
-              setAgent={setAgent}
-            />
+          <hr className="border-t border-gray-200 dark:border-gray-700 my-2" />
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-[6px]">
+            <ToolsContent agent={agent} setAgent={setAgent} />
           </div>
         </>
       )}

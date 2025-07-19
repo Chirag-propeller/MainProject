@@ -42,7 +42,7 @@ export default function AgentsPage() {
     // redirect(`/dashboard/agents/${data[0]._id}`);
   }, []);
   return (
-    <div className="h-full flex items-center justify-center text-gray-500">
+    <div className="h-full flex items-center justify-center text-gray-500 bg-white dark:bg-gray-900 dark:text-gray-300">
       {loading ? (
         <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin">
           {" "}

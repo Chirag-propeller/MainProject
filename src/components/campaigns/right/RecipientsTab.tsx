@@ -150,13 +150,30 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
+
       if (res.status === 404) {
         setGoogleSheetIntegrated(false);
         // toast.error('No integration with Google Sheet. Please integrate Google Sheet first');
         return;
       }
+
+      // Check if response is ok before trying to parse JSON
+      if (!res.ok) {
+        console.error("Google Sheets API error:", res.status, res.statusText);
+        setGoogleSheetIntegrated(false);
+        return;
+      }
+
+      // Check if response has content before parsing JSON
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Response is not JSON:", contentType);
+        setGoogleSheetIntegrated(false);
+        return;
+      }
+
       const data = await res.json();
-      setSheets(data.files);
+      setSheets(data.files || []);
       setGoogleSheetIntegrated(true);
       console.log("Google Sheets:", data);
     } catch (error: any) {
@@ -178,6 +195,28 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
           range: "Sheet1!A:Z",
         }),
       });
+
+      if (res.status === 404) {
+        setGoogleSheetIntegrated(false);
+        toast.error("No sheet selected. Please select a sheet first");
+        return;
+      }
+
+      // Check if response is ok before trying to parse JSON
+      if (!res.ok) {
+        console.error("Read Sheet API error:", res.status, res.statusText);
+        toast.error("Failed to read sheet data");
+        return;
+      }
+
+      // Check if response has content before parsing JSON
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Response is not JSON:", contentType);
+        toast.error("Invalid response from server");
+        return;
+      }
+
       const data = await res.json();
       console.log("Sheet data", data);
 
@@ -245,13 +284,10 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
         toast.success(
           `Successfully imported ${phoneNumbers.length} phone numbers from Google Sheet`
         );
+      } else {
+        toast.error("No data found in the selected sheet");
       }
     } catch (error: any) {
-      if (error.status === 404) {
-        setGoogleSheetIntegrated(false);
-        toast.error("No sheet selected. Please select a sheet first");
-        return;
-      }
       console.error("Error reading sheet:", error);
       toast.error("Failed to read sheet data");
     }

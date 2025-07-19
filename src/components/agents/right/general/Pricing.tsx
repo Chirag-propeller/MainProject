@@ -260,7 +260,7 @@ const Pricing = ({ agent }: { agent: Agent }) => {
   ];
 
   return (
-    <div className=" rounded-[6px] w-1/2 bg-gray-50">
+    <div className="rounded-[6px] w-1/2 bg-gray-50 dark:bg-gray-900">
       <div className="px-3 pb-1 justify-between flex flex-row">
         <div className="flex items-center space-x-1 group relative">
           {/* <h3 className="text-sm font-semibold text-gray-900">
@@ -269,27 +269,26 @@ const Pricing = ({ agent }: { agent: Agent }) => {
           <TooltipLabel
             label="Cost per minute: "
             fieldKey="costPer"
-            className="font-light text-black text-xs"
+            className="font-light text-black dark:text-white text-xs"
             position="bottom"
           />
         </div>
-        <h3 className="text-xs font-medium text-gray-900 pt-2 pb-1 flex items-center gap-1">
+        <h3 className="text-xs font-medium text-gray-900 dark:text-white pt-2 pb-1 flex items-center gap-1">
           {/* {CURRENCY_SYMBOLS[currency as CurrencyCode]} */}
           {formatCost(costBreakdown.total)}
         </h3>
       </div>
 
       {!pricingData ? (
-        <div className="px-3 pb-2 bg-white">
-          <div className="animate-pulse text-gray-500 text-xs">Loading...</div>
+        <div className="px-3 pb-2 bg-white dark:bg-gray-900">
+          <div className="animate-pulse text-gray-500 dark:text-gray-300 text-xs">
+            Loading...
+          </div>
         </div>
       ) : (
-        <div
-          className="px-3 pb-2
-         relative rounded-[6px]"
-        >
+        <div className="px-3 pb-2 relative rounded-[6px]">
           {/* Small stacked bar */}
-          <div className="w-full rounded-full bg-gray-200 h-2 flex relative">
+          <div className="w-full rounded-full bg-gray-200 dark:bg-gray-700 h-2 flex relative">
             {costItems.map((item, index) => {
               const tooltipPosition =
                 index === 0

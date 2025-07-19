@@ -112,21 +112,21 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border-r border-gray-200 w-1/4">
+    <div className="flex flex-col h-screen bg-white border-r border-gray-200 w-1/4">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-white p-4 border-b border-gray-100">
+      <div className="sticky top-0 z-100 bg-white p-4 border-b border-gray-100">
         <CampaignHeader title="Campaigns" onCreate={handleCreateCampaign} />
       </div>
 
       {/* Tabs and Campaign List */}
-      <div className="flex-1 overflow-hidden flex flex-col">
+      <div className="flex-1 overflow-y-auto flex flex-col">
         <Tabs
           defaultValue="all"
           value={activeTab}
           onValueChange={setActiveTab}
           className="h-full flex flex-col"
         >
-          <div className="sticky top-0 z-10 bg-white p-2 pb-2">
+          <div className="sticky top-0 z-100 bg-white p-2 pb-2">
             <TabsList className="bg-white border border-gray-200 rounded-[6px] p-0.5 shadow-sm w-full flex gap-1 md:gap-2 px-0 md:px-1">
               <TabsTrigger
                 value="all"
@@ -156,21 +156,64 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
           </div>
 
           {/* Campaign Lists */}
-          <div className="flex-1 overflow-y-auto px-2 md:px-4 pb-4">
-            {["all", "outgoing", "draft", "completed"].map((tab) => (
-              <TabsContent key={tab} value={tab} className="h-full m-0 p-0">
-                <CampaignList
-                  campaigns={filteredCampaigns}
-                  emptyMessage={`No ${tab === "all" ? "" : tab} campaigns found`}
-                  selectedId={selectedId}
-                  onSelect={handleSelectCampaign}
-                  deleteLoading={deleteLoading}
-                  onDeleteCampaign={handleDeleteCampaign}
-                  onDuplicate={handleDuplicateCampaign}
-                  isDuplicating={dupLoading}
-                />
-              </TabsContent>
-            ))}
+          <div
+            className="flex-1 px-2 md:px-2 pb-4"
+            style={{ maxHeight: "calc(100vh - 112px)" }}
+          >
+            <TabsContent value="all" className="h-full m-0 p-0">
+              <CampaignList
+                campaigns={campaigns}
+                emptyMessage="No campaigns found"
+                selectedId={selectedId}
+                onSelect={handleSelectCampaign}
+                deleteLoading={deleteLoading}
+                onDeleteCampaign={handleDeleteCampaign}
+                onDuplicate={handleDuplicateCampaign}
+                isDuplicating={dupLoading}
+              />
+            </TabsContent>
+            <TabsContent value="outgoing" className="h-full m-0 p-0">
+              <CampaignList
+                campaigns={campaigns.filter(
+                  (campaign) => campaign.status === "ongoing"
+                )}
+                emptyMessage="No outgoing campaigns found"
+                selectedId={selectedId}
+                onSelect={handleSelectCampaign}
+                deleteLoading={deleteLoading}
+                onDeleteCampaign={handleDeleteCampaign}
+                onDuplicate={handleDuplicateCampaign}
+                isDuplicating={dupLoading}
+              />
+            </TabsContent>
+            <TabsContent value="draft" className="h-full m-0 p-0">
+              <CampaignList
+                campaigns={campaigns.filter(
+                  (campaign) => campaign.status === "draft"
+                )}
+                emptyMessage="No draft campaigns found"
+                selectedId={selectedId}
+                onSelect={handleSelectCampaign}
+                deleteLoading={deleteLoading}
+                onDeleteCampaign={handleDeleteCampaign}
+                onDuplicate={handleDuplicateCampaign}
+                isDuplicating={dupLoading}
+              />
+            </TabsContent>
+            <TabsContent value="completed" className="h-full m-0 p-0">
+              <CampaignList
+                campaigns={campaigns.filter(
+                  (campaign) => campaign.status === "completed"
+                )}
+                emptyMessage="No completed campaigns found"
+                selectedId={selectedId}
+                onSelect={handleSelectCampaign}
+                deleteLoading={deleteLoading}
+                onDeleteCampaign={handleDeleteCampaign}
+                onDuplicate={handleDuplicateCampaign}
+                isDuplicating={dupLoading}
+              />
+            </TabsContent>
           </div>
         </Tabs>
       </div>

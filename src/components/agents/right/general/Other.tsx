@@ -120,9 +120,9 @@ const OtherContent = ({
   // };
 
   return (
-    <div className="p-4 flex flex-col gap-6">
+    <div className="p-4 flex rounded-[6px] flex-col gap-6 bg-gray-50 dark:bg-gray-900">
       {/* Call Duration */}
-      <div className="bg-gray-50 p-4 rounded-[6px] shadown-sm">
+      <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-[6px] shadow-sm">
         <TooltipLabel
           label="Maximum Call Duration (seconds)"
           fieldKey="MaxmCallDuration"
@@ -141,15 +141,15 @@ const OtherContent = ({
             setCallDuration(value);
             setAgent({ ...agent, maxCallDuration: value });
           }}
-          className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 text-sm"
+          className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
           Default: 1200 seconds (20 minutes)
         </p>
       </div>
 
       {/* User Away Time Out */}
-      <div className="bg-gray-50 p-4 rounded-[6px] shadown-sm">
+      <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-[6px] shadow-sm">
         <TooltipLabel
           label="User Away Time Out (seconds)"
           fieldKey="UserAwayTimeOut"
@@ -168,29 +168,29 @@ const OtherContent = ({
             setUserAwayTimeOut(value);
             setAgent({ ...agent, userAwayTimeOut: value });
           }}
-          className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 text-sm"
+          className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm"
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
           Default: 5 seconds
         </p>
       </div>
 
       {/* Number Transfer */}
-      <div className="bg-gray-50 p-4 rounded-[6px]">
+      <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-[6px] shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h4 className=" text-sm font-semibold text-gray-900">
+            <h4 className=" text-sm font-semibold text-gray-900 dark:text-white">
               Number Transfer
             </h4>
-            <p className="font-light text-gray-600 text-sm">
+            <p className="font-light text-gray-600 dark:text-gray-300 text-sm">
               Allow calls to be transferred to another number
             </p>
           </div>
-          <hr className="border-t border-gray-600 my-4" />
+          <hr className="border-t border-gray-600 dark:border-gray-700 my-4" />
 
           <div
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
-              numberTransfer ? "bg-indigo-600" : "bg-gray-200"
+              numberTransfer ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-700"
             }`}
             onClick={() => {
               const newValue = !numberTransfer;
@@ -199,7 +199,7 @@ const OtherContent = ({
             }}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-900 transition-transform ${
                 numberTransfer ? "translate-x-6" : "translate-x-1"
               }`}
             />
@@ -207,7 +207,7 @@ const OtherContent = ({
         </div>
         {numberTransfer && (
           <div className="flex flex-col gap-1">
-            <hr className="border-t border-gray-200 my-4" />
+            <hr className="border-t border-gray-200 dark:border-gray-700 my-4" />
             <TooltipLabel
               label="Transfer Number"
               fieldKey="NumberTransfer"
@@ -222,9 +222,9 @@ const OtherContent = ({
                 setTransferNumber(e.target.value);
                 setAgent({ ...agent, numberTransferNumber: e.target.value });
               }}
-              className=" max-w-xs p-2 rounded-[6px] border border-gray-300 text-sm w-1/2"
+              className="max-w-xs p-2 rounded-[6px] border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm w-1/2"
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-300">
               Include country code (e.g., +91 for India)
             </p>
           </div>
@@ -232,24 +232,20 @@ const OtherContent = ({
       </div>
 
       {/* Call Hangup */}
-      <div className="bg-gray-50 p-4 rounded-[6px]">
+      <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-[6px] shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h4 className="font-semibold text-gray-900 text-sm">Call Hangup</h4>
-            <p className="font-light text-gray-600 text-sm">
+            <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
+              Call Hangup
+            </h4>
+            <p className="font-light text-gray-600 dark:text-gray-300 text-sm">
               Automatically end calls when specific phrases are detected
             </p>
           </div>
           <div
             className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
-              callHangup ? "bg-indigo-600" : "bg-gray-200"
+              callHangup ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-700"
             }`}
-            // onClick={() => {
-            //   setCallHangup((prev) => {
-            //     setAgent({ ...agent, callHangup: !prev });
-            //     return !prev;
-            //   });
-            // }}
             onClick={() => {
               const newValue = !callHangup;
               setCallHangup(newValue); // local update
@@ -257,7 +253,7 @@ const OtherContent = ({
             }}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-900 transition-transform ${
                 callHangup ? "translate-x-6" : "translate-x-1"
               }`}
             />
@@ -266,25 +262,27 @@ const OtherContent = ({
 
         {callHangup && (
           <div className="flex flex-col gap-3">
-            <hr className="border-t border-gray-200 my-4" />
+            <hr className="border-t border-gray-200 dark:border-gray-700 my-4" />
             <TooltipLabel
               label="Hangup Trigger Phrases"
               fieldKey="CallHangup"
             />
             {/* Display Added Phrases */}
             {selectedPhases.length > 0 && (
-              <div className="min-h-[80px] border border-gray-300 p-3 rounded-[6px] bg-white/30">
-                <p className="text-xs text-gray-500 mb-2">Selected Phrases</p>
+              <div className="min-h-[80px] border border-gray-300 dark:border-gray-700 p-3 rounded-[6px] bg-white/30 dark:bg-gray-900/30">
+                <p className="text-xs text-gray-500 dark:text-gray-300 mb-2">
+                  Selected Phrases
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {selectedPhases.map((phrase) => (
                     <span
                       key={phrase}
-                      className="inline-flex items-center bg-indigo-50 text-black border border-indigo-100 px-3 py-1 rounded-[6px] text-sm"
+                      className="inline-flex items-center bg-indigo-50 dark:bg-indigo-900 text-black dark:text-white border border-indigo-100 dark:border-indigo-700 px-3 py-1 rounded-[6px] text-sm"
                     >
                       {phrase}
                       <button
                         onClick={() => handleRemovePhrase(phrase)}
-                        className="ml-2 hover:bg-blue-200 rounded-[6px] p-0.5 transition-colors"
+                        className="ml-2 hover:bg-blue-200 dark:hover:bg-blue-900 rounded-[6px] p-0.5 transition-colors"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -310,7 +308,7 @@ const OtherContent = ({
                     }
                   }
                 }}
-                className="p-2 rounded-[6px] border border-gray-300 text-sm w-full"
+                className="p-2 rounded-[6px] border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm w-full"
               />
               <button
                 onClick={() => {
@@ -320,12 +318,12 @@ const OtherContent = ({
                     setInputPhrase("");
                   }
                 }}
-                className="px-3 py-1 bg-indigo-200 text-black text-lg rounded-[6px] font-bold"
+                className="px-3 py-1 bg-indigo-200 dark:bg-indigo-900 text-black dark:text-white text-lg rounded-[6px] font-bold"
               >
                 +
               </button>
             </div>
-            <p className="text-gray-500 font-light text-xs">
+            <p className="text-gray-500 dark:text-gray-300 font-light text-xs">
               {`Common phrases: "bye", "goodbye", "that's it", "stop calling"`}
             </p>
           </div>
@@ -345,26 +343,26 @@ const Other = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border bg-white rounded-[6px] border-gray-200 shadow-sm hover:border-gray-300">
+    <div className="border bg-white dark:bg-gray-900 rounded-[6px] border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-300 dark:hover:border-gray-500 mr-2">
       <header
-        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
+        className="cursor-pointer bg-white dark:bg-gray-900 border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-between m-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
-              <span className="text-gray-700 text-lg">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-[6px] flex items-center justify-center">
+              <span className="text-gray-700 dark:text-gray-200 text-lg">
                 <IoSettings />
               </span>
             </div>
             <div>
-              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+              <h2 className="text-[14px] text-gray-900 dark:text-white font-semibold ml-1.5">
                 Other Settings
-                <span className="text-[14px] text-gray-500 font-medium pl-2">
+                <span className="text-[14px] text-gray-500 dark:text-gray-300 font-medium pl-2">
                   (Call Duration, Transfer & Hangup)
                 </span>
               </h2>
-              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+              <p className="font-light text-gray-500 dark:text-gray-300 text-sm pt-1 ml-1.5">
                 Advanced call handling settings
               </p>
             </div>

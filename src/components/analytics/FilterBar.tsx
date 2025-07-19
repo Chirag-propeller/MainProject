@@ -1,20 +1,22 @@
 // components/analytics/FilterBar.tsx
-import React, { useState, useEffect, useCallback } from 'react';
-import DateFilter, { DateRangeFilter } from '@/components/callHistory/topBar/DateFilter';
-import Filter, { FilterState } from '@/components/callHistory/topBar/Filter';
-import { Clock, Calendar } from 'lucide-react';
-import { sub } from 'date-fns';
+import React, { useState, useEffect, useCallback } from "react";
+import DateFilter, {
+  DateRangeFilter,
+} from "@/components/callHistory/topBar/DateFilter";
+import Filter, { FilterState } from "@/components/callHistory/topBar/Filter";
+import { Clock, Calendar } from "lucide-react";
+import { sub } from "date-fns";
 
 // Sample filter options
 const statusOptions = [
-  { label: 'Connected', value: 'connected' },
-  { label: 'Not Connected', value: 'not_connected' },
+  { label: "Connected", value: "connected" },
+  { label: "Not Connected", value: "not_connected" },
 ];
 
 const sentimentOptions = [
-  { label: 'Positive', value: 'positive' },
-  { label: 'Neutral', value: 'neutral' },
-  { label: 'Negative', value: 'negative' },
+  { label: "Positive", value: "positive" },
+  { label: "Neutral", value: "neutral" },
+  { label: "Negative", value: "negative" },
 ];
 
 interface FilterBarProps {
@@ -25,7 +27,7 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
   const [agentOptions, setAgentOptions] = useState([]);
   const [dateRange, setDateRange] = useState<DateRangeFilter>({
     startDate: null,
-    endDate: null
+    endDate: null,
   });
   const [filters, setFilters] = useState<FilterState>({
     agent: [],
@@ -37,11 +39,11 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
   useEffect(() => {
     const fetchAgents = async () => {
       try {
-        const response = await fetch('/api/agents/get');
+        const response = await fetch("/api/agents/get");
         const agents = await response.json();
         setAgentOptions(agents);
       } catch (error) {
-        console.error('Error fetching agents:', error);
+        console.error("Error fetching agents:", error);
       }
     };
     fetchAgents();
@@ -70,20 +72,15 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
   }, [updateParentFilters]);
 
   return (
-    <div className="flex flex-col gap-2 w-full mb-4">
-      <div className="flex flex-wrap gap-2 items-center">
-        <DateFilter
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-        />
-        <Filter 
-          filters={filters}
-          setFilters={setFilters}
-          agentOptions={agentOptions}
-          statusOptions={statusOptions}
-          sentimentOptions={sentimentOptions}
-        />
-      </div>
+    <div className="flex items-center">
+      <DateFilter dateRange={dateRange} setDateRange={setDateRange} />
+      {/* <Filter 
+        filters={filters}
+        setFilters={setFilters}
+        agentOptions={agentOptions}
+        statusOptions={statusOptions}
+        sentimentOptions={sentimentOptions}
+      /> */}
     </div>
   );
 };

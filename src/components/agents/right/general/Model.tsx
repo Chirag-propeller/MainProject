@@ -282,26 +282,26 @@ const Model = ({
   }, [systemPrompt]);
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-[6px] bg-white dark:bg-gray-900 shadow-sm hover:border-gray-300 dark:hover:border-gray-500 mr-2">
       <header
-        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
+        className="cursor-pointer bg-white dark:bg-gray-900 border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-between items-center m-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-[6px] flex items-center justify-center">
               <span className="text-fuchsia-400 text-lg">
                 <FaBrain />
               </span>
             </div>
             <div>
-              <h2 className="text-[16px] text-gray-900 font-semibold ml-1.5">
+              <h2 className="text-[16px] text-gray-900 dark:text-white font-semibold ml-1.5">
                 Model{" "}
-                <span className="text-[16px] text-gray-500 font-medium pl-1">
+                <span className="text-[16px] text-gray-500 dark:text-gray-300 font-medium pl-1">
                   (Large Language Model)
                 </span>
               </h2>
-              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+              <p className="font-light text-gray-500 dark:text-gray-300 text-sm pt-1 ml-1.5">
                 Configure the AI model settings
               </p>
             </div>
@@ -317,7 +317,7 @@ const Model = ({
 
       {isOpen && (
         <>
-          <hr className="border-t border-gray-200 my-2" />
+          <hr className="border-t border-gray-200 dark:border-gray-700 my-2" />
           <div className="px-4 py-5 flex flex-col gap-6">
             {/* Welcome Message - full width */}
             <div>
@@ -329,7 +329,7 @@ const Model = ({
               <input
                 id="firstMessage"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-[6px] text-sm"
                 value={firstMessage}
                 onChange={(e) => setFirstMessage(e.target.value)}
               />
@@ -366,7 +366,7 @@ const Model = ({
                 <textarea
                   id="systemPrompt"
                   rows={6}
-                  className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm pr-16"
+                  className="w-full px-3 pt-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-[6px] text-sm pr-16"
                   value={systemPrompt}
                   onChange={(e) => {
                     const text = e.target.value;
@@ -375,7 +375,7 @@ const Model = ({
                     }
                   }}
                 />
-                <span className="absolute bottom-2 right-3 text-xs text-gray-400 bg-white px-1">
+                <span className="absolute bottom-2 right-3 text-xs text-gray-400 dark:text-gray-300 bg-white dark:bg-transparent px-1">
                   {systemPrompt.length} / 30000
                 </span>
               </div>
