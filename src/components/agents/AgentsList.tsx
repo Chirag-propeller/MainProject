@@ -50,17 +50,19 @@ const AgentListItem = ({
   return (
     <Link href={`/dashboard/agents/${agent._id}`} className="block relative">
       <div
-        className={`p-2 px-2 border rounded-[6px] mb-1 hover:border-indigo-500 transition-colors ${
-          isSelected ? "border-indigo-500 bg-indigo-50" : "border-gray-200"
+        className={`p-2 px-2 border rounded-[6px] mb-1 transition-colors ${
+          isSelected
+            ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/50"
+            : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-500 dark:hover:border-indigo-400"
         }`}
       >
         <div className="flex justify-between items-start ">
           {/* Left: Agent Info */}
           <div>
-            <h3 className="text-[14px] overflow-hidden text-ellipsis max-w-32 text-gray-900 text-nowrap p-1">
+            <h3 className="text-[14px] overflow-hidden text-ellipsis max-w-32 text-gray-900 dark:text-white text-nowrap p-1">
               {agent.agentName}
             </h3>
-            <p className="text-xs text-gray-600 pl-1">
+            <p className="text-xs text-gray-600 dark:text-gray-300 pl-1">
               Created At:{" "}
               {agent.createdAt
                 ? new Date(agent.createdAt).toLocaleDateString()
@@ -128,7 +130,7 @@ const AgentListItem = ({
 
             {/* Confirmation Box */}
             {showConfirm && (
-              <div className="absolute top-8 right-0 w-max bg-white border border-gray-300 shadow-lg rounded-[6px] z-25">
+              <div className="absolute top-8 right-0 w-max bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-lg rounded-[6px] z-25">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -136,7 +138,7 @@ const AgentListItem = ({
                     onDelete(agent._id);
                     setShowConfirm(false);
                   }}
-                  className="text-red-600 hover:text-red-700 text-[10px] font-light px-1 pb-1 transition-colors rounded-[6px]"
+                  className="text-red-600 hover:text-red-700 dark:hover:text-red-400 text-[10px] font-light px-1 pb-1 transition-colors rounded-[6px]"
                 >
                   Delete Agent
                 </button>
@@ -310,29 +312,40 @@ const AgentsList = ({
 
   return (
     <div
-      className="w-full border-gray-200 border-t-0 flex flex-col"
+      className="w-full border-gray-200 dark:border-gray-800 border-t-0 flex flex-col bg-white dark:bg-gray-900"
       style={{ height: "100%", overflow: "hidden" }}
     >
       {/* Header with title and create button */}
-      <div className="sticky top-0 z-20 bg-white p-4 pt-6 border-b border-gray-200 flex justify-between items-center">
-        <div className="flex gap-1.5">
-          <Users className="w-3.5 h-3.5  self-center text-indigo-600" />
-          <h1 className="text-lg  self-center text-indigo-600">Agents</h1>
+      <div className="sticky top-0 z-20 bg-white dark:bg-gray-900 p-4 pt-6 border-b border-gray-200 dark:border-gray-800 flex flex-row justify-between items-center gap-2">
+        <div className="flex gap-1.5 items-center">
+          <Users className="w-4 h-4 self-center text-indigo-600" />
+          <h1 className="text-base text-[16px]sm:text-sm self-center text-indigo-600 dark:text-indigo-500">
+            Agents
+          </h1>
         </div>
-
         <Button
           onClick={handleCreateAgent}
           disabled={createLoading}
-          className="px-5 py-1 text-md rounded-[4px]"
+          className="flex items-center justify-center w-8 h-8 p-0 rounded-[4px] text-lg lg:w-auto lg:h-auto lg:px-5 lg:py-1 lg:rounded-[4px] lg:text-md bg-indigo-500 dark:bg-indigo-800"
         >
-          {createLoading ? "Creating..." : "Create"}
+          {createLoading ? (
+            <>
+              <span className="hidden lg:inline">Creating...</span>
+              <span className="inline lg:hidden animate-spin">+</span>
+            </>
+          ) : (
+            <>
+              <span className="hidden lg:inline">Create</span>
+              <span className="inline lg:hidden text-lg font-bold">+</span>
+            </>
+          )}
         </Button>
       </div>
 
       {/* List of agents */}
-      <div className="flex-1 overflow-y-auto p-3">
+      <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-gray-900">
         {agents.length === 0 ? (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-300">
             No agents found. Click Create to add your first agent.
           </div>
         ) : (

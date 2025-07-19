@@ -251,8 +251,8 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
         onClick={toggleFilter}
         className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors ${
           isOpen || dateRange.startDate !== null
-            ? "bg-indigo-100 text-indigo-700"
-            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm"
+            ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-500"
         }`}
       >
         <CalendarIcon size={16} />
@@ -270,7 +270,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[800px]">
+        <div className="absolute top-full left-0 mt-2 bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[800px] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
           <div className="flex justify-between items-center mb-4">
             <h4 className="font-medium text-gray-700">Select Date Range</h4>
             {tempDateRange.startDate && (
@@ -285,7 +285,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
 
           <div className="flex gap-4">
             {/* Time period presets */}
-            <div className="w-[160px] border-r pr-4">
+            <div className="w-[160px] border-r pr-4 dark:border-gray-700">
               <div className="flex items-center gap-1 mb-3">
                 <Clock size={14} className="text-gray-500" />
                 <h4 className="text-sm font-medium text-gray-700">
@@ -295,38 +295,38 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
               <div className="flex flex-col gap-2">
                 <button
                   onClick={() => applyTimePreset("today")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   Today
                 </button>
 
                 <button
                   onClick={() => applyTimePreset("7days")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   Last 7 Days
                 </button>
                 <button
                   onClick={() => applyTimePreset("30days")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   Last 30 Days
                 </button>
                 <button
                   onClick={() => applyTimePreset("thisMonth")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   This Month
                 </button>
                 <button
                   onClick={() => applyTimePreset("lastMonth")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   Last Month
                 </button>
                 <button
                   onClick={() => applyTimePreset("thisYear")}
-                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100"
+                  className="w-full text-left px-3 py-2 rounded text-sm font-medium bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700"
                 >
                   This Year
                 </button>
@@ -355,7 +355,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
                   {dayNames.map((day) => (
                     <div
                       key={day}
-                      className="text-xs text-center text-gray-500 py-1 font-medium"
+                      className="text-xs text-center text-gray-500 py-1 font-medium dark:text-gray-300"
                     >
                       {day}
                     </div>
@@ -366,10 +366,10 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
                     <div
                       key={i}
                       className={`
-                        relative text-center p-1 text-sm ${!date ? "" : "cursor-pointer hover:bg-gray-50"}
+                        relative text-center p-1 text-sm ${!date ? "" : "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"}
                         ${date && isStartDate(date) ? "bg-indigo-600 text-white rounded-l-md" : ""}
                         ${date && isEndDate(date) ? "bg-indigo-600 text-white rounded-r-md" : ""}
-                        ${date && isDateInRange(date) ? "bg-indigo-100" : ""}
+                        ${date && isDateInRange(date) ? "bg-indigo-100 dark:bg-indigo-900" : ""}
                       `}
                       onClick={() => date && handleDateClick(date)}
                       onMouseEnter={() => date && handleMouseEnter(date)}
@@ -401,7 +401,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
                   {dayNames.map((day) => (
                     <div
                       key={day}
-                      className="text-xs text-center text-gray-500 py-1 font-medium"
+                      className="text-xs text-center text-gray-500 py-1 font-medium dark:text-gray-300"
                     >
                       {day}
                     </div>
@@ -412,10 +412,10 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
                     <div
                       key={i}
                       className={`
-                        relative text-center p-1 text-sm ${!date ? "" : "cursor-pointer hover:bg-gray-50"}
+                        relative text-center p-1 text-sm ${!date ? "" : "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"}
                         ${date && isStartDate(date) ? "bg-indigo-600 text-white rounded-l-md" : ""}
                         ${date && isEndDate(date) ? "bg-indigo-600 text-white rounded-r-md" : ""}
-                        ${date && isDateInRange(date) ? "bg-indigo-100" : ""}
+                        ${date && isDateInRange(date) ? "bg-indigo-100 dark:bg-indigo-900" : ""}
                       `}
                       onClick={() => date && handleDateClick(date)}
                       onMouseEnter={() => date && handleMouseEnter(date)}
@@ -432,13 +432,13 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
           <div className="flex justify-end mt-4 gap-2">
             <button
               onClick={cancelSelection}
-              className="px-3 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 border border-gray-300"
+              className="px-3 py-1.5 rounded text-sm text-gray-600 hover:bg-gray-100 border border-gray-300 dark:text-gray-200 dark:hover:bg-gray-800 dark:border-gray-700"
             >
               Cancel
             </button>
             <button
               onClick={applyDateRange}
-              className="px-3 py-1.5 rounded text-sm bg-indigo-600 text-white hover:bg-indigo-700"
+              className="px-3 py-1.5 rounded text-sm bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-700 dark:text-white dark:hover:bg-indigo-800"
               disabled={!tempDateRange.startDate}
             >
               Apply

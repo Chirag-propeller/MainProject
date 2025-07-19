@@ -191,7 +191,7 @@ const LoginPage = () => {
                     </Label>
 
                     {lastMethod === "email" && (
-                      <span className="ml-2 bg-gray-200 text-xs text-indigo-950 px-2 py-[2px] rounded-full shadow-md">
+                      <span className="ml-2 font-semibold bg-purple-300 text-xs text-indigo-950 px-2 py-[2px] rounded-full shadow-md">
                         Last Used
                       </span>
                     )}

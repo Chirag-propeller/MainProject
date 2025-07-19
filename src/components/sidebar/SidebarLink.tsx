@@ -26,15 +26,15 @@ const SidebarLink = ({
       } 
         ${
           isActive
-            ? "bg-indigo-100 text-indigo-700"
-            : "text-gray-600 hover:text-black"
+            ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
+            : "text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white"
         }`}
     >
       <Icon
         className={`w-4 h-4 transition-colors ${
           isActive
-            ? "text-indigo-700"
-            : "text-gray-400 group-hover:text-indigo-500"
+            ? "text-indigo-700 dark:text-indigo-300"
+            : "text-gray-400 dark:text-gray-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-300"
         }`}
       />
       {!collapsed && <span className="text-[14px]">{name}</span>}

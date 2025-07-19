@@ -83,12 +83,12 @@ export default function AgentsLayout({
         <div
           className={`flex h-full transition-all duration-200 ${
             sidebarCollapsed ? "ml-16" : ""
-          }`}
+          } bg-white dark:bg-gray-900`}
           style={{ height: "calc(100vh - 12px)" }}
         >
           {/* Left sidebar with agents list (25% width) */}
           <div
-            className={`transition-all duration-200 ${sidebarCollapsed ? "w-40" : "w-1/4"} border-r border-gray-100`}
+            className={`transition-all duration-200 ${sidebarCollapsed ? "w-40" : "w-1/4"} border-r border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800`}
           >
             {loading ? (
               <div className="flex justify-center items-center h-32">
@@ -105,7 +105,7 @@ export default function AgentsLayout({
           </div>
 
           {/* Main content area (75% width) */}
-          <div className="flex-1 overflow-auto transition-all duration-200">
+          <div className="flex-1 h-screen overflow-auto transition-all duration-200 bg-white dark:bg-gray-900 text-black dark:text-white">
             {children}
           </div>
         </div>

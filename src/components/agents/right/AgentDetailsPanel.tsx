@@ -147,7 +147,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   // }, [agent, name, setAgent]);
 
   return (
-    <div className="flex flex-col bg-gray-50 border border-t-0 border-gray-200 h-full p-5">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 border border-t-0 border-gray-200 dark:border-gray-800 h-screen p-5">
       {/* Header with agent name, ID and buttons */}
       <div className="flex justify-between items-start flex-wrap gap-y-1">
         {/* Left: Agent Name and ID */}
@@ -158,7 +158,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border-gray-300 rounded-md border px-2 py-1"
+                className="border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md border px-2 py-1"
                 ref={nameRef}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -168,17 +168,19 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
                 }}
               />
             ) : (
-              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 text-nowrap">
+              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 dark:text-white text-nowrap">
                 {name}
               </h2>
             )}
             <FaRegEdit
-              className="w-4 h-4 text-gray-500 cursor-pointer"
+              className="w-4 h-4 text-gray-500 dark:text-gray-300 cursor-pointer"
               onClick={() => setIsNameUpdating(true)}
             />
           </div>
           <div className="flex justify-between items-center px-1 mt-1">
-            <p className="text-xs text-gray-500">ID: {agent._id}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              ID: {agent._id}
+            </p>
           </div>
         </div>
 
@@ -188,7 +190,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             variant="default"
             size="md"
             onClick={handleUpdate}
-            className="px-5 py-1 text-md rounded-[4px]"
+            className="px-5 py-1 text-md rounded-[4px] bg-indigo-500 dark:bg-indigo-800"
             disabled={!isModified}
           >
             Update
@@ -197,21 +199,21 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
             variant="secondary"
             size="md"
             onClick={handleTest}
-            className="px-3 py-1 text-md rounded-[4px] border text-indigo-600 border-indigo-500 hover:bg-indigo-50 bg-white"
+            className="px-3 py-1 text-md rounded-[4px] border text-indigo-600 border-indigo-500 hover:bg-indigo-50 dark:hover:bg-gray-800 bg-white dark:bg-gray-900 dark:text-indigo-300"
           >
             Test
-            <MdKeyboardArrowRight className="text-indigo-600 w-5 h-5 ml-1" />
+            <MdKeyboardArrowRight className="text-indigo-600 dark:text-indigo-300 w-5 h-5 ml-1" />
           </Button>
         </div>
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm space-x-4 px-4 pb-2 py-4 border-b border-gray-300">
+      <div className="flex text-sm space-x-4 px-4 pb-2 py-4 border-b border-gray-300 dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={` cursor-pointer ${activeTab === tab.id ? "text-indigo-600 border-b-1 border-indigo-600" : "text-gray-600"}`}
+            className={` cursor-pointer ${activeTab === tab.id ? "text-indigo-600 dark:text-indigo-400 border-b-1 border-indigo-600 dark:border-indigo-400" : "text-gray-600 dark:text-gray-300"}`}
           >
             {tab.label}
           </button>
@@ -227,7 +229,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
         {activeTab === "prompt" && <AgentPromptTab agent={agent} />}
 
         {activeTab === "settings" && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-300">
             {isUpdating ? (
               <div>
                 <p className="mb-4">Update your agent settings here</p>
@@ -246,13 +248,13 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
         )}
 
         {activeTab === "conversations" && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-300">
             Conversations history will be displayed here
           </div>
         )}
 
         {activeTab === "analytics" && (
-          <div className="text-center py-10 text-gray-500">
+          <div className="text-center py-10 text-gray-500 dark:text-gray-300">
             Analytics dashboard will be displayed here
           </div>
         )}

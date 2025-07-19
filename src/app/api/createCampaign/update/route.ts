@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest) {
 
     await dbConnect();
     const user = await getUserFromRequest(req);
-    const {contacts, ...rest} = body;
+    const {contacts, recipientFileProvider, ...rest} = body;
     console.log("contacts", contacts);
     console.log("body", body);
     if(contacts){
@@ -47,6 +47,9 @@ export async function PUT(req: NextRequest) {
     }
     console.log("updateData", updateData);
     const agent = await Agent.findOne({agentId: agentId});
+    if (recipientFileProvider === undefined || recipientFileProvider === null || recipientFileProvider === '') {
+      updateData.recipientFileProvider = undefined;
+    }
     console.log("agent", agent);
     // Update the campaign
     Object.assign(campaign, {...updateData, agent: agent});

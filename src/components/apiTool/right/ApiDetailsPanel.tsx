@@ -23,10 +23,7 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
 
   const nameRef = useRef<HTMLInputElement>(null);
 
-
-  const tabs = [
-    { id: "general", label: "General" },
-  ];
+  const tabs = [{ id: "general", label: "General" }];
 
   useEffect(() => {
     setInitialApi(_.cloneDeep(api));
@@ -151,7 +148,7 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm space-x-4 px-4 pb-2 py-4 border-b border-gray-300">
+      <div className="flex text-sm px-4 pt-4 pb-2 border-b border-gray-300">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -164,10 +161,8 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
       </div>
 
       {/* Tab content */}
-      <div className="flex-1 overflow-x-hidden">
-        {activeTab === "general" && (
-          <ApiGeneralTab api={api} setApi={setApi} />
-        )}
+      <div className="flex-1 overflow-x-hidden p-2">
+        {activeTab === "general" && <ApiGeneralTab api={api} setApi={setApi} />}
         {/*  */}
       </div>
     </div>
