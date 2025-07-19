@@ -24,6 +24,10 @@ interface PricingData {
   stt: any[];
 }
 
+function normalizeKey(provider: string, model: string) {
+  return (provider + "_" + model).toLowerCase().replace(/[\s.-]/g, "");
+}
+
 const Pricing = ({ agent }: { agent: Agent }) => {
   const { user } = useUserData();
   const currency = user?.currency || "INR";
@@ -64,8 +68,22 @@ const Pricing = ({ agent }: { agent: Agent }) => {
         if (sttModel && sttModel.pricing) {
           sttCost = sttModel.pricing.per_second * 60; // Convert per second to per minute
         }
+        sttCost = sttCost * 1.2;
       }
     }
+
+    // const empiricalTTSStats: Record<string, number> = {
+    //   aws_neural: 439.5,
+    //   aws_standard: 437.1,
+    //   cartesia_sonic: 475.0,
+    //   cartesia_sonic2: 365.9,
+    //   elevenlabs_elevenmultiling: 321.6,
+    //   google_chirp3hd: 493.0,
+    //   google_neural2: 309.2,
+    //   google_standard: 398.6,
+    //   google_wavenet: 359.2,
+    //   sarvam_bulbulv2: 276.1,
+    // };
 
     // Calculate TTS cost per minute (using avg output tokens per minute)
     if (agent.tts && agent.ttsModel) {
@@ -77,10 +95,57 @@ const Pricing = ({ agent }: { agent: Agent }) => {
           (model: any) => model.value === agent.ttsModel
         );
         if (ttsModel && ttsModel.pricing) {
-          ttsCost = ttsModel.pricing.per_character * PRICING.avgOutputToken;
+          ttsCost =
+            ttsModel.pricing.per_character * PRICING.avgCharactersPerMinute;
+          console.log("ttscost", ttsCost);
         }
+        ttsCost = ttsCost * 1.2;
       }
     }
+
+    const empiricalLLMStats = {
+      cerebras_llama318b: {
+        avgInputTokenPerMin: 2261,
+        avgOutputTokenPerMin: 138,
+        inputTokenCostPerMillion: 0.1,
+        outputTokenCostPerMillion: 0.1,
+        inputTokenCostPerCallINR: 0.04,
+        outputTokenCostPerCallINR: 0.001,
+        inputTokenCostPerMinINR: 0.02,
+        outputTokenCostPerMinINR: 0.001,
+      },
+      openai_gpt41: {
+        avgInputTokenPerMin: 2406,
+        avgOutputTokenPerMin: 71,
+        inputTokenCostPerMillion: 2.0,
+        outputTokenCostPerMillion: 8.0,
+        inputTokenCostPerCallINR: 0.84,
+        outputTokenCostPerCallINR: 0.1,
+        inputTokenCostPerMinINR: 0.34,
+        outputTokenCostPerMinINR: 0.04,
+      },
+      openai_gpt41mini: {
+        avgInputTokenPerMin: 4969,
+        avgOutputTokenPerMin: 232,
+        inputTokenCostPerMillion: 0.4,
+        outputTokenCostPerMillion: 1.6,
+        inputTokenCostPerCallINR: 0.16,
+        outputTokenCostPerCallINR: 0.05,
+        inputTokenCostPerMinINR: 0.05,
+        outputTokenCostPerMinINR: 0.013,
+      },
+      openai_gpt4omini: {
+        avgInputTokenPerMin: 4139,
+        avgOutputTokenPerMin: 121,
+        inputTokenCostPerMillion: 0.15,
+        outputTokenCostPerMillion: 0.6,
+        inputTokenCostPerCallINR: 0.12,
+        outputTokenCostPerCallINR: 0.007,
+        inputTokenCostPerMinINR: 0.03,
+        outputTokenCostPerMinINR: 0.003,
+      },
+      // Add more as needed
+    };
 
     // Calculate LLM cost per minute (using avg input and output tokens per minute)
     if (agent.llm && agent.llmModel) {
@@ -91,17 +156,28 @@ const Pricing = ({ agent }: { agent: Agent }) => {
         const llmModel = llmProvider.models.find(
           (model: any) => model.value === agent.llmModel
         );
-        if (llmModel && llmModel.pricing) {
+        const key = normalizeKey(agent.llm, agent.llmModel);
+        const stats = empiricalLLMStats[
+          key as keyof typeof empiricalLLMStats
+        ] as
+          | (typeof empiricalLLMStats)[keyof typeof empiricalLLMStats]
+          | undefined;
+        if (stats) {
+          llmCost =
+            (stats.inputTokenCostPerMinINR + stats.outputTokenCostPerMinINR) /
+            86;
+        } else if (llmModel && llmModel.pricing) {
           const inputCost = llmModel.pricing.input * PRICING.avgInputToken;
           const outputCost = llmModel.pricing.output * PRICING.avgOutputToken;
           llmCost = inputCost + outputCost;
         }
+        llmCost = llmCost * 1.2;
       }
     }
 
     const totalP = PRICING.PropalCost + sttCost + llmCost + ttsCost;
 
-    const conv = (usd: number) => convert(usd, currency as CurrencyCode); // 👈 convert once per value
+    const conv = (usd: number) => convert(usd, currency as CurrencyCode);
 
     setCostBreakdown({
       propal: conv(PRICING.PropalCost),
