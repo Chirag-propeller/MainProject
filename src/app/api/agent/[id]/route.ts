@@ -29,7 +29,14 @@ export async function PUT(
 ) {
   await dbConnect();
   const { id } = await params;
-  const body = await request.json();
+  
+  let body;
+  try {
+    body = await request.json();
+  } catch (error) {
+    console.error('Error parsing JSON body:', error);
+    return NextResponse.json({ message: 'Invalid JSON body' }, { status: 400 });
+  }
   
   try {
     const user = await getUserFromRequest(request);

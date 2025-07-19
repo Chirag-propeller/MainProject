@@ -116,9 +116,19 @@ const WorkflowSchema = new Schema<IWorkflow>({
     data: {
       name: { type: String, required: true },
       prompt: { type: String, default: '' },
+      message: { type: String, default: '' },
       endpoint: { type: String, default: '' },
       method: { type: String, default: 'GET' },
       type: { type: String, required: true },
+      description: { type: String, default: '' },
+      headers: { type: Object, default: {} },
+      urlParams: { type: Object, default: {} },
+      variableToExtract: { type: String, default: '' },
+      promptToExtractVariable: { type: String, default: '' },
+      params: { type: Array, default: [] },
+      response: { type: Object, default: {} },
+      selectedApiId: { type: String, default: '' },
+      selectedApi: { type: Object, default: null },
       llm: {
         provider: { type: String, default: 'OpenAI' },
         model: { type: String, default: 'gpt-4o-mini' }

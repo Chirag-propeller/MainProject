@@ -1,8 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
+import { Api } from '@/components/apiTool/types'
+import { Button } from '@/components/ui/button'
+import { Plus, Trash2 } from 'lucide-react'
+
+// Helper functions for converting between array and object formats
+const headersObjToArray = (headers: Record<string, string> | undefined): Array<{ id: number; key: string; value: string }> => {
+  if (!headers) return [];
+  return Object.entries(headers).map(([key, value], index) => ({
+    id: index,
+    key,
+    value,
+  }));
+};
+
+const headersArrayToObj = (headers: Array<{ id: number; key: string; value: string }>): Record<string, string> => {
+  return headers.reduce((acc, header) => {
+    if (header.key.trim()) {
+      acc[header.key] = header.value;
+    }
+    return acc;
+  }, {} as Record<string, string>);
+};
+
+const paramsApiToArray = (params: Api["params"] | undefined): Array<{ id: number; name: string; type: string; required: boolean; description: string }> =>
+  params
+    ? params.map((p, idx) => ({
+        id: idx,
+        name: p.name,
+        type: p.type,
+        required: Boolean(p.required),
+        description: p.description || "",
+      }))
+    : [];
+
+const paramsArrayToApi = (params: Array<{ id: number; name: string; type: string; required: boolean; description: string }>): Api["params"] =>
+  params.map((p) => ({
+    name: p.name,
+    type: p.type,
+    required: p.required,
+    description: p.description,
+  }));
 
 const ApiRequestNodeSidebar: React.FC = () => {
   const { selectedNode, updateNodeGlobal, updateNode, nodes } = useWorkflowStore()
+
+  // Local state for form fields
+  const [apiName, setApiName] = useState("")
+  const [description, setDescription] = useState("")
+  const [endpoint, setEndpoint] = useState("")
+  const [method, setMethod] = useState<Api["method"]>("GET")
+  const [headers, setHeaders] = useState<Array<{ id: number; key: string; value: string }>>([])
+  const [urlParams, setUrlParams] = useState<Array<{ id: number; key: string; value: string }>>([])
+  const [params, setParams] = useState<Array<{ id: number; name: string; type: string; required: boolean; description: string }>>([])
+  const [response, setResponse] = useState({})
+  const [variableToExtract, setVariableToExtract] = useState("")
+  const [promptToExtractVariable, setPromptToExtractVariable] = useState("")
 
   if (!selectedNode) {
     return null
@@ -29,6 +82,108 @@ const ApiRequestNodeSidebar: React.FC = () => {
     return null
   }
 
+  // Update local state when selectedNode changes
+  useEffect(() => {
+    if (selectedNode && isApiNode(selectedNode)) {
+      const apiData = selectedNode.data as any;
+      setApiName(apiData.name || "")
+      setDescription(apiData.description || "")
+      setEndpoint(apiData.endpoint || "")
+      setMethod(apiData.method || "GET")
+      setHeaders(headersObjToArray(apiData.headers))
+      setUrlParams(headersObjToArray(apiData.urlParams))
+      setParams(paramsApiToArray(apiData.params))
+      setResponse(apiData.response || {})
+      setVariableToExtract(apiData.variableToExtract || "")
+      setPromptToExtractVariable(apiData.promptToExtractVariable || "")
+    }
+  }, [selectedNode?.id]) // Only trigger when node ID changes, not the entire node object
+
+  // Auto-save changes
+  useEffect(() => {
+    if (selectedNode && isApiNode(selectedNode)) {
+      const timeout = setTimeout(() => {
+        updateNode(selectedNode.id, {
+          name: apiName,
+          description,
+          endpoint,
+          method,
+          headers: headersArrayToObj(headers),
+          urlParams: headersArrayToObj(urlParams),
+          params: paramsArrayToApi(params),
+          response,
+          variableToExtract,
+          promptToExtractVariable
+        })
+      }, 500) // Increased timeout to prevent rapid updates
+
+      return () => clearTimeout(timeout)
+    }
+  }, [apiName, description, endpoint, method, headers, urlParams, params, response, variableToExtract, promptToExtractVariable, selectedNode])
+
+
+
+  // Header management functions
+  const addHeader = () => {
+    const newId = Date.now();
+    setHeaders((prev) => [
+      ...prev,
+      { id: newId, key: "", value: "" },
+    ]);
+  };
+
+  const updateHeader = (id: number, field: "key" | "value", val: string) => {
+    setHeaders((prev) =>
+      prev.map((h) => (h.id === id ? { ...h, [field]: val } : h))
+    );
+  };
+
+  const deleteHeader = (id: number) => {
+    setHeaders((prev) => prev.filter((h) => h.id !== id));
+  };
+
+  // URL Parameters functions
+  const addUrlParam = () => {
+    setUrlParams((prev) => [
+      ...prev,
+      { id: Date.now(), key: "", value: "" },
+    ]);
+  };
+
+  const updateUrlParam = (id: number, field: "key" | "value", val: string) => {
+    setUrlParams((prev) =>
+      prev.map((h) => (h.id === id ? { ...h, [field]: val } : h))
+    );
+  };
+
+  const deleteUrlParam = (id: number) => {
+    setUrlParams((prev) => prev.filter((h) => h.id !== id));
+  };
+
+  // Params functions
+  const addParam = () => {
+    setParams((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        name: "",
+        type: "string",
+        required: false,
+        description: "",
+      },
+    ]);
+  };
+
+  const updateParam = (id: number, field: string, val: string | boolean) => {
+    setParams((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, [field]: val } : p))
+    );
+  };
+
+  const deleteParam = (id: number) => {
+    setParams((prev) => prev.filter((p) => p.id !== id));
+  };
+
   const globalData = selectedNode.data.global || {}
 
   return (
@@ -39,74 +194,274 @@ const ApiRequestNodeSidebar: React.FC = () => {
           <strong>ID:</strong> {selectedNode.id} (unchangeable)
         </div>
         <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg mb-2">
-          <strong>Note:</strong> This node will make an API request
+          <strong>Note:</strong> This node will make an API request with full configuration
         </div>
       </div>
 
       <div className="space-y-4">
-        {/* Type Field */}
+        {/* Basic Configuration */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Type
-          </label>
-          <select
-            value={selectedNode.data.type || 'API'}
-            onChange={(e) => handleNodeFieldChange('type', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          >
-            <option value="API">API</option>
-          </select>
-        </div>
-
-        {/* Name Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Node Name (Editable)
+            API Name
           </label>
           <input
             type="text"
-            value={selectedNode.data.name || ''}
-            onChange={(e) => handleNodeFieldChange('name', e.target.value)}
-            placeholder="Enter custom node name"
+            value={apiName}
+            onChange={(e) => setApiName(e.target.value)}
+            placeholder="Enter API name"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
 
-        {/* Endpoint Field - only show for API nodes */}
-        {isApiNode(selectedNode) && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              API Endpoint
-            </label>
-            <input
-              type="text"
-              value={getApiData()?.endpoint || ''}
-              onChange={(e) => handleNodeFieldChange('endpoint', e.target.value)}
-              placeholder="https://api.example.com/endpoint"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
-        )}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Description
+          </label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter API description"
+            rows={2}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
 
-        {/* Method Field - only show for API nodes */}
-        {isApiNode(selectedNode) && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              HTTP Method
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Endpoint URL
+          </label>
+          <input
+            type="url"
+            value={endpoint}
+            onChange={(e) => setEndpoint(e.target.value)}
+            placeholder="https://api.example.com/endpoint"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            HTTP Method
+          </label>
+          <select
+            value={method}
+            onChange={(e) => setMethod(e.target.value as Api["method"])}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          >
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+          </select>
+        </div>
+
+        {/* Headers Configuration */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Headers
             </label>
-            <select
-              value={getApiData()?.method || 'GET'}
-              onChange={(e) => handleNodeFieldChange('method', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            <Button
+              size="sm"
+              onClick={addHeader}
+              className="text-xs"
             >
-              <option value="GET">GET</option>
-              <option value="POST">POST</option>
-              <option value="PUT">PUT</option>
-              <option value="DELETE">DELETE</option>
-              <option value="PATCH">PATCH</option>
-            </select>
+              <Plus className="w-3 h-3 mr-1" />
+              Add Header
+            </Button>
           </div>
-        )}
+          <div className="space-y-2">
+            {headers.map((header) => (
+              <div key={header.id} className="flex gap-2">
+                <input
+                  type="text"
+                  value={header.key}
+                  onChange={(e) => updateHeader(header.id, "key", e.target.value)}
+                  placeholder="Header name"
+                  className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <input
+                  type="text"
+                  value={header.value}
+                  onChange={(e) => updateHeader(header.id, "value", e.target.value)}
+                  placeholder="Header value"
+                  className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => deleteHeader(header.id)}
+                  className="text-red-500 hover:text-red-700 p-1"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* URL Parameters Configuration */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              URL Parameters
+            </label>
+            <Button
+              size="sm"
+              onClick={addUrlParam}
+              className="text-xs"
+            >
+              <Plus className="w-3 h-3 mr-1" />
+              Add Param
+            </Button>
+          </div>
+          <div className="space-y-2">
+            {urlParams.map((param) => (
+              <div key={param.id} className="flex gap-2">
+                <input
+                  type="text"
+                  value={param.key}
+                  onChange={(e) => updateUrlParam(param.id, "key", e.target.value)}
+                  placeholder="Parameter name"
+                  className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <input
+                  type="text"
+                  value={param.value}
+                  onChange={(e) => updateUrlParam(param.id, "value", e.target.value)}
+                  placeholder="Parameter value"
+                  className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => deleteUrlParam(param.id)}
+                  className="text-red-500 hover:text-red-700 p-1"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Request Parameters Configuration */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Request Parameters
+            </label>
+            <Button
+              size="sm"
+              onClick={addParam}
+              className="text-xs"
+            >
+              <Plus className="w-3 h-3 mr-1" />
+              Add Param
+            </Button>
+          </div>
+          <div className="space-y-2">
+            {params.map((param) => (
+              <div key={param.id} className="border border-gray-200 rounded p-2 space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={param.name}
+                    onChange={(e) => updateParam(param.id, "name", e.target.value)}
+                    placeholder="Parameter name"
+                    className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  />
+                  <select
+                    value={param.type}
+                    onChange={(e) => updateParam(param.id, "type", e.target.value)}
+                    className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  >
+                    <option value="string">String</option>
+                    <option value="number">Number</option>
+                    <option value="boolean">Boolean</option>
+                    <option value="object">Object</option>
+                    <option value="array">Array</option>
+                  </select>
+                  <label className="flex items-center text-xs">
+                    <input
+                      type="checkbox"
+                      checked={param.required}
+                      onChange={(e) => updateParam(param.id, "required", e.target.checked)}
+                      className="mr-1"
+                    />
+                    Required
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  value={param.description}
+                  onChange={(e) => updateParam(param.id, "description", e.target.value)}
+                  placeholder="Parameter description"
+                  className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => deleteParam(param.id)}
+                  className="text-red-500 hover:text-red-700 text-xs"
+                >
+                  <Trash2 className="w-3 h-3 mr-1" />
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Response Configuration */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Expected Response Schema
+          </label>
+          <textarea
+            value={typeof response === 'string' ? response : JSON.stringify(response, null, 2)}
+            onChange={(e) => {
+              try {
+                const parsed = JSON.parse(e.target.value);
+                setResponse(parsed);
+              } catch {
+                setResponse(e.target.value);
+              }
+            }}
+            placeholder="Enter expected response schema (JSON)"
+            rows={4}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono text-xs"
+          />
+        </div>
+
+        {/* Variable Extraction Configuration */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Variables to Extract
+          </label>
+          <input
+            type="text"
+            value={variableToExtract}
+            onChange={(e) => setVariableToExtract(e.target.value)}
+            placeholder="e.g., user_id|email|phone"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+          <p className="text-xs text-gray-500 mt-1">Separate multiple variables with |</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Prompt to Extract Variables
+          </label>
+          <textarea
+            value={promptToExtractVariable}
+            onChange={(e) => setPromptToExtractVariable(e.target.value)}
+            placeholder="Enter prompt for variable extraction"
+            rows={2}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
 
         {/* Global Node Toggle */}
         <div>
@@ -281,6 +636,8 @@ const ApiRequestNodeSidebar: React.FC = () => {
           </div>
         </div>
       </div>
+
+
     </div>
   );
 };
