@@ -69,6 +69,24 @@ interface IWorkflow extends Document {
   nodeCounter: number;
   edgeCounter: number;
   globalNodes: string[]; // Array of node IDs that are global
+  config?: {
+    llm?: {
+      provider: string;
+      model: string;
+    };
+    tts?: {
+      provider: string;
+      model: string;
+      language: string;
+      gender: string;
+      voice: string;
+    };
+    stt?: {
+      provider: string;
+      model: string;
+      language: string;
+    };
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -98,15 +116,25 @@ const WorkflowSchema = new Schema<IWorkflow>({
     data: {
       name: { type: String, required: true },
       prompt: { type: String, default: '' },
+      message: { type: String, default: '' },
       endpoint: { type: String, default: '' },
       method: { type: String, default: 'GET' },
       type: { type: String, required: true },
+      description: { type: String, default: '' },
+      headers: { type: Object, default: {} },
+      urlParams: { type: Object, default: {} },
+      variableToExtract: { type: String, default: '' },
+      promptToExtractVariable: { type: String, default: '' },
+      params: { type: Array, default: [] },
+      response: { type: Object, default: {} },
+      selectedApiId: { type: String, default: '' },
+      selectedApi: { type: Object, default: null },
       llm: {
         provider: { type: String, default: 'OpenAI' },
         model: { type: String, default: 'gpt-4o-mini' }
       },
       tts: {
-        provider: { type: String, default: 'AWS' },
+        provider: { type: String, default: 'Google' },
         model: { type: String, default: 'generative' },
         language: { type: String, default: 'en-GB' },
         gender: { type: String, default: 'Female' },
@@ -159,6 +187,44 @@ const WorkflowSchema = new Schema<IWorkflow>({
   globalNodes: {
     type: [String],
     default: []
+  },
+  config: {
+    type: {
+      llm: {
+        provider: { type: String, default: 'OpenAI' },
+        model: { type: String, default: 'gpt-4o-mini' }
+      },
+      tts: {
+        provider: { type: String, default: 'Google' },
+        model: { type: String, default: 'generative' },
+        language: { type: String, default: 'en-GB' },
+        gender: { type: String, default: 'Female' },
+        voice: { type: String, default: 'Amy' }
+      },
+      stt: {
+        provider: { type: String, default: 'Deepgram' },
+        model: { type: String, default: 'nova-2' },
+        language: { type: String, default: 'en-US' }
+      }
+    },
+    default: {
+      llm: {
+        provider: 'OpenAI',
+        model: 'gpt-4o-mini'
+      },
+      tts: {
+        provider: 'Google',
+        model: 'generative',
+        language: 'en-GB',
+        gender: 'Female',
+        voice: 'Amy'
+      },
+      stt: {
+        provider: 'Deepgram',
+        model: 'nova-2',
+        language: 'en-US'
+      }
+    }
   }
 }, {
   timestamps: true

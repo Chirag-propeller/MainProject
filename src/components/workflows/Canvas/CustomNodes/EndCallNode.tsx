@@ -1,10 +1,11 @@
 import React from 'react';
 import { Handle, Position, NodeProps } from 'reactflow';
+import { useWorkflowStore } from '@/store/workflowStore';
 
 interface EndCallNodeData {
   name: string;
   type: string;
-  prompt?: string; // Add prompt field to match the interface
+  message?: string;
   global?: {
     isGlobal?: boolean;
     pathwayCondition?: string;
@@ -19,15 +20,25 @@ interface EndCallNodeData {
   };
 }
 
-const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data }) => {
+const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data, id }) => {
   const isGlobal = data.global?.isGlobal || false;
+  const { selectedNode } = useWorkflowStore();
 
   const displayType = data.type === 'endcall' ? 'End Call' : data.type;
 
+  // Simple highlighting - darker border when selected
+  const isSelected = selectedNode?.id === id;
+
   return (
-    <div className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
-      isGlobal ? 'border-purple-500 bg-purple-50' : 'border-red-500 bg-red-50'
-    }`}>
+    <div 
+      className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
+        isGlobal 
+          ? 'border-purple-500 bg-purple-50' 
+          : isSelected 
+            ? 'border-red-600 bg-red-50' 
+            : 'border-red-200 bg-red-50'
+      }`}
+    >
       {/* Only target handle (input) - no source handle (output) */}
       <Handle 
         type="target" 
@@ -59,9 +70,9 @@ const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data }) => {
           {data.name || 'End Call Node'}
         </div>  
         
-        {/* End Call Description */}
+        {/* End Call Message */}
         <div className="text-xs text-gray-600 bg-gray-100 p-2 rounded-lg">
-          <div className="flex items-center justify-center gap-1">
+          <div className="flex items-center justify-center gap-1 mb-1">
             <svg 
               className="w-4 h-4 text-red-500" 
               fill="none" 
@@ -77,6 +88,11 @@ const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data }) => {
             </svg>
             <span>Call will end here</span>
           </div>
+          {data.message && (
+            <div className="text-gray-700 text-xs italic">
+              "{data.message}"
+            </div>
+          )}
         </div>
 
         {/* Global Node Features Indicators */}

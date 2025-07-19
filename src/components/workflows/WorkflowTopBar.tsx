@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useWorkflowStore } from '@/store/workflowStore';
 import { AudioTrack } from '@livekit/components-react';
+import Test from './Canvas/others/Test';
 
 interface WorkflowTopBarProps {
   clearNode : ()=> void ,
@@ -17,6 +18,7 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(workflowName);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
 
   // Sync editedName when workflowName changes from store
   useEffect(() => {
@@ -150,11 +152,12 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
           <Button
               size='sm' 
               className='rounded-[4px] px-6 ml-4'
+              onClick={() => setIsTesting(true)}
           >
             Test
             <AudioLines className='pl-2 w-5 h-5'/>
           </Button>
-
+          {isTesting && <Test />}
 
         </div>
       </div>

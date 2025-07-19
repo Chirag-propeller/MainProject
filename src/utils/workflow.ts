@@ -7,6 +7,24 @@ interface WorkflowData {
   edgeCounter: number;
   globalPrompt: string;
   globalNodes: string[];
+  config?: {
+    llm?: {
+      provider: string;
+      model: string;
+    };
+    tts?: {
+      provider: string;
+      model: string;
+      language: string;
+      gender: string;
+      voice: string;
+    };
+    stt?: {
+      provider: string;
+      model: string;
+      language: string;
+    };
+  };
 }
 
 interface SaveWorkflowParams {
@@ -18,6 +36,7 @@ interface SaveWorkflowParams {
   edgeCounter: number;
   globalPrompt: string;
   globalNodes: string[];
+  config?: WorkflowData['config'];
 }
 
 interface CreateWorkflowParams {
@@ -166,7 +185,8 @@ export const convertMongoDataToFlow = (mongoData: any): WorkflowData => {
       nodeCounter: mongoData.nodeCounter || 1,
       edgeCounter: mongoData.edgeCounter || 1,
       globalPrompt: mongoData.globalPrompt || '',
-      globalNodes: mongoData.globalNodes || []
+      globalNodes: mongoData.globalNodes || [],
+      config: mongoData.config || {}
     };
   } catch (error) {
     console.error('Error converting MongoDB data to flow:', error);
@@ -176,7 +196,8 @@ export const convertMongoDataToFlow = (mongoData: any): WorkflowData => {
       nodeCounter: 1,
       edgeCounter: 1,
       globalPrompt: '',
-      globalNodes: []
+      globalNodes: [],
+      config: {}
     };
   }
 };

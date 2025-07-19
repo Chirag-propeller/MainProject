@@ -43,6 +43,9 @@ const OtherContent = ({
   const [userAwayTimeOut, setUserAwayTimeOut] = useState<number>(
     agent.userAwayTimeOut || 5
   );
+  const [isLanguageFillersActive, setIsLanguageFillersActive] = useState<boolean>(
+    agent.isLanguageFillersActive || false
+  );
   // Sync effects
   useEffect(
     () => setCallDuration(agent.maxCallDuration || 150),
@@ -60,6 +63,10 @@ const OtherContent = ({
   useEffect(
     () => setSelectedPhases(agent.callHangupPhase || []),
     [agent.callHangupPhase]
+  );
+  useEffect(
+    () => setIsLanguageFillersActive(agent.isLanguageFillersActive || false),
+    [agent.isLanguageFillersActive]
   );
 
   // Updates
@@ -329,6 +336,36 @@ const OtherContent = ({
           </div>
         )}
       </div>
+
+      {/* Language Fillers */}
+      <div className="bg-gray-50 p-4 rounded-[6px]">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h4 className="font-semibold text-gray-900 text-sm">Language Fillers</h4>
+            <p className="font-light text-gray-600 text-sm">
+              Enable automatic detection and handling of filler words
+            </p>
+          </div>
+          <div
+            className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
+              isLanguageFillersActive ? "bg-indigo-600" : "bg-gray-200"
+            }`}
+            onClick={() => {
+              const newValue = !isLanguageFillersActive;
+              setIsLanguageFillersActive(newValue);
+              setAgent({ ...agent, isLanguageFillersActive: newValue }); 
+            }}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                isLanguageFillersActive ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </div>
+        </div>
+      </div>
+
+      
     </div>
   );
 };

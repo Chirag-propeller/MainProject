@@ -21,6 +21,24 @@ export async function POST(req: NextRequest) {
       edgeCounter: 1,
       globalPrompt: "",
       globalNodes: [],
+      config: {
+        llm: {
+          provider: 'OpenAI',
+          model: 'gpt-4o-mini'
+        },
+        tts: {
+          provider: 'Google',
+          model: 'generative',
+          language: 'en-GB',
+          gender: 'Female',
+          voice: 'Amy'
+        },
+        stt: {
+          provider: 'Deepgram',
+          model: 'nova-2',
+          language: 'en-US'
+        }
+      },
       createdAt: new Date(),
       updatedAt: new Date()
     });

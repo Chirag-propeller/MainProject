@@ -21,6 +21,7 @@ interface AgentPayload {
   userId?: string;
   gender?: string;
   ttsLanguage?: string;
+  languageFillers?: object;
 }
 
 export const fetchAgents = async (): Promise<Agent[]> => {

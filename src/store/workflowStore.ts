@@ -44,8 +44,22 @@ interface ConversationNodeData extends BaseNodeData {
 // Future node types can extend BaseNodeData
 interface APINodeData extends BaseNodeData {
   endpoint: string
-  method: string
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH"
   type: 'API'
+  description?: string
+  headers?: Record<string, string>
+  urlParams?: Record<string, string>
+  variableToExtract?: string
+  promptToExtractVariable?: string
+  params?: Array<{
+    name: string
+    type: string
+    required: boolean
+    description: string
+  }>
+  response?: any
+  selectedApiId?: string // ID of the selected API from apiTool
+  selectedApi?: any // Full API data from apiTool
 }
 
 interface ConditionalNodeData extends BaseNodeData {
@@ -55,6 +69,7 @@ interface ConditionalNodeData extends BaseNodeData {
 
 interface EndCallNodeData extends BaseNodeData {
   type: 'endcall'
+  message?: string
 }
 
 // Union type for all possible node data types
@@ -72,6 +87,24 @@ interface WorkflowState {
   edges: Edge<EdgeData>[]
   globalPrompt: string
   globalNodes: string[] // Array of node IDs that are global
+  config: {
+    llm?: {
+      provider: string
+      model: string
+    }
+    tts?: {
+      provider: string
+      model: string
+      language: string
+      gender: string
+      voice: string
+    }
+    stt?: {
+      provider: string
+      model: string
+      language: string
+    }
+  }
   
   // Counters
   nodeCounter: number
@@ -94,6 +127,7 @@ interface WorkflowState {
   setEdges: (edges: Edge<EdgeData>[]) => void
   setGlobalPrompt: (prompt: string) => void
   setGlobalNodes: (globalNodes: string[]) => void
+  setConfig: (config: Partial<WorkflowState['config']>) => void
   setSelectedNode: (node: Node<NodeData> | null) => void
   setSelectedEdge: (edge: Edge<EdgeData> | null) => void
   setIsGlobalPromptOpen: (open: boolean) => void
@@ -111,6 +145,7 @@ interface WorkflowState {
   addNode: (nodeType: string) => void
   updateNode: (nodeId: string, data: Partial<NodeData> | Record<string, any>) => void
   updateNodeGlobal: (nodeId: string, globalData: Record<string, any>) => void
+  selectApiForNode: (nodeId: string, api: any) => void
   clearNodes: () => void
   
   // Edge actions
@@ -178,6 +213,13 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           endpoint: '',
           method: 'GET',
           type: 'API',
+          description: '',
+          headers: {},
+          urlParams: {},
+          variableToExtract: '',
+          promptToExtractVariable: '',
+          params: [],
+          response: {},
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -227,6 +269,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
         data: {
           name: 'End Call Node',
           type: 'endcall',
+          message: 'Thank you for calling. Have a great day!',
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -275,6 +318,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   edges: [],
   globalPrompt: '',
   globalNodes: [],
+  config: {},
   nodeCounter: 1,
   edgeCounter: 1,
   selectedNode: null,
@@ -291,6 +335,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   setEdges: (edges) => set({ edges }),
   setGlobalPrompt: (globalPrompt) => set({ globalPrompt }),
   setGlobalNodes: (globalNodes) => set({ globalNodes }),
+  setConfig: (config) => set({ config }),
   setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null }),
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
   setIsGlobalPromptOpen: (isGlobalPromptOpen) => set({ isGlobalPromptOpen }),
@@ -314,6 +359,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           edgeCounter: 1,
           globalPrompt: '',
           globalNodes: [],
+          config: {},
           selectedNode: null,
           selectedEdge: null
         })
@@ -418,6 +464,43 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     setTimeout(() => get().autoSave(), 500)
   },
   
+  selectApiForNode: (nodeId, api) => {
+    set((state) => {
+      const updatedNodes = state.nodes.map((node) =>
+        node.id === nodeId 
+          ? { 
+              ...node, 
+              data: { 
+                ...node.data, 
+                selectedApiId: api._id,
+                selectedApi: api,
+                endpoint: api.endpoint,
+                method: api.method,
+                name: api.apiName,
+                description: api.description,
+                headers: api.headers,
+                urlParams: api.urlParams,
+                params: api.params,
+                response: api.response,
+                variableToExtract: api.variableToExtract,
+                promptToExtractVariable: api.promptToExtractVariable
+              } 
+            }
+          : node
+      )
+      
+      const updatedSelected = updatedNodes.find((n) => n.id === nodeId)
+      
+      return {
+        nodes: updatedNodes,
+        selectedNode: updatedSelected || state.selectedNode
+      }
+    })
+    
+    // Trigger auto-save after selecting API
+    setTimeout(() => get().autoSave(), 500)
+  },
+  
   clearNodes: () => {
     set({
       nodes: [],
@@ -469,13 +552,13 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   // Workflow actions
   saveWorkflow: async () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId, config } = get()
     
     if (!currentWorkflowId) {
       throw new Error('No workflow ID available for saving')
     }
     
-    set({ isLoading: true })
+    // set({ isLoading: true })
     
     try {
       const result = await saveWorkflow({
@@ -485,7 +568,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         nodeCounter,
         edgeCounter,
         globalPrompt,
-        globalNodes
+        globalNodes,
+        config
       })
       
       if (result.success) {
@@ -520,6 +604,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           edgeCounter: flowData.edgeCounter,
           globalPrompt: flowData.globalPrompt,
           globalNodes: flowData.globalNodes || [],
+          config: result.data.config || {},
           selectedNode: null,
           selectedEdge: null
         })
@@ -568,7 +653,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
   
   autoSave: () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId, config } = get()
     
     if (currentWorkflowId && (nodes.length > 0 || edges.length > 0)) {
       autoSaveWorkflow({
@@ -578,7 +663,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         nodeCounter,
         edgeCounter,
         globalPrompt,
-        globalNodes
+        globalNodes,
+        config
       })
     }
   },

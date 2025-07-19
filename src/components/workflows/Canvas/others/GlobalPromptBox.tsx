@@ -34,8 +34,6 @@ const GlobalPromptBox: React.FC = () => {
   }, [setIsGlobalPromptOpen])
 
   return (
-
-
     <Card className="w-full relative z-50" ref={boxRef} >
       <CardHeader className="pb-3">
         <h3 className="text-lg font-medium text-gray-900">Global Prompt</h3>
