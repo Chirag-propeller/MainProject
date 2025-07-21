@@ -6,7 +6,6 @@ import SelectionDropdown from "@/components/agents/SelectionDropdown";
 import { Api } from "../../types";
 import { FaCodeCompare } from "react-icons/fa6";
 
-
 interface HeaderItem {
   id: number;
   key: string;
@@ -20,7 +19,6 @@ interface ParamItem {
   required: boolean;
   description: string;
 }
-
 
 const HTTP_METHODS = [
   { name: "GET", value: "GET" },
@@ -68,7 +66,6 @@ const paramsArrayToApi = (arr: ParamItem[]): Api["params"] =>
     description: rest.description || "",
   }));
 
-
 const ApiRequestConfig = ({
   api,
   setApi,
@@ -93,10 +90,13 @@ const ApiRequestConfig = ({
   const [params, setParams] = useState<ParamItem[]>(
     paramsApiToArray(api.params)
   );
-  const [variableToExtract, setVariableToExtract] = useState(api.variableToExtract?.split("|") || []);
-  const [promptToExtractVariable, setPromptToExtractVariable] = useState(api.promptToExtractVariable?.split("|") || []);
+  const [variableToExtract, setVariableToExtract] = useState(
+    api.variableToExtract?.split("|") || []
+  );
+  const [promptToExtractVariable, setPromptToExtractVariable] = useState(
+    api.promptToExtractVariable?.split("|") || []
+  );
 
-  
   useEffect(() => {
     const t = setTimeout(() => {
       setApi({
@@ -115,7 +115,6 @@ const ApiRequestConfig = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiName, description, endpoint, method, headers, urlParams, params]);
 
-  
   const addHeader = () =>
     setHeaders((prev) => [
       ...prev,
@@ -145,7 +144,6 @@ const ApiRequestConfig = ({
   const deleteUrlParam = (id: number) =>
     setUrlParams((prev) => prev.filter((h) => h.id !== id));
 
-
   const addParam = () =>
     setParams((prev) => [
       ...prev,
@@ -170,41 +168,43 @@ const ApiRequestConfig = ({
   const deleteParam = (id: number) =>
     setParams((prev) => prev.filter((p) => p.id !== id));
 
-
   return (
-    <div className="border bg-white rounded-[6px] border-gray-200 shadow-sm hover:border-gray-300">
+    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300 space-y-2">
       {/* ---------- Collapsible header ---------- */}
       <header
         onClick={() => setIsOpen(!isOpen)}
         className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
       >
-        <div className="flex justify-between m-1.5"></div>
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
-            <span className="text-blue-500 text-xl">
-              <FaCodeCompare />
-            </span>
+        <div className="flex justify-between items-center m-1.5">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+              <span className="text-blue-500 text-xl">
+                <FaCodeCompare />
+              </span>
+            </div>
+            <div>
+              <h2 className="text-[16px] font-semibold text-gray-900 ml-1.5">
+                API Request Configuration
+              </h2>
+              <p className="text-sm font-light text-gray-500 pt-1 ml-1.5">
+                Configure endpoint, method, headers and parameters
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 tracking-tight">
-              API Request Configuration
-            </h2>
-            <p className="text-sm font-medium text-gray-600 mt-1">
-              Configure endpoint, method, headers and parameters
-            </p>
-          </div>
+          <MdKeyboardArrowDown
+            className={`w-8 h-8 transform transition-transform duration-300 text-gray-500 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+            style={{ fill: "gray" }}
+          />
         </div>
-        <MdKeyboardArrowDown
-          className={`w-8 h-8 transform transition-transform duration-300 text-gray-500 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
       </header>
 
       {/* ---------- Body ---------- */}
       {isOpen && (
         <>
-          <div className="px-6 py-8 flex flex-col gap-8">
+          <hr className="border-t border-gray-200 my-2" />
+          <div className="px-4 py-5 flex flex-col gap-6">
             {/* API Name ------------------------------------------------ */}
             <div className="space-y-3">
               <TooltipLabel
@@ -215,7 +215,7 @@ const ApiRequestConfig = ({
               <input
                 id="apiName"
                 type="text"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base font-medium placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
                 placeholder="e.g., getUserData, sendNotification"
                 value={apiName}
                 onChange={(e) => setApiName(e.target.value)}
@@ -232,7 +232,7 @@ const ApiRequestConfig = ({
               <textarea
                 id="description"
                 rows={4}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base font-medium placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200 resize-none"
+                className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm placeholder:text-gray-400"
                 placeholder="Describe what this API does and when it should be used..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -248,59 +248,62 @@ const ApiRequestConfig = ({
                   htmlFor="endpoint"
                 />
                 <p className="text-xs font-medium text-gray-600 mt-0.5">
-                  Example: https://api.test.com/v1/user?userID=1234&CustomerMobile=&#123;&#123;phonenumber&#125;&#125;
+                  Example:
+                  https://api.test.com/v1/user?userID=1234&CustomerMobile=&#123;&#123;CustomerMobile&#125;&#125;
                 </p>
                 <input
                   id="endpoint"
                   type="url"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base font-medium placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-200"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
                   placeholder="https://api.example.com/v1/endpoint"
                   value={endpoint}
                   onChange={(e) => setEndpoint(e.target.value)}
                 />
               </div>
-
             </div>
             <div className="lg:w-48 space-y-3">
-                <TooltipLabel label="HTTP Method" fieldKey="httpMethod" />
-                <SelectionDropdown
-                  options={HTTP_METHODS}
-                  selectedOption={method}
-                  setOption={(val) => setMethod(val as Api["method"])}
-                />
-              </div>
+              <TooltipLabel label="HTTP Method" fieldKey="httpMethod" />
+              <SelectionDropdown
+                options={HTTP_METHODS}
+                selectedOption={method}
+                setOption={(val) => setMethod(val as Api["method"])}
+              />
+            </div>
 
             {/* URL Params --------------------------------------------- */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <TooltipLabel label="Variable URL Parameters" fieldKey="urlParams" />
+                <TooltipLabel
+                  label="Variable URL Parameters"
+                  fieldKey="urlParams"
+                />
                 <button
                   type="button"
                   onClick={addUrlParam}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center gap-2"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
                 >
-                  <span className="text-lg">+</span>
-                  Add URL Params
+                  + Add URL Params
                 </button>
               </div>
 
               {urlParams.length === 0 ? (
-                <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
                   <p className="text-sm font-medium text-gray-500 text-center">
-                    No URL params configured. Click "Add URL Params" to create one.
+                    No URL params configured. Click "Add URL Params" to create
+                    one.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="">
                   {urlParams.map((h) => (
                     <div
                       key={h.id}
-                      className="flex gap-3 items-center border-2 border-gray-200 rounded-lg p-4 bg-white hover:border-gray-300 transition-all duration-200"
+                      className="flex gap-3 items-center p-2 bg-white hover:border-gray-300 transition-all duration-200"
                     >
                       <input
                         type="text"
                         placeholder="URL Param Key"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
                         value={h.key}
                         onChange={(e) =>
                           updateUrlParam(h.id, "key", e.target.value)
@@ -309,7 +312,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Description"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
                         value={h.value}
                         onChange={(e) =>
                           updateUrlParam(h.id, "value", e.target.value)
@@ -327,40 +330,36 @@ const ApiRequestConfig = ({
               )}
             </div>
 
-
             {/* Headers ------------------------------------------------ */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <TooltipLabel label="Headers" fieldKey="headers" />
                 <button
                   type="button"
                   onClick={addHeader}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center gap-2"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex justify-center items-center"
                 >
-                  <span className="text-lg">+</span>
-                  Add Header
+                  + Add Header
                 </button>
               </div>
 
-
-
               {headers.length === 0 ? (
-                <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
                   <p className="text-sm font-medium text-gray-500 text-center">
                     No headers configured. Click "Add Header" to create one.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="">
                   {headers.map((h) => (
                     <div
                       key={h.id}
-                      className="flex gap-3 items-center border-2 border-gray-200 rounded-lg p-4 bg-white hover:border-gray-300 transition-all duration-200"
+                      className="flex gap-3 items-center p-2 bg-white hover:border-gray-300 transition-all duration-200"
                     >
                       <input
                         type="text"
                         placeholder="Header Key"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
                         value={h.key}
                         onChange={(e) =>
                           updateHeader(h.id, "key", e.target.value)
@@ -369,7 +368,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Header Value"
-                        className="flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
                         value={h.value}
                         onChange={(e) =>
                           updateHeader(h.id, "value", e.target.value)
@@ -387,68 +386,67 @@ const ApiRequestConfig = ({
               )}
             </div>
 
-
-
-
             {/* Params ------------------------------------------------- */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <TooltipLabel label="Parameters" fieldKey="params" />
                 <button
                   type="button"
                   onClick={addParam}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex items-center gap-2"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
                 >
-                  <span className="text-lg">+</span>
-                  Add Parameter
+                  + Add Parameter
                 </button>
               </div>
 
               {params.length === 0 ? (
-                <div className="p-6 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50">
+                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
                   <p className="text-sm font-medium text-gray-500 text-center">
-                    No parameters configured. Click "Add Parameter" to create one.
+                    No parameters configured. Click "Add Parameter" to create
+                    one.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="">
                   {params.map((p) => (
                     <div
                       key={p.id}
-                      className="grid grid-cols-12 gap-3 border-2 border-gray-200 rounded-lg p-4 bg-white hover:border-gray-300 transition-all duration-200"
+                      className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center p-2 bg-white"
                     >
                       <input
                         type="text"
                         placeholder="Parameter Name"
-                        className="col-span-3 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="flex-[2] min-w-0 px-3 py-2 border border-gray-300 rounded-[6px] text-xs placeholder:text-xs"
                         value={p.name}
                         onChange={(e) =>
                           updateParam(p.id, "name", e.target.value)
                         }
                       />
+                      <div className="flex-[1] min-w-[100px]">
+                        <SelectionDropdown
+                          options={[
+                            { name: "string", value: "string" },
+                            { name: "number", value: "number" },
+                            { name: "boolean", value: "boolean" },
+                            { name: "object", value: "object" },
+                            { name: "array", value: "array" },
+                          ]}
+                          selectedOption={p.type}
+                          setOption={(val) =>
+                            updateParam(p.id, "type", val as string)
+                          }
+                          className="w-full px-3 py-2 text-xs font-medium border border-gray-300"
+                        />
+                      </div>
 
-                      <select
-                        className="col-span-2 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200 bg-white"
-                        value={p.type}
-                        onChange={(e) =>
-                          updateParam(p.id, "type", e.target.value)
-                        }
-                      >
-                        <option value="string">string</option>
-                        <option value="number">number</option>
-                        <option value="boolean">boolean</option>
-                        <option value="object">object</option>
-                        <option value="array">array</option>
-                      </select>
-
-                      <label className="col-span-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+                      <label className="flex-[1] min-w-[110px] flex items-center text-sm font-medium text-gray-700">
                         <input
                           type="checkbox"
                           checked={p.required}
                           onChange={(e) =>
                             updateParam(p.id, "required", e.target.checked)
                           }
-                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                          className="mr-2"
                         />
                         Required
                       </label>
@@ -457,7 +455,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Description (optional)"
-                        className="col-span-4 px-3 py-2 text-sm font-medium border border-gray-200 rounded-md placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all duration-200"
+                        className="flex-[3] min-w-0 px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
                         value={p.description}
                         onChange={(e) =>
                           updateParam(p.id, "description", e.target.value)
@@ -466,7 +464,7 @@ const ApiRequestConfig = ({
 
                       <button
                         onClick={() => deleteParam(p.id)}
-                        className="col-span-1 p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200 flex items-center justify-center"
+                        className="ml-auto p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200 flex items-center justify-center"
                       >
                         <MdDelete className="w-5 h-5" />
                       </button>

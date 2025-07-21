@@ -181,7 +181,7 @@ const SignupAndVerifyPage = () => {
       <div className="absolute top-20 right-4 sm:top-40 sm:right-20 w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-lg rotate-45 opacity-20 animate-pulse"></div>
       <div className="absolute bottom-50 left-20 sm:bottom-32 sm:left-20 w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-indigo-400 to-indigo-700 rounded-full opacity-20 animate-pulse"></div>
 
-      <div className="flex-1 overflow-y-auto container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+      <div className="flex-1 container mx-auto px-2 py-4 flex flex-col lg:flex-row gap-4">
         {/* Left Section - Enhanced Features */}
         <div className="lg:w-2/3 flex flex-col justify-center space-y-6 sm:space-y-8 relative">
           {/* Header */}
@@ -198,7 +198,7 @@ const SignupAndVerifyPage = () => {
               first call to automated follow-up.
             </p>
           </div>
-          <div className="relative min-h-[150px] sm:min-h-[100px] lg:min-h-[150px] flex items-center justify-center lg:justify-start overflow-hidden shadow-indigo-500">
+          <div className="hidden lg:flex relative min-h-[150px] items-center justify-center lg:justify-start overflow-hidden shadow-indigo-500">
             {features.map((feature, index) => (
               <div
                 key={index}
@@ -219,14 +219,14 @@ const SignupAndVerifyPage = () => {
           </div>
 
           {/* Feature indicators */}
-          <div className="flex justify-center lg:justify-start space-x-2">
+          <div className="hidden lg:flex relative min-h-[20px] items-center justify-center lg:justify-start overflow-hidden space-x-2">
             {features.map((_, index) => (
               <div
                 key={index}
                 className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-500 ${
                   index === activeFeature
                     ? "bg-indigo-600 w-6 sm:w-8"
-                    : "bg-white"
+                    : "bg-indigo-200"
                 }`}
               />
             ))}
@@ -235,16 +235,16 @@ const SignupAndVerifyPage = () => {
 
         {/* Right Section - PAuth Form */}
         <div className="lg:w-2/3 flex items-center justify-center">
-          <Card className="w-full max-w-md md:max-w-lg bg-white/50 backdrop-blur-lg px-4 sm:px-6 md:py-6 rounded-2xl shadow-indigo-500 flex flex-col justify-center gap-4">
-            <CardHeader className="text-center pb-2 sm:pb-4">
+          <Card className="w-full max-w-[440px] md:max-w-lg bg-white/50 backdrop-blur-lg px-4 py-1 rounded-2xl shadow-indigo-500 flex flex-col justify-center gap-1">
+            <CardHeader className="text-center sm:pb-4">
               <Image
                 src="/assets/logo.png"
                 alt="Logo"
                 width={80}
                 height={80}
-                className="mx-auto mb-2"
+                className="mx-auto"
               />
-              <CardTitle className="text-2xl sm:text-3xl bg-gradient-to-r from-indigo-900 to-indigo-400 bg-clip-text text-transparent ">
+              <CardTitle className="text-xl sm:text-lg bg-gradient-to-r from-indigo-900 to-indigo-400 bg-clip-text text-transparent ">
                 Get Started
               </CardTitle>
               <CardDescription className="bg-gradient-to-r from-indigo-900 to-indigo-400 bg-clip-text text-transparent ">
@@ -338,7 +338,7 @@ const SignupAndVerifyPage = () => {
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="absolute right-0 top-0 h-full px-2 text-gray-400 hover:text-black hover:bg-transparent from-[#4f46e5] to-[#6366f1]"
+                          className="absolute right-0 top-0 h-full px-1.5 text-gray-400 hover:text-black hover:bg-transparent from-[#4f46e5] to-[#6366f1]"
                           onClick={() => setShowPassword(!showPassword)}
                         >
                           {showPassword ? (
@@ -395,7 +395,7 @@ const SignupAndVerifyPage = () => {
                     {/* Submit */}
                     <Button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-600 hover:from-indigo-300 hover:to-indigo-700 text-white font-semibold py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group mt-2 rounded-xl"
+                      className="w-full bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-600 hover:from-indigo-300 hover:to-indigo-700 text-white font-semibold py-1.5 transition-all duration-300 hover:scale-105 hover:shadow-lg group mt-2 rounded-xl"
                     >
                       Create Account
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
@@ -417,7 +417,7 @@ const SignupAndVerifyPage = () => {
                         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&response_type=code&scope=openid%20email%20profile`;
                       }}
                       variant="secondary"
-                      className="w-full bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-600 hover:from-indigo-300 hover:to-indigo-700 text-white font-semibold py-2 transition-all duration-300 hover:scale-105 hover:shadow-lg group mt-2 rounded-xl"
+                      className="w-full bg-gradient-to-r from-indigo-400 via-indigo-400 to-indigo-600 hover:from-indigo-300 hover:to-indigo-700 text-white font-semibold py-1.5 transition-all duration-300 hover:scale-105 hover:shadow-lg group mt-2 rounded-xl"
                     >
                       <FaGoogle className="text-xl mr-1.5" />
                       {googleLoading ? "Redirecting..." : "Sign in with Google"}

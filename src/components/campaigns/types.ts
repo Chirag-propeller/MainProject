@@ -30,7 +30,7 @@ export interface Campaign {
   
   // Recipient provider fields
   recipientFile?: string;
-  recipientFileProvider?: 'csv' | 'googleSheet';
+  recipientFileProvider?: 'csv' | 'googleSheet' | null;
   recipientFileLink?: string;
   recipientFileId?: string;
   recipientFileName?: string;

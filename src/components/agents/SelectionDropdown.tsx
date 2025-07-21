@@ -27,13 +27,21 @@ const SelectionDropdown: React.FC<SelectionDropdownProps> = ({
 }) => {
   return (
     <Select value={selectedOption} onValueChange={setOption}>
-      <SelectTrigger>
+      <SelectTrigger className="bg-white dark:bg-gray-900 dark:text-white border-gray-300 dark:border-gray-700">
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>
-      <SelectContent sideOffset={4} side="bottom">
+      <SelectContent
+        sideOffset={4}
+        side="bottom"
+        className="bg-white dark:bg-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+      >
         {options.map((option) =>
           option.value ? (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="bg-white dark:bg-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
               {option.name}
             </SelectItem>
           ) : null

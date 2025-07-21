@@ -198,25 +198,25 @@ const Transcriber = ({
   }, [agent]);
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-[6px] bg-white dark:bg-gray-900 shadow-sm hover:border-gray-300 dark:hover:border-gray-500 mr-2">
       <header
-        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
+        className="cursor-pointer bg-white dark:bg-gray-900 border-b-background px-2 py-1 m-1 rounded-[6px]"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
         <div className="flex justify-between m-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
-              <span className="text-blue-400 text-lg">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-[6px] flex items-center justify-center">
+              <span className="text-blue-400 dark:text-blue-200 text-lg">
                 <GiMicrophone />
               </span>
             </div>
             <div>
-              <h2 className="text-[14px] text-gray-900 font-semibold ml-1.5">
+              <h2 className="text-[14px] text-gray-900 dark:text-white font-semibold ml-1.5">
                 Transcriber
               </h2>
-              <p className="font-light text-gray-500 text-sm pt-1 ml-1.5">
+              <p className="font-light text-gray-500 dark:text-gray-300 text-sm pt-1 ml-1.5">
                 Speech-to-text configuration
               </p>
             </div>
@@ -232,8 +232,8 @@ const Transcriber = ({
       </header>
       {isOpen && (
         <>
-          <hr className="border-t border-gray-200 my-2" />
-          <div className="my-5 px-5 w-full bg-white rounded-xl flex flex-col gap-4">
+          <hr className="border-t border-gray-200 dark:border-gray-700 my-2" />
+          <div className="my-5 px-5 w-full bg-white dark:bg-gray-900 rounded-xl flex flex-col gap-4">
             {/* Provider & Model side by side */}
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">

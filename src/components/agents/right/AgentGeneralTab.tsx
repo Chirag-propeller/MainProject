@@ -18,7 +18,7 @@ const AgentGeneralTab: React.FC<AgentGeneralTabProps> = ({
 }) => {
   return (
     <>
-      <div className="sticky top-0 z-50 bg-gray-50 pb-1 w-full">
+      <div className="sticky top-0 z-50 bg-gray-50 dark:bg-gray-900 pb-1 w-full">
         <div className="flex gap-3 text-xs pr-4 ml-4 pb-1 pt-2">
           <div className="flex items-center gap-1">
             <span className="h-2 w-2 rounded-full bg-indigo-500"></span> proPal
@@ -41,7 +41,7 @@ const AgentGeneralTab: React.FC<AgentGeneralTabProps> = ({
       </div>
 
       {/* Config Sections */}
-      <div className="flex flex-col gap-3 bg-gray-50 pt-2 relative">
+      <div className="flex flex-col gap-3 bg-gray-50 dark:bg-gray-900 pt-2 relative">
         <Model agent={agent} setAgent={setAgent} />
         <Transcriber agent={agent} setAgent={setAgent} />
         <Voice agent={agent} setAgent={setAgent} />

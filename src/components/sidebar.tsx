@@ -24,6 +24,7 @@ import SidebarLink from "./sidebar/SidebarLink";
 import Logo from "./sidebar/Logo";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import DarkModeToggle from "./ui/DarkModeToggle";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -69,10 +70,12 @@ const UserCard = ({ collapsed }: { collapsed: boolean }) => {
 
   if (loading) {
     return (
-      <div className="w-44 p-3 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="w-44 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-center">
-          <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
-          <span className="ml-2 text-sm text-gray-500">Loading...</span>
+          <Loader2 className="w-5 h-5 animate-spin text-gray-400 dark:text-gray-300" />
+          <span className="ml-2 text-sm text-gray-500 dark:text-gray-300">
+            Loading...
+          </span>
         </div>
       </div>
     );
@@ -87,8 +90,8 @@ const UserCard = ({ collapsed }: { collapsed: boolean }) => {
   if (collapsed) {
     return (
       <Link href="/dashboard/profile">
-        <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 hover:bg-indigo-200 transition-colors">
-          <UserIcon className="w-5 h-5 text-indigo-600" />
+        <div className="w-10 h-10 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center cursor-pointer border border-gray-200 dark:border-gray-800 hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors">
+          <UserIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-300" />
         </div>
       </Link>
     );
@@ -96,27 +99,27 @@ const UserCard = ({ collapsed }: { collapsed: boolean }) => {
 
   return (
     <Link href="/dashboard/profile">
-      <div className="w-39 p-3 bg-gray-50  hover:bg-gray-100  transition-colors rounded-[6px] border border-gray-200  cursor-pointer">
-        <div className="w-6 h-6 bg-indigo-100  rounded-full flex items-center justify-center">
-          <UserIcon className="w-4 h-4 text-indigo-600" />
+      <div className="w-39 p-3 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors rounded-[6px] border border-gray-200 dark:border-gray-800 cursor-pointer">
+        <div className="w-6 h-6 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center">
+          <UserIcon className="w-4 h-4 text-indigo-600 dark:text-indigo-300" />
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className="text-sm font-medium text-gray-900  truncate">
+          <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
             {user.name}
           </h4>
         </div>
 
         <div className="space-y-1">
           <div className="flex items-center gap-1">
-            <Mail className="w-3 h-3 text-gray-400" />
-            <span className="text-[10px] text-gray-600 truncate">
+            <Mail className="w-3 h-3 text-gray-400 dark:text-gray-300" />
+            <span className="text-[10px] text-gray-600 dark:text-gray-300 truncate">
               {user.email}
             </span>
           </div>
 
           <div className="flex items-center gap-1">
             <Zap className="w-3 h-3 text-green-500" />
-            <span className="text-xs font-medium text-gray-900">
+            <span className="text-xs font-medium text-gray-900 dark:text-white">
               ${creditBalance.toFixed(2)} credits
             </span>
           </div>
@@ -150,12 +153,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
 
   return (
     <aside
-      className={`transition-all duration-200 ${collapsed ? "w-16" : "w-45"} h-screen overflow-y-auto text-gray-600 p-2 ps-0 pt-0 pb-10 fixed border-r border-gray-200 bg-white`}
+      className={`transition-all duration-200 ${collapsed ? "w-16" : "w-45"} h-screen overflow-y-auto text-gray-600 dark:text-gray-200 p-2 ps-0 pt-0 pb-10 fixed border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900`}
     >
       <div
-        className={`fixed border-b border-gray-200 flex items-center justify-between ${
+        className={`fixed border-b border-gray-200 dark:border-gray-800 flex items-center justify-between ${
           collapsed ? "w-16" : "w-45"
-        } bg-white`}
+        } bg-white dark:bg-gray-900`}
       >
         <div className="flex items-center justify-center w-full">
           <Logo collapsed={collapsed} />
@@ -167,9 +170,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? (
-            <ChevronRight className="w-5 h-5 text-gray-600" />
+            <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-200" />
           ) : (
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
+            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-200" />
           )}
         </button>
       </div>
@@ -186,6 +189,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
         ))}
 
         <div className="absolute bottom-3">
+          <DarkModeToggle />
           <UserCard collapsed={collapsed} />
         </div>
       </nav>
