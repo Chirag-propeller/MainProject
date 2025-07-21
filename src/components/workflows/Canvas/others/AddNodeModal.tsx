@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useWorkflowStore } from '@/store/workflowStore'
-import { MessageSquare, PhoneOff, Globe, X } from 'lucide-react'
+import { MessageSquare, PhoneOff, Globe, X, Book } from 'lucide-react'
 
 interface AddNodeModalProps {
   isOpen: boolean
@@ -42,6 +42,17 @@ const AddNodeModal: React.FC<AddNodeModalProps> = ({ isOpen, onClose }) => {
       borderColor: 'border-blue-200',
       textColor: 'text-blue-600',
       hoverColor: 'hover:bg-blue-100'
+    },
+    {
+      type: 'RAG Node',
+      title: 'RAG Node',
+      description: 'Retrieve-augmented generation with knowledge base PDF',
+      icon: Book,
+      color: 'green',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200',
+      textColor: 'text-green-600',
+      hoverColor: 'hover:bg-green-100'
     },
     {
       type: 'End Call Node',

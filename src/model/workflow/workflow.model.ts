@@ -41,6 +41,9 @@ interface IWorkflowNode {
       redirectTargetNodeId?: string;
       [key: string]: any; // Allow additional global properties
     };
+    knowledgeBaseAttached?: boolean;
+    knowledgeBaseUrl?: string;
+    whenToCallRag?: string;
   };
   style?: {
     width: number;
@@ -129,6 +132,9 @@ const WorkflowSchema = new Schema<IWorkflow>({
       response: { type: Object, default: {} },
       selectedApiId: { type: String, default: '' },
       selectedApi: { type: Object, default: null },
+      knowledgeBaseAttached: { type: Boolean, default: false },
+      knowledgeBaseUrl: { type: String, default: '' },
+      whenToCallRag: { type: String, default: '' },
       llm: {
         provider: { type: String, default: 'OpenAI' },
         model: { type: String, default: 'gpt-4o-mini' }

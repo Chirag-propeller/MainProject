@@ -25,18 +25,19 @@ const ConversationNode: React.FC<NodeProps<ConversationNodeData>> = ({ data, id 
   const hasRedirect = data.global?.redirectToNode && data.global?.redirectTargetNodeId;
   const hasPathwayLabel = data.global?.createPathwayLabelToPrevious;
   const { selectedNode } = useWorkflowStore();
+  const { activeNode } = useWorkflowStore();
 
   // Simple highlighting - darker border when selected
   const isSelected = selectedNode?.id === id;
-
+  const isActive = activeNode === id;
   return (
     <div 
       className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
-        isGlobal 
-          ? 'border-purple-500 bg-purple-50' 
-          : isSelected 
-            ? 'border-indigo-600' 
-            : 'border-indigo-200'
+                isActive ? 'border-green-500 bg-green-50 shadow-md shadow-green-500/50 ' : 
+                // isGlobal ? 'border-purple-500 bg-purple-50' : 
+                isSelected 
+              ? 'border-indigo-600' 
+              : 'border-indigo-200'
       }`}
     >
       <Handle 

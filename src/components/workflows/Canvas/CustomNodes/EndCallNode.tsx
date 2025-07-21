@@ -22,16 +22,17 @@ interface EndCallNodeData {
 
 const EndCallNode: React.FC<NodeProps<EndCallNodeData>> = ({ data, id }) => {
   const isGlobal = data.global?.isGlobal || false;
-  const { selectedNode } = useWorkflowStore();
+  const { selectedNode, activeNode } = useWorkflowStore();
 
   const displayType = data.type === 'endcall' ? 'End Call' : data.type;
 
   // Simple highlighting - darker border when selected
   const isSelected = selectedNode?.id === id;
-
+  const isActive = activeNode === id;
   return (
     <div 
       className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
+        isActive ? 'border-green-500 bg-green-50 shadow-md shadow-green-500/50 ' : 
         isGlobal 
           ? 'border-purple-500 bg-purple-50' 
           : isSelected 

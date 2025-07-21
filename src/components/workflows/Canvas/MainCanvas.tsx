@@ -11,8 +11,10 @@ import 'reactflow/dist/style.css'
 import ConversationNode from './CustomNodes/ConversationNode'
 import EndCallNode from './CustomNodes/EndCallNode'
 import ApiRequestNode from './CustomNodes/ApiRequestNode'
+import RagNode from './CustomNodes/RagNode';
 import LabeledEdge from './CustomEdges/LabeledEdge'
 import { useWorkflowStore } from '@/store/workflowStore'
+import CustomComponentSidebar from './CustomComponentSidebar';
 
 const MainCanvas: React.FC = () => {
   const {
@@ -30,6 +32,7 @@ const MainCanvas: React.FC = () => {
     conversation: ConversationNode,
     endcall: EndCallNode,
     api: ApiRequestNode,
+    rag: RagNode,
   }), []);
 
   // Memoize edgeTypes to prevent React Flow warnings
@@ -53,33 +56,39 @@ const MainCanvas: React.FC = () => {
   }, [nodes.length]) // Only log when number of nodes changes
 
   return (
-    <div className='flex-1 h-[100vh] '>
-    <ReactFlowProvider>
-      <div className='w-full h-full'>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          defaultEdgeOptions={defaultEdgeOptions}
-          connectionMode={ConnectionMode.Loose}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          onPaneClick={onPaneClick}
-          onEdgeClick={onEdgeClick}
-          fitView={false}
-          defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-          snapToGrid={true}
-          snapGrid={[20, 20]}
-        >
-          <MiniMap />
-          <Controls />
-          <Background />
-        </ReactFlow>
-      </div>
-    </ReactFlowProvider>
+    <div className='flex-1 h-[100vh] relative'>
+      <ReactFlowProvider>
+        <div className='w-full h-full'>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            defaultEdgeOptions={defaultEdgeOptions}
+            connectionMode={ConnectionMode.Loose}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onNodeClick={onNodeClick}
+            onPaneClick={onPaneClick}
+            onEdgeClick={onEdgeClick}
+            fitView={false}
+            defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+            snapToGrid={true}
+            minZoom={0.2}
+            deleteKeyCode={["Backspace","Delete"]}
+            snapGrid={[20, 20]}
+          >
+            <MiniMap />
+            <Controls />
+            <Background />
+          </ReactFlow>
+          {/* Sidebar for node/edge properties */}
+          <div className="absolute top-0 right-0 z-20">
+            <CustomComponentSidebar />
+          </div>
+        </div>
+      </ReactFlowProvider>
     </div>
   );
 };
