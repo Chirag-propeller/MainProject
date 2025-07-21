@@ -72,8 +72,16 @@ interface EndCallNodeData extends BaseNodeData {
   message?: string
 }
 
+// Add RagNodeData interface
+interface RagNodeData extends BaseNodeData {
+  type: 'RAG';
+  knowledgeBaseAttached?: boolean;
+  knowledgeBaseUrl?: string;
+  whenToCallRag?: string;
+}
+
 // Union type for all possible node data types
-type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCallNodeData
+type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCallNodeData | RagNodeData;
 
 interface EdgeData {
   label?: string
@@ -114,6 +122,9 @@ interface WorkflowState {
   selectedNode: Node<NodeData> | null
   selectedEdge: Edge<EdgeData> | null
   
+
+  //Active Node
+  activeNode: string | null
   // UI state
   isGlobalPromptOpen: boolean
   isLoading: boolean
@@ -134,6 +145,8 @@ interface WorkflowState {
   setUserId: (userId: string) => void
   setCurrentWorkflowId: (workflowId: string | null) => void
   setWorkflowName: (name: string) => void
+  setActiveNode: (activeNode: string | null) => void
+  setNodeData: (nodeId: string, data: NodeData) => void;
   
   // Workflow creation
   createWorkflow: (name?: string) => Promise<any>
@@ -235,6 +248,33 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
         style: baseStyle,
       }
     
+    case 'RAG Node':
+    case 'rag':
+      return {
+        id: `N${nodeCounter}`,
+        type: 'rag',
+        position: basePosition,
+        data: {
+          name: 'RAG Node',
+          type: 'RAG',
+          knowledgeBaseAttached: false,
+          knowledgeBaseUrl: '',
+          whenToCallRag: '',
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
+        },
+        style: baseStyle,
+      }
+    
     case 'Conditional Node':
     case 'conditional':
       return {
@@ -329,6 +369,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   userId: '',
   currentWorkflowId: null,
   workflowName: '',
+  activeNode: null,
   
   // Setters
   setNodes: (nodes) => set({ nodes }),
@@ -342,7 +383,20 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   setUserId: (userId) => set({ userId }),
   setCurrentWorkflowId: (currentWorkflowId) => set({ currentWorkflowId }),
   setWorkflowName: (workflowName) => set({ workflowName }),
-  
+  setActiveNode: (activeNode) => set({ activeNode }),
+  setNodeData: (nodeId, data) => {
+    set((state) => {
+      const updatedNodes = state.nodes.map((node) =>
+        node.id === nodeId ? { ...node, data } : node
+      );
+      const updatedSelected = updatedNodes.find((n) => n.id === nodeId);
+      return {
+        nodes: updatedNodes,
+        selectedNode: updatedSelected || state.selectedNode,
+      };
+    });
+    setTimeout(() => get().autoSave(), 500);
+  },
   // Workflow creation
   createWorkflow: async (name?: string) => {
     set({ isLoading: true })

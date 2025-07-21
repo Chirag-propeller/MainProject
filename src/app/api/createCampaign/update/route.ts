@@ -10,7 +10,7 @@ import Agent from '@/model/agent';
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json();
-    console.log("body", body);
+    // console.log("body", body);
     const { _id, ...updateData } = body;
     const {agentId} = body;
 
@@ -21,8 +21,8 @@ export async function PUT(req: NextRequest) {
     await dbConnect();
     const user = await getUserFromRequest(req);
     const {contacts, recipientFileProvider, ...rest} = body;
-    console.log("contacts", contacts);
-    console.log("body", body);
+    // console.log("contacts", contacts);
+    // console.log("body", body);
     if(contacts){
       if(contacts.length > 0){
         await Contact.deleteMany({campaignId: body._id});

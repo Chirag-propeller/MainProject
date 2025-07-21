@@ -16,6 +16,7 @@ import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
 import { Track } from 'livekit-client';
 import SimpleVoiceAssistance from './SimpleVoiceAssistance';
+import { useWorkflowStore } from '@/store/workflowStore';
 // import SimpleVoiceAssistance from './SimpleVoiceAssistance';
 
 interface VoiceAssistantProps {
@@ -25,9 +26,11 @@ interface VoiceAssistantProps {
 
 const VoiceAssistant = ({ setShowVoiceAssistant, token }: VoiceAssistantProps) =>  {
   const livekit_url = process.env.NEXT_PUBLIC_LIVEKIT_URL
+  const { setActiveNode } = useWorkflowStore();
 
   const onDisconnect = async () => {
     setShowVoiceAssistant(false)
+    setActiveNode(null)
     console.log("Workflow test disconnected")
   }
 

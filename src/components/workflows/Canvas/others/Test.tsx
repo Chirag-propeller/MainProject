@@ -119,7 +119,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, workflow }) => {
   console.log('Modal is open, rendering...');
   return (
     <div 
-      className="fixed inset-0 z-[9999] bg-black/40 backdrop-blur-sm transition-opacity duration-700 opacity-100"
+      className="fixed inset-0 z-[9999] transition-opacity duration-700"
       style={{ 
         transition: 'opacity 700ms ease' 
       }}
