@@ -25,24 +25,25 @@ export interface RagNodeData {
 // All configuration for RAG node is handled in RagSidebar
 const RagNode: React.FC<NodeProps<RagNodeData>> = ({ data, id }) => {
   const isGlobal = data.global?.isGlobal || false;
-  const { selectedNode } = useWorkflowStore();
+  const { selectedNode, activeNode } = useWorkflowStore();
   const isSelected = selectedNode?.id === id;
-
+  const isActive = activeNode === id;
   return (
     <div
       className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[180px] ${
+        isActive ? 'border-green-500 bg-green-50 shadow-md shadow-green-500/50 ' : 
         isGlobal
           ? 'border-purple-500 bg-purple-50'
           : isSelected
-            ? 'border-green-600 bg-green-50'
-            : 'border-green-200 bg-green-50'
+            ? 'border-gray-600 bg-gray-50'
+            : 'border-gray-200 bg-gray-50'
       }`}
     >
       <Handle
         type="target"
         position={Position.Top}
         className={`!w-3 !h-3 !-top-[7px] ${
-          isGlobal ? '!bg-purple-500' : '!bg-green-500'
+          isGlobal ? '!bg-purple-500' : '!bg-gray-500'
         }`}
       />
       <div className="text-center">
@@ -52,7 +53,7 @@ const RagNode: React.FC<NodeProps<RagNodeData>> = ({ data, id }) => {
           </div>
         )}
         <div className={`text-sm font-semibold mb-1 ${
-          isGlobal ? 'text-purple-600' : 'text-green-600'
+          isGlobal ? 'text-purple-600' : 'text-gray-600'
         }`}>
           {data.type || 'RAG'}
         </div>
@@ -65,7 +66,7 @@ const RagNode: React.FC<NodeProps<RagNodeData>> = ({ data, id }) => {
         type="source"
         position={Position.Bottom}
         className={`!w-3 !h-3 !-bottom-[7px] ${
-          isGlobal ? '!bg-purple-500' : '!bg-green-500'
+          isGlobal ? '!bg-purple-500' : '!bg-gray-500'
         }`}
       />
     </div>

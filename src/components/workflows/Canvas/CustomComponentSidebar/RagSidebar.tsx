@@ -41,8 +41,7 @@ const RagSidebar: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          workflowId: currentWorkflowId,
-          nodeId: selectedNode.id,
+          agentId: `${currentWorkflowId}-${selectedNode.id}`,
           url: azureUrl,
         }),
       });

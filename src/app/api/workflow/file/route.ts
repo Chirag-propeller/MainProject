@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       url: azureUrl,
       size: file.size,
       type: file.type,
-      source: 'workflow-upload',
+      source: 'upload',
       userId: user.userId,
     });
 

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/sidebar/Logo';
+import { useWorkflowStore } from '@/store/workflowStore';
 
 interface Workflow {
   _id: string;
@@ -28,7 +29,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, workflow }) => {
   const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
   const [token, setToken] = useState("");
   const [roomName, setRoomName] = useState("");
-
+  const { setActiveNode } = useWorkflowStore();
   // Ensure the component is mounted before animations start
   useEffect(() => {
     setMounted(true);
@@ -46,6 +47,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, workflow }) => {
     // Handle click outside to close modal
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        setActiveNode(null);
         onClose();
       }
     };

@@ -6,7 +6,7 @@ export interface IFile extends Document {
     url?: string
     size: number
     type: string
-    source: 'upload' | 'text'
+    source: 'upload' | 'text' 
     knowledgeBaseId?: mongoose.Types.ObjectId
     agentId?: mongoose.Types.ObjectId
     userId: mongoose.Types.ObjectId

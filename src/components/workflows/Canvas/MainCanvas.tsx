@@ -75,6 +75,8 @@ const MainCanvas: React.FC = () => {
             fitView={false}
             defaultViewport={{ x: 0, y: 0, zoom: 1 }}
             snapToGrid={true}
+            minZoom={0.2}
+            deleteKeyCode={["Backspace","Delete"]}
             snapGrid={[20, 20]}
           >
             <MiniMap />

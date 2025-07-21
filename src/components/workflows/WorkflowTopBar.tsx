@@ -21,7 +21,8 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
     edges, 
     globalPrompt, 
     globalNodes, 
-    currentWorkflowId 
+    currentWorkflowId,
+    setActiveNode
   } = useWorkflowStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(workflowName);
@@ -168,7 +169,10 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
           {isTesting && currentWorkflowId && (
             <Test
               isOpen={isTesting}
-              onClose={() => setIsTesting(false)}
+              onClose={() => {
+                setIsTesting(false);
+                setActiveNode(null);
+              }}
               workflow={{
                 _id: currentWorkflowId,
                 name: workflowName || 'Untitled Workflow',

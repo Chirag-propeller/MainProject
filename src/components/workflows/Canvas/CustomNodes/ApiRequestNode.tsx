@@ -39,11 +39,11 @@ interface ApiRequestNodeData {
 
 const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data, id }) => {
   const isGlobal = data.global?.isGlobal || false;
-  const { selectedNode } = useWorkflowStore();
+  const { selectedNode, activeNode } = useWorkflowStore();
 
   // Simple highlighting - darker border when selected
   const isSelected = selectedNode?.id === id;
-
+  const isActive = activeNode === id;
   // Get the selected API data
   const selectedApi = data.selectedApi;
   const hasHeaders = data.headers && Object.keys(data.headers).length > 0;
@@ -54,9 +54,9 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data, id }) =
   return (
     <div 
       className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[220px] ${
-        isGlobal 
-          ? 'border-purple-500 bg-purple-50' 
-          : isSelected 
+        isActive ? 'border-green-500 bg-green-50 shadow-md shadow-green-500/50 ' : 
+        isGlobal ? 'border-purple-500 bg-purple-50' : 
+           isSelected 
             ? 'border-blue-600 bg-blue-50' 
             : 'border-blue-200 bg-blue-50'
       }`}

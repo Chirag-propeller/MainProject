@@ -33,12 +33,9 @@ const ConversationNode: React.FC<NodeProps<ConversationNodeData>> = ({ data, id 
   return (
     <div 
       className={`relative bg-white border-2 rounded-lg shadow-lg p-4 min-w-[200px] ${
-
-        isGlobal 
-          ? 'border-purple-500 bg-purple-50' 
-          : isActive
-            ? 'border-green-500 bg-green-50'
-            : isSelected 
+                isActive ? 'border-green-500 bg-green-50 shadow-md shadow-green-500/50 ' : 
+                // isGlobal ? 'border-purple-500 bg-purple-50' : 
+                isSelected 
               ? 'border-indigo-600' 
               : 'border-indigo-200'
       }`}
