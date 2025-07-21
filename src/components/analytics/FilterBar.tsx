@@ -72,8 +72,12 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
   }, [updateParentFilters]);
 
   return (
-    <div className="flex items-center">
-      <DateFilter dateRange={dateRange} setDateRange={setDateRange} />
+    <div className="flex justify-end w-full">
+      <DateFilter
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        align="right"
+      />
       {/* <Filter 
         filters={filters}
         setFilters={setFilters}

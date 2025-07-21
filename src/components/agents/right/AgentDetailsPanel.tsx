@@ -9,7 +9,7 @@ import Test from "./Test";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import _ from "lodash";
-import { languageFillers as fillers } from '../Constants';
+import { languageFillers as fillers } from "../Constants";
 
 interface AgentDetailsPanelProps {
   agent: Agent;
@@ -32,7 +32,7 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   const [isModified, setIsModified] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
-  // const languageFillers = fillers[agent.ttsLanguage as keyof typeof fillers][agent.gender as keyof typeof fillers["en-IN"]] 
+  // const languageFillers = fillers[agent.ttsLanguage as keyof typeof fillers][agent.gender as keyof typeof fillers["en-IN"]]
   // console.log(languageFillers);
 
   // Tabs available for this agent
@@ -51,15 +51,16 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   const handleUpdate = async () => {
     setIsUpdating(true);
     try {
-      // // Only update if name has actually changed
-      // if (agent.agentName === name) {
-      //   setIsUpdating(false);
-      //   return;
-      // }
-
       // Create updated agent with current name
-      const languageFillers = fillers[agent?.ttsLanguage as keyof typeof fillers]?.[agent?.gender as keyof typeof fillers["en-IN"]] || fillers["en-IN"]["Male"]
-      const updatedAgent = { ...agent, agentName: name, languageFillers: languageFillers };
+      const languageFillers =
+        fillers[agent?.ttsLanguage as keyof typeof fillers]?.[
+          agent?.gender as keyof (typeof fillers)["en-IN"]
+        ] || fillers["en-IN"]["Male"];
+      const updatedAgent = {
+        ...agent,
+        agentName: name,
+        languageFillers: languageFillers,
+      };
       const newBaseline = _.cloneDeep(updatedAgent);
 
       const res = await fetch(`/api/agent/${agent._id}`, {
@@ -126,25 +127,6 @@ const AgentDetailsPanel: React.FC<AgentDetailsPanelProps> = ({
   useEffect(() => {
     setName(agent.agentName);
   }, [agent.agentName]);
-
-  // Debounced update for name input (avoids updating on every keystroke)
-  // useEffect(() => {
-  //   const timeout = setTimeout(async () => {
-  //     if (agent.agentName !== name) {
-  //       const updatedAgent = { ...agent, agentName: name };
-  //       setAgent(updatedAgent); // local update
-
-  //       // Backend update
-  //       await fetch(`/api/agent/${agent._id}`, {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(updatedAgent),
-  //       });
-  //     }
-  //   }, 500);
-
-  //   return () => clearTimeout(timeout);
-  // }, [agent, name, setAgent]);
 
   return (
     <div className="flex flex-col bg-gray-50 dark:bg-gray-900 border border-t-0 border-gray-200 dark:border-gray-800 h-screen p-5">

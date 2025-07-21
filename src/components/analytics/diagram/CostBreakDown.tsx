@@ -7,16 +7,32 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { PRICING } from "@/components/agents/Constants";
+import { format, CurrencyCode, CURRENCY_SYMBOLS } from "@/lib/currency";
 
 export function CostBreakdownChart({
   data,
+  currency = "INR",
 }: {
-  data: Array<{ date: string; llm: number; stt: number; tts: number }>;
+  data: Array<{
+    date: string;
+    llm: number;
+    stt: number;
+    tts: number;
+    platform?: number;
+  }>;
+  currency?: CurrencyCode;
 }) {
+  // Add platform cost to each data point
+  const dataWithPlatform = data.map((d) => ({
+    ...d,
+    platform: PRICING.PropalCostInINR,
+  }));
+  const symbol = CURRENCY_SYMBOLS[currency] || "₹";
   return (
     <ResponsiveContainer width="100%" height="90%">
       <BarChart
-        data={data}
+        data={dataWithPlatform}
         margin={{ top: 15, right: 10, left: -10, bottom: -40 }}
         className="dark:bg-gray-900"
       >
@@ -34,7 +50,7 @@ export function CostBreakdownChart({
           tick={{ fontSize: 12, fill: "#666", className: "dark:fill-gray-300" }}
           axisLine={{ stroke: "#e5e7eb", strokeWidth: 1 }}
           tickLine={{ stroke: "#e5e7eb" }}
-          tickFormatter={(value) => `₹${value.toFixed(0)}`}
+          tickFormatter={(value) => `${symbol}${Number(value).toFixed(0)}`}
         />
         <Tooltip
           contentStyle={{
@@ -54,7 +70,10 @@ export function CostBreakdownChart({
             });
           }}
           cursor={{ fill: "transparent" }}
-          formatter={(value, name) => [`₹${Number(value).toFixed(2)}`, name]}
+          formatter={(value, name, props) => {
+            // Always use the correct currency code for formatting
+            return [format(Number(value), currency), name];
+          }}
         />
         <Legend
           wrapperStyle={{ paddingTop: "2px" }}
@@ -63,6 +82,13 @@ export function CostBreakdownChart({
           fontSize={11}
           className="dark:text-gray-100"
         />
+        {/* <Bar
+          dataKey="platform"
+          fill="#f59e42"
+          name="Platform"
+          radius={[4, 4, 0, 0]}
+          stackId="cost"
+        /> */}
         <Bar
           dataKey="llm"
           fill="#a5b4fc"

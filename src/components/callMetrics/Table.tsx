@@ -223,11 +223,11 @@ export default function CallAnalysisTable({
       {loading ? (
         <>
           {/* Skeleton Table */}
-          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200 scrollbar scrollbar-thin scrollbar-black hover:scrollbar-black">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50 sticky top-0">
+          <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200 scrollbar scrollbar-thin scrollbar-black hover:scrollbar-black dark:bg-gray-900 dark:border-gray-700">
+            <table className="min-w-full divide-y divide-gray-200 text-sm dark:bg-gray-900 dark:text-gray-100">
+              <thead className="bg-gray-50 sticky top-0 dark:bg-gray-900">
                 <tr>
-                  <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
+                  <th className="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 tracking-wider">
                     S.No
                   </th>
                   {customiseField.map((key) => (
@@ -252,7 +252,7 @@ export default function CallAnalysisTable({
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y text-sm divide-gray-100">
+              <tbody className="bg-white divide-y text-sm divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
                 {/* Skeleton Rows */}
                 {Array.from({ length: 7 }).map((_, index) => (
                   <tr key={index} className="animate-pulse">
@@ -300,17 +300,17 @@ export default function CallAnalysisTable({
         </>
       ) : (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[70vh] shadow-md rounded-[4px] border border-gray-200 custom-scrollbar">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50 sticky top-0">
+          <div className="overflow-x-auto overflow-y-auto max-h-[70vh] shadow-md rounded-[4px] border border-gray-200 custom-scrollbar dark:bg-gray-900 dark:border-gray-700">
+            <table className="min-w-full divide-y divide-gray-200 text-sm dark:bg-gray-900 dark:text-gray-100">
+              <thead className="bg-gray-50 sticky top-0 dark:bg-gray-900">
                 <tr>
-                  <th className="sticky top-0 bg-gray-50 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 tracking-wider">
+                  <th className="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 tracking-wider">
                     S.No
                   </th>
                   {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="top-0 bg-gray-50 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
+                      className="top-0 bg-gray-50  dark:bg-gray-900 z-10 px-6 py-2 text-xs font-medium text-gray-500  dark:text-gray-200  tracking-wider text-nowrap text-center"
                     >
                       <div className="flex items-center justify-center gap-1">
                         <span>
@@ -329,14 +329,14 @@ export default function CallAnalysisTable({
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y text-sm divide-gray-100">
+              <tbody className="bg-white divide-y text-sm divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
                 {callData.map((call, index) => (
                   <tr
                     key={index}
-                    className="hover:bg-gray-50 cursor-pointer transition duration-150"
+                    className="hover:bg-gray-100 cursor-pointer transition duration-150 dark:text-gray-200 z-20"
                     onClick={() => handleRowClick(call)}
                   >
-                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 font-medium text-nowrap">
+                    <td className="px-3 py-2 whitespace-nowrap text-gray-700 dark:text-gray-100 font-medium text-nowrap dark:bg-gray-900">
                       {(page - 1) * limit + index + 1}
                     </td>
                     {customiseField.map((key) => (
@@ -366,14 +366,14 @@ export default function CallAnalysisTable({
           {selectedCall && (
             <div
               ref={containerRef}
-              className="fixed top-0 right-0 h-full w-[54%] bg-white shadow-lg border-l border-gray-200 z-150 overflow-y-auto custom-scrollbar"
+              className="fixed top-0 right-0 h-full w-[54%] bg-white dark:bg-gray-900 shadow-lg border-l border-gray-200 dark:border-gray-700 z-150 overflow-y-auto custom-scrollbar"
             >
-              <div className="px-2 p-1 flex justify-between border-b border-gray-200 sticky top-0 bg-white">
+              <div className="px-2 p-1 flex justify-between border-b border-gray-200 dark:border-gray-400 sticky top-0 bg-white dark:bg-gray-900">
                 <div className="flex flex-col gap-0">
-                  <h2 className="text-md font-semibold">
+                  <h2 className="text-md font-semibold dark:text-gray-400">
                     {selectedCall.started_at}
                   </h2>
-                  <h2 className="text-xs text-gray-600">
+                  <h2 className="text-xs text-gray-600 dark:text-gray-400">
                     Call ID: {selectedCall.id}
                   </h2>
                 </div>
@@ -384,32 +384,8 @@ export default function CallAnalysisTable({
                   <X className="w-4 h-4" />
                 </button>
               </div>
-
-              {/* <div className="">
-                <h1 className="text-sm font-semibold bg-gray-100 p-4 py-1 "> Call Overview</h1>
-                <div className="flex justify-between">
-                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
-                    <SideBarCell title="Agent" value={selectedCall.agent ?? "N/A"}/>
-                    <SideBarCell title="From Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
-                    <SideBarCell title="To Phone Number" value={selectedCall.phonenumber ?? "N/A"}/>
-                    <SideBarCell title="Average Latency" value={selectedCall.average_latency ? `${selectedCall.average_latency.toFixed(2)} s` : "N/A"}/>
-                    <SideBarCell title="LLM" value={selectedCall.llm }/>
-                    <SideBarCell title="STT" value={selectedCall.stt ?? "N/A"}/>
-                    <SideBarCell title="TTS" value={selectedCall.tts ?? "N/A"}/>
-                  </div>
-                  <div className="p-4 py-2 w-1/2 flex flex-col gap-1">
-                    <SideBarCell title="Call Duration" value={selectedCall.call_duration ?? "N/A"}/>
-                    <SideBarCell title="Call Status" value={selectedCall.status ?? "N/A"}/>
-                    <SideBarCell title="Direction" value={selectedCall.call_direction ?? "N/A"}/>
-                    <SideBarCell title="Total Followup Count" value={selectedCall.total_followup_count ?? "N/A"}/>
-                    <SideBarCell title="LLM Cost" value={selectedCall.llm_cost ?? "N/A"}/>
-                    <SideBarCell title="STT Cost" value={selectedCall.stt_cost ?? "N/A"}/>
-                    <SideBarCell title="TTS Cost" value={selectedCall.tts_cost ?? "N/A"}/>
-                  </div>
-                </div>
-              </div> */}
               <div className="">
-                <h1 className="text-sm font-semibold bg-indigo-100 p-4 py-1 shadow-sm">
+                <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">
                   {" "}
                   Call Overview
                 </h1>
@@ -493,7 +469,7 @@ export default function CallAnalysisTable({
               </div> */}
 
               <div className="">
-                <h1 className="text-sm font-semibold bg-indigo-100 p-4 py-1 shadow-sm">
+                <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">
                   Agent Performance
                 </h1>
                 <div className="flex justify-between">
@@ -561,7 +537,7 @@ export default function CallAnalysisTable({
               </div>
 
               <div className="">
-                <h1 className="text-sm font-semibold bg-indigo-100 p-4 py-1 shadow-sm">
+                <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">
                   Compliance
                 </h1>
                 <div className="flex justify-between">
@@ -595,7 +571,7 @@ export default function CallAnalysisTable({
               </div>
 
               <div className="">
-                <h1 className="text-sm font-semibold bg-indigo-100 p-4 py-1 shadow-sm">
+                <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">
                   Transcript
                 </h1>
                 <TranscriptBox transcript={selectedCall.transcript} />

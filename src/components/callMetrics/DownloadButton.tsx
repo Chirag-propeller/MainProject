@@ -61,8 +61,8 @@ export default function DownloadButton({
         transition-colors duration-200
         ${
           disabled || isDownloading
-            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-            : "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 cursor-pointer"
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-800 dark:text-gray-500"
+            : "bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 cursor-pointer dark:bg-gray-900 dark:text-blue-300 dark:hover:bg-gray-800"
         }
       `}
       title={disabled ? "No transcript available" : "Download transcript"}

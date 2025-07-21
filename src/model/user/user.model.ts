@@ -39,6 +39,7 @@ export interface UserDocument extends Document {
   callHistoryFields: string[];
   premium: boolean;
   currency:string;
+  pinnedAgents?: string[];
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -74,7 +75,8 @@ const userSchema = new Schema<UserDocument>(
     creditsUsed: { type: mongoose.Schema.Types.Decimal128, default: 0 },
     callHistoryFields: { type: [String], default: [] },
     premium: { type: Boolean, default: false },
-    currency: {type:String,default:'INR',required:false}
+    currency: {type:String,default:'INR',required:false},
+    pinnedAgents: { type: [String], default: [] },
   },
   { timestamps: true }
 );

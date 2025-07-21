@@ -30,9 +30,14 @@ export type DateRangeFilter = {
 interface DateFilterProps {
   dateRange: DateRangeFilter;
   setDateRange: React.Dispatch<React.SetStateAction<DateRangeFilter>>;
+  align?: "left" | "right"; // <-- new prop
 }
 
-const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
+const DateFilter: React.FC<DateFilterProps> = ({
+  dateRange,
+  setDateRange,
+  align = "left",
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [tempDateRange, setTempDateRange] =
@@ -252,7 +257,7 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
         className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors ${
           isOpen || dateRange.startDate !== null
             ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
-            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-500"
+            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-2xs dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-500"
         }`}
       >
         <CalendarIcon size={16} />
@@ -270,7 +275,9 @@ const DateFilter: React.FC<DateFilterProps> = ({ dateRange, setDateRange }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[800px] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
+        <div
+          className={`absolute top-full mt-2 ${align === "right" ? "right-0" : "left-0"} bg-white rounded-md shadow-lg z-50 border border-gray-200 p-4 w-[800px] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100`}
+        >
           <div className="flex justify-between items-center mb-4">
             <h4 className="font-medium text-gray-700">Select Date Range</h4>
             {tempDateRange.startDate && (

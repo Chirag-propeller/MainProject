@@ -29,13 +29,13 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
     {
       name: "Connected",
       value: data.connected,
-      color: "#4B0082",
+      color: "#5EA0C1",
       icon: PhoneCall,
     },
     {
       name: "Not Connected",
       value: data.notConnected,
-      color: "#CBC3E3",
+      color: "#606FCC",
       icon: PhoneOff,
     },
   ];
@@ -71,7 +71,7 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
       </h3>
       {/* Main Metric */}
       <div className="text-center mb-2">
-        <div className="text-2xl font-bold text-blue-600 mb-1 dark:text-blue-300">
+        <div className="text-2xl font-bold text-indigo-500 mb-1 dark:text-blue-300">
           {connectedPercentage}%
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-300">
@@ -91,8 +91,9 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
                   cy="50%"
                   innerRadius="40%"
                   outerRadius="75%"
-                  paddingAngle={2}
+                  paddingAngle={0}
                   dataKey="value"
+                  stroke="none"
                 >
                   {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -106,7 +107,6 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
         {/* Legend in a single row below chart */}
         <div className="flex flex-row gap-4 text-xs w-full items-center justify-center mt-1 mb-0">
           {chartData.map((item, index) => {
-            const IconComponent = item.icon;
             return (
               <div key={index} className="flex items-center gap-1">
                 <div

@@ -4,7 +4,7 @@ import { Handle, Position } from "reactflow";
 const ThirdLevelCell = ({ data }: any) => {
   return (
     <div
-      className={`relative h-[530px] w-46 border border-gray-400 border-l-8 border-l-indigo-400 rounded shadow bg-white dark:bg-indigo-950 text-xs font-medium flex flex-col justify-center items-center`}
+      className={`relative h-[530px] w-80 border border-gray-400 border-l-8 border-l-indigo-400 rounded shadow bg-white dark:bg-indigo-950 text-xs font-medium flex flex-col justify-center items-center`}
     >
       <div className="text-center text-4xl text-indigo-500">{data.value}</div>
       <div className=" text-center text-xl text-wrap text-gray-400">

@@ -1,7 +1,7 @@
 import React from "react";
 import { Handle, Position } from "reactflow";
 
-export const HorizontalTableNode = ({ data }: any) => {
+export const HorizontalTableNode2 = ({ data }: any) => {
   let percentage1 = "";
   let percentage2 = "";
   let percentage3 = "";
@@ -34,10 +34,6 @@ export const HorizontalTableNode = ({ data }: any) => {
               className={`text-right px-2 text-sm dark:text-indigo-300 border-gray-400 ${data.textColor}  font-bold border-b w-32`}
             >
               {data?.tableValues[0] || 0}
-              <span className="text-xs font-medium dark:text-gray-300 text-gray-500">
-                {" "}
-                ({percentage1 || 0}%){" "}
-              </span>
             </td>
           </tr>
           <tr>
@@ -48,10 +44,6 @@ export const HorizontalTableNode = ({ data }: any) => {
               className={`text-right px-2 text-sm dark:text-indigo-300  border-gray-400 ${data.textColor} font-bold border-b`}
             >
               {data?.tableValues[1] || 0}
-              <span className="text-xs font-medium dark:text-gray-300 text-gray-500">
-                {" "}
-                ({percentage2 || 0}%){" "}
-              </span>
             </td>
           </tr>
           <tr>
@@ -62,10 +54,6 @@ export const HorizontalTableNode = ({ data }: any) => {
               className={`text-right px-2 text-sm dark:text-indigo-300  border-gray-400 ${data.textColor} font-bold`}
             >
               {data?.tableValues[2] || 0}
-              <span className="text-xs dark:text-gray-300 font-medium text-gray-500">
-                {" "}
-                ({percentage3 || 0}%){" "}
-              </span>
             </td>
           </tr>
         </tbody>

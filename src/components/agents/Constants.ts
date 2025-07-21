@@ -4,6 +4,7 @@ export const PRICING = {
     // "avgOutputToken": 98.40476634115406,
     "avgOutputToken": 140.5,
     "PropalCost": 0.02,
+    "PropalCostInINR" : 1.7,
     "avgCharactersPerMinute": 425,
 }
 
