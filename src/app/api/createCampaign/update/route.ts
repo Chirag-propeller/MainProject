@@ -31,7 +31,7 @@ export async function PUT(req: NextRequest) {
           userId: user.userId,
           campaignId: body._id,
           phonenumber: contact.phonenumber,
-          metadata: contact.metadata,
+          metadata: {globalVariables: contact.metadata,},
           status: "pending",
           });
           console.log("contact", contact);

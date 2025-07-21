@@ -14,7 +14,15 @@ interface WorkflowTopBarProps {
 
 const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave , isLoading}) => {
   const router = useRouter();
-  const { workflowName, updateWorkflowName } = useWorkflowStore();
+  const { 
+    workflowName, 
+    updateWorkflowName, 
+    nodes, 
+    edges, 
+    globalPrompt, 
+    globalNodes, 
+    currentWorkflowId 
+  } = useWorkflowStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(workflowName);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -157,7 +165,22 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
             Test
             <AudioLines className='pl-2 w-5 h-5'/>
           </Button>
-          {isTesting && <Test />}
+          {isTesting && currentWorkflowId && (
+            <Test
+              isOpen={isTesting}
+              onClose={() => setIsTesting(false)}
+              workflow={{
+                _id: currentWorkflowId,
+                name: workflowName || 'Untitled Workflow',
+                globalPrompt: globalPrompt,
+                nodes: nodes,
+                edges: edges,
+                globalNodes: globalNodes,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+              }}
+            />
+          )}
 
         </div>
       </div>
