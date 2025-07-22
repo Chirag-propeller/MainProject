@@ -29,13 +29,13 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
     {
       name: "Connected",
       value: data.connected,
-      color: "#5EA0C1",
+      color: "#3730a3",
       icon: PhoneCall,
     },
     {
       name: "Not Connected",
       value: data.notConnected,
-      color: "#606FCC",
+      color: "#06b6d4",
       icon: PhoneOff,
     },
   ];
@@ -114,7 +114,7 @@ const RealtimeCallDoughnut: React.FC<RealtimeCallDoughnutProps> = ({
                   style={{ backgroundColor: item.color }}
                 ></div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-gray-600 text-xs font-medium truncate dark:text-gray-200">
+                  <span className="text-gray-600 text-[14px] font-medium truncate dark:text-gray-200">
                     {item.name}
                   </span>
                 </div>

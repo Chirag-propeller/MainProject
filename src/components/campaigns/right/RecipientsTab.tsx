@@ -51,15 +51,43 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
   const [loading, setLoading] = useState(false);
 
   // CSV Upload functionality (existing from CampaignGeneralTab)
+  function isValidPhoneNumber(value: string): boolean {
+    // Remove all non-digit characters except leading +
+    const cleaned = value.trim().replace(/(?!^\+)[^\d]/g, "");
+    // Must be 10-15 digits, optionally starting with +
+    if (!/^(\+?\d{10,15})$/.test(cleaned)) return false;
+    // Reject common date/time patterns
+    if (
+      /^\d{1,2}:\d{2}\s?(AM|PM)?/i.test(value) || // time like 12:17 PM
+      /\d{1,2}\s?[A-Za-z]{3,9},?\s?\d{4}/.test(value) // date like 27 May, 2025
+    )
+      return false;
+    return true;
+  }
+
   function transformDynamicData(data: any): { contacts: Contact[] } {
+    if (data.length === 0) return { contacts: [] };
+    const headers = Object.keys(data[0]);
+    const phoneCol = headers.find(
+      (h) =>
+        h.toLowerCase().includes("phone") ||
+        h.toLowerCase().includes("number") ||
+        h.toLowerCase().includes("contact")
+    );
     return {
-      contacts: data.map((row: any) => ({
-        phonenumber: row.phone || row.phonenumber || Object.values(row)[0],
-        metadata: {
-          follow_up_date_time: new Date().toISOString(),
-          ...row,
-        },
-      })),
+      contacts: data
+        .map((row: any) => {
+          let phone = phoneCol ? row[phoneCol] : undefined;
+          if (!phone || !isValidPhoneNumber(phone)) return null; // Skip invalid
+          return {
+            phonenumber: phone,
+            metadata: {
+              follow_up_date_time: new Date().toISOString(),
+              ...row,
+            },
+          };
+        })
+        .filter(Boolean),
     };
   }
 

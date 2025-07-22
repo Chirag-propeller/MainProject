@@ -98,7 +98,7 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
   }, [api, name, setApi]);
 
   return (
-    <div className="flex flex-col bg-gray-50 border border-t-0 border-gray-200 h-full p-5">
+    <div className="flex flex-col bg-gray-50 dark:bg-gray-900 border border-t-0 border-gray-200 dark:border-gray-800 h-full p-5">
       {/* Header with API name, ID and buttons */}
       <div className="flex justify-between items-start flex-wrap gap-y-1">
         {/* Left: API Name and ID */}
@@ -109,7 +109,7 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border-gray-300 rounded-md border px-2 py-1"
+                className="border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md border px-2 py-1"
                 ref={nameRef}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -119,17 +119,19 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
                 }}
               />
             ) : (
-              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 text-nowrap">
+              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 dark:text-white text-nowrap">
                 {name}
               </h2>
             )}
             <FaRegEdit
-              className="w-4 h-4 text-gray-500 cursor-pointer"
+              className="w-4 h-4 text-gray-500 dark:text-gray-300 cursor-pointer"
               onClick={() => setIsNameUpdating(true)}
             />
           </div>
           <div className="flex justify-between items-center px-1 mt-1">
-            <p className="text-xs text-gray-500">ID: {api._id}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              ID: {api._id}
+            </p>
           </div>
         </div>
 
@@ -139,7 +141,7 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
             variant="default"
             size="md"
             onClick={handleUpdate}
-            className="px-5 py-1 text-md rounded-[4px]"
+            className="px-5 py-1 text-md rounded-[4px] bg-indigo-500 dark:bg-indigo-600 hover:bg-indigo-600 dark:hover:bg-indigo-700"
             disabled={!isModified}
           >
             Update
@@ -148,12 +150,12 @@ const ApiDetailsPanel: React.FC<ApiDetailsPanelProps> = ({ api, setApi }) => {
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm px-4 pt-4 pb-2 border-b border-gray-300">
+      <div className="flex text-sm px-4 pt-4 pb-2 border-b border-gray-300 dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={` cursor-pointer ${activeTab === tab.id ? "text-indigo-600 border-b-1 border-indigo-600" : "text-gray-600"}`}
+            className={` cursor-pointer ${activeTab === tab.id ? "text-indigo-600 dark:text-indigo-400 border-b-1 border-indigo-600 dark:border-indigo-400" : "text-gray-600 dark:text-gray-300"}`}
           >
             {tab.label}
           </button>

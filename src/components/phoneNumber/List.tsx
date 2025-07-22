@@ -77,14 +77,14 @@ const List = ({
   if (loading) {
     return (
       <div className="flex justify-center items-center h-32">
-        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
+        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 dark:border-indigo-400 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (phoneNumber.length === 0) {
     return (
-      <div className="text-center py-10 text-gray-500">
+      <div className="text-center py-10 text-gray-500 dark:text-gray-400">
         No phone numbers found. Click Create to add your first phone number.
       </div>
     );
@@ -98,17 +98,19 @@ const List = ({
           <div
             key={phone.phoneNumber}
             className={`group p-2 px-2 border rounded-[6px] mb-2 hover:border-indigo-500 transition-colors cursor-pointer ${
-              isActive ? "border-indigo-500 bg-indigo-50" : "border-gray-200"
+              isActive
+                ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-950 dark:border-indigo-400"
+                : "border-gray-200 dark:border-gray-700 dark:bg-gray-900"
             }`}
             onClick={() => setSelectedPhoneRecord(phone)}
           >
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-900 truncate">
+                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                   {phone.phoneNumber}
                 </h3>
                 {phone.name && (
-                  <p className="text-xs text-gray-500 mt-1 truncate">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
                     {phone.name}
                   </p>
                 )}
@@ -116,7 +118,7 @@ const List = ({
 
               <button
                 onClick={(e) => handleDelete(phone.phoneNumber, e)}
-                className="ml-2 p-1 text-gray-400 hover:text-red-600 cursor-pointer"
+                className="ml-2 p-1 text-gray-400 hover:text-red-600 dark:hover:text-red-400 cursor-pointer"
               >
                 <div className="w-6 h-6 relative">
                   <svg

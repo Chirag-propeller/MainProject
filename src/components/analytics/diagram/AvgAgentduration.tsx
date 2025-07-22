@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 
@@ -138,7 +139,10 @@ export function AvgCallDurationChart({
                         onChange={() => handleCheckboxChange(agent)}
                         className="accent-indigo-600"
                       />
-                      <span className="truncate max-w-[150px]" title={agent}>
+                      <span
+                        className="truncate max-w-[150px] dark:text-gray-200"
+                        title={agent}
+                      >
                         {agent}
                       </span>
                     </label>
@@ -163,6 +167,7 @@ export function AvgCallDurationChart({
           margin={{ top: 15, right: 25, left: 0, bottom: -30 }}
           className="dark:bg-gray-900"
         >
+          <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis
             dataKey="date"
             tick={{

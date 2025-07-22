@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { fetchApiById } from "@/components/apiTool/api"; // You should implement this function
 import { Api } from "@/components/apiTool/types"; // Define your Api type
 import ApiDetailsPanel from "@/components/apiTool/right/ApiDetailsPanel"; // Create this component
+import AgentPageSkeletonLoader from "@/components/agents/AgentPageSkeletonLoader";
 
 export default function ApiDetailsPage() {
   const [api, setApi] = useState<Api | null>(null);
@@ -30,20 +31,20 @@ export default function ApiDetailsPage() {
   }, [apiId]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-32">
-        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <AgentPageSkeletonLoader />;
   }
 
   if (!api) {
     return (
-      <div className="text-center py-10 text-red-500">
+      <div className="text-center py-10 text-red-500 bg-white dark:bg-gray-900 dark:text-red-400">
         API not found. It may have been deleted or the ID is invalid.
       </div>
     );
   }
 
-  return <ApiDetailsPanel api={api} setApi={setApi} />;
+  return (
+    <div className="bg-white dark:bg-gray-900 text-black dark:text-white min-h-full">
+      <ApiDetailsPanel api={api} setApi={setApi} />
+    </div>
+  );
 }

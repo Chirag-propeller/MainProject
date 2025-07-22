@@ -16,6 +16,7 @@ import {
   CurrencyCode,
 } from "@/lib/currency";
 import { PRICING } from "@/components/agents/Constants";
+import CallAnalyticsDashboard from "@/components/analytics/diagram/AnalyticsDashboard";
 
 interface TimeSeriesPoint {
   date: string;
@@ -75,13 +76,25 @@ export default function AnalyticsPage() {
   };
 
   // Prepare cost breakdown data for chart
-  const costBreakdownData = metrics.costBreakdownByDay.map((row) => ({
-    ...row,
-    llm: convertINR(row.llm),
-    stt: convertINR(row.stt),
-    tts: convertINR(row.tts),
-    platform: convertINR(PRICING.PropalCostInINR),
-  }));
+  const costBreakdownData = metrics.costBreakdownByDay.map((row) => {
+    // Find total call minutes for this date
+    const minutesObj = metrics.totalCallMinutes.find(
+      (m) => m.date === row.date
+    );
+    const totalMinutes = minutesObj ? Number(minutesObj.value) : 0;
+    const platformCost = convertINR(
+      row.llm > 0 || row.stt > 0 || row.tts > 0
+        ? totalMinutes * PRICING.PropalCostInINR
+        : 0
+    );
+    return {
+      ...row,
+      llm: convertINR(row.llm),
+      stt: convertINR(row.stt),
+      tts: convertINR(row.tts),
+      platform: platformCost,
+    };
+  });
 
   const handleFilterChange = useCallback((newFilters: any) => {
     setFilters(newFilters);
@@ -109,7 +122,7 @@ export default function AnalyticsPage() {
     }, 0) || 0;
 
   return (
-    <div className="w-full h-screen overflow-y-auto dark:bg-gray-900 dark:text-gray-100">
+    <div className="w-full min-h-screen dark:bg-gray-900 dark:text-gray-100">
       {/* Sticky Header */}
       <div className="sticky top-0 bg-white z-50 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div className="px-4">
@@ -124,13 +137,13 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="px-4 mt-2">
+      <div className="px-4 mt-2 overflow-y-auto">
         <div className="flex flex-col gap-2">
           {/* Cards Row */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2">
             <MetricCard
               title="Total Call Minutes"
-              value={getSum(metrics.totalCallMinutes).toFixed(2)}
+              value={getSum(metrics.totalCallMinutes).toFixed(0)}
               chartData={metrics.totalCallMinutes}
             />
             <MetricCard
@@ -148,9 +161,11 @@ export default function AnalyticsPage() {
               value={
                 getSum(metrics.numberOfCalls) > 0
                   ? format(
-                      convertINR(
-                        getSum(metrics.totalSpent) /
-                          getSum(metrics.numberOfCalls)
+                      Number(
+                        convertINR(
+                          getSum(metrics.totalSpent) /
+                            getSum(metrics.numberOfCalls)
+                        ).toFixed(2)
                       ),
                       currency
                     )
@@ -159,8 +174,8 @@ export default function AnalyticsPage() {
               chartData={metrics.avgCostPerCall}
             />
           </div>
-          <div className="flex-1 flex">
-            <DiagramCanvas filters={filters} />
+          <div className="w-full flex justify-between items-center">
+            <CallAnalyticsDashboard filters={filters} />
           </div>
 
           {/* Charts Section */}
