@@ -3,6 +3,7 @@ import { useWorkflowStore } from '@/store/workflowStore'
 import useLLMConfig from '@/hooks/useLLMConfig'
 import SelectionDropdown from '@/components/agents/SelectionDropdown'
 import TooltipLabel from '@/components/ui/tooltip'
+import VariableExtractSection from './VariableExtractSection'
 
 // Define interfaces matching the LLM1.json structure
 interface LLMProvider {
@@ -108,7 +109,7 @@ const ConversationNodeSidebar: React.FC = () => {
     }
   }, [selectedNode, updateNodeGlobal])
 
-  const handleNodeFieldChange = useCallback((field: string, value: string) => {
+  const handleNodeFieldChange = useCallback((field: string, value: any) => {
     if (selectedNode) {
       updateNode(selectedNode.id, { [field]: value })
     }
@@ -401,7 +402,7 @@ const ConversationNodeSidebar: React.FC = () => {
   }, [handleConfigFieldChange, selectedSTTLanguage])
 
   return (
-    <div className="w-120 h-[calc(100vh-8rem)] bg-white border border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="w-120 h-[calc(100vh-4rem)] bg-white border border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
@@ -584,6 +585,12 @@ const ConversationNodeSidebar: React.FC = () => {
             />
           </div>
         </div>
+
+        {/* Variable Extraction Section */}
+        <VariableExtractSection
+          variables={selectedNode.data.variables || {}}
+          onVariablesChange={(variables) => handleNodeFieldChange('variables', variables)}
+        />
 
         {/* Global Node Toggle */}
         <div>

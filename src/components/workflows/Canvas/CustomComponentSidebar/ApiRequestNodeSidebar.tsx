@@ -3,6 +3,7 @@ import { useWorkflowStore } from '@/store/workflowStore'
 import { Api } from '@/components/apiTool/types'
 import { Button } from '@/components/ui/button'
 import { Plus, Trash2 } from 'lucide-react'
+import VariableExtractSection from './VariableExtractSection'
 
 // Helper functions for converting between array and object formats
 const headersObjToArray = (headers: Record<string, string> | undefined): Array<{ id: number; key: string; value: string }> => {
@@ -65,7 +66,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
     updateNodeGlobal(selectedNode.id, { [field]: value })
   }
 
-  const handleNodeFieldChange = (field: string, value: string) => {
+  const handleNodeFieldChange = (field: string, value: any) => {
     updateNode(selectedNode.id, { [field]: value })
   }
 
@@ -187,7 +188,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
   const globalData = selectedNode.data.global || {}
 
   return (
-    <div className="w-120 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">API Request Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
@@ -462,6 +463,12 @@ const ApiRequestNodeSidebar: React.FC = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
+
+        {/* Variable Extraction Section */}
+        <VariableExtractSection
+          variables={selectedNode.data.variables || {}}
+          onVariablesChange={(variables) => handleNodeFieldChange('variables', variables)}
+        />
 
         {/* Global Node Toggle */}
         <div>

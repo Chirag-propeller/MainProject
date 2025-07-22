@@ -23,6 +23,7 @@ interface BaseNodeData {
     model: string
     language: string
   }
+  variables?: Record<string, string>
   global?: {
     isGlobal?: boolean
     pathwayCondition?: string
