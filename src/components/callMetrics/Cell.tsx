@@ -49,7 +49,7 @@ export default function CallAnalysisCell({
   // Green dot for connected status
   if (field === "status" && value?.toLowerCase() === "connected") {
     return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-200 dark:bg-gray-900">
         <span className="inline-flex items-center gap-1">
           <span className="inline-block w-2 h-2 rounded-full bg-green-500" />
           Connected
@@ -62,7 +62,7 @@ export default function CallAnalysisCell({
   if (field === "sentiment" && typeof value === "string") {
     const emoji = sentimentEmoji[value.toLowerCase()] || "";
     return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-200 dark:bg-gray-900">
         <span className="inline-flex items-center gap-1">
           {emoji && <span>{emoji}</span>}
           <span>{value.charAt(0).toUpperCase() + value.slice(1)}</span>
@@ -89,14 +89,14 @@ export default function CallAnalysisCell({
         : getScoreLabel(score);
 
     return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-200 dark:bg-gray-900">
         <div className="flex flex-col items-center gap-1">
           <div className="flex items-center gap-2">
             <span
               className={`inline-block w-2 h-2 rounded-full ${color}`}
             ></span>
 
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-200">
               {label}
               {` (${score})`}
             </span>
@@ -109,7 +109,7 @@ export default function CallAnalysisCell({
   // Handle download transcript field
   if (field === "download_transcript") {
     return (
-      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+      <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-200 dark:bg-gray-900">
         <DownloadButton callId={callId || ""} disabled={!callId} />
       </td>
     );
@@ -124,7 +124,7 @@ export default function CallAnalysisCell({
   }
 
   return (
-    <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700">
+    <td className="px-1 py-0 whitespace-nowrap text-xs text-center text-gray-700 dark:text-gray-100 dark:bg-gray-900">
       {displayValue ?? "-"}
     </td>
   );

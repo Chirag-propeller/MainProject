@@ -1,24 +1,14 @@
 // components/Diagram/DiagramCanvas.tsx
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import ReactFlow, {
-  Node,
-  Edge,
-  Controls,
-  Background,
-  MarkerType,
-  ReactFlowProvider,
-  useReactFlow,
-} from "reactflow";
+import React, { useState, useEffect } from "react";
+import ReactFlow, { Node, Edge, MarkerType } from "reactflow";
 import "reactflow/dist/style.css";
-import { mockData } from "./staticData";
-import { getHeight, isConnected } from "./diagramUtils";
 import { Position } from "reactflow";
 import axios from "axios";
-// import 'tailwindcss/tailwind.css';
 import { SmallNode } from "./SmallNode";
 import { HorizontalTableNode } from "./TableNode";
+import { HorizontalTableNode2 } from "./TableNode2";
 import { OutBoundTable } from "./OutBoundTable";
 import ThirdLevelCell from "./ThirdLevelCell";
 import FirstLevelLeg from "./FirstLevelLeg";
@@ -28,13 +18,13 @@ import Sentiment from "./Sentiment";
 const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
   const nodeTypes = {
     horizontalTableNode: HorizontalTableNode,
+    horizontalTableNode2: HorizontalTableNode2,
     smallNode: SmallNode,
     OutBoundTable: OutBoundTable,
     thirdLevelCell: ThirdLevelCell,
     firstLevelLeg: FirstLevelLeg,
     sentiment: Sentiment,
     secondLevelLeg: SecondLevelLeg,
-    // tableNode3: HorizontalTableNode1,
   };
 
   const [data, setData] = useState<any>({
@@ -50,6 +40,33 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
     outboundPositive: 0,
     outboundNegative: 0,
     outboundNeutral: 0,
+
+    outboundResolved: 0,
+    outboundEscalated: 0,
+    outboundCallBackRequired: 0,
+
+    outboundLessThan10sec: 0,
+    outbound10secTo1min: 0,
+    outboundMoreThan1min: 0,
+
+    outboundNLPErrorRate: 0,
+    outboundIntentSuccessRate: 0,
+    outboundResolutionSuccess: 0,
+
+    unansweredOutboundVoicemail: 0,
+    unansweredOutboundBusy: 0,
+
+    inboundResolved: 0,
+    inboundEscalated: 0,
+    inboundCallBackRequired: 0,
+
+    inboundLessThan10sec: 0,
+    inbound10secTo1min: 0,
+    inboundMoreThan1min: 0,
+
+    inboundNLPErrorRate: 0,
+    inboundIntentSuccessRate: 0,
+    inboundResolutionSuccess: 0,
   });
 
   const constant = {
@@ -73,7 +90,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
     const fetchData = async () => {
       console.log("filters", filters);
       const result = await axios.post("/api/analytics", { data: filters });
-      console.log(result.data);
+      // console.log(result.data);
       setResponse(result.data);
 
       const apiData = result.data;
@@ -107,25 +124,50 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         }
       });
 
-      console.log(outboundNeutral); // 11
-      console.log(outboundNegative); // 3
-      console.log(outboundPositive); // 1
-
       setData({
-        totalCalls: apiData.totalCalls[0]?.count || 0,
-        outboundCalls: apiData.outboundCalls[0]?.count || 0,
-        inboundCalls: apiData.inboundCalls[0]?.count || 0,
-        answeredOutbound: apiData.answeredOutbound[0]?.count || 0,
-        answeredInbound: apiData.answeredInbound[0]?.count || 0,
+        totalCalls: apiData.totalCalls?.[0]?.count || 0,
+        outboundCalls: apiData.outboundCalls?.[0]?.count || 0,
+        inboundCalls: apiData.inboundCalls?.[0]?.count || 0,
+        answeredOutbound: apiData.answeredOutbound?.[0]?.count || 0,
+        answeredInbound: apiData.answeredInbound?.[0]?.count || 0,
         unansweredOutbound:
-          (apiData.outboundCalls[0]?.count || 0) -
-          (apiData.answeredOutbound[0]?.count || 0),
-        inboundPositive: inboundPositive || 0,
-        inboundNegative: inboundNegative || 0,
-        inboundNeutral: inboundNeutral || 0,
-        outboundPositive: outboundPositive || 0,
-        outboundNegative: outboundNegative || 0,
-        outboundNeutral: outboundNeutral || 0,
+          (apiData.outboundCalls?.[0]?.count || 0) -
+          (apiData.answeredOutbound?.[0]?.count || 0),
+
+        outboundPositive,
+        outboundNegative,
+        outboundNeutral,
+        inboundPositive,
+        inboundNegative,
+        inboundNeutral,
+
+        // NEW: add defaults here
+        outboundResolved: apiData.outboundResolved || 0,
+        outboundEscalated: apiData.outboundEscalated || 0,
+        outboundCallBackRequired: apiData.outboundCallBackRequired || 0,
+
+        outboundLessThan10sec: apiData.outboundLessThan10sec || 0,
+        outbound10secTo1min: apiData.outbound10secTo1min || 0,
+        outboundMoreThan1min: apiData.outboundMoreThan1min || 0,
+
+        outboundNLPErrorRate: apiData.outboundNLPErrorRate || 0,
+        outboundIntentSuccessRate: apiData.outboundIntentSuccessRate || 0,
+        outboundResolutionSuccess: apiData.outboundResolutionSuccess || 0,
+
+        unansweredOutboundVoicemail: apiData.unansweredOutboundVoicemail || 0,
+        unansweredOutboundBusy: apiData.unansweredOutboundBusy || 0,
+
+        inboundResolved: apiData.inboundResolved || 0,
+        inboundEscalated: apiData.inboundEscalated || 0,
+        inboundCallBackRequired: apiData.inboundCallBackRequired || 0,
+
+        inboundLessThan10sec: apiData.inboundLessThan10sec || 0,
+        inbound10secTo1min: apiData.inbound10secTo1min || 0,
+        inboundMoreThan1min: apiData.inboundMoreThan1min || 0,
+
+        inboundNLPErrorRate: apiData.inboundNLPErrorRate || 0,
+        inboundIntentSuccessRate: apiData.inboundIntentSuccessRate || 0,
+        inboundResolutionSuccess: apiData.inboundResolutionSuccess || 0,
       });
     };
     fetchData();
@@ -136,7 +178,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
       id: "total",
       type: "firstLevelLeg",
       data: { label: `Total Calls`, value: data?.totalCalls },
-      position: { x: -100, y: 100 },
+      position: { x: -400, y: 100 },
       sourcePosition: Position.Right,
     },
     {
@@ -149,7 +191,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         borderColor: "border-l-indigo-400",
         textColor: "text-indigo-500",
       },
-      position: { x: 220, y: 100 },
+      position: { x: 120, y: 100 },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -163,7 +205,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         borderColor: "border-l-indigo-800",
         textColor: "text-indigo-800",
       },
-      position: { x: 220, y: 382 },
+      position: { x: 120, y: 382 },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -178,7 +220,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         borderColor: "border-l-indigo-400",
         textColor: "text-indigo-500",
       },
-      position: { x: 440, y: 100 },
+      position: { x: 500, y: 100 },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -196,7 +238,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         borderColor: "border-l-indigo-400",
         textColor: "text-indigo-500",
       },
-      position: { x: 440, y: 237 },
+      position: { x: 500, y: 237 },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -211,7 +253,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         borderColor: "border-l-indigo-800",
         textColor: "text-indigo-800",
       },
-      position: { x: 440, y: 451 },
+      position: { x: 500, y: 451 },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -231,8 +273,9 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.outboundNeutral,
         ],
         preValue: data?.answeredOutbound,
+        formatDecimals: true,
       },
-      position: { x: 725, y: constant.fourthLevelFirst.initialY },
+      position: { x: 925, y: constant.fourthLevelFirst.initialY },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -252,7 +295,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         ],
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelFirst.initialY + constant.fourthLevelgap,
       },
       sourcePosition: Position.Right,
@@ -272,9 +315,12 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.outbound10secTo1min,
           data?.outboundMoreThan1min,
         ],
+        preValue: data?.answeredOutbound,
+        formatDecimals: true,
+        showPercentage: true,
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelFirst.initialY + constant.fourthLevelgap * 2,
       },
       sourcePosition: Position.Right,
@@ -282,9 +328,9 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
     },
     {
       id: "aiOutbound",
-      type: "horizontalTableNode",
+      type: "horizontalTableNode2",
       data: {
-        label: "AI  Interaction",
+        label: "AI Interaction",
         borderColor: "indigo-400",
         textColor: "text-indigo-500",
         tableHeading: [
@@ -297,9 +343,11 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.outboundIntentSuccessRate,
           data?.outboundResolutionSuccess,
         ],
+        formatDecimals: true,
+        showPercentage: false,
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelFirst.initialY + constant.fourthLevelgap * 3,
       },
       sourcePosition: Position.Right,
@@ -321,7 +369,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.inboundNeutral,
         ],
       },
-      position: { x: 725, y: constant.fourthLevelSecond.initialY },
+      position: { x: 925, y: constant.fourthLevelSecond.initialY },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
@@ -340,7 +388,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
         ],
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelSecond.initialY + constant.fourthLevelgap,
       },
       sourcePosition: Position.Right,
@@ -359,9 +407,12 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.inbound10secTo1min,
           data?.inboundMoreThan1min,
         ],
+        preValue: data?.answeredInbound,
+        formatDecimals: true,
+        showPercentage: true,
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelSecond.initialY + constant.fourthLevelgap * 2,
       },
       sourcePosition: Position.Right,
@@ -369,7 +420,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
     },
     {
       id: "aiInbound",
-      type: "horizontalTableNode",
+      type: "horizontalTableNode2",
       data: {
         label: "AI Interaction",
         borderColor: "indigo-800",
@@ -384,9 +435,10 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
           data?.inboundIntentSuccessRate,
           data?.inboundResolutionSuccess,
         ],
+        formatDecimals: true,
       },
       position: {
-        x: 725,
+        x: 925,
         y: constant.fourthLevelSecond.initialY + constant.fourthLevelgap * 3,
       },
       sourcePosition: Position.Right,
@@ -540,7 +592,7 @@ const DiagramCanvas: React.FC<{ filters: any }> = ({ filters }) => {
   }));
 
   return (
-    <div className="w-full" style={{ height: "60vh", minHeight: 400 }}>
+    <div className="min-w-50vw" style={{ height: "60vh", minHeight: 400 }}>
       <ReactFlow
         className="!cursor-pointer dark:bg-gray-900 dark:text-gray-100"
         nodeTypes={nodeTypes}

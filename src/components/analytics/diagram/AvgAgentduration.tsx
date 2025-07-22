@@ -22,7 +22,7 @@ function transformAvgDurationData(
   return Object.values(byDate);
 }
 
-const colorPalette = ["#8c19ad", "#3b299d", "#15979e", "#64aaed"];
+const colorPalette = ["#59E7B0", "#5E9EC1", "#626BCD", "#6819E0"];
 
 const LOCAL_STORAGE_KEY = "avgAgentDurationSelectedAgents";
 
@@ -118,6 +118,10 @@ export function AvgCallDurationChart({
           </button>
           {dropdownOpen && (
             <div className="absolute right-0 mt-1 w-48 h-50 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded shadow-lg p-2 z-20 flex flex-col">
+              {/* Sticky description at the top */}
+              <div className="sticky top-0 left-0 right-0 bg-white dark:bg-gray-900 z-10 text-[10px] text-gray-500 dark:text-gray-300 py-1 px-2 border-b border-gray-200 dark:border-gray-700">
+                Select up to 4 agents at a time
+              </div>
               <div className="flex-1 overflow-y-auto">
                 {agentNames.map((agent) => {
                   const checked = selectedAgents.includes(agent);
@@ -204,6 +208,9 @@ export function AvgCallDurationChart({
             cursor={{ fill: "transparent" }}
           />
           <Legend
+            formatter={(value) =>
+              value.length > 15 ? `${value.substring(0, 15)}...` : value
+            }
             wrapperStyle={{
               paddingTop: "0px",
               marginTop: "-10px",

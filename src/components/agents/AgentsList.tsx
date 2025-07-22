@@ -5,47 +5,50 @@ import Link from "next/link";
 import { Agent } from "./types";
 import { createAgent, deleteAgent } from "./api";
 import { Button } from "@/components/ui/button";
-import { Copy, Users } from "lucide-react";
+import { Copy, Users, MoreVertical, Pin, X } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { languageFillers as fillers } from "./Constants";
+
 // Simple agent card component for the list
 const AgentListItem = ({
   agent,
   isSelected,
   onDelete,
-  onDuplicate, // NEW
+  onDuplicate,
   isDeleting,
   isDuplicating,
+  onPin,
+  isPinned,
 }: {
   agent: Agent;
   isSelected: boolean;
   onDelete: (id: string) => Promise<void>;
-  onDuplicate: (agent: Agent) => Promise<void>; // NEW
+  onDuplicate: (agent: Agent) => Promise<void>;
   isDeleting: string | null;
   isDuplicating: string | null;
+  onPin: (id: string) => void;
+  isPinned: boolean;
 }) => {
-  const [showConfirm, setShowConfirm] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Hide on outside click
+  // Hide dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        popoverRef.current &&
-        !popoverRef.current.contains(e.target as Node)
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
       ) {
-        setShowConfirm(false);
+        setDropdownOpen(false);
       }
     };
-
-    if (showConfirm) {
+    if (dropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showConfirm]);
+  }, [dropdownOpen]);
 
   return (
     <Link href={`/dashboard/agents/${agent._id}`} className="block relative">
@@ -70,82 +73,65 @@ const AgentListItem = ({
             </p>
           </div>
 
-          {/* Right: Trash Icon + Confirm */}
-          <div className="relative gap-2" ref={popoverRef}>
+          {/* Right: Dropdown Menu */}
+          <div className="relative" ref={dropdownRef}>
             <button
-              disabled={isDuplicating === agent._id}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onDuplicate(agent);
+                setDropdownOpen((open) => !open);
               }}
-              className="text-gray-500 hover:text-indigo-600 transition-colors p-1 pt-1"
+              className="p-1 text-gray-500 hover:text-indigo-600"
             >
-              {isDuplicating === agent._id ? (
-                <div className="w-6 h-6 border-t-transparent animate-spin"></div>
-              ) : (
-                <div className="w-6 h-6 relative">
-                  <Copy className="pr-2" />
-                </div>
-              )}
+              <MoreVertical className="w-5 h-5" />
             </button>
-            <button
-              disabled={isDeleting === agent._id}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setShowConfirm((prev) => !prev);
-              }}
-              className="text-gray-500 hover:text-red-600 transition-colors p-1 pt-5 group"
-            >
-              {isDeleting === agent._id ? (
-                <div className="w-4 h-4 border-t-transparent animate-spin"></div>
-              ) : (
-                <div className="w-6 h-6 relative">
-                  <svg
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-full h-full text-current"
-                  >
-                    {/* Lid */}
-                    <g className="transition-transform duration-300 ease-in-out group-hover:-translate-y-0.5 group-hover:-rotate-20 origin-center">
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                      <path d="M3 6h18" />
-                    </g>
-
-                    {/* Body */}
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-
-                    {/* Trash lines */}
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                  </svg>
-                </div>
-              )}
-            </button>
-
-            {/* Confirmation Box */}
-            {showConfirm && (
-              <div className="absolute top-8 right-0 w-max bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-lg rounded-[6px] z-25">
+            {dropdownOpen && (
+              <div className="absolute right-0 top-7 w-32 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 shadow-lg rounded-[6px] z-30 flex flex-col py-1">
+                <button
+                  disabled={isDuplicating === agent._id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDropdownOpen(false);
+                    onDuplicate(agent);
+                  }}
+                  className="flex items-center gap-2 px-3 py-1 text-xs text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50"
+                >
+                  <Copy className="w-4 h-4" /> Copy
+                </button>
+                <button
+                  disabled={isDeleting === agent._id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDropdownOpen(false);
+                    onDelete(agent._id);
+                  }}
+                  className="flex items-center gap-2 px-3 py-1 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-gray-800 disabled:opacity-50"
+                >
+                  <X className="w-4 h-4" /> Delete
+                </button>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    onDelete(agent._id);
-                    setShowConfirm(false);
+                    setDropdownOpen(false);
+                    onPin(agent._id);
                   }}
-                  className="text-red-600 hover:text-red-700 dark:hover:text-red-400 text-[10px] font-light px-1 pb-1 transition-colors rounded-[6px]"
+                  className="flex items-center gap-2 px-3 py-1 text-xs text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-800"
                 >
-                  Delete Agent
+                  <Pin className="w-4 h-4" /> {isPinned ? "Unpin" : "Pin"}
                 </button>
               </div>
             )}
           </div>
         </div>
+        {/* Pin icon at bottom right if pinned */}
+        {isPinned && (
+          <div className="absolute bottom-2 right-4">
+            <Pin className="w-3 h-3 text-gray-400" fill="#adb5bd" />
+          </div>
+        )}
       </div>
     </Link>
   );
@@ -163,47 +149,38 @@ const AgentsList = ({
   setAgents: (agents: Agent[]) => void;
   collapsed?: boolean;
 }) => {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [createLoading, setCreateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [dupLoading, setDupLoading] = useState<string | null>(null);
+  const [pinnedIds, setPinnedIds] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("pinnedAgentIds");
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
+  });
   const router = useRouter();
 
-  // Handle creating a new agent
-  // const handleCreateAgent = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const newAgent = await createAgent({
-  //       agentName: "New Agent",
-  //       llm: "OpenAI",
-  //       llmModel: "gpt-4o-mini",
-  //       inputLanguage: "en-US",
-  //       stt: "Deepgram",
-  //       sttModel: "nova-2",
-  //       sttLanguage: "en-US",
-  //       tts: "AWS",
-  //       ttsVoiceName: "Amy",
-  //       ttsModel: "generative",
-  //       speed: 1,
-  //       welcomeMessage: "Hi",
-  //       knowledgeBaseAttached: false,
-  //       knowledgeBase: [],
-  //       prompt: "You are a helpful assistant",
-  //       gender: "Female",
-  //       ttsLanguage: "en-GB",
-  //     });
-  //     // Navigate to the new agent page
-  //     setAgents([newAgent.data, ...agents]);
-  //     router.push(`/dashboard/agents/${newAgent.data._id}`);
-  //   } catch (err) {
-  //     console.error("Failed to create agent:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  useEffect(() => {
+    const fetchAgents = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/agents/get");
+        const data = await response.json();
+        setAgents(data);
+      } catch (error) {
+        console.error("Failed to fetch agents:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAgents();
+  }, []);
+
   const handleCreateAgent = async () => {
     setCreateLoading(true);
-    const languageFillers =  fillers["en-IN"]["Female"]
+    const languageFillers = fillers["en-IN"]["Female"];
     try {
       const res = await createAgent({
         agentName: "New Agent",
@@ -223,7 +200,7 @@ const AgentsList = ({
         prompt: "You are a helpful assistant",
         gender: "Female",
         ttsLanguage: "en-IN",
-        languageFillers: languageFillers, 
+        languageFillers: languageFillers,
       });
 
       setAgents([res.data, ...agents]);
@@ -273,15 +250,6 @@ const AgentsList = ({
   // Handle deleting an agent
   const handleDeleteAgent = async (id: string) => {
     if (!confirm("Are you sure you want to delete this agent?")) return;
-    // let agentId = id;
-    // if(id === selectedId) {
-    //     if(agents[0]._id === id) {
-    //         agentId = agents[1]._id;
-    //     } else {
-    //         agentId = agents[0]._id;
-    //     }
-    // }
-
     setDeleteLoading(id);
 
     try {
@@ -309,6 +277,52 @@ const AgentsList = ({
       setDeleteLoading(null);
     }
   };
+
+  // Pin/unpin agent
+  const handlePinAgent = (id: string) => {
+    setPinnedIds((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [id, ...prev]
+    );
+  };
+
+  useEffect(() => {
+    // Check for your JWT token (adjust the regex if your cookie name is different)
+    const isLoggedIn =
+      typeof document !== "undefined" && document.cookie.includes("token=");
+
+    if (isLoggedIn) {
+      fetch("/api/user/pinnedAgents")
+        .then((res) => res.json())
+        .then((ids) => {
+          if (Array.isArray(ids)) setPinnedIds(ids);
+        });
+    } else {
+      // Fallback to localStorage for guests
+      const stored = localStorage.getItem("pinnedAgentIds");
+      setPinnedIds(stored ? JSON.parse(stored) : []);
+    }
+  }, []);
+
+  useEffect(() => {
+    const isLoggedIn =
+      typeof document !== "undefined" && document.cookie.includes("token=");
+
+    if (isLoggedIn) {
+      fetch("/api/user/pinnedAgents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pinnedAgents: pinnedIds }),
+      });
+    } else {
+      localStorage.setItem("pinnedAgentIds", JSON.stringify(pinnedIds));
+    }
+  }, [pinnedIds]);
+
+  // Sort agents: pinned first, then others
+  const sortedAgents = [
+    ...agents.filter((a) => pinnedIds.includes(a._id)),
+    ...agents.filter((a) => !pinnedIds.includes(a._id)),
+  ];
 
   return (
     <div
@@ -344,12 +358,12 @@ const AgentsList = ({
 
       {/* List of agents */}
       <div className="flex-1 overflow-y-auto p-3 bg-white dark:bg-gray-900">
-        {agents.length === 0 ? (
+        {sortedAgents.length === 0 ? (
           <div className="text-center py-10 text-gray-500 dark:text-gray-300">
             No agents found. Click Create to add your first agent.
           </div>
         ) : (
-          agents.map((agent) => (
+          sortedAgents.map((agent) => (
             <AgentListItem
               key={agent._id}
               agent={agent}
@@ -358,6 +372,8 @@ const AgentsList = ({
               onDuplicate={handleDuplicateAgent}
               isDeleting={deleteLoading}
               isDuplicating={dupLoading}
+              onPin={handlePinAgent}
+              isPinned={pinnedIds.includes(agent._id)}
             />
           ))
         )}

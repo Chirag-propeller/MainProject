@@ -4,6 +4,7 @@ import Sidebar from "@/components/sidebar";
 import { ReactNode, useState } from "react";
 import Footer from "@/components/Footer";
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
+import { UserDataProvider } from "@/components/profile/UserDataContext";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -12,19 +13,21 @@ interface DashboardLayoutProps {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   return (
-    <DarkModeProvider>
-      <div className="min-h-screen bg-white dark:bg-gray-900 custom-scrollbar">
-        <div className="flex min-h-screen">
-          <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-          <main
-            className={`${collapsed ? "ml-16" : "ml-45"} w-full transition-all duration-200 bg-white dark:bg-gray-900`}
-          >
-            {children}
-          </main>
+    <UserDataProvider>
+      <DarkModeProvider>
+        <div className="min-h-screen bg-white dark:bg-gray-900 custom-scrollbar">
+          <div className="flex min-h-screen">
+            <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+            <main
+              className={`${collapsed ? "ml-16" : "ml-45"} w-full transition-all duration-200 bg-white dark:bg-gray-900`}
+            >
+              {children}
+            </main>
+          </div>
+          {/* <Footer/> */}
         </div>
-        {/* <Footer/> */}
-      </div>
-    </DarkModeProvider>
+      </DarkModeProvider>
+    </UserDataProvider>
   );
 };
 

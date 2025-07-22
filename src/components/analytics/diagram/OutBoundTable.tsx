@@ -11,33 +11,33 @@ export const OutBoundTable = ({ data }: any) => {
           <tr>
             <td
               rowSpan={3}
-              className={`font-bold text-center align-middle border-r px-2 text-wrap w-16 border-gray-400 ${data.textColor}`}
+              className={`font-bold text-center align-middle border-r px-2 text-wrap w-16 border-gray-400 dark:text-indigo-300 ${data.textColor}`}
             >
               {data.label}
             </td>
-            <td className="pl-1 border-gray-400 border-r text-center border-b px-2 w-14 h-1/2 ">
+            <td className="pl-1 dark:text-gray-300 border-gray-400 border-r text-center border-b px-2 w-14 h-1/2 ">
               {data?.tableHeading[0]}
             </td>
             <td
-              className={`px-2 text-wrap text-center border-gray-400 text-sm border-b w-20 font-bold ${data.textColor}`}
+              className={`px-2 text-wrap text-center border-gray-400 text-sm border-b w-20 font-bold dark:text-gray-300 ${data.textColor}`}
             >
               {data?.tableValues[0] || 0} <br />{" "}
-              <span className="text-xs text-gray-500 font-medium">
+              {/* <span className="text-xs dark:text-gray-300 text-gray-500 font-medium">
                 (0%)
-              </span>{" "}
+              </span>{" "} */}
             </td>
           </tr>
           <tr>
-            <td className="pl-1 border-gray-400 border-r text-center  px-2 w-14 ">
+            <td className="pl-1 dark:text-gray-300 border-gray-400 border-r text-center  px-2 w-14 ">
               {data?.tableHeading[1]}
             </td>
             <td
-              className={`px-2 text-wrap text-center border-gray-400 border-b w-20 text-sm font-bold ${data.textColor}`}
+              className={`px-2 text-wrap text-center dark:text-gray-300 border-gray-400 border-b w-20 text-sm font-bold ${data.textColor}`}
             >
               {data?.tableValues[1] || 0} <br />{" "}
-              <span className="text-xs text-gray-500 font-medium">
+              {/* <span className="text-xs dark:text-gray-300 text-gray-500 font-medium">
                 (0%)
-              </span>{" "}
+              </span>{" "} */}
             </td>
           </tr>
         </tbody>

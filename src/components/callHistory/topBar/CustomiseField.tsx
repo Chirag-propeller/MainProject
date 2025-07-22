@@ -138,16 +138,16 @@ const CustomiseField = ({
         onClick={toggleDropdown}
         className={`min-w-[150px] flex items-center justify-between px-3 py-2 rounded-[6px] text-sm font-medium transition-colors ${
           isOpen
-            ? "bg-indigo-100 text-indigo-700"
-            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm"
+            ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
+            : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-500"
         }`}
       >
         Custom Fields <ChevronDown className="w-3.5 h-3.5 text-indigo-600" />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 z-50 mt-2 w-72 rounded-[4px] border border-gray-200 bg-white shadow-xl max-h-72 overflow-y-auto animate-fadeIn">
-          <h4 className="text-sm text-gray-700 border-b border-gray-200 pb-1 p-2">
+        <div className="absolute top-full left-0 z-50 mt-2 w-72 rounded-[4px] border border-gray-200 bg-white shadow-xl max-h-72 overflow-y-auto animate-fadeIn dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
+          <h4 className="text-sm text-gray-700 border-b dark:text-gray-400 border-gray-200 dark:border-gray-700 pb-1 p-2">
             Custom Fields
           </h4>
           {Object.entries(SELECT_FIELDS).map(([sectionKey, section]) => (
@@ -155,7 +155,7 @@ const CustomiseField = ({
               <div className="flex justify-between items-center mb-1">
                 <button
                   onClick={() => toggleSection(sectionKey)}
-                  className="flex items-center gap-1 text-gray-800 text-xs font-medium hover:text-indigo-600"
+                  className="flex items-center gap-1 text-gray-800 dark:text-gray-400 text-xs font-medium hover:text-indigo-600"
                 >
                   {expandedSections[sectionKey] ? (
                     <ChevronDown className="w-4 h-4" />
@@ -170,7 +170,7 @@ const CustomiseField = ({
                   {Object.entries(section.fields).map(([fieldKey, label]) => (
                     <label
                       key={fieldKey}
-                      className="text-xs flex items-center gap-2 hover:bg-gray-50 rounded px-1 py-0.5 cursor-pointer"
+                      className="text-xs flex items-center gap-2 hover:bg-gray-50 rounded px-1 py-0.5 dark:hover:bg-gray-800 cursor-pointer"
                     >
                       <input
                         type="checkbox"
@@ -186,7 +186,7 @@ const CustomiseField = ({
             </div>
           ))}
 
-          <div className="sticky -bottom-0.5 bg-white pt-2 pb-2 px-2 border-t border-gray-200">
+          <div className="sticky -bottom-0.5 bg-white pt-2 pb-2 px-2 border-t border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <Button
               variant="default"
               size="sm"

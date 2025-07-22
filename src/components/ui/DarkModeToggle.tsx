@@ -6,7 +6,7 @@ const DarkModeToggle = () => {
   return (
     <button
       onClick={toggleDarkMode}
-      className="p-2 rounded-full bg-gray-200 dark:bg-gray-500 dark:text-white"
+      className="p-2 rounded-[6px] mb-4 bg-gray-200 dark:bg-gray-500 dark:text-white"
     >
       {darkMode ? (
         <MdLightMode color="black" size={20} />

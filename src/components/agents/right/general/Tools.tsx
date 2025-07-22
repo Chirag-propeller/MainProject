@@ -245,7 +245,7 @@ const ToolsContent = ({
   }, [whenToCallRag]);
 
   useEffect(() => {
-    console.log(agent)
+    console.log(agent);
   }, [agent]);
 
   return (
@@ -335,9 +335,15 @@ const ToolsContent = ({
           )}
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">When to call RAG</label>
-          <textarea className="w-full h-20 border border-gray-200 rounded-lg p-2" placeholder="Enter the when to call RAG" value={whenToCallRag} onChange={(e) => setWhenToCallRag(e.target.value)}/>
-
+          <label className="text-sm font-medium text-gray-700">
+            When to call RAG
+          </label>
+          <textarea
+            className="w-full h-20 border border-gray-200 rounded-lg p-2"
+            placeholder="Enter the when to call RAG"
+            value={whenToCallRag}
+            onChange={(e) => setWhenToCallRag(e.target.value)}
+          />
         </div>
 
         {/* API Tools Section */}

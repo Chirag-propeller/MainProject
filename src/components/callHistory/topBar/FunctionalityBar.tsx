@@ -39,8 +39,12 @@ const FunctionalityBar = ({
 
   return (
     <div className="flex pb-2 justify-between gap-2 w-full">
-      <div className="flex gap-2">
-        <DateFilter dateRange={dateRange} setDateRange={setDateRange} />
+      <div className="flex gap-2 dark:bg-gray-900 dark:text-gray-100">
+        <DateFilter
+          dateRange={dateRange}
+          setDateRange={setDateRange}
+          align="left"
+        />
         <Filter
           filters={filters}
           setFilters={setFilters}
@@ -54,7 +58,10 @@ const FunctionalityBar = ({
         />
         {/* Add your selector here */}
         <div className="flex items-center gap-1 ml-2">
-          <label htmlFor="limit" className="text-xs text-gray-600">
+          <label
+            htmlFor="limit"
+            className="text-xs text-gray-600 dark:text-gray-400"
+          >
             Rows per page:
           </label>
           <select
@@ -64,7 +71,7 @@ const FunctionalityBar = ({
               setLimit(Number(e.target.value));
               setPage(1);
             }}
-            className="border rounded px-2 py-1 text-xs"
+            className="border rounded px-2 py-1 text-xs bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700 rounded-b-[6px] dark:text-gray-200"
           >
             {[10, 25, 50, 100].map((opt) => (
               <option key={opt} value={opt}>
@@ -75,7 +82,7 @@ const FunctionalityBar = ({
         </div>
       </div>
 
-      <div className="flex mr-20 self-center">
+      <div className="flex mr-20 self-center dark:bg-gray-900">
         <Export filters={filters} dateRange={dateRange} />
       </div>
     </div>

@@ -4,6 +4,29 @@ import OutBoundCall from '@/model/call/outBoundCall';
 import { getUserFromRequest } from '@/lib/auth';
 import mongoose from 'mongoose';
 
+interface MetricResult {
+  _id: string;
+  count: number;
+}
+
+interface AIMetrics {
+  avgNlpErrorRate: number;
+  avgIntentSuccessRate: number;
+  avgResolutionSuccess: number;
+}
+
+interface FacetResult {
+  outboundDuration?: MetricResult[];
+  inboundDuration?: MetricResult[];
+  outboundDisposition?: MetricResult[];
+  inboundDisposition?: MetricResult[];
+  outboundAIMetrics?: AIMetrics[];
+  inboundAIMetrics?: AIMetrics[];
+  unansweredOutboundVoicemail?: MetricResult[];
+  unansweredOutboundBusy?: MetricResult[];
+  [key: string]: any;
+}
+
 export async function POST(req: NextRequest) {
   await dbConnect();
   try {
@@ -137,13 +160,117 @@ export async function POST(req: NextRequest) {
             { $match: { "metadata.fromPhone": { $exists: false }, "call_analysis.STATUS": "connected" } },
             { $group: { _id: "$call_analysis.SENTIMENT", count: { $sum: 1 } } }
           ],
-          outboundDisposition: [
-            { $match: { "metadata.fromPhone": { $exists: true }, "call_analysis.STATUS": "connected" } },
-            { $group: { _id: "$call_analysis.CALL_DISPOSITION", count: { $sum: 1 } } }
+          // Outbound Duration
+          outboundDuration: [
+            { $match: { 
+              "metadata.fromPhone": { $exists: true }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            {
+              $group: {
+                _id: {
+                  $switch: {
+                    branches: [
+                      { case: { $lte: ["$call_duration_in_sec", 10] }, then: "lessThan10sec" },
+                      { case: { $and: [
+                        { $gt: ["$call_duration_in_sec", 10] },
+                        { $lte: ["$call_duration_in_sec", 60] }
+                      ]}, then: "10secTo1min" }
+                    ],
+                    default: "moreThan1min"
+                  }
+                },
+                count: { $sum: 1 }
+              }
+            }
           ],
+          // Inbound Duration
+          inboundDuration: [
+            { $match: { 
+              "metadata.fromPhone": { $exists: false }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            {
+              $group: {
+                _id: {
+                  $switch: {
+                    branches: [
+                      { case: { $lte: ["$call_duration_in_sec", 10] }, then: "lessThan10sec" },
+                      { case: { $and: [
+                        { $gt: ["$call_duration_in_sec", 10] },
+                        { $lte: ["$call_duration_in_sec", 60] }
+                      ]}, then: "10secTo1min" }
+                    ],
+                    default: "moreThan1min"
+                  }
+                },
+                count: { $sum: 1 }
+              }
+            }
+          ],
+          // Outbound Call Disposition
+          outboundDisposition: [
+            { $match: { 
+              "metadata.fromPhone": { $exists: true }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            { 
+              $group: { 
+                _id: "$call_analysis.CALL_DISPOSITION", 
+                count: { $sum: 1 } 
+              } 
+            }
+          ],
+          // Inbound Call Disposition
           inboundDisposition: [
-            { $match: { "metadata.fromPhone": { $exists: false }, "call_analysis.STATUS": "connected" } },
-            { $group: { _id: "$call_analysis.CALL_DISPOSITION", count: { $sum: 1 } } }
+            { $match: { 
+              "metadata.fromPhone": { $exists: false }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            { 
+              $group: { 
+                _id: "$call_analysis.CALL_DISPOSITION", 
+                count: { $sum: 1 } 
+              } 
+            }
+          ],
+          // Outbound AI Metrics (average)
+          outboundAIMetrics: [
+            { $match: { 
+              "metadata.fromPhone": { $exists: true }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            {
+              $group: {
+                _id: null,
+                avgNlpErrorRate: { $avg: "$call_analysis.NLP_ERROR_RATE" },
+                avgIntentSuccessRate: { $avg: "$call_analysis.INTENT_SUCCESS_RATE" },
+                avgResolutionSuccess: { $avg: { $cond: [{ $eq: ["$call_analysis.ESCALATION_FLAG", false] }, 1, 0] } }
+              }
+            }
+          ],
+          // Inbound AI Metrics (average)
+          inboundAIMetrics: [
+            { $match: { 
+              "metadata.fromPhone": { $exists: false }, 
+              "call_analysis.STATUS": "connected" 
+            }},
+            {
+              $group: {
+                _id: null,
+                avgNlpErrorRate: { $avg: "$call_analysis.NLP_ERROR_RATE" },
+                avgIntentSuccessRate: { $avg: "$call_analysis.INTENT_SUCCESS_RATE" },
+                avgResolutionSuccess: { $avg: { $cond: [{ $eq: ["$call_analysis.ESCALATION_FLAG", false] }, 1, 0] } }
+              }
+            }
+          ],
+          unansweredOutboundVoicemail: [
+            { $match: { "metadata.fromPhone": { $exists: true }, "call_status": "voicemail" } }, 
+            { $count: "count" }
+          ],
+          unansweredOutboundBusy: [
+            { $match: { "metadata.fromPhone": { $exists: true }, "call_status": "busy" } }, 
+            { $count: "count" }
           ]
         }
       },
@@ -292,11 +419,11 @@ export async function POST(req: NextRequest) {
       OutBoundCall.aggregate(realtimeCallStatusPipeline),
       OutBoundCall.aggregate(peakTimesPipeline)
     ]);
-    const facetResult = facetResultArr[0] || {};
+    const facetResult: FacetResult = facetResultArr[0] || {};
 
-    // Debug: Log aggregation results
-    console.log('Time series aggregation result:', timeSeriesResult);
-    console.log('Facet aggregation result:', facetResult);
+    // // Debug: Log aggregation results
+    // console.log('Time series aggregation result:', timeSeriesResult);
+    // console.log('Facet aggregation result:', facetResult);
 
     // Format for frontend (cards)
     const toNumber = (v: any) =>
@@ -388,15 +515,67 @@ export async function POST(req: NextRequest) {
     }));
 
     return NextResponse.json({
-      totalCallMinutes,
+      totalCallMinutes: totalCallMinutes.map(r => ({
+        date: r.date,
+        value: Number(r.value.toFixed(2))
+      })),
       numberOfCalls,
-      totalSpent,
-      costBreakdownByDay,
-      agentTotalDurationByDay,
+      totalSpent: totalSpent.map(r => ({
+        date: r.date,
+        value: Number(r.value.toFixed(2))
+      })),
+      costBreakdownByDay: costBreakdownByDay.map(r => ({
+        date: r.date,
+        llm: Number(r.llm.toFixed(2)),
+        stt: Number(r.stt.toFixed(2)),
+        tts: Number(r.tts.toFixed(2))
+      })),
+      agentTotalDurationByDay: agentTotalDurationByDay.map(r => ({
+        date: r.date,
+        agent: r.agent,
+        totalDuration: Number(r.totalDuration.toFixed(2))
+      })),
       realtimeCallStatus,
-      peakTimes,
-      avgCostPerCall,
-      ...facetResult
+      peakTimes: peakTimes.map(r => ({
+        hour: r.hour,
+        totalCalls: r.totalCalls,
+        connectedCalls: r.connectedCalls,
+        avgCallsPerDay: Number(r.avgCallsPerDay.toFixed(2))
+      })),
+      avgCostPerCall: avgCostPerCall.map(r => ({
+        date: r.date,
+        value: Number(r.value.toFixed(2))
+      })),
+      ...facetResult,
+      // Process duration metrics with 2 decimal places
+      outboundLessThan10sec: facetResult.outboundDuration?.find(d => d._id === 'lessThan10sec')?.count || 0,
+      outbound10secTo1min: facetResult.outboundDuration?.find(d => d._id === '10secTo1min')?.count || 0,
+      outboundMoreThan1min: facetResult.outboundDuration?.find(d => d._id === 'moreThan1min')?.count || 0,
+      
+      inboundLessThan10sec: facetResult.inboundDuration?.find(d => d._id === 'lessThan10sec')?.count || 0,
+      inbound10secTo1min: facetResult.inboundDuration?.find(d => d._id === '10secTo1min')?.count || 0,
+      inboundMoreThan1min: facetResult.inboundDuration?.find(d => d._id === 'moreThan1min')?.count || 0,
+      
+      // Process disposition metrics
+      outboundResolved: facetResult.outboundDisposition?.find(d => d._id === 'resolved')?.count || 0,
+      outboundEscalated: facetResult.outboundDisposition?.find(d => d._id === 'escalated')?.count || 0,
+      outboundCallBackRequired: facetResult.outboundDisposition?.find(d => d._id === 'callback_required')?.count || 0,
+      
+      inboundResolved: facetResult.inboundDisposition?.find(d => d._id === 'resolved')?.count || 0,
+      inboundEscalated: facetResult.inboundDisposition?.find(d => d._id === 'escalated')?.count || 0,
+      inboundCallBackRequired: facetResult.inboundDisposition?.find(d => d._id === 'callback_required')?.count || 0,
+      
+      // Process AI metrics with 2 decimal places
+      outboundNLPErrorRate: Number((facetResult.outboundAIMetrics?.[0]?.avgNlpErrorRate ?? 0).toFixed(2)),
+      outboundIntentSuccessRate: Number((facetResult.outboundAIMetrics?.[0]?.avgIntentSuccessRate ?? 0).toFixed(2)),
+      outboundResolutionSuccess: Number((facetResult.outboundAIMetrics?.[0]?.avgResolutionSuccess ?? 0).toFixed(2)),
+      
+      inboundNLPErrorRate: Number((facetResult.inboundAIMetrics?.[0]?.avgNlpErrorRate ?? 0).toFixed(2)),
+      inboundIntentSuccessRate: Number((facetResult.inboundAIMetrics?.[0]?.avgIntentSuccessRate ?? 0).toFixed(2)),
+      inboundResolutionSuccess: Number((facetResult.inboundAIMetrics?.[0]?.avgResolutionSuccess ?? 0).toFixed(2)),
+
+      unansweredOutboundVoicemail: facetResult.unansweredOutboundVoicemail?.[0]?.count || 0,
+      unansweredOutboundBusy: facetResult.unansweredOutboundBusy?.[0]?.count || 0
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

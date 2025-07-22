@@ -126,7 +126,7 @@ const PeakTimesChart: React.FC<PeakTimesChartProps> = ({ data }) => {
             />
             <Bar
               dataKey="totalCalls"
-              fill="#54e884"
+              fill="#59E7B0"
               radius={[2, 2, 0, 0]}
               barSize={20}
             />

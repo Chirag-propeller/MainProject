@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useState, createContext, useContext } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import AgentsList from "@/components/agents/AgentsList";
 import { Agent } from "@/components/agents/types";
 import { fetchAgents } from "@/components/agents/api";
 import { UserDataProvider } from "@/components/profile/UserDataContext";
+import { SessionProvider } from "next-auth/react";
+import AgentListSkeleton from "@/components/agents/AgentListSkeleton";
 
 // Create context for agents state
 interface AgentsContextType {
@@ -37,6 +39,7 @@ export default function AgentsLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Extract the selected agent ID from the URL
+
   const selectedId = pathname?.split("/").pop();
 
   // Function to update a specific agent in the list
@@ -91,9 +94,7 @@ export default function AgentsLayout({
             className={`transition-all duration-200 ${sidebarCollapsed ? "w-40" : "w-1/4"} border-r border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800`}
           >
             {loading ? (
-              <div className="flex justify-center items-center h-32">
-                <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
-              </div>
+              <AgentListSkeleton />
             ) : (
               <AgentsList
                 agents={agents}

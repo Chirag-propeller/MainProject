@@ -82,7 +82,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
             <Line
               type="monotone"
               dataKey="value"
-              stroke="#54e884"
+              stroke="#59E7B0"
               strokeWidth={1.5}
               dot={{ fill: "#54e884", strokeWidth: 0, r: 2 }}
               activeDot={{

@@ -12,9 +12,11 @@ const SecondLevelLeg = ({ data }: any) => {
   return (
     <>
       <div
-        className={`${data.borderColor} relative h-[250px] w-42 border-gray-400 border-l-8  border rounded shadow bg-white dark:bg-indigo-950 text-xs font-medium flex flex-col justify-center items-center `}
+        className={`${data.borderColor} relative h-[250px] w-55 border-gray-400 border-l-8  border rounded shadow bg-white dark:bg-indigo-950 text-xs font-medium flex flex-col justify-center items-center `}
       >
-        <div className={`text-center text-xl ${data.textColor}`}>
+        <div
+          className={`text-center dark:text-indigo-300 text-xl ${data.textColor}`}
+        >
           {data.value}{" "}
           <span className="text-sm text-gray-400">({percentage || 0}%)</span>
         </div>

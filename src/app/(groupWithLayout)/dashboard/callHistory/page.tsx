@@ -120,7 +120,7 @@ const page = () => {
 
   return (
     <div className="pl-4 pb-10">
-      <div className="sticky top-0 z-100 bg-white">
+      <div className="sticky top-0 z-100 bg-white dark:bg-gray-900">
         <div className="flex gap-1.5 py-4 ">
           <History className="w-3.5 h-3.5  self-center text-indigo-600" />
           <h1 className="text-lg  self-center text-indigo-600">Call History</h1>

@@ -5,6 +5,7 @@ import { fetchAgentById } from "@/components/agents/api";
 import { useParams } from "next/navigation";
 import AgentDetailsPanel from "@/components/agents/right/AgentDetailsPanel";
 import { useAgentsContext } from "../layout";
+import AgentPageSkeletonLoader from "@/components/agents/AgentPageSkeletonLoader";
 
 // This component displays the details of a single agent
 export default function AgentDetailsPage() {
@@ -43,11 +44,7 @@ export default function AgentDetailsPage() {
 
   // Show loading state
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-32 bg-white dark:bg-gray-900">
-        <div className="w-6 h-6 border-2 border-t-transparent border-indigo-600 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <AgentPageSkeletonLoader />;
   }
 
   // Show error if agent not found
