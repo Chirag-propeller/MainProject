@@ -6,6 +6,7 @@ import MainCanvas from './Canvas/MainCanvas'
 import ConversationNodeSidebar from './Canvas/CustomComponentSidebar/ConversationNodeSidebar'
 import ApiRequestNodeSidebar from './Canvas/CustomComponentSidebar/ApiRequestNodeSidebar'
 import EndCallNodeSidebar from './Canvas/CustomComponentSidebar/EndCallNodeSidebar'
+import RagSidebar from './Canvas/CustomComponentSidebar/RagSidebar'
 import EdgeSidebar from './Canvas/CustomComponentSidebar/EdgeSidebar'
 import WorkflowTopBar from './WorkflowTopBar'
 import { useWorkflowStore } from '@/store/workflowStore'
@@ -152,53 +153,19 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
       <div className='relative w-full flex-1 flex overflow-hidden'>
         <SideBar />
         <MainCanvas />
-      
-      {/* Right panel container */}
-      <div className="absolute top-4 right-4 flex flex-col gap-4 z-20 max-h-[calc(100vh-8rem)] overflow-hidden">
-        {/* Sidebars section */}
-        {(selectedNode || selectedEdge) && (
-          <div className="flex flex-col gap-2 max-h-full overflow-hidden">
-            {selectedNode && selectedNode.data.type === 'Conversation' && <ConversationNodeSidebar />}
-            {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
-            {selectedNode && selectedNode.data.type === 'endcall' && <EndCallNodeSidebar />}
-            {selectedEdge && <EdgeSidebar />}
-          </div>
-        ) 
-        // : (
-        //     /* Control buttons section - only shown when no sidebar is visible */
-        //     <div className="flex flex-col gap-2">
-        //       <button 
-        //         onClick={handleManualSave}
-        //         disabled={isLoading}
-        //         className='bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
-        //       >
-        //         {isLoading ? 'Saving...' : 'Save Workflow'}
-        //       </button>
-              
-        //       <button 
-        //         onClick={handleManualLoad}
-        //         disabled={isLoading}
-        //         className='bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
-        //       >
-        //         {isLoading ? 'Loading...' : 'Load Workflow'}
-        //       </button>
-              
-        //       <button 
-        //         onClick={printSystemData}
-        //         className='bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded'
-        //       >
-        //         Print System Data
-        //       </button>
-              
-        //       <button 
-        //         onClick={clearNodes}
-        //         className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded'
-        //       >
-        //         Clear All
-        //       </button>
-        //     </div>
-        //   )
-          }
+        
+        {/* Right panel container */}
+        <div className="absolute top-4 right-4 flex flex-col gap-4 z-20 max-h-[calc(100vh-4rem)] overflow-hidden border border-gray-200 rounded-lg shadow-lg">
+          {/* Sidebars section */}
+          {(selectedNode || selectedEdge) && (
+            <div className="flex flex-col gap-2 max-h-full overflow-hidden">
+              {selectedNode && selectedNode.data.type === 'Conversation' && <ConversationNodeSidebar />}
+              {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
+              {selectedNode && selectedNode.data.type === 'endcall' && <EndCallNodeSidebar />}
+              {selectedNode && selectedNode.data.type === 'RAG' && <RagSidebar />}
+              {selectedEdge && <EdgeSidebar />}
+            </div>
+          )}
         </div>
         
         {/* Status info */}

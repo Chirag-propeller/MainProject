@@ -19,7 +19,7 @@ const EndCallNodeSidebar: React.FC = () => {
   const globalData = selectedNode.data.global || {}
 
   return (
-    <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">End Call Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">

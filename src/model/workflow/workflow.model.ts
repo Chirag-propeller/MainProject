@@ -7,44 +7,45 @@ interface IWorkflowNode {
     x: number;
     y: number;
   };
-  data: {
-    name: string;
-    prompt?: string;
-    endpoint?: string;
-    method?: string;
-    type: string;
-    llm?: {
-      provider: string;
-      model: string;
+      data: {
+      name: string;
+      prompt?: string;
+      endpoint?: string;
+      method?: string;
+      type: string;
+      variables?: Record<string, string>;
+      llm?: {
+        provider: string;
+        model: string;
+      };
+      tts?: {
+        provider: string;
+        model: string;
+        language: string;
+        gender: string;
+        voice: string;
+      };
+      stt?: {
+        provider: string;
+        model: string;
+        language: string;
+      };
+      global?: {
+        isGlobal?: boolean;
+        pathwayCondition?: string;
+        pathwayDescription?: string;
+        autoGoBackToPrevious?: boolean;
+        createPathwayLabelToPrevious?: boolean;
+        previousNodePathwayLabel?: string;
+        previousNodePathwayDescription?: string;
+        redirectToNode?: boolean;
+        redirectTargetNodeId?: string;
+        [key: string]: any; // Allow additional global properties
+      };
+      knowledgeBaseAttached?: boolean;
+      knowledgeBaseUrl?: string;
+      whenToCallRag?: string;
     };
-    tts?: {
-      provider: string;
-      model: string;
-      language: string;
-      gender: string;
-      voice: string;
-    };
-    stt?: {
-      provider: string;
-      model: string;
-      language: string;
-    };
-    global?: {
-      isGlobal?: boolean;
-      pathwayCondition?: string;
-      pathwayDescription?: string;
-      autoGoBackToPrevious?: boolean;
-      createPathwayLabelToPrevious?: boolean;
-      previousNodePathwayLabel?: string;
-      previousNodePathwayDescription?: string;
-      redirectToNode?: boolean;
-      redirectTargetNodeId?: string;
-      [key: string]: any; // Allow additional global properties
-    };
-    knowledgeBaseAttached?: boolean;
-    knowledgeBaseUrl?: string;
-    whenToCallRag?: string;
-  };
   style?: {
     width: number;
     height: number;
@@ -135,16 +136,20 @@ const WorkflowSchema = new Schema<IWorkflow>({
       knowledgeBaseAttached: { type: Boolean, default: false },
       knowledgeBaseUrl: { type: String, default: '' },
       whenToCallRag: { type: String, default: '' },
+      variables: { 
+        type: Object, 
+        default: {} 
+      },
       llm: {
         provider: { type: String, default: 'OpenAI' },
         model: { type: String, default: 'gpt-4o-mini' }
       },
       tts: {
         provider: { type: String, default: 'Google' },
-        model: { type: String, default: 'generative' },
+        model: { type: String, default: 'Neural2' },
         language: { type: String, default: 'en-GB' },
         gender: { type: String, default: 'Female' },
-        voice: { type: String, default: 'Amy' }
+        voice: { type: String, default: 'en-GB-Neural2-A' }
       },
       stt: {
         provider: { type: String, default: 'Deepgram' },
@@ -220,10 +225,10 @@ const WorkflowSchema = new Schema<IWorkflow>({
       },
       tts: {
         provider: 'Google',
-        model: 'generative',
+        model: 'Neural2',
         language: 'en-GB',
         gender: 'Female',
-        voice: 'Amy'
+        voice: 'en-GB-Neural2-A'
       },
       stt: {
         provider: 'Deepgram',

@@ -14,7 +14,6 @@ import ApiRequestNode from './CustomNodes/ApiRequestNode'
 import RagNode from './CustomNodes/RagNode';
 import LabeledEdge from './CustomEdges/LabeledEdge'
 import { useWorkflowStore } from '@/store/workflowStore'
-import CustomComponentSidebar from './CustomComponentSidebar';
 
 const MainCanvas: React.FC = () => {
   const {
@@ -83,10 +82,6 @@ const MainCanvas: React.FC = () => {
             <Controls />
             <Background />
           </ReactFlow>
-          {/* Sidebar for node/edge properties */}
-          <div className="absolute top-0 right-0 z-20">
-            <CustomComponentSidebar />
-          </div>
         </div>
       </ReactFlowProvider>
     </div>

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useWorkflowStore } from '@/store/workflowStore';
 import { Button } from '@/components/ui/button';
 import { Upload, Trash2, Download } from 'lucide-react';
+import VariableExtractSection from './VariableExtractSection';
 
 const RagSidebar: React.FC = () => {
   const { selectedNode, updateNode, updateNodeGlobal, currentWorkflowId } = useWorkflowStore();
@@ -118,7 +119,7 @@ const RagSidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-80 h-[calc(100vh-2rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
+    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
       <div className="mb-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">RAG Node Properties</h2>
         <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
@@ -193,6 +194,13 @@ const RagSidebar: React.FC = () => {
             onChange={e => handleFieldChange('whenToCallRag', e.target.value)}
           />
         </div>
+
+        {/* Variable Extraction Section */}
+        <VariableExtractSection
+          variables={selectedNode.data.variables || {}}
+          onVariablesChange={(variables) => handleFieldChange('variables', variables)}
+        />
+
         {/* Global options */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">Make this node global</label>
