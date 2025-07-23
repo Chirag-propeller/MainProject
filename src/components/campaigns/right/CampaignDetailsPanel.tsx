@@ -55,9 +55,10 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   ];
 
   const statusStyles: Record<string, string> = {
-    ongoing: "bg-blue-100 text-blue-800",
-    completed: "bg-green-100 text-green-800",
-    draft: "bg-gray-100 text-gray-800",
+    ongoing: "bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100",
+    completed:
+      "bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100",
+    draft: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100",
   };
 
   const handleUpdate = async () => {
@@ -244,11 +245,11 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   }, [currentCampaign, initialCampaign, name]);
 
   return (
-    <div className="flex flex-col bg-gray-50 rounded-lg border border-t-0 border-gray-200 h-full">
+    <div className="flex flex-col bg-gray-50 rounded-[6px] border border-t-0 border-gray-200 h-full dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700">
       {/* Header with campaign name, ID, status and buttons */}
-      <div className="flex justify-between items-start p-4 pb-1 bg-gray-50">
+      <div className="flex justify-between items-start p-4 pb-1 bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col">
-          <div className="flex items-center gap-2 bg-gray-50">
+          <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-900">
             {isNameUpdating && isEditable ? (
               <input
                 type="text"
@@ -265,7 +266,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
                 }}
               />
             ) : (
-              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 text-nowrap">
+              <h2 className="text-2xl font-semibold truncate overflow-hidden text-ellipsis max-w-80 text-gray-900 text-nowrap dark:text-gray-100">
                 {name}
               </h2>
             )}
@@ -278,9 +279,11 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <p className="text-xs text-gray-500">ID: {currentCampaign._id}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              ID: {currentCampaign._id}
+            </p>
             <span
-              className={`px-2 py-1 rounded text-xs font-medium ${statusStyles[currentCampaign.status] || "bg-gray-100 text-gray-800"}`}
+              className={`px-2 py-1 rounded text-xs font-medium ${statusStyles[currentCampaign.status] || "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"}`}
             >
               {currentCampaign.status.charAt(0).toUpperCase() +
                 currentCampaign.status.slice(1)}
@@ -297,7 +300,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
                 size="md"
                 onClick={handleUpdate}
                 disabled={isUpdating || (!hasChanges && !isNameUpdating)}
-                className={`px-5 py-1 text-md rounded-[4px] shadow-xs shadow-indigo-100 border-1 ${
+                className={`px-5 py-1 text-md rounded-[4px] border-1 dark:bg-indigo-700 dark:hover:bg-indigo-800 dark:text-white dark:border-indigo-700 ${
                   hasChanges || isNameUpdating
                     ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                     : "bg-indigo-600/50 text-white cursor-not-allowed"
@@ -310,8 +313,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
                 size="md"
                 onClick={handleSend}
                 disabled={isSending}
-                // className="px-5 py-1 text-md rounded-[4px] shadow-xs text-indigo-600 outline-2  outline-indigo-600"
-                className="px-4.5 py-0.5 text-md rounded-[4px] shadow-xs text-indigo-600 border-2  border-indigo-600"
+                className="px-4.5 py-0.5 text-md rounded-[4px] shadow-xs text-indigo-600 border-2 border-indigo-600 dark:border-indigo-400 dark:text-indigo-200 dark:bg-gray-800"
               >
                 <Send className="w-4 h-4 mr-1" />
                 {isSending ? "Sending..." : "Send"}
@@ -321,7 +323,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
             <Button
               variant="secondary"
               size="md"
-              className="px-4.5 py-0.5 text-md rounded-[4px] shadow-xs text-indigo-300 border-2 cursor-not-allowed border-indigo-200 hover:bg-gray-100 hover:text-indigo-300"
+              className="px-4.5 py-0.5 text-md rounded-[4px] shadow-xs text-indigo-300 border-2 cursor-not-allowed border-indigo-200 hover:bg-gray-100 hover:text-indigo-300 dark:bg-gray-800 dark:text-indigo-200 dark:border-indigo-400"
             >
               <Send className="w-4 h-4 mr-1" />
               Send
@@ -331,12 +333,12 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
       </div>
 
       {/* Tabs navigation */}
-      <div className="flex text-sm space-x-4 px-4 py-2 border-b border-gray-300">
+      <div className="flex text-sm space-x-4 px-4 py-2 border-b border-gray-300 dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`pb-0.5 cursor-pointer ${activeTab === tab.id ? "text-indigo-600 border-b-2 border-indigo-600" : "text-gray-600"}`}
+            className={`pb-0.5 cursor-pointer ${activeTab === tab.id ? "text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400 dark:border-indigo-400" : "text-gray-600 dark:text-gray-400"}`}
           >
             {tab.label}
           </button>

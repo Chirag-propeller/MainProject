@@ -260,7 +260,7 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className={`w-full p-3 border border-gray-300 rounded-[6px] bg-white text-left flex items-center justify-between text-sm ${
+        className={`w-full p-3 border border-gray-300 rounded-[6px] bg-white dark:bg-gray-900 text-left flex items-center justify-between text-sm ${
           disabled ? "bg-gray-100 cursor-not-allowed" : "hover:border-gray-400"
         }`}
       >
@@ -278,18 +278,18 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-[6px] shadow-lg max-h-60 overflow-hidden custom-scrollbar">
+        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-[6px] shadow-lg max-h-60 overflow-hidden custom-scrollbar">
           {/* Search input */}
-          <div className="p-2 border-b border-gray-200">
+          <div className="p-2 border-b border-gray-200 dark:border-gray-700">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 " />
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search by city, country, or offset..."
-                className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                className="w-full pl-9 pr-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-sm dark:bg-gray-900 dark:text-gray-500"
               />
             </div>
           </div>
@@ -302,7 +302,7 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
                   key={timezone.value}
                   type="button"
                   onClick={() => handleSelect(timezone)}
-                  className={`w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors ${
+                  className={`w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
                     value === timezone.value
                       ? "bg-indigo-50 text-indigo-700"
                       : "text-gray-900"
@@ -310,14 +310,14 @@ const TimezoneDropdown: React.FC<TimezoneDropdownProps> = ({
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-sm">
+                      <div className="font-medium text-sm dark:text-gray-500">
                         {timezone.label}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 dark:text-gray-500">
                         {timezone.city}, {timezone.country}
                       </div>
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-gray-400 dark:text-gray-500">
                       {timezone.offset}
                     </div>
                   </div>

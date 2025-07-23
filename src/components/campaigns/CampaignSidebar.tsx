@@ -112,43 +112,43 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white border-r border-gray-200 w-1/4">
+    <div className="flex flex-col h-screen bg-white border-r border-gray-200 w-1/4 dark:bg-gray-900 dark:border-gray-700">
       {/* Header */}
-      <div className="sticky top-0 z-100 bg-white p-4 border-b border-gray-100">
+      <div className="sticky top-0 z-100 bg-white p-4 border-b border-gray-100 dark:bg-gray-900 dark:border-gray-700">
         <CampaignHeader title="Campaigns" onCreate={handleCreateCampaign} />
       </div>
 
       {/* Tabs and Campaign List */}
-      <div className="flex-1 overflow-y-auto flex flex-col">
+      <div className="flex-1 overflow-y-auto flex flex-col dark:bg-gray-900">
         <Tabs
           defaultValue="all"
           value={activeTab}
           onValueChange={setActiveTab}
           className="h-full flex flex-col"
         >
-          <div className="sticky top-0 z-100 bg-white p-2 pb-2">
-            <TabsList className="bg-white border border-gray-200 rounded-[6px] p-0.5 shadow-sm w-full flex gap-1 md:gap-2 px-0 md:px-1">
+          <div className="sticky top-0 z-100 bg-white p-2 pb-2 dark:bg-gray-900">
+            <TabsList className="bg-white border border-gray-200 rounded-[6px] p-0.5 shadow-sm w-full flex gap-1 md:gap-2 px-0 md:px-1 dark:bg-gray-900 dark:border-gray-700">
               <TabsTrigger
                 value="all"
-                className="data-[state=active]:bg-slate-100 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0 truncate"
+                className="data-[state=active]:bg-slate-100 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0 truncate dark:data-[state=active]:bg-gray-800 dark:text-gray-200"
               >
                 All
               </TabsTrigger>
               <TabsTrigger
                 value="outgoing"
-                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0"
+                className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0 dark:data-[state=active]:bg-blue-900 dark:data-[state=active]:text-blue-300 dark:text-gray-200"
               >
                 Outgoing
               </TabsTrigger>
               <TabsTrigger
                 value="draft"
-                className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0"
+                className="data-[state=active]:bg-gray-50 data-[state=active]:text-gray-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0 dark:data-[state=active]:bg-gray-800 dark:data-[state=active]:text-gray-300 dark:text-gray-200"
               >
                 Draft
               </TabsTrigger>
               <TabsTrigger
                 value="completed"
-                className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0"
+                className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 data-[state=active]:shadow-none rounded-[4px] text-xs flex-1 min-w-0 dark:data-[state=active]:bg-green-900 dark:data-[state=active]:text-green-300 dark:text-gray-200"
               >
                 Completed
               </TabsTrigger>

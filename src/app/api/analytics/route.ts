@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       }
     }
     if (data.agent && data.agent.length > 0) {
-      matchConditions["metadata.agentid"] = { $in: data.agent };
+      matchConditions["agent_config.agentId"] = { $in: data.agent };
     }
     if (data.status && data.status.length > 0) {
       matchConditions["call_analysis.STATUS"] = { $in: data.status };

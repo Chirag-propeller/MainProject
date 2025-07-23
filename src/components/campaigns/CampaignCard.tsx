@@ -53,9 +53,9 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
     // ongoing: 'bg-yellow-200 text-blue-800',
     // completed: 'bg-green-200 text-green-800',
     // draft: 'bg-gray-200 text-gray-800'
-    ongoing: "bg-yellow-600 text-white",
-    completed: "bg-green-600 text-white",
-    draft: "bg-gray-600 text-white",
+    ongoing: "bg-yellow-600 text-white dark:bg-yellow-500/50 dark:text-white",
+    completed: "bg-green-600 text-white dark:bg-green-500/80 dark:text-white",
+    draft: "bg-gray-600 text-white dark:bg-gray-500 dark:text-white",
   };
   const handleClick = () => {
     onSelect(campaign);
@@ -64,14 +64,14 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
 
   return (
     <Card
-      className={`mb-2 rounded-[6px] border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer relative max-w-lvw mx-auto ${isSelected ? "border-indigo-600 bg-indigo-50" : ""}`}
+      className={`mb-2 rounded-[6px] border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer relative max-w-lvw mx-auto ${isSelected ? "border-indigo-600 bg-indigo-50 dark:border-indigo-400 dark:bg-gray-900" : "dark:bg-gray-900 dark:border-gray-700"} dark:text-gray-200`}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Status badge: top right */}
       <span
-        className={`absolute top-2 right-2 z-10 inline-block px-2 py-0.5 text-[10px] rounded-[4px] opacity-75 font-semibold whitespace-nowrap ${statusStyles[campaign.status]}`}
+        className={`absolute top-2 right-2 z-10 inline-block px-2 py-0.5 text-[10px] rounded-[4px] opacity-75 font-semibold whitespace-nowrap ${statusStyles[campaign.status]} dark:bg-gray-700 dark:text-gray-200`}
       >
         {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
       </span>

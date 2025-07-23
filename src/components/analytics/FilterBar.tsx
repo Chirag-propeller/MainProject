@@ -6,6 +6,8 @@ import DateFilter, {
 import Filter, { FilterState } from "@/components/callHistory/topBar/Filter";
 import { Clock, Calendar } from "lucide-react";
 import { sub } from "date-fns";
+import { useRef } from "react";
+import AgentCampaignFilter from "./AgentCampaignFilter";
 
 // Sample filter options
 const statusOptions = [
@@ -25,14 +27,12 @@ interface FilterBarProps {
 
 const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
   const [agentOptions, setAgentOptions] = useState([]);
+  const [campaignOptions, setCampaignOptions] = useState([]);
+  const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
+  const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
   const [dateRange, setDateRange] = useState<DateRangeFilter>({
     startDate: null,
     endDate: null,
-  });
-  const [filters, setFilters] = useState<FilterState>({
-    agent: [],
-    status: [],
-    sentiment: [],
   });
 
   // Fetch agents
@@ -41,7 +41,13 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
       try {
         const response = await fetch("/api/agents/get");
         const agents = await response.json();
-        setAgentOptions(agents);
+        // Map to { label, value }
+        setAgentOptions(
+          agents.map((agent: any) => ({
+            label: agent.name || agent.agentName,
+            value: agent.agentId,
+          }))
+        );
       } catch (error) {
         console.error("Error fetching agents:", error);
       }
@@ -49,42 +55,61 @@ const Filters: React.FC<FilterBarProps> = ({ onChange }) => {
     fetchAgents();
   }, []);
 
-  // Update parent component when filters change - with memoization to prevent infinite loops
-  const updateParentFilters = useCallback(() => {
+  // Fetch campaigns
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        const response = await fetch("/api/createCampaign/get");
+        const campaigns = await response.json();
+        setCampaignOptions(
+          campaigns.map((campaign: any) => ({
+            label: campaign.name || campaign.campaignName,
+            value: campaign.id || campaign._id,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching campaigns:", error);
+      }
+    };
+    fetchCampaigns();
+  }, []);
+
+  // Call onChange when dateRange or filters change
+  useEffect(() => {
     let endDateFormatted = null;
     if (dateRange.endDate) {
-      // Create a new Date instance to avoid mutating the original
       const endDate = new Date(dateRange.endDate.getTime());
       endDate.setHours(23, 59, 59, 999);
       endDateFormatted = endDate.toISOString();
     }
-
     const updatedFilters = {
-      ...filters,
+      agent: selectedAgents,
+      campaign: selectedCampaigns,
       startDate: dateRange.startDate?.toISOString() || null,
       endDate: endDateFormatted,
     };
     onChange(updatedFilters);
-  }, [filters, dateRange, onChange]);
+  }, [selectedAgents, selectedCampaigns, dateRange, onChange]);
 
-  useEffect(() => {
-    updateParentFilters();
-  }, [updateParentFilters]);
+  const handleApply = (agents: string[], campaigns: string[]) => {
+    setSelectedAgents(agents);
+    setSelectedCampaigns(campaigns);
+  };
 
   return (
-    <div className="flex justify-end w-full">
+    <div className="flex items-center gap-3 w-full justify-end">
       <DateFilter
         dateRange={dateRange}
         setDateRange={setDateRange}
         align="right"
       />
-      {/* <Filter 
-        filters={filters}
-        setFilters={setFilters}
+      <AgentCampaignFilter
         agentOptions={agentOptions}
-        statusOptions={statusOptions}
-        sentimentOptions={sentimentOptions}
-      /> */}
+        campaignOptions={campaignOptions}
+        selectedAgents={selectedAgents}
+        selectedCampaigns={selectedCampaigns}
+        onApply={handleApply}
+      />
     </div>
   );
 };

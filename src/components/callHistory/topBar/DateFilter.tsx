@@ -254,7 +254,7 @@ const DateFilter: React.FC<DateFilterProps> = ({
     <div className="relative" ref={filterRef}>
       <button
         onClick={toggleFilter}
-        className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors ${align === "right" ? "border-gray-300" : ""} ${
+        className={`flex items-center gap-2 px-3 py-2 rounded-[4px] text-sm font-medium transition-colors ${align === "right" ? "border-gray-300" : "shadow-sm"} ${
           isOpen || dateRange.startDate !== null
             ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-200"
             : "bg-white border border-gray-200 text-gray-700 hover:border-gray-300 shadow-2xs dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100 dark:hover:border-gray-500"
