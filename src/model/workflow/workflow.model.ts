@@ -91,6 +91,7 @@ interface IWorkflow extends Document {
       language: string;
     };
   };
+  variables: Record<string, string>; // <-- Add this line
   createdAt: Date;
   updatedAt: Date;
 }
@@ -236,6 +237,10 @@ const WorkflowSchema = new Schema<IWorkflow>({
         language: 'en-US'
       }
     }
+  },
+  variables: {
+    type: Object,
+    default: {}
   }
 }, {
   timestamps: true

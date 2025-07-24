@@ -614,8 +614,16 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     if (!currentWorkflowId) {
       throw new Error('No workflow ID available for saving')
     }
-    
-    // set({ isLoading: true })
+
+    // Aggregate variables from all nodes
+    const aggregatedVariables: Record<string, string> = {};
+    nodes.forEach(node => {
+      if (node.data && node.data.variables) {
+        Object.entries(node.data.variables).forEach(([key, value]) => {
+          aggregatedVariables[key] = value;
+        });
+      }
+    });
     
     try {
       const result = await saveWorkflow({
@@ -626,7 +634,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         edgeCounter,
         globalPrompt,
         globalNodes,
-        config
+        config,
+        variables: aggregatedVariables // <-- Add this line
       })
       
       if (result.success) {

@@ -37,6 +37,7 @@ interface SaveWorkflowParams {
   globalPrompt: string;
   globalNodes: string[];
   config?: WorkflowData['config'];
+  variables?: Record<string, string>; // <-- Add this line
 }
 
 interface CreateWorkflowParams {
