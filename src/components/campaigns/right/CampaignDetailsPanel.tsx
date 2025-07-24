@@ -19,6 +19,17 @@ interface CampaignDetailsPanelProps {
   agents: Agent[];
 }
 
+interface Workflow {
+  _id: string;
+  name: string;
+  globalPrompt: string;
+  nodes: any[];
+  edges: any[];
+  globalNodes: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   campaign,
   // setCampaign,
@@ -36,6 +47,11 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   );
   const { campaigns } = useCampaignStore();
   const [currentCampaign, setCurrentCampaign] = useState<Campaign>(campaign);
+
+  // Workflow-related state variables
+  const [workflowList, setWorkflowList] = useState<Workflow[]>([]);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(null);
+  const [agentName, setAgentName] = useState<string>("outbound-caller");
 
   useEffect(() => {
     const fromStore = campaigns.find((c) => c._id === campaign._id);
@@ -59,6 +75,62 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
     completed:
       "bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100",
     draft: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100",
+  };
+
+  // Fetch workflows from API
+  const fetchWorkflows = async () => {
+    try {
+      const res = await fetch('/api/workflow/get-all');
+      const data = await res.json();
+      if (data.success) {
+        setWorkflowList(data.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch workflows:', err);
+    }
+  };
+
+  // Initialize workflows on component mount
+  useEffect(() => {
+    fetchWorkflows();
+  }, []);
+
+  // Initialize selectedWorkflow and agentName based on current campaign
+  useEffect(() => {
+    if (workflowList.length > 0 && currentCampaign.agentId) {
+      // Check if the current agentId is actually a workflow ID
+      const workflow = workflowList.find((flow) => flow._id === currentCampaign.agentId);
+      if (workflow) {
+        setSelectedWorkflow(workflow);
+        setAgentName("outbound-workflow");
+      } else {
+        // Check if it's an agent ID
+        const agent = agents.find((a) => a.agentId === currentCampaign.agentId);
+        if (agent) {
+          setSelectedWorkflow(null);
+          setAgentName("outbound-caller");
+        }
+      }
+    }
+  }, [workflowList, currentCampaign.agentId, agents]);
+
+  // Handle agent selection
+  const handleAgentChange = (agentId: string) => {
+    setSelectedWorkflow(null);
+    setAgentName("outbound-caller");
+    // Update campaign with agent ID
+    const updatedCampaign = { ...currentCampaign, agentId };
+    setCurrentCampaign(updatedCampaign);
+  };
+
+  // Handle workflow selection
+  const handleWorkflowChange = (workflowId: string) => {
+    const workflow = workflowList.find((flow) => flow._id === workflowId);
+    setSelectedWorkflow(workflow || null);
+    setAgentName("outbound-workflow");
+    // Update campaign with workflow ID as agentId
+    const updatedCampaign = { ...currentCampaign, agentId: workflowId };
+    setCurrentCampaign(updatedCampaign);
   };
 
   const handleUpdate = async () => {
@@ -97,9 +169,17 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   const validateCampaignData = () => {
     const errors = [];
 
-    // Check if agent is selected
+    // Check if agent or workflow is selected
     if (!currentCampaign.agentId || currentCampaign.agentId.trim() === "") {
-      errors.push("Please select an agent");
+      errors.push("Please select an agent or workflow");
+    } else {
+      // Check if the selected agentId is valid (either an agent or workflow)
+      const isAgent = agents.find((a) => a.agentId === currentCampaign.agentId);
+      const isWorkflow = workflowList.find((w) => w._id === currentCampaign.agentId);
+      
+      if (!isAgent && !isWorkflow) {
+        errors.push("The selected agent/workflow is no longer available. Please select a valid agent or workflow.");
+      }
     }
 
     // Check if from number is selected
@@ -131,6 +211,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
         campaign_id: campId,
         max_concurrent_calls: currentCampaign.concurrentCalls,
         numberoffollowup: currentCampaign.noOfFollowUps,
+        agentName: agentName, // Use the agentName state variable
       };
       console.log("payload", payload);
 
@@ -353,6 +434,10 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
             setCampaign={handleCampaignChange}
             agents={agents}
             isEditable={isEditable}
+            workflowList={workflowList}
+            selectedWorkflow={selectedWorkflow}
+            onAgentChange={handleAgentChange}
+            onWorkflowChange={handleWorkflowChange}
           />
         )}
 

@@ -21,11 +21,26 @@ import { LuGoal } from "react-icons/lu";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import SelectionDropdown from "../../agents/SelectionDropdown";
 
+interface Workflow {
+  _id: string;
+  name: string;
+  globalPrompt: string;
+  nodes: any[];
+  edges: any[];
+  globalNodes: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface CampaignGeneralTabProps {
   campaign: Campaign;
   setCampaign: (campaign: Campaign) => void;
   agents: Agent[];
   isEditable: boolean;
+  workflowList?: Workflow[];
+  selectedWorkflow?: Workflow | null;
+  onAgentChange?: (agentId: string) => void;
+  onWorkflowChange?: (workflowId: string) => void;
 }
 
 interface CollapsibleSectionProps {
@@ -110,6 +125,10 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
   setCampaign,
   agents,
   isEditable,
+  workflowList = [],
+  selectedWorkflow = null,
+  onAgentChange,
+  onWorkflowChange,
 }) => {
   const [openSections, setOpenSections] = useState({
     details: false,
@@ -235,9 +254,14 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
     handleInputChange("slotTime", slotTime);
   };
 
-  const agentName =
-    agents.find((a) => a.agentId === campaign.agentId)?.agentName ||
-    "No Agent Attached";
+  // Determine agent name based on selection
+  const getAgentName = () => {
+    if (selectedWorkflow) {
+      return selectedWorkflow.name;
+    }
+    const agent = agents.find((a) => a.agentId === campaign.agentId);
+    return agent?.agentName || "No Agent Attached";
+  };
 
   // Fetch phone numbers from API
   const fetchNumbers = async () => {
@@ -304,9 +328,21 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
           <div className="space-y-4 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2">
-                  Agent
-                </label>
+                <div className="flex items-center gap-2 mb-2 h-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-500">
+                    Agent
+                  </label>
+                  {!selectedWorkflow && campaign.agentId && (
+                    <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full dark:bg-blue-900 dark:text-blue-200">
+                      Active
+                    </span>
+                  )}
+                  {selectedWorkflow && (
+                    <span className="px-2 py-1 text-xs text-transparent rounded-full">
+                      Active
+                    </span>
+                  )}
+                </div>
                 {isEditable ? (
                   <SelectionDropdown
                     options={[
@@ -316,18 +352,63 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                         value: agent.agentId,
                       })),
                     ]}
-                    selectedOption={campaign.agentId || ""}
-                    setOption={(value: any) =>
-                      handleInputChange("agentId", value)
-                    }
+                    selectedOption={selectedWorkflow ? "" : (campaign.agentId || "")}
+                    setOption={(value: any) => {
+                      if (onAgentChange) {
+                        onAgentChange(value);
+                      } else {
+                        handleInputChange("agentId", value);
+                      }
+                    }}
                   />
                 ) : (
                   <div className="p-2 bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-[6px] text-sm">
-                    {agentName}
+                    {getAgentName()}
                   </div>
                 )}
               </div>
 
+              <div>
+                <div className="flex items-center gap-2 mb-2 h-6">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-500">
+                    Workflow
+                  </label>
+                  {selectedWorkflow && (
+                    <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full dark:bg-green-900 dark:text-green-200">
+                      Active
+                    </span>
+                  )}
+                  {!selectedWorkflow && campaign.agentId && (
+                    <span className="px-2 py-1 text-xs text-transparent rounded-full">
+                      Active
+                    </span>
+                  )}
+                </div>
+                {isEditable ? (
+                  <SelectionDropdown
+                    options={[
+                      { name: "Select a workflow", value: "" },
+                      ...workflowList.map((workflow) => ({
+                        name: workflow.name,
+                        value: workflow._id,
+                      })),
+                    ]}
+                    selectedOption={selectedWorkflow ? selectedWorkflow._id : ""}
+                    setOption={(value: any) => {
+                      if (onWorkflowChange) {
+                        onWorkflowChange(value);
+                      }
+                    }}
+                  />
+                ) : (
+                  <div className="p-2 bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-[6px] text-sm">
+                    {selectedWorkflow ? selectedWorkflow.name : "No workflow selected"}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2">
                   From Number
@@ -352,9 +433,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   </div>
                 )}
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label
                   className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2"
@@ -382,7 +461,9 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   </div>
                 )}
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2">
                   Follow-up

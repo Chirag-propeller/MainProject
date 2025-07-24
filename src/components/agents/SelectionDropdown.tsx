@@ -16,6 +16,7 @@ interface SelectionDropdownProps {
   setOption: React.Dispatch<React.SetStateAction<string>>;
   loading?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 const SelectionDropdown: React.FC<SelectionDropdownProps> = ({
@@ -24,10 +25,11 @@ const SelectionDropdown: React.FC<SelectionDropdownProps> = ({
   setOption,
   loading,
   className = "",
+  disabled = false,
 }) => {
   return (
-    <Select value={selectedOption} onValueChange={setOption}>
-      <SelectTrigger className="bg-white dark:bg-gray-900 dark:text-white border-gray-300 dark:border-gray-500">
+    <Select value={selectedOption} onValueChange={setOption} disabled={disabled}>
+      <SelectTrigger className={`bg-white dark:bg-gray-900 dark:text-white border-gray-300 dark:border-gray-500 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
         <SelectValue placeholder="Select an option" />
       </SelectTrigger>
       <SelectContent
