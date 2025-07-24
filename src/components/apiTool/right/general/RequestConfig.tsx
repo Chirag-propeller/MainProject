@@ -169,30 +169,30 @@ const ApiRequestConfig = ({
     setParams((prev) => prev.filter((p) => p.id !== id));
 
   return (
-    <div className="border border-gray-200 rounded-[6px] bg-white shadow-sm hover:border-gray-300 space-y-2">
+    <div className="border border-gray-200 dark:border-gray-800 rounded-[6px] bg-white dark:bg-gray-900 shadow-sm hover:border-gray-300 dark:hover:border-gray-700 space-y-2 text-black dark:text-white">
       {/* ---------- Collapsible header ---------- */}
       <header
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer bg-white border-b-background px-2 py-1 m-1 rounded-[6px]"
+        className="cursor-pointer bg-white dark:bg-gray-900 border-b-background px-2 py-1 m-1 rounded-[6px]"
       >
         <div className="flex justify-between items-center m-1.5">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gray-100 rounded-[6px] flex items-center justify-center">
+            <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-[6px] flex items-center justify-center">
               <span className="text-blue-500 text-xl">
                 <FaCodeCompare />
               </span>
             </div>
             <div>
-              <h2 className="text-[16px] font-semibold text-gray-900 ml-1.5">
+              <h2 className="text-[16px] font-semibold text-gray-900 dark:text-white ml-1.5">
                 API Request Configuration
               </h2>
-              <p className="text-sm font-light text-gray-500 pt-1 ml-1.5">
+              <p className="text-sm font-light text-gray-500 dark:text-gray-300 pt-1 ml-1.5">
                 Configure endpoint, method, headers and parameters
               </p>
             </div>
           </div>
           <MdKeyboardArrowDown
-            className={`w-8 h-8 transform transition-transform duration-300 text-gray-500 ${
+            className={`w-8 h-8 transform transition-transform duration-300 text-gray-500 dark:text-gray-300 ${
               isOpen ? "rotate-180" : ""
             }`}
             style={{ fill: "gray" }}
@@ -203,7 +203,7 @@ const ApiRequestConfig = ({
       {/* ---------- Body ---------- */}
       {isOpen && (
         <>
-          <hr className="border-t border-gray-200 my-2" />
+          <hr className="border-t border-gray-200 dark:border-gray-800 my-2" />
           <div className="px-4 py-5 flex flex-col gap-6">
             {/* API Name ------------------------------------------------ */}
             <div className="space-y-3">
@@ -215,7 +215,7 @@ const ApiRequestConfig = ({
               <input
                 id="apiName"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
                 placeholder="e.g., getUserData, sendNotification"
                 value={apiName}
                 onChange={(e) => setApiName(e.target.value)}
@@ -232,7 +232,7 @@ const ApiRequestConfig = ({
               <textarea
                 id="description"
                 rows={4}
-                className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm placeholder:text-gray-400"
+                className="w-full px-3 pt-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-sm placeholder:text-gray-400 bg-white dark:bg-gray-800 text-black dark:text-white"
                 placeholder="Describe what this API does and when it should be used..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -247,14 +247,14 @@ const ApiRequestConfig = ({
                   fieldKey="endpoint"
                   htmlFor="endpoint"
                 />
-                <p className="text-xs font-medium text-gray-600 mt-0.5">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-300 mt-0.5">
                   Example:
                   https://api.test.com/v1/user?userID=1234&CustomerMobile=&#123;&#123;CustomerMobile&#125;&#125;
                 </p>
                 <input
                   id="endpoint"
                   type="url"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-sm bg-white dark:bg-gray-800 text-black dark:text-white"
                   placeholder="https://api.example.com/v1/endpoint"
                   value={endpoint}
                   onChange={(e) => setEndpoint(e.target.value)}
@@ -267,6 +267,7 @@ const ApiRequestConfig = ({
                 options={HTTP_METHODS}
                 selectedOption={method}
                 setOption={(val) => setMethod(val as Api["method"])}
+                className="w-full px-3 py-2 text-xs font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white"
               />
             </div>
 
@@ -280,15 +281,15 @@ const ApiRequestConfig = ({
                 <button
                   type="button"
                   onClick={addUrlParam}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 dark:bg-gray-800 rounded-[6px] hover:bg-blue-100 dark:hover:bg-gray-700 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
                 >
                   + Add URL Params
                 </button>
               </div>
 
               {urlParams.length === 0 ? (
-                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
-                  <p className="text-sm font-medium text-gray-500 text-center">
+                <div className="p-3 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-[6px] bg-gray-50 dark:bg-gray-900">
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-300 text-center">
                     No URL params configured. Click "Add URL Params" to create
                     one.
                   </p>
@@ -298,12 +299,12 @@ const ApiRequestConfig = ({
                   {urlParams.map((h) => (
                     <div
                       key={h.id}
-                      className="flex gap-3 items-center p-2 bg-white hover:border-gray-300 transition-all duration-200"
+                      className="flex gap-3 items-center p-2 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200"
                     >
                       <input
                         type="text"
                         placeholder="URL Param Key"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={h.key}
                         onChange={(e) =>
                           updateUrlParam(h.id, "key", e.target.value)
@@ -312,7 +313,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Description"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={h.value}
                         onChange={(e) =>
                           updateUrlParam(h.id, "value", e.target.value)
@@ -320,7 +321,7 @@ const ApiRequestConfig = ({
                       />
                       <button
                         onClick={() => deleteUrlParam(h.id)}
-                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200"
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
                       >
                         <MdDelete className="w-5 h-5" />
                       </button>
@@ -337,15 +338,15 @@ const ApiRequestConfig = ({
                 <button
                   type="button"
                   onClick={addHeader}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex justify-center items-center"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 dark:bg-gray-800 rounded-[6px] hover:bg-blue-100 dark:hover:bg-gray-700 hover:text-blue-700 transition-all duration-200 flex justify-center items-center"
                 >
                   + Add Header
                 </button>
               </div>
 
               {headers.length === 0 ? (
-                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
-                  <p className="text-sm font-medium text-gray-500 text-center">
+                <div className="p-3 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-[6px] bg-gray-50 dark:bg-gray-900">
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-300 text-center">
                     No headers configured. Click "Add Header" to create one.
                   </p>
                 </div>
@@ -354,12 +355,12 @@ const ApiRequestConfig = ({
                   {headers.map((h) => (
                     <div
                       key={h.id}
-                      className="flex gap-3 items-center p-2 bg-white hover:border-gray-300 transition-all duration-200"
+                      className="flex gap-3 items-center p-2 bg-white dark:bg-gray-900 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200"
                     >
                       <input
                         type="text"
                         placeholder="Header Key"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={h.key}
                         onChange={(e) =>
                           updateHeader(h.id, "key", e.target.value)
@@ -368,7 +369,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Header Value"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={h.value}
                         onChange={(e) =>
                           updateHeader(h.id, "value", e.target.value)
@@ -376,7 +377,7 @@ const ApiRequestConfig = ({
                       />
                       <button
                         onClick={() => deleteHeader(h.id)}
-                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200"
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200"
                       >
                         <MdDelete className="w-5 h-5" />
                       </button>
@@ -393,15 +394,15 @@ const ApiRequestConfig = ({
                 <button
                   type="button"
                   onClick={addParam}
-                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 rounded-[6px] hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
+                  className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 dark:bg-gray-800 rounded-[6px] hover:bg-blue-100 dark:hover:bg-gray-700 hover:text-blue-700 transition-all duration-200 flex gap-2 justify-center items-center"
                 >
                   + Add Parameter
                 </button>
               </div>
 
               {params.length === 0 ? (
-                <div className="p-3 border-2 border-dashed border-gray-200 rounded-[6px] bg-gray-50">
-                  <p className="text-sm font-medium text-gray-500 text-center">
+                <div className="p-3 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-[6px] bg-gray-50 dark:bg-gray-900">
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-300 text-center">
                     No parameters configured. Click "Add Parameter" to create
                     one.
                   </p>
@@ -411,12 +412,12 @@ const ApiRequestConfig = ({
                   {params.map((p) => (
                     <div
                       key={p.id}
-                      className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center p-2 bg-white"
+                      className="flex flex-col md:flex-row gap-3 md:gap-4 items-stretch md:items-center p-2 bg-white dark:bg-gray-900"
                     >
                       <input
                         type="text"
                         placeholder="Parameter Name"
-                        className="flex-[2] min-w-0 px-3 py-2 border border-gray-300 rounded-[6px] text-xs placeholder:text-xs"
+                        className="flex-[2] min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs placeholder:text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={p.name}
                         onChange={(e) =>
                           updateParam(p.id, "name", e.target.value)
@@ -435,11 +436,11 @@ const ApiRequestConfig = ({
                           setOption={(val) =>
                             updateParam(p.id, "type", val as string)
                           }
-                          className="w-full px-3 py-2 text-xs font-medium border border-gray-300"
+                          className="w-full px-3 py-2 text-xs font-medium border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-black dark:text-white"
                         />
                       </div>
 
-                      <label className="flex-[1] min-w-[110px] flex items-center text-sm font-medium text-gray-700">
+                      <label className="flex-[1] min-w-[110px] flex items-center text-sm font-medium text-gray-700 dark:text-gray-300">
                         <input
                           type="checkbox"
                           checked={p.required}
@@ -455,7 +456,7 @@ const ApiRequestConfig = ({
                       <input
                         type="text"
                         placeholder="Description (optional)"
-                        className="flex-[3] min-w-0 px-3 py-2 border border-gray-300 rounded-[6px] text-xs"
+                        className="flex-[3] min-w-0 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-[6px] text-xs bg-white dark:bg-gray-800 text-black dark:text-white"
                         value={p.description}
                         onChange={(e) =>
                           updateParam(p.id, "description", e.target.value)
@@ -464,7 +465,7 @@ const ApiRequestConfig = ({
 
                       <button
                         onClick={() => deleteParam(p.id)}
-                        className="ml-auto p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-all duration-200 flex items-center justify-center"
+                        className="ml-auto p-2 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-gray-800 rounded-md transition-all duration-200 flex items-center justify-center"
                       >
                         <MdDelete className="w-5 h-5" />
                       </button>

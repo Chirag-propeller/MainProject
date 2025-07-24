@@ -24,6 +24,8 @@ interface FacetResult {
   inboundAIMetrics?: AIMetrics[];
   unansweredOutboundVoicemail?: MetricResult[];
   unansweredOutboundBusy?: MetricResult[];
+  outboundSentiment?: MetricResult[];
+  inboundSentiment?: MetricResult[];
   [key: string]: any;
 }
 
@@ -50,7 +52,7 @@ export async function POST(req: NextRequest) {
       }
     }
     if (data.agent && data.agent.length > 0) {
-      matchConditions["metadata.agentid"] = { $in: data.agent };
+      matchConditions["agent_config.agentId"] = { $in: data.agent };
     }
     if (data.status && data.status.length > 0) {
       matchConditions["call_analysis.STATUS"] = { $in: data.status };
@@ -514,6 +516,17 @@ export async function POST(req: NextRequest) {
         : r.totalDuration
     }));
 
+    const outboundSentiment = facetResult.outboundSentiment || [];
+    const inboundSentiment = facetResult.inboundSentiment || [];
+
+    const outboundPositive = outboundSentiment.find(s => s._id === 'positive')?.count || 0;
+    const outboundNegative = outboundSentiment.find(s => s._id === 'negative')?.count || 0;
+    const outboundNeutral = outboundSentiment.find(s => s._id === 'neutral')?.count || 0;
+
+    const inboundPositive = inboundSentiment.find(s => s._id === 'positive')?.count || 0;
+    const inboundNegative = inboundSentiment.find(s => s._id === 'negative')?.count || 0;
+    const inboundNeutral = inboundSentiment.find(s => s._id === 'neutral')?.count || 0;
+
     return NextResponse.json({
       totalCallMinutes: totalCallMinutes.map(r => ({
         date: r.date,
@@ -575,7 +588,13 @@ export async function POST(req: NextRequest) {
       inboundResolutionSuccess: Number((facetResult.inboundAIMetrics?.[0]?.avgResolutionSuccess ?? 0).toFixed(2)),
 
       unansweredOutboundVoicemail: facetResult.unansweredOutboundVoicemail?.[0]?.count || 0,
-      unansweredOutboundBusy: facetResult.unansweredOutboundBusy?.[0]?.count || 0
+      unansweredOutboundBusy: facetResult.unansweredOutboundBusy?.[0]?.count || 0,
+      outboundPositive,
+      outboundNegative,
+      outboundNeutral,
+      inboundPositive,
+      inboundNegative,
+      inboundNeutral
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

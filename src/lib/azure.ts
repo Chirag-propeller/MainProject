@@ -122,7 +122,25 @@ export async function getKnowledgeBaseFileUrl(filename: string): Promise<string 
   }
 }
 
-
+export async function getCallRecordingUrl(container: string, filename: string): Promise<string | null> {
+  const containerClient = blobServiceClient.getContainerClient(container);
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    if (await blockBlobClient.exists()) {
+      const permissions = new BlobSASPermissions();
+      permissions.read = true;
+      const sasUrl = await blockBlobClient.generateSasUrl({
+        permissions,
+        expiresOn: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
+      });
+      return sasUrl;
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error getting call recording URL for ${filename}:`, error);
+    return null;
+  }
+}
 
 
 // import { BlobServiceClient } from '@azure/storage-blob'

@@ -73,11 +73,16 @@ export default function CampaignsLayout({
   };
 
   return (
-    <div className="flex h-full" style={{ height: "calc(100vh - 12px)" }}>
+    <div
+      className="flex h-full dark:bg-gray-900"
+      style={{ height: "calc(100vh - 12px)" }}
+    >
       {/* Left sidebar with campaigns list (responsive width) */}
       <CampaignSidebar selectedId={selectedId} isCreatePage={isCreatePage} />
       {/* Main content area (responsive width) */}
-      <div className="flex-1 overflow-auto">{children}</div>
+      <div className="flex-1 overflow-auto dark:bg-gray-900 dark:text-gray-200">
+        {children}
+      </div>
     </div>
   );
 }
@@ -85,27 +90,26 @@ export default function CampaignsLayout({
 // Skeleton Campaign List Component
 const SkeletonCampaignList: React.FC = () => {
   return (
-    <div className="space-y-2 animate-pulse">
+    <div className="space-y-2 animate-pulse dark:bg-gray-900">
       {[...Array(5)].map((_, i) => (
-        <Card key={i} className="mb-1">
+        <Card key={i} className="mb-1 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-2 relative">
             <div className="mb-0.5 flex">
               {/* Campaign name skeleton */}
-              <div className="h-3 bg-gray-200 rounded w-2/3 mr-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3 mr-2 dark:bg-gray-700"></div>
               {/* Status badge skeleton */}
-              <div className="h-5 bg-gray-200 rounded-lg w-12"></div>
+              <div className="h-5 bg-gray-200 rounded-lg w-12 dark:bg-gray-700"></div>
             </div>
             <div className="flex justify-between items-center">
               <div className="space-y-0.5">
                 {/* Started date skeleton */}
-                <div className="h-2.5 bg-gray-200 rounded w-20"></div>
+                <div className="h-2.5 bg-gray-200 rounded w-20 dark:bg-gray-700"></div>
                 {/* ID skeleton */}
-                <div className="h-2.5 bg-gray-200 rounded w-16"></div>
+                <div className="h-2.5 bg-gray-200 rounded w-16 dark:bg-gray-700"></div>
               </div>
-
               {/* Delete button area skeleton */}
               <div className="absolute right-2 top-2">
-                <div className="w-4 h-4 bg-gray-200 rounded"></div>
+                <div className="w-4 h-4 bg-gray-200 rounded dark:bg-gray-700"></div>
               </div>
             </div>
           </div>

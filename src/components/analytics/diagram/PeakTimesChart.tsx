@@ -6,6 +6,7 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import { Clock, TrendingUp } from "lucide-react";
 
@@ -96,6 +97,7 @@ const PeakTimesChart: React.FC<PeakTimesChartProps> = ({ data }) => {
             margin={{ top: 15, right: 15, left: 10, bottom: 5 }}
             className="dark:bg-gray-900"
           >
+            <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
               dataKey="hour"
               tick={{

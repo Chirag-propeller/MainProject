@@ -62,49 +62,52 @@ const PhoneFormModal: React.FC<PhoneFormModalProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-700/50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-700/50 dark:bg-gray-900/80 flex items-center justify-center z-50">
       <div
         ref={modalRef}
-        className="bg-white p-6 rounded-2xl shadow-xl w-[90%] max-w-lg"
+        className="bg-white dark:bg-gray-900 p-6 rounded-[6px] shadow-xl w-[90%] max-w-lg border border-gray-200 dark:border-gray-700"
       >
-        <h2 className="text-xl font-semibold mb-4">Add Phone Number</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+          Add Phone Number
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Phone Number</label>
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+              Phone Number
+            </label>
             <input
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               placeholder="Enter phone number"
-              className="w-full border border-gray-300 rounded-[6px] p-2"
+              className="w-full border border-gray-300 dark:border-gray-700 rounded-[6px] p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium">Termination URI</label>
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
+              Termination URI
+            </label>
             <input
               value={terminationURI}
               onChange={(e) => setTerminationURI(e.target.value)}
               required
               placeholder="Enter termination URI"
-              className="w-full border border-gray-300 rounded-[6px] p-2"
+              className="w-full border border-gray-300 dark:border-gray-700 rounded-[6px] p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
               SIP Trunk User Name (Optional)
             </label>
             <input
               value={sipUsername}
               onChange={(e) => setSipUsername(e.target.value)}
               placeholder="Enter SIP Trunk User Name"
-              className="w-full border border-gray-300 rounded-[6px] p-2"
+              className="w-full border border-gray-300 dark:border-gray-700 rounded-[6px] p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
               SIP Trunk Password (Optional)
             </label>
             <input
@@ -112,32 +115,23 @@ const PhoneFormModal: React.FC<PhoneFormModalProps> = ({ onClose }) => {
               value={sipPassword}
               onChange={(e) => setSipPassword(e.target.value)}
               placeholder="Enter SIP Trunk Password"
-              className="w-full border border-gray-300 rounded-[6px] p-2"
+              className="w-full border border-gray-300 dark:border-gray-700 rounded-[6px] p-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium">
+            <label className="block text-sm font-medium text-gray-900 dark:text-gray-200">
               Nickname (Optional)
             </label>
             <input
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               placeholder="Enter Nickname"
-              className="w-full border border-gray-300 rounded-[6px] p-2 mt-1"
+              className="w-full border border-gray-300 dark:border-gray-700 rounded-[6px] p-2 mt-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
             />
           </div>
-
           <div className="flex justify-end gap-2 pt-4">
-            <Button variant="secondary" onClick={onClose}>
-              {" "}
-              Cancel
-            </Button>
-
+            <Button onClick={onClose}>Cancel</Button>
             <Button onClick={handleSubmit}>Submit</Button>
-            {/* <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Save
-            </button> */}
           </div>
         </form>
       </div>

@@ -13,7 +13,7 @@ export default function AgentListSkeleton() {
         <div className="h-8 w-20 bg-indigo-200 dark:bg-indigo-700 rounded" />
       </div>
       {/* List skeletons */}
-      {Array.from({ length: 8 }).map((_, i) => (
+      {Array.from({ length: 12 }).map((_, i) => (
         <div
           key={i}
           className="p-2 px-2 border border-gray-200 dark:border-gray-700 rounded-[6px] mb-2 bg-white dark:bg-gray-900 animate-pulse flex justify-between items-center"

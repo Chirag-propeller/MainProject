@@ -12,6 +12,11 @@ import axios from "axios";
 import { FilterState } from "../callHistory/topBar/Filter";
 import { Agent } from "../agents/types";
 import { DateRangeFilter } from "../callHistory/topBar/DateFilter";
+import { FaRegCirclePlay } from "react-icons/fa6";
+import { MdOutlineFileDownload } from "react-icons/md";
+import { FaPauseCircle, FaSpinner } from "react-icons/fa";
+// import AudioPlayer from "react-h5-audio-player";
+// import "react-h5-audio-player/lib/styles.css";
 
 // Tooltip component for score field explanations
 const ScoreTooltip = ({ field }: { field: string }) => {
@@ -50,6 +55,227 @@ const ScoreTooltip = ({ field }: { field: string }) => {
   );
 };
 
+// Custom Audio Player
+function CustomAudioPlayer({
+  src,
+  callId,
+}: {
+  src: string | null;
+  callId: string;
+}) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [sasUrl, setSasUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSasUrl(null);
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setError(null);
+  }, [src, callId]);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    const handleLoadedMetadata = () => setDuration(audio.duration);
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleEnded = () => setIsPlaying(false);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("ended", handleEnded);
+    return () => {
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [sasUrl]);
+
+  const togglePlay = async () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      if (!sasUrl && src) {
+        setLoading(true);
+        setError(null);
+        try {
+          const res = await axios.post(`/api/callHistory/get-recording`, {
+            url: src,
+          });
+          const data = res.data;
+          if (data.url) {
+            setSasUrl(data.url);
+            setTimeout(() => {
+              audioRef.current?.play();
+              setIsPlaying(true);
+            }, 100);
+          } else {
+            setError("Recording not available");
+          }
+        } catch {
+          setError("Failed to load recording");
+        } finally {
+          setLoading(false);
+        }
+      } else if (sasUrl) {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!audioRef.current || !progressBarRef.current) return;
+    const rect = progressBarRef.current.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    const seekTime = Math.max(0, Math.min(percent, 1)) * duration;
+    audioRef.current.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
+
+  // Dragging logic
+  const handleThumbMouseDown = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setIsDragging(true);
+    document.body.style.userSelect = "none";
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!audioRef.current || !progressBarRef.current) return;
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      const seekTime = Math.max(0, Math.min(percent, 1)) * duration;
+      audioRef.current.currentTime = seekTime;
+      setCurrentTime(seekTime);
+    };
+    const handleMouseUp = () => {
+      setIsDragging(false);
+      document.body.style.userSelect = "";
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, duration]);
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return "0:00";
+    const min = Math.floor(time / 60);
+    const sec = Math.floor(time % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${min}:${sec}`;
+  };
+
+  return (
+    <div className="flex flex-col items-center w-full">
+      <div className="flex items-center gap-3 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-1 shadow w-full max-w-[360px]">
+        {loading ? (
+          <span className="text-xs text-gray-500 animate-spin">
+            <FaSpinner className="w-5 h-5" />
+          </span>
+        ) : !sasUrl ? (
+          <button
+            onClick={togglePlay}
+            className="p-1 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+            disabled={loading || !!error || !src}
+          >
+            <FaRegCirclePlay className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+          </button>
+        ) : isPlaying ? (
+          <button
+            onClick={togglePlay}
+            className="p-1 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+          >
+            <FaPauseCircle className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+          </button>
+        ) : (
+          <button
+            onClick={togglePlay}
+            className="p-1 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"
+          >
+            <FaRegCirclePlay className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+          </button>
+        )}
+        <span className="text-xs text-gray-700 dark:text-gray-200 min-w-[60px] text-center">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+        <div className="flex-1 flex items-center min-w-[120px]">
+          <div
+            ref={progressBarRef}
+            className="h-2 w-full bg-gray-300 dark:bg-gray-700 rounded-full cursor-pointer relative"
+            onClick={handleSeek}
+            style={{ minWidth: 100, minHeight: 10 }}
+          >
+            <div
+              className="h-2 bg-indigo-500 rounded-full absolute top-0 left-0"
+              style={{
+                width: duration ? `${(currentTime / duration) * 100}%` : "0%",
+                transition: "width 0.2s linear",
+              }}
+            ></div>
+            {/* Dragger/Thumb */}
+            {duration > 0 && (
+              <div
+                className="absolute top-1/2 -translate-y-1/2"
+                style={{
+                  left: duration
+                    ? `calc(${(currentTime / duration) * 100}% - 8px)`
+                    : "-8px",
+                  zIndex: 2,
+                  cursor: "pointer",
+                }}
+                onMouseDown={handleThumbMouseDown}
+                tabIndex={0}
+                role="slider"
+                aria-valuenow={currentTime}
+                aria-valuemin={0}
+                aria-valuemax={duration}
+                aria-label="Seek"
+              >
+                <div className="w-3 h-3 bg-white border-2 border-indigo-500 rounded-full shadow transition-colors"></div>
+              </div>
+            )}
+          </div>
+        </div>
+        <a
+          title="Download Recording"
+          href={sasUrl || undefined}
+          download={sasUrl ? `call_recording_${callId}.mp3` : undefined}
+          className={`flex items-center justify-center text-green-600 hover:text-green-80 px-2 py-1 text-xs ${!sasUrl ? "pointer-events-none opacity-50" : ""}`}
+          tabIndex={sasUrl ? 0 : -1}
+          aria-disabled={!sasUrl}
+        >
+          <MdOutlineFileDownload className="w-4 h-4" />
+        </a>
+      </div>
+      <audio
+        ref={audioRef}
+        src={sasUrl || undefined}
+        preload="none"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        style={{ width: 20, height: 5, opacity: 100 }}
+      />
+      {error && <span className="text-xs text-red-500 mt-1">{error}</span>}
+    </div>
+  );
+}
+
 export default function CallAnalysisTable({
   customiseField,
   filters,
@@ -74,6 +300,10 @@ export default function CallAnalysisTable({
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCall, setSelectedCall] = useState<any | null>(null);
+
+  // ... existing code ...
+
+  // Fetch SAS url when selectedCall changes
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -110,7 +340,6 @@ export default function CallAnalysisTable({
           dateRange: dateRange,
         }
       );
-      // console.log("API full response:", data.data);
 
       const pagination = data.data.pagination;
       setHasNextPage(pagination.hasNextPage);
@@ -196,6 +425,7 @@ export default function CallAnalysisTable({
             call_direction: item.call_direction,
             call_duration: call_duration,
             call_type: item.call_type,
+            recording: item.recording,
             transcript: item.call_transcript,
             llm_cost: Number(item.llm_cost_rupees?.$numberDecimal).toFixed(2),
             stt_cost: Number(item.stt_cost_rupees?.$numberDecimal).toFixed(2),
@@ -225,7 +455,7 @@ export default function CallAnalysisTable({
           {/* Skeleton Table */}
           <div className="overflow-x-auto overflow-y-auto max-h-[80vh] shadow-md rounded-[4px] border border-gray-200 scrollbar scrollbar-thin scrollbar-black hover:scrollbar-black dark:bg-gray-900 dark:border-gray-700">
             <table className="min-w-full divide-y divide-gray-200 text-sm dark:bg-gray-900 dark:text-gray-100">
-              <thead className="bg-gray-50 sticky top-0 dark:bg-gray-900">
+              <thead className="bg-gray-50 dark:bg-gray-900 sticky top-0">
                 <tr>
                   <th className="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 tracking-wider">
                     S.No
@@ -233,7 +463,7 @@ export default function CallAnalysisTable({
                   {customiseField.map((key) => (
                     <th
                       key={key}
-                      className="sticky top-0 bg-gray-50 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
+                      className="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 px-6 py-2 text-xs font-medium text-gray-500 tracking-wider text-nowrap text-center"
                     >
                       <div className="flex items-center justify-center gap-1">
                         <span>
@@ -257,7 +487,7 @@ export default function CallAnalysisTable({
                 {Array.from({ length: 7 }).map((_, index) => (
                   <tr key={index} className="animate-pulse">
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <div className="h-4 bg-gray-200 rounded w-8"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-8"></div>
                     </td>
                     {customiseField.map((key, colIndex) => (
                       <td
@@ -265,7 +495,7 @@ export default function CallAnalysisTable({
                         className="px-6 py-2 whitespace-nowrap text-center"
                       >
                         <div
-                          className="h-4 bg-gray-200 rounded mx-auto"
+                          className="h-4 bg-gray-200 dark:bg-gray-700 rounded mx-auto"
                           style={{
                             width:
                               key === "started_at"
@@ -368,8 +598,9 @@ export default function CallAnalysisTable({
               ref={containerRef}
               className="fixed top-0 right-0 h-full w-[54%] bg-white dark:bg-gray-900 shadow-lg border-l border-gray-200 dark:border-gray-700 z-150 overflow-y-auto custom-scrollbar"
             >
-              <div className="px-2 p-1 flex justify-between border-b border-gray-200 dark:border-gray-400 sticky top-0 bg-white dark:bg-gray-900">
-                <div className="flex flex-col gap-0">
+              <div className="px-2 p-1 flex justify-between items-center border-b border-gray-200 dark:border-gray-400 sticky top-0 bg-white dark:bg-gray-900">
+                {/* Left: Date/Time and Call ID */}
+                <div>
                   <h2 className="text-md font-semibold dark:text-gray-400">
                     {selectedCall.started_at}
                   </h2>
@@ -377,12 +608,25 @@ export default function CallAnalysisTable({
                     Call ID: {selectedCall.id}
                   </h2>
                 </div>
-                <button
-                  onClick={() => setSelectedCall(null)}
-                  className="text-gray-500 hover:text-gray-700 cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                {/* Right: Play, Download, X */}
+                <div className="flex items-center gap-2">
+                  {selectedCall.recording && (
+                    <>
+                      {/* Custom Audio Player with Download */}
+                      <CustomAudioPlayer
+                        src={selectedCall.recording}
+                        callId={selectedCall.id}
+                      />
+                    </>
+                  )}
+                  {/* X Button */}
+                  <button
+                    onClick={() => setSelectedCall(null)}
+                    className="text-gray-500 hover:text-gray-400 cursor-pointer"
+                  >
+                    <X className="w-4 h-4 text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-400" />
+                  </button>
+                </div>
               </div>
               <div className="">
                 <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">

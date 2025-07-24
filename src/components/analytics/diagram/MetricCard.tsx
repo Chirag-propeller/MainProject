@@ -35,7 +35,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   className,
 }) => (
   <div
-    className={`rounded-[4px] p-3 bg-white border-1 border-gray-400 border-l-6 border-l-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:border-l-indigo-400 transition-transform duration-200 transform hover:scale-103 ${className}`}
+    className={`rounded-[6px] p-3 bg-white border-1 border-gray-400 border-l-4 border-l-indigo-500 dark:bg-gray-900 dark:border-gray-700 dark:border-l-indigo-400 transition-transform duration-200 transform hover:scale-103 ${className}`}
   >
     <div className="text-[16px] text-indigo-500 mb-1 dark:text-indigo-300">
       {title}

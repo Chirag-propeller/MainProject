@@ -51,15 +51,43 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
   const [loading, setLoading] = useState(false);
 
   // CSV Upload functionality (existing from CampaignGeneralTab)
+  function isValidPhoneNumber(value: string): boolean {
+    // Remove all non-digit characters except leading +
+    const cleaned = value.trim().replace(/(?!^\+)[^\d]/g, "");
+    // Must be 10-15 digits, optionally starting with +
+    if (!/^(\+?\d{10,15})$/.test(cleaned)) return false;
+    // Reject common date/time patterns
+    if (
+      /^\d{1,2}:\d{2}\s?(AM|PM)?/i.test(value) || // time like 12:17 PM
+      /\d{1,2}\s?[A-Za-z]{3,9},?\s?\d{4}/.test(value) // date like 27 May, 2025
+    )
+      return false;
+    return true;
+  }
+
   function transformDynamicData(data: any): { contacts: Contact[] } {
+    if (data.length === 0) return { contacts: [] };
+    const headers = Object.keys(data[0]);
+    const phoneCol = headers.find(
+      (h) =>
+        h.toLowerCase().includes("phone") ||
+        h.toLowerCase().includes("number") ||
+        h.toLowerCase().includes("contact")
+    );
     return {
-      contacts: data.map((row: any) => ({
-        phonenumber: row.phone || row.phonenumber || Object.values(row)[0],
-        metadata: {
-          follow_up_date_time: new Date().toISOString(),
-          ...row,
-        },
-      })),
+      contacts: data
+        .map((row: any) => {
+          let phone = phoneCol ? row[phoneCol] : undefined;
+          if (!phone || !isValidPhoneNumber(phone)) return null; // Skip invalid
+          return {
+            phonenumber: phone,
+            metadata: {
+              follow_up_date_time: new Date().toISOString(),
+              ...row,
+            },
+          };
+        })
+        .filter(Boolean),
     };
   }
 
@@ -437,29 +465,29 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
     <div className="space-y-4">
       {/* Show file name if not editable and file exists */}
       {!isEditable && campaign.recipientFileName && (
-        <div className="p-2 bg-gray-50 border border-gray-200 rounded-[6px] text-sm text-gray-700 flex items-center gap-2">
-          <FileText className="w-4 h-4 text-blue-400" />
+        <div className="p-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-gray-700 rounded-[6px] text-sm text-gray-700 dark:text-indigo-300 flex items-center gap-2">
+          <FileText className="w-4 h-4 text-blue-400 dark:text-indigo-300" />
           <span className="truncate">{campaign.recipientFileName}</span>
         </div>
       )}
       {campaign.status === "draft" && (
         <div>
           {/* Tab Navigation */}
-          <div className="border-b border-gray-200">
+          <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="flex space-x-8">
               <button
                 onClick={() => handleTabSwitch("csv")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === "csv"
-                    ? "border-indigo-500 text-indigo-600 cursor-pointer"
-                    : "border-transparent text-gray-500 hover:text-gray-700 cursor-pointer hover:border-gray-300"
+                    ? "border-indigo-500 text-indigo-600 dark:text-indigo-300 cursor-pointer"
+                    : "border-transparent text-gray-500 dark:text-indigo-300 hover:text-gray-700 dark:hover:text-indigo-300 cursor-pointer hover:border-gray-300 dark:hover:border-gray-700"
                 }`}
               >
                 <div className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4" />
+                  <FileText className="w-4 h-4 dark:text-indigo-300" />
                   <span>Upload CSV</span>
                   {campaign.recipientFileProvider === "csv" && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300">
                       Active
                     </span>
                   )}
@@ -469,15 +497,15 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                 onClick={() => handleTabSwitch("googleSheet")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === "googleSheet"
-                    ? "border-indigo-500 text-indigo-600 cursor-pointer"
-                    : "border-transparent text-gray-500 hover:text-gray-700 cursor-pointer hover:border-gray-300"
+                    ? "border-indigo-500 text-indigo-600 dark:text-indigo-300 cursor-pointer"
+                    : "border-transparent text-gray-500 dark:text-indigo-300 hover:text-gray-700 dark:hover:text-indigo-300 cursor-pointer hover:border-gray-300 dark:hover:border-gray-700"
                 }`}
               >
                 <div className="flex items-center space-x-2">
-                  <Table className="w-4 h-4" />
+                  <Table className="w-4 h-4 dark:text-indigo-300" />
                   <span>Google Sheet</span>
                   {campaign.recipientFileProvider === "googleSheet" && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300">
                       Active
                     </span>
                   )}
@@ -493,13 +521,13 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                 <div className="pt-4">
                   {fileName ? (
                     // Show file name with delete button when file is uploaded
-                    <div className="flex items-center justify-center gap-2 p-2 border border-gray-300 rounded-[6px] bg-gray-50 w-1/3 mx-auto">
-                      <span className="text-green-600 font-medium">
+                    <div className="flex items-center justify-center gap-2 p-2 border border-gray-300 dark:border-gray-700 rounded-[6px] bg-gray-50 dark:bg-slate-900 w-1/3 mx-auto">
+                      <span className="text-green-600 dark:text-green-300 font-medium">
                         {fileName}
                       </span>
                       <button
                         onClick={handleDeleteFile}
-                        className="group p-1 text-red-500 rounded transition-colors"
+                        className="group p-1 text-red-500 dark:text-red-400 rounded transition-colors"
                         title="Remove file"
                       >
                         <div className="w-6 h-6 relative pt-1">
@@ -532,13 +560,13 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                     // Show upload interface when no file is present
                     <label
                       htmlFor="recipientsFile"
-                      className="block p-2 border-1 border-dashed border-gray-500 rounded-[6px] text-center cursor-pointer hover:border-indigo-400 transition-colors w-1/3 mx-auto"
+                      className="block p-2 border-1 border-dashed border-gray-500 dark:border-gray-700 rounded-[6px] text-center cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-300 transition-colors w-1/3 mx-auto"
                       onDrop={handleDrop}
                       onDragOver={handleDragOver}
                     >
                       <div className="flex flex-col items-center">
-                        <Upload className="w-5 h-5 text-gray-400 mb-2" />
-                        <span className="text-gray-500 text-sm font-light">
+                        <Upload className="w-5 h-5 text-gray-400 dark:text-indigo-300 mb-2" />
+                        <span className="text-gray-500 dark:text-indigo-300 text-sm font-light">
                           Drop CSV file here or click to upload
                         </span>
                       </div>
@@ -554,7 +582,7 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                   )}
                   {extractedPhones.length > 0 && (
                     <div className="mt-2 px-2 pt-2 flex justify-center">
-                      <span className="text-sm text-green-700 font-medium">
+                      <span className="text-sm text-green-700 dark:text-green-300 font-medium">
                         ✓ {extractedPhones.length} phone numbers extracted
                         successfully
                       </span>
@@ -568,12 +596,12 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
           {/* Google Sheet Tab */}
           {activeTab === "googleSheet" && googleSheetIntegrated ? (
             <div className="space-y-4 ">
-              <div className="bg-white rounded-lg border border-gray-200">
-                <div className="p-4 border-b border-gray-200">
-                  <h4 className="text-sm font-medium text-gray-900">
+              <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-indigo-300">
                     Select Google Sheet
                   </h4>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-indigo-300 mt-1">
                     Choose a Google Sheet to import recipients from
                   </p>
                 </div>
@@ -582,7 +610,7 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                     <select
                       onChange={changeSheet}
                       value={selectedSheetName}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white dark:bg-slate-900 text-sm text-gray-900 dark:text-indigo-300"
                       disabled={!isEditable}
                     >
                       <option value="">Select a sheet</option>
@@ -596,15 +624,15 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                       <button
                         onClick={readSheet}
                         disabled={!selectedSheet || loading}
-                        className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 bg-indigo-600 dark:bg-indigo-800 text-white text-sm font-medium rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-900 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {loading ? "Reading..." : "Import"}
                       </button>
                     )}
                   </div>
                   {sheetPhoneNumbers.length > 0 && (
-                    <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
-                      <span className="text-sm text-green-700 font-medium">
+                    <div className="mt-2 p-2 bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-md">
+                      <span className="text-sm text-green-700 dark:text-green-300 font-medium">
                         ✓ {sheetPhoneNumbers.length} phone numbers imported
                         successfully
                       </span>
@@ -615,26 +643,26 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
 
               {/* Fixed Size Scrollable Table for Google Sheet Data */}
               {sheetData.length > 0 && (
-                <div className="bg-white rounded-lg border border-gray-200">
-                  <div className="p-4 border-b border-gray-200">
-                    <h4 className="text-sm font-medium text-gray-900">
+                <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-indigo-300">
                       Sheet Preview
                     </h4>
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-gray-600 dark:text-indigo-300 mt-1">
                       Data from {selectedSheetName}
                     </p>
                   </div>
                   <div className="p-1">
                     {/* Fixed size container with both horizontal and vertical scrolling */}
-                    <div className="w-full h-[160px] border border-gray-200 rounded-md overflow-auto">
+                    <div className="w-full h-[160px] border border-gray-200 dark:border-gray-700 rounded-md overflow-auto">
                       <table className="min-w-full table-auto">
-                        <thead className="bg-gray-50 sticky top-0 border-b border-gray-200">
+                        <thead className="bg-gray-50 dark:bg-slate-900 sticky top-0 border-b border-gray-200 dark:border-gray-700">
                           <tr>
                             {sheetData[0]?.map(
                               (header: string, index: number) => (
                                 <th
                                   key={index}
-                                  className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200 whitespace-nowrap max-w-[80px] min-w-[60px]"
+                                  className="px-2 py-2 text-left text-xs font-medium text-gray-500 dark:text-indigo-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-700 whitespace-nowrap max-w-[80px] min-w-[60px]"
                                 >
                                   <div className="truncate">{header}</div>
                                 </th>
@@ -642,15 +670,18 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
                             )}
                           </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
                           {sheetData
                             .slice(1)
                             .map((row: any[], rowIndex: number) => (
-                              <tr key={rowIndex} className="hover:bg-gray-50">
+                              <tr
+                                key={rowIndex}
+                                className="hover:bg-gray-50 dark:hover:bg-slate-900"
+                              >
                                 {row.map((cell: any, cellIndex: number) => (
                                   <td
                                     key={cellIndex}
-                                    className="px-2 py-2 text-xs text-gray-900 border-b border-gray-200 max-w-[80px] min-w-[60px]"
+                                    className="px-2 py-2 text-xs text-gray-900 dark:text-indigo-300 border-b border-gray-200 dark:border-gray-700 max-w-[80px] min-w-[60px]"
                                   >
                                     <div
                                       className="truncate"
@@ -670,8 +701,8 @@ const RecipientsTab: React.FC<RecipientsTabProps> = ({
               )}
             </div>
           ) : activeTab === "googleSheet" && !googleSheetIntegrated ? (
-            <div className="p-4 text-center text-gray-500 border border-gray-200 rounded-md bg-gray-50">
-              <Table className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+            <div className="p-4 text-center text-gray-500 dark:text-indigo-300 border border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-slate-900">
+              <Table className="w-8 h-8 text-gray-400 dark:text-indigo-300 mx-auto mb-2" />
               <p className="text-sm">
                 No Google Sheet integrated. Please integrate Google Sheet first.
               </p>

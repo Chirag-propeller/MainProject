@@ -6,6 +6,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import { PRICING } from "@/components/agents/Constants";
 import { format, CurrencyCode, CURRENCY_SYMBOLS } from "@/lib/currency";
@@ -24,18 +25,52 @@ export function CostBreakdownChart({
   currency?: CurrencyCode;
 }) {
   // Add platform cost to each data point
-  const dataWithPlatform = data.map((d) => ({
-    ...d,
-    platform: PRICING.PropalCostInINR,
-  }));
+  const dataWithPlatform = data.map((d) => {
+    return {
+      ...d,
+    };
+  });
+
   const symbol = CURRENCY_SYMBOLS[currency] || "₹";
   return (
     <ResponsiveContainer width="100%" height="90%">
       <BarChart
         data={dataWithPlatform}
-        margin={{ top: 15, right: 10, left: -10, bottom: -40 }}
+        margin={{ top: 16, right: 10, left: -10, bottom: -36 }}
         className="dark:bg-gray-900"
       >
+        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+        {/* <defs>
+          <pattern
+            id="graph-paper-bg"
+            width="20"
+            height="20"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect
+              x="0"
+              y="0"
+              width="20"
+              height="20"
+              fill="#fff"
+              className="dark:fill-gray-900"
+            />
+            <path
+              d="M 0 10 L 20 10"
+              fill="none"
+              stroke="#e5e7eb"
+              strokeWidth="1"
+              className="dark:stroke-gray-700"
+            />
+          </pattern>
+        </defs>
+        <rect
+          x={50}
+          y={14}
+          width={850}
+          height={290}
+          fill="url(#graph-paper-bg)"
+        /> */}
         <XAxis
           dataKey="date"
           tick={{ fontSize: 12, fill: "#666", className: "dark:fill-gray-300" }}
@@ -79,16 +114,16 @@ export function CostBreakdownChart({
           wrapperStyle={{ paddingTop: "2px" }}
           iconType="circle"
           iconSize={8}
-          fontSize={11}
+          fontSize={10}
           className="dark:text-gray-100"
         />
-        {/* <Bar
+        <Bar
           dataKey="platform"
-          fill="#f59e42"
+          fill="#615fff"
           name="Platform"
-          radius={[4, 4, 0, 0]}
+          radius={[0, 0, 0, 0]}
           stackId="cost"
-        /> */}
+        />
         <Bar
           dataKey="llm"
           fill="#a5b4fc"
