@@ -97,6 +97,7 @@ interface WorkflowState {
   edges: Edge<EdgeData>[]
   globalPrompt: string
   globalNodes: string[] // Array of node IDs that are global
+  globalVariables: Record<string, string> // Global variables with key-value pairs
   config: {
     llm?: {
       provider: string
@@ -140,6 +141,7 @@ interface WorkflowState {
   setEdges: (edges: Edge<EdgeData>[]) => void
   setGlobalPrompt: (prompt: string) => void
   setGlobalNodes: (globalNodes: string[]) => void
+  setGlobalVariables: (globalVariables: Record<string, string>) => void
   setConfig: (config: Partial<WorkflowState['config']>) => void
   setSelectedNode: (node: Node<NodeData> | null) => void
   setSelectedEdge: (edge: Edge<EdgeData> | null) => void
@@ -361,6 +363,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   edges: [],
   globalPrompt: '',
   globalNodes: [],
+  globalVariables: {},
   config: {},
   nodeCounter: 1,
   edgeCounter: 1,
@@ -379,6 +382,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   setEdges: (edges) => set({ edges }),
   setGlobalPrompt: (globalPrompt) => set({ globalPrompt }),
   setGlobalNodes: (globalNodes) => set({ globalNodes }),
+  setGlobalVariables: (globalVariables: Record<string, string>) => set({ globalVariables }),
   setConfig: (config) => set({ config }),
   setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null }),
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
@@ -416,6 +420,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           edgeCounter: 1,
           globalPrompt: '',
           globalNodes: [],
+          globalVariables: {},
           config: {},
           selectedNode: null,
           selectedEdge: null
@@ -609,7 +614,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   // Workflow actions
   saveWorkflow: async () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId, config } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, globalVariables, currentWorkflowId, config } = get()
     
     if (!currentWorkflowId) {
       throw new Error('No workflow ID available for saving')
@@ -634,8 +639,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         edgeCounter,
         globalPrompt,
         globalNodes,
+        globalVariables,
         config,
-        variables: aggregatedVariables // <-- Add this line
+        variables: aggregatedVariables
       })
       
       if (result.success) {
@@ -670,6 +676,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           edgeCounter: flowData.edgeCounter,
           globalPrompt: flowData.globalPrompt,
           globalNodes: flowData.globalNodes || [],
+          globalVariables: result.data.globalVariables || {},
           config: result.data.config || {},
           selectedNode: null,
           selectedEdge: null
@@ -719,7 +726,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
   
   autoSave: () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, currentWorkflowId, config } = get()
+    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, globalVariables, currentWorkflowId, config } = get()
     
     if (currentWorkflowId && (nodes.length > 0 || edges.length > 0)) {
       autoSaveWorkflow({
@@ -730,6 +737,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         edgeCounter,
         globalPrompt,
         globalNodes,
+        globalVariables,
         config
       })
     }

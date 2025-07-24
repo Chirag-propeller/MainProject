@@ -91,7 +91,8 @@ interface IWorkflow extends Document {
       language: string;
     };
   };
-  variables: Record<string, string>; // <-- Add this line
+  variables: Record<string, string>;
+  globalVariables: Record<string, string>; // Global variables with key-value pairs
   createdAt: Date;
   updatedAt: Date;
 }
@@ -239,6 +240,10 @@ const WorkflowSchema = new Schema<IWorkflow>({
     }
   },
   variables: {
+    type: Object,
+    default: {}
+  },
+  globalVariables: {
     type: Object,
     default: {}
   }

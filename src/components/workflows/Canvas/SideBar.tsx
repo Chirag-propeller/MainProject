@@ -1,16 +1,18 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { PlusIcon } from 'lucide-react'
+import { PlusIcon, Variable } from 'lucide-react'
 import React, { useState } from 'react'
 import GlobalPromptBox from './others/GlobalPromptBox'
 import GlobalConfigModal from './others/GlobalConfigModal'
 import AddNodeModal from './others/AddNodeModal'
+import VariablesModal from './others/VariablesModal'
 import { useWorkflowStore } from '@/store/workflowStore'
 
 const SideBar: React.FC = () => {
   const { isGlobalPromptOpen, setIsGlobalPromptOpen } = useWorkflowStore()
   const [isAddNodeModalOpen, setIsAddNodeModalOpen] = useState(false)
   const [isGlobalConfigOpen, setIsGlobalConfigOpen] = useState(false)
+  const [isVariablesModalOpen, setIsVariablesModalOpen] = useState(false)
 
   return (
     <div className='absolute top-3 left-5 bg-transparent z-10'>
@@ -30,6 +32,11 @@ const SideBar: React.FC = () => {
             Global Configuration
         </Button>
         
+        <Button variant='secondary' className='rounded-[4px] border-1 border-indigo-500' size='sm' onClick={() => setIsVariablesModalOpen(true)}>
+            <Variable className='w-4 h-4 mr-2' />
+            Variables
+        </Button>
+        
         <AddNodeModal 
           isOpen={isAddNodeModalOpen} 
           onClose={() => setIsAddNodeModalOpen(false)} 
@@ -38,6 +45,11 @@ const SideBar: React.FC = () => {
         <GlobalConfigModal 
           isOpen={isGlobalConfigOpen} 
           onClose={() => setIsGlobalConfigOpen(false)} 
+        />
+
+        <VariablesModal 
+          isOpen={isVariablesModalOpen} 
+          onClose={() => setIsVariablesModalOpen(false)} 
         />
 
         </div>

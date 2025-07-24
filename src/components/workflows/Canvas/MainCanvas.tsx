@@ -7,6 +7,7 @@ import ReactFlow, {
   ReactFlowProvider,
   ConnectionMode
 } from 'reactflow'
+// import { PanelPosition as PanelPositionType } from 'reactflow'
 import 'reactflow/dist/style.css'
 import ConversationNode from './CustomNodes/ConversationNode'
 import EndCallNode from './CustomNodes/EndCallNode'
@@ -79,7 +80,9 @@ const MainCanvas: React.FC = () => {
             snapGrid={[20, 20]}
           >
             <MiniMap />
-            <Controls />
+            <Controls 
+              // position={PanelPosition.TopCenter}
+            />
             <Background />
           </ReactFlow>
         </div>

@@ -68,7 +68,7 @@ const AddNodeModal: React.FC<AddNodeModalProps> = ({ isOpen, onClose }) => {
   ]
 
   return (
-    <div className="fixed inset-0 bg-gray-500/30 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-500/30 flex items-center justify-center z-[60]">
       <Card className="w-full max-w-md mx-4 relative">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">

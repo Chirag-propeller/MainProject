@@ -7,6 +7,7 @@ interface WorkflowData {
   edgeCounter: number;
   globalPrompt: string;
   globalNodes: string[];
+  globalVariables?: Record<string, string>;
   config?: {
     llm?: {
       provider: string;
@@ -36,8 +37,9 @@ interface SaveWorkflowParams {
   edgeCounter: number;
   globalPrompt: string;
   globalNodes: string[];
+  globalVariables?: Record<string, string>;
   config?: WorkflowData['config'];
-  variables?: Record<string, string>; // <-- Add this line
+  variables?: Record<string, string>;
 }
 
 interface CreateWorkflowParams {
