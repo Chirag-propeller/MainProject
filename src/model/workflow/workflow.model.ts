@@ -90,6 +90,11 @@ interface IWorkflow extends Document {
       model: string;
       language: string;
     };
+    other?: {
+      maxCallDuration: number;
+      userAwayTimeout: number;
+      backgroundAudio: boolean;
+    };
   };
   variables: Record<string, string>;
   globalVariables: Record<string, string>; // Global variables with key-value pairs
@@ -135,6 +140,7 @@ const WorkflowSchema = new Schema<IWorkflow>({
       response: { type: Object, default: {} },
       selectedApiId: { type: String, default: '' },
       selectedApi: { type: Object, default: null },
+      preFetchRequired: { type: Boolean, default: false },
       knowledgeBaseAttached: { type: Boolean, default: false },
       knowledgeBaseUrl: { type: String, default: '' },
       whenToCallRag: { type: String, default: '' },
@@ -218,6 +224,11 @@ const WorkflowSchema = new Schema<IWorkflow>({
         provider: { type: String, default: 'Deepgram' },
         model: { type: String, default: 'nova-2' },
         language: { type: String, default: 'en-US' }
+      },
+      other: {
+        maxCallDuration: { type: Number, default: 1200 },
+        userAwayTimeout: { type: Number, default: 5 },
+        backgroundAudio: { type: Boolean, default: false }
       }
     },
     default: {
@@ -236,6 +247,11 @@ const WorkflowSchema = new Schema<IWorkflow>({
         provider: 'Deepgram',
         model: 'nova-2',
         language: 'en-US'
+      },
+      other: {
+        maxCallDuration: 1200,
+        userAwayTimeout: 5,
+        backgroundAudio: false
       }
     }
   },

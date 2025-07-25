@@ -23,6 +23,7 @@ interface ApiRequestNodeData {
   response?: any;
   selectedApiId?: string;
   selectedApi?: Api;
+  preFetchRequired?: boolean;
   global?: {
     isGlobal?: boolean;
     pathwayCondition?: string;
@@ -75,6 +76,12 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data, id }) =
             GLOBAL
           </div>
         )}
+        {/* Pre-fetch Required Indicator */}
+        {data.preFetchRequired && (
+          <div className="absolute -top-2 -left-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+            PRE-FETCH
+          </div>
+        )}
         <div className={`text-sm font-semibold mb-1 ${
           isGlobal ? 'text-purple-600' : 'text-blue-600'
         }`}>
@@ -102,7 +109,8 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data, id }) =
                 hasUrlParams && 'URL Params', 
                 hasParams && 'Params',
                 hasResponse && 'Response',
-                data.variableToExtract && 'Variables'
+                data.variableToExtract && 'Variables',
+                data.preFetchRequired && 'Pre-fetch'
               ].filter(Boolean).join(' • ')}
             </div>
           </div>
@@ -117,6 +125,6 @@ const ApiRequestNode: React.FC<NodeProps<ApiRequestNodeData>> = ({ data, id }) =
       />
     </div>
   );
-};
+};export default ApiRequestNode;
 
-export default ApiRequestNode;
+

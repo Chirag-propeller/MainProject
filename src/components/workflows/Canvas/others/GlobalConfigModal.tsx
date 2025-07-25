@@ -6,16 +6,75 @@ import { useWorkflowStore } from '@/store/workflowStore'
 import useLLMConfig from '@/hooks/useLLMConfig'
 import SelectionDropdown from '@/components/agents/SelectionDropdown'
 import TooltipLabel from '@/components/ui/tooltip'
+import { Bot, Users, Mic, Settings } from 'lucide-react'
+import { MdKeyboardArrowDown } from 'react-icons/md'
 
 interface GlobalConfigModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
+// Move CollapsibleSection outside to prevent re-creation on every render
+const CollapsibleSection = ({ 
+  title, 
+  icon: Icon, 
+  isOpen, 
+  onToggle, 
+  children,
+  iconClassname = "text-gray-600"
+}: { 
+  title: string; 
+  icon: any; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+  children: React.ReactNode;
+  iconClassname?: string;
+}) => (
+  <div className="border border-gray-200 rounded-[6px] bg-white hover:border-gray-300 mb-1 shadow-sm dark:bg-gray-900 dark:border-gray-700">
+    <header
+      className="cursor-pointer bg-white border-b-background px-2 py-1 rounded-[6px] dark:bg-gray-900"
+      onClick={onToggle}
+    >
+      <div className="flex justify-between items-center m-2 rounded-[6px]">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-gray-100 rounded-[6px] dark:bg-gray-800 flex items-center justify-center">
+            <Icon className={`w-4 h-4 ${iconClassname}`} />
+          </div>
+          <div className="ml-1.5 flex flex-col">
+            <h3 className="text-[14px] text-gray-900 dark:text-indigo-300 font-semibold">
+              {title}
+            </h3>
+          </div>
+        </div>
+        <MdKeyboardArrowDown
+          className={`w-6 h-6 transform transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          style={{ fill: "gray" }}
+        />
+      </div>
+    </header>
+    {isOpen && (
+      <>
+        <hr className="border-t border-gray-200 my-0 dark:border-gray-700" />
+        <div className="px-4 py-2 flex flex-col gap-2">{children}</div>
+      </>
+    )}
+  </div>
+)
+
 const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }) => {
   const { config, setConfig } = useWorkflowStore()
   const { llmProviders, ttsOptions, sttModels, loading } = useLLMConfig()
   const ttsProviders = (ttsOptions as any) as any[]
+
+  // Collapsible sections state
+  const [expandedSections, setExpandedSections] = useState({
+    llm: true,
+    tts: true,
+    stt: true,
+    other: true
+  })
 
   // LLM state
   const [selectedLLMProvider, setSelectedLLMProvider] = useState(config.llm?.provider || '')
@@ -40,6 +99,11 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
   const [sttLanguages, setSTTLanguages] = useState<{ name: string; value: string }[]>([])
   const [selectedSTTLanguage, setSelectedSTTLanguage] = useState(config.stt?.language || '')
 
+  // Other settings state
+  const [maxCallDuration, setMaxCallDuration] = useState(config.other?.maxCallDuration || 1200)
+  const [userAwayTimeout, setUserAwayTimeout] = useState(config.other?.userAwayTimeout || 5)
+  const [backgroundAudio, setBackgroundAudio] = useState(config.other?.backgroundAudio || false)
+
   // Sync config to state when config changes
   useEffect(() => {
     setSelectedLLMProvider(config.llm?.provider || '')
@@ -53,6 +117,15 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
     setSelectedSTTModel(config.stt?.model || '')
     setSelectedSTTLanguage(config.stt?.language || '')
   }, [config])
+
+  // Initialize other settings only when modal opens (no continuous sync to avoid input focus loss)
+  useEffect(() => {
+    if (isOpen) {
+      setMaxCallDuration(config.other?.maxCallDuration || 1200)
+      setUserAwayTimeout(config.other?.userAwayTimeout || 5)
+      setBackgroundAudio(config.other?.backgroundAudio || false)
+    }
+  }, [isOpen])
 
   // LLM models update
   useEffect(() => {
@@ -197,9 +270,24 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
         model: selectedSTTModel,
         language: selectedSTTLanguage,
       },
+      other: {
+        maxCallDuration,
+        userAwayTimeout,
+        backgroundAudio,
+      },
     })
     onClose()
   }
+
+  // Toggle section expansion
+  const toggleSection = (section: 'llm' | 'tts' | 'stt' | 'other') => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }))
+  }
+
+
 
   if (!isOpen) return null
 
@@ -209,42 +297,64 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-medium text-gray-900">Global Configuration</h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClose}
-              className="p-1 h-8 w-8"
-            >
-              <span className="text-xl">×</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button onClick={handleSaveConfig} size="sm">
+                Save
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="p-1 h-8 w-8"
+              >
+                <span className="text-xl">×</span>
+              </Button>
+            </div>
           </div>
           <p className="text-sm text-gray-500">
             Set workflow-level LLM, TTS, and STT configuration. These settings apply to all nodes unless overridden.
           </p>
         </CardHeader>
-        <CardContent className="space-y-6 max-h-[calc(90vh-120px)] overflow-y-auto">
-          {/* LLM Config */}
-          <div className="space-y-2">
-            <h4 className="text-md font-semibold text-gray-800">🤖 LLM Configuration</h4>
-            <TooltipLabel label="LLM Provider" fieldKey="llmProvider" />
-            <SelectionDropdown
-              options={llmProviderOptions}
-              selectedOption={selectedLLMProvider}
-              setOption={setSelectedLLMProvider}
-              loading={loading}
-            />
-            <TooltipLabel label="LLM Model" fieldKey="llmModel" />
-            <SelectionDropdown
-              options={llmModels}
-              selectedOption={selectedLLMModel}
-              setOption={setSelectedLLMModel}
-              loading={loading}
-            />
-          </div>
-          {/* TTS Config */}
-          <div className="space-y-2">
-            <h4 className="text-md font-semibold text-gray-800">🔊 TTS Configuration</h4>
-            <div className="grid grid-cols-2 gap-3">
+        <CardContent className="space-y-2 max-h-[calc(90vh-120px)] overflow-y-auto">
+          {/* Model Config */}
+          <CollapsibleSection
+            title="Model"
+            icon={Bot}
+            isOpen={expandedSections.llm}
+            onToggle={() => toggleSection('llm')}
+            iconClassname="text-blue-600"
+          >
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <TooltipLabel label="Provider" fieldKey="llmProvider" />
+                <SelectionDropdown
+                  options={llmProviderOptions}
+                  selectedOption={selectedLLMProvider}
+                  setOption={setSelectedLLMProvider}
+                  loading={loading}
+                />
+              </div>
+              <div>
+                <TooltipLabel label="Model" fieldKey="llmModel" />
+                <SelectionDropdown
+                  options={llmModels}
+                  selectedOption={selectedLLMModel}
+                  setOption={setSelectedLLMModel}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          </CollapsibleSection>
+
+          {/* Voice Config */}
+          <CollapsibleSection
+            title="Voice"
+            icon={Users}
+            isOpen={expandedSections.tts}
+            onToggle={() => toggleSection('tts')}
+            iconClassname="text-green-600"
+          >
+            <div className="grid grid-cols-2 gap-2">
               <div>
                 <TooltipLabel label="Provider" fieldKey="ttsProvider" />
                 <SelectionDropdown
@@ -264,7 +374,7 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <div>
                 <TooltipLabel label="Language" fieldKey="ttsLanguage" />
                 <SelectionDropdown
@@ -291,11 +401,17 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
               setOption={setSelectedTTSVoice}
               loading={loading}
             />
-          </div>
-          {/* STT Config */}
-          <div className="space-y-2">
-            <h4 className="text-md font-semibold text-gray-800">🎙️ STT Configuration</h4>
-            <div className="grid grid-cols-2 gap-3">
+          </CollapsibleSection>
+
+          {/* Transcriber Config */}
+          <CollapsibleSection
+            title="Transcriber"
+            icon={Mic}
+            isOpen={expandedSections.stt}
+            onToggle={() => toggleSection('stt')}
+            iconClassname="text-purple-600"
+          >
+            <div className="grid grid-cols-2 gap-2">
               <div>
                 <TooltipLabel label="Provider" fieldKey="sttProvider" />
                 <SelectionDropdown
@@ -322,15 +438,92 @@ const GlobalConfigModal: React.FC<GlobalConfigModalProps> = ({ isOpen, onClose }
               setOption={setSelectedSTTLanguage}
               loading={loading}
             />
-          </div>
-          <div className="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-200">
-            <Button variant="secondary" size="sm" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveConfig} size="sm">
-              Save
-            </Button>
-          </div>
+          </CollapsibleSection>
+
+          {/* Other Settings Config */}
+          <CollapsibleSection
+            title="Other Settings"
+            icon={Settings}
+            isOpen={expandedSections.other}
+            onToggle={() => toggleSection('other')}
+            iconClassname="text-orange-600"
+          >
+            {/* Call Duration */}
+            <div className="space-y-4">
+              <div>
+                <TooltipLabel 
+                  label="Maximum Call Duration (seconds)" 
+                  fieldKey="MaxCallDuration" 
+                  className="font-semibold"
+                />
+                <input
+                  type="number"
+                  min="20"
+                  max="3600"
+                  value={maxCallDuration}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (!isNaN(value)) {
+                      setMaxCallDuration(value);
+                    }
+                  }}
+                  className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm"
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+                  Default: 1200 seconds (20 minutes)
+                </p>
+              </div>
+
+              {/* User Away Timeout */}
+              <div>
+                <TooltipLabel 
+                  label="User Away Timeout (seconds)" 
+                  fieldKey="UserAwayTimeout" 
+                  className="font-semibold"
+                />
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={userAwayTimeout}
+                  onChange={(e) => {
+                    const value = parseInt(e.target.value);
+                    if (!isNaN(value)) {
+                      setUserAwayTimeout(value);
+                    }
+                  }}
+                  className="w-full max-w-xs p-2 rounded-[6px] border border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm"
+                />
+                <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+                  Default: 5 seconds
+                </p>
+              </div>
+
+              {/* Background Audio */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
+                    Background Audio
+                  </h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-300">
+                    Enable background audio during calls
+                  </p>
+                </div>
+                <div
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
+                    backgroundAudio ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-700"
+                  }`}
+                  onClick={() => setBackgroundAudio(!backgroundAudio)}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-900 transition-transform ${
+                      backgroundAudio ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </div>
+              </div>
+            </div>
+          </CollapsibleSection>
         </CardContent>
       </Card>
     </div>

@@ -25,6 +25,11 @@ interface WorkflowData {
       model: string;
       language: string;
     };
+    other?: {
+      maxCallDuration: number;
+      userAwayTimeout: number;
+      backgroundAudio: boolean;
+    };
   };
 }
 

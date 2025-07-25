@@ -62,6 +62,7 @@ interface APINodeData extends BaseNodeData {
   response?: any
   selectedApiId?: string // ID of the selected API from apiTool
   selectedApi?: any // Full API data from apiTool
+  preFetchRequired?: boolean // Toggle for pre-fetch requirement
 }
 
 interface ConditionalNodeData extends BaseNodeData {
@@ -114,6 +115,11 @@ interface WorkflowState {
       provider: string
       model: string
       language: string
+    }
+    other?: {
+      maxCallDuration: number
+      userAwayTimeout: number
+      backgroundAudio: boolean
     }
   }
   
@@ -237,6 +243,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           promptToExtractVariable: '',
           params: [],
           response: {},
+          preFetchRequired: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -545,7 +552,8 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
                 params: api.params,
                 response: api.response,
                 variableToExtract: api.variableToExtract,
-                promptToExtractVariable: api.promptToExtractVariable
+                promptToExtractVariable: api.promptToExtractVariable,
+                preFetchRequired: (node.data as APINodeData).preFetchRequired || false // Preserve existing preFetchRequired value
               } 
             }
           : node

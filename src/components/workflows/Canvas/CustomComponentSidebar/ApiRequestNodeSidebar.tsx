@@ -57,6 +57,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
   const [response, setResponse] = useState({})
   const [variableToExtract, setVariableToExtract] = useState("")
   const [promptToExtractVariable, setPromptToExtractVariable] = useState("")
+  const [preFetchRequired, setPreFetchRequired] = useState(false)
 
   if (!selectedNode) {
     return null
@@ -97,6 +98,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
       setResponse(apiData.response || {})
       setVariableToExtract(apiData.variableToExtract || "")
       setPromptToExtractVariable(apiData.promptToExtractVariable || "")
+      setPreFetchRequired(apiData.preFetchRequired || false)
     }
   }, [selectedNode?.id]) // Only trigger when node ID changes, not the entire node object
 
@@ -114,13 +116,14 @@ const ApiRequestNodeSidebar: React.FC = () => {
           params: paramsArrayToApi(params),
           response,
           variableToExtract,
-          promptToExtractVariable
+          promptToExtractVariable,
+          preFetchRequired
         })
       }, 500) // Increased timeout to prevent rapid updates
 
       return () => clearTimeout(timeout)
     }
-  }, [apiName, description, endpoint, method, headers, urlParams, params, response, variableToExtract, promptToExtractVariable, selectedNode])
+  }, [apiName, description, endpoint, method, headers, urlParams, params, response, variableToExtract, promptToExtractVariable, preFetchRequired, selectedNode])
 
 
 
@@ -225,6 +228,36 @@ const ApiRequestNodeSidebar: React.FC = () => {
             rows={2}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
+        </div>
+
+        {/* Pre-fetch Required Toggle - Prominent Placement */}
+        <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1">
+              <label className="block text-sm font-semibold text-orange-800 mb-1">
+                Pre-fetch Required
+              </label>
+              <p className="text-xs text-orange-600">
+                Enable this if the API needs to be called before the main workflow execution
+              </p>
+            </div>
+            <div className="ml-4">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={preFetchRequired}
+                  onChange={(e) => setPreFetchRequired(e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+              </label>
+            </div>
+          </div>
+          {preFetchRequired && (
+            <div className="mt-3 p-2 bg-orange-100 border border-orange-300 rounded text-xs text-orange-700">
+              <strong>⚠️ Note:</strong> This API will be executed before the main workflow begins.
+            </div>
+          )}
         </div>
 
         <div>

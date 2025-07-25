@@ -37,6 +37,11 @@ export async function POST(req: NextRequest) {
           provider: 'Deepgram',
           model: 'nova-2',
           language: 'en-US'
+        },
+        other: {
+          maxCallDuration: 1200,
+          userAwayTimeout: 5,
+          backgroundAudio: false
         }
       },
       createdAt: new Date(),
