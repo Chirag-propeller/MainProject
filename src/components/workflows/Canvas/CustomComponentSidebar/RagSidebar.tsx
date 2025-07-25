@@ -1,15 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useWorkflowStore } from '@/store/workflowStore';
 import { Button } from '@/components/ui/button';
-import { Upload, Trash2, Download } from 'lucide-react';
+import { Upload, Trash2, Download, X } from 'lucide-react';
 import VariableExtractSection from './VariableExtractSection';
 
 const RagSidebar: React.FC = () => {
-  const { selectedNode, updateNode, updateNodeGlobal, currentWorkflowId } = useWorkflowStore();
+  const { selectedNode, updateNode, updateNodeGlobal, currentWorkflowId, setSelectedNode } = useWorkflowStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setSelectedNode(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setSelectedNode])
 
   if (!selectedNode || selectedNode.data.type !== 'RAG') return null;
   const data = selectedNode.data;
@@ -119,12 +134,25 @@ const RagSidebar: React.FC = () => {
   };
 
   return (
-    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">RAG Node Properties</h2>
-        <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
-          <strong>ID:</strong> {selectedNode.id} (unchangeable)
+    <div 
+      ref={sidebarRef}
+      className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 pt-0 overflow-y-auto rounded-lg shadow-lg scrollbar-hide"
+    >
+      <div className="mb-4 sticky top-0 pt-2 bg-white z-10 flex items-center justify-between">
+        <div className="">  
+        <h2 className="text-xl font-bold text-gray-800">RAG Node Properties</h2>
+        <div className="text-sm text-gray-500 rounded-lg mb-2">
+          <strong>ID:</strong> {selectedNode.id}
         </div>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setSelectedNode(null)}
+          className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1"
+        >
+          <X className="w-4 h-4" />
+        </Button>
       </div>
       <div className="space-y-6">
         {/* Name */}

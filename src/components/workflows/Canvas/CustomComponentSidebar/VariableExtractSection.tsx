@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
 
@@ -13,6 +13,24 @@ const VariableExtractSection: React.FC<VariableExtractSectionProps> = ({
 }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newVariable, setNewVariable] = useState({ name: '', description: '' });
+
+  // Handle escape key to close form
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showAddForm) {
+        setShowAddForm(false);
+        setNewVariable({ name: '', description: '' });
+      }
+    };
+
+    if (showAddForm) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [showAddForm]);
 
   const handleAddVariable = () => {
     if (newVariable.name.trim() && newVariable.description.trim()) {
@@ -62,7 +80,7 @@ const VariableExtractSection: React.FC<VariableExtractSectionProps> = ({
 
       {/* Add Variable Form */}
       {showAddForm && (
-        <div className="p-4 border border-gray-200 rounded-lg bg-gray-50 space-y-3">
+        <div className="p-4 border border-gray-200 rounded-lg bg-gray-50 space-y-3 relative">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-medium text-gray-700">Add New Variable</h4>
             <Button
@@ -73,6 +91,7 @@ const VariableExtractSection: React.FC<VariableExtractSectionProps> = ({
                 setShowAddForm(false);
                 setNewVariable({ name: '', description: '' });
               }}
+              className="text-gray-500 hover:text-gray-700 hover:bg-gray-200 p-1 rounded"
             >
               <X className="w-4 h-4" />
             </Button>
@@ -88,6 +107,7 @@ const VariableExtractSection: React.FC<VariableExtractSectionProps> = ({
               onChange={(e) => setNewVariable({ ...newVariable, name: e.target.value })}
               placeholder="e.g., customer_name, order_id"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+              autoFocus
             />
           </div>
           
@@ -124,6 +144,9 @@ const VariableExtractSection: React.FC<VariableExtractSectionProps> = ({
             >
               Cancel
             </Button>
+          </div>
+          <div className="text-xs text-gray-500 text-center">
+            Press <kbd className="px-1 py-0.5 bg-gray-200 rounded text-xs">Esc</kbd> to cancel
           </div>
         </div>
       )}

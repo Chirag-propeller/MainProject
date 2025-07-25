@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
 import { Api } from '@/components/apiTool/types'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, X } from 'lucide-react'
 import VariableExtractSection from './VariableExtractSection'
+import TestApiModal from './TestApiModal'
 
 // Helper functions for converting between array and object formats
 const headersObjToArray = (headers: Record<string, string> | undefined): Array<{ id: number; key: string; value: string }> => {
@@ -44,7 +45,8 @@ const paramsArrayToApi = (params: Array<{ id: number; name: string; type: string
   }));
 
 const ApiRequestNodeSidebar: React.FC = () => {
-  const { selectedNode, updateNodeGlobal, updateNode, nodes } = useWorkflowStore()
+  const { selectedNode, updateNodeGlobal, updateNode, nodes, setSelectedNode } = useWorkflowStore()
+  const sidebarRef = useRef<HTMLDivElement>(null)
 
   // Local state for form fields
   const [apiName, setApiName] = useState("")
@@ -58,6 +60,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
   const [variableToExtract, setVariableToExtract] = useState("")
   const [promptToExtractVariable, setPromptToExtractVariable] = useState("")
   const [preFetchRequired, setPreFetchRequired] = useState(false)
+  const [isTestModalOpen, setIsTestModalOpen] = useState(false)
 
   if (!selectedNode) {
     return null
@@ -131,8 +134,8 @@ const ApiRequestNodeSidebar: React.FC = () => {
   const addHeader = () => {
     const newId = Date.now();
     setHeaders((prev) => [
-      ...prev,
       { id: newId, key: "", value: "" },
+      ...prev,
     ]);
   };
 
@@ -149,8 +152,8 @@ const ApiRequestNodeSidebar: React.FC = () => {
   // URL Parameters functions
   const addUrlParam = () => {
     setUrlParams((prev) => [
-      ...prev,
       { id: Date.now(), key: "", value: "" },
+      ...prev,
     ]);
   };
 
@@ -167,7 +170,6 @@ const ApiRequestNodeSidebar: React.FC = () => {
   // Params functions
   const addParam = () => {
     setParams((prev) => [
-      ...prev,
       {
         id: Date.now(),
         name: "",
@@ -175,6 +177,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
         required: false,
         description: "",
       },
+      ...prev,
     ]);
   };
 
@@ -190,16 +193,54 @@ const ApiRequestNodeSidebar: React.FC = () => {
 
   const globalData = selectedNode.data.global || {}
 
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setSelectedNode(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setSelectedNode])
+
   return (
-    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">API Request Node Properties</h2>
-        <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
-          <strong>ID:</strong> {selectedNode.id} (unchangeable)
+    <div 
+      ref={sidebarRef}
+      className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 pt-0 overflow-y-auto rounded-lg shadow-lg scrollbar-hide"
+    >
+      <div className="mb-4 sticky top-0 pt-2 bg-white z-10 flex items-center justify-between">
+        <div className="">  
+        <h2 className="text-xl font-bold text-gray-800">API Request Node Properties</h2>
+        <div className="text-sm text-gray-500 rounded-lg mb-2">
+          <strong>ID:</strong> {selectedNode.id}
         </div>
-        <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg mb-2">
+        
+        </div>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="text-xs items-center justify-center border border-indigo-500 rounded-lg"
+            onClick={() => setIsTestModalOpen(true)}
+          >
+            Test API
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSelectedNode(null)}
+            className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+        {/* <div className="text-sm text-blue-600 bg-blue-50 p-2 rounded-lg mb-2">
           <strong>Note:</strong> This node will make an API request with full configuration
-        </div>
+        </div> */}
       </div>
 
       <div className="space-y-4">
@@ -677,7 +718,19 @@ const ApiRequestNodeSidebar: React.FC = () => {
         </div>
       </div>
 
-
+      {/* Test API Modal */}
+      <TestApiModal
+        isOpen={isTestModalOpen}
+        onClose={() => setIsTestModalOpen(false)}
+        apiData={{
+          name: apiName,
+          endpoint,
+          method,
+          headers: headersArrayToObj(headers),
+          urlParams: headersArrayToObj(urlParams),
+          params: paramsArrayToApi(params)
+        }}
+      />
     </div>
   );
 };

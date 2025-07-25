@@ -1,8 +1,25 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
+import { Button } from '@/components/ui/button'
+import { X } from 'lucide-react'
 
 const EdgeSidebar: React.FC = () => {
-  const { selectedEdge, updateEdge } = useWorkflowStore()
+  const { selectedEdge, updateEdge, setSelectedEdge } = useWorkflowStore()
+  const sidebarRef = useRef<HTMLDivElement>(null)
+
+  // Handle click outside to close sidebar
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        setSelectedEdge(null)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setSelectedEdge])
 
   if (!selectedEdge) {
     return null
@@ -13,14 +30,27 @@ const EdgeSidebar: React.FC = () => {
   }
 
   return (
-    <div className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 overflow-y-auto rounded-lg shadow-lg scrollbar-hide">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Edge Properties</h2>
-        <div className="text-sm text-gray-500 bg-gray-100 p-2 rounded-lg mb-2">
-          <strong>ID:</strong> {selectedEdge.id} (unchangeable)
+    <div 
+      ref={sidebarRef}
+      className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 pt-0 overflow-y-auto rounded-lg shadow-lg scrollbar-hide"
+    >
+      <div className="mb-4 sticky top-0 pt-2 bg-white z-10 flex items-center justify-between">
+        <div className="">  
+        <h2 className="text-xl font-bold text-gray-800">Edge Properties</h2>
+        <div className="text-sm text-gray-500 rounded-lg mb-2">
+          <strong>ID:</strong> {selectedEdge.id}
         </div>
         <div className="text-sm text-gray-500 mb-1">From: {selectedEdge.source}</div>
         <div className="text-sm text-gray-500">To: {selectedEdge.target}</div>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setSelectedEdge(null)}
+          className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1"
+        >
+          <X className="w-4 h-4" />
+        </Button>
       </div>
 
       <div className="space-y-4 text-sm">
