@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, GitBranch, Edit3, Check, X, AudioLines } from 'lucide-react';
+import { ArrowLeft, GitBranch, Edit3, Check, X, AudioLines, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useWorkflowStore } from '@/store/workflowStore';
@@ -22,7 +22,8 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
     globalPrompt, 
     globalNodes, 
     currentWorkflowId,
-    setActiveNode
+    setActiveNode,
+    hasUnsavedChanges
   } = useWorkflowStore();
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(workflowName);
@@ -41,6 +42,11 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
   const handleEditClick = () => {
     setIsEditing(true);
     setEditedName(workflowName);
+  };
+  const handleClearClick = () => {
+      if(confirm('You have unsaved changes. Please save or discard your changes before clearing.')){
+        clearNode();
+      }
   };
 
   const handleSaveClick = async () => {
@@ -128,6 +134,12 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
                   <h1 className="text-lg font-semibold text-gray-900">
                     {workflowName || 'Untitled Workflow'}
                   </h1>
+                  {hasUnsavedChanges && (
+                    <div className="flex items-center gap-1 text-amber-600 bg-amber-50 px-2 py-1 rounded-md text-xs">
+                      <AlertCircle className="w-3 h-3" />
+                      <span>Unsaved</span>
+                    </div>
+                  )}
                   <Button
                     variant="ghost"
                     size="sm"
@@ -145,7 +157,7 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
         {/* Right side: Additional actions (future use) */}
         <div className="flex items-center gap-2">
 
-          <Button variant='ghost' size='sm' className='border-1 rounded-[4px]' onClick={clearNode}>
+          <Button variant='ghost' size='sm' className='border-1 rounded-[4px]' onClick={handleClearClick}>
             Clear All
           </Button>
 
@@ -153,10 +165,11 @@ const WorkflowTopBar: React.FC<WorkflowTopBarProps> = ( {clearNode, handleSave ,
               onClick={handleSave}
               disabled={isLoading}
               size='sm' 
-              className='rounded-[4px]'
+              // className={`rounded-[4px] ${hasUnsavedChanges ? 'bg-amber-600 hover:bg-amber-700' : ''}`}
+              className={`rounded-[4px] `}
               // className='bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-4 py-2 rounded'
           >
-          {isLoading ? 'Saving...' : 'Save Workflow'}
+          {isLoading ? 'Saving...' : hasUnsavedChanges ? 'Save Changes' : 'Save Workflow'}
           </Button>
           <Button
               size='sm' 

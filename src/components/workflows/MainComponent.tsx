@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import SideBar from './Canvas/SideBar'
 import MainCanvas from './Canvas/MainCanvas'
 import ConversationNodeSidebar from './Canvas/CustomComponentSidebar/ConversationNodeSidebar'
@@ -18,6 +18,7 @@ interface MainComponentProps {
 
 const MainComponent = ({ workflowId }: MainComponentProps) => {
   const searchParams = useSearchParams()
+  const pathname = usePathname();
   const { 
     nodes, 
     edges, 
@@ -34,7 +35,9 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
     // autoSave,
     setCurrentWorkflowId,
     initializeUser,
-    updateWorkflowName
+    updateWorkflowName,
+    hasUnsavedChanges,
+    setInitialState
   } = useWorkflowStore()
 
   // Initialize user and load workflow on component mount
@@ -47,13 +50,75 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
       const targetWorkflowId = workflowId || searchParams?.get('workflowId')
       if (targetWorkflowId) {
         setCurrentWorkflowId(targetWorkflowId)
-        loadWorkflow(targetWorkflowId)
+        const result = await loadWorkflow(targetWorkflowId)
+        if (result.success) {
+          // Ensure initial state is set after successful load
+          setTimeout(() => {
+            setInitialState()
+          }, 100)
+        }
+      } else {
+        // If no workflow ID, set initial state for new workflow
+        setTimeout(() => {
+          setInitialState()
+        }, 100)
       }
     }
     
     initialize()
-  }, [loadWorkflow, workflowId, searchParams, setCurrentWorkflowId, initializeUser])
+  }, [loadWorkflow, workflowId, searchParams, setCurrentWorkflowId, initializeUser, setInitialState])
 
+  // Handle page refresh/navigation warnings when there are unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        // Modern approach - just preventDefault is sufficient
+        e.preventDefault()
+        // The return value is ignored in modern browsers, but we keep it for older browsers
+        return 'You have unsaved changes. Are you sure you want to leave?'
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [hasUnsavedChanges])
+  // useEffect(() => {
+  //   // 1. Handler for HARD navigation (reload, close tab, external link)
+  //   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+  //     if (hasUnsavedChanges) {
+  //       e.preventDefault();
+  //       e.returnValue = '';
+  //     }
+  //   };
+  
+  //   // 2. Handler for SOFT navigation (browser back/forward buttons)
+  //   const handlePopState = () => {
+  //     if (hasUnsavedChanges) {
+  //       const confirmed = window.confirm(
+  //         'You have unsaved changes. Are you sure you want to leave?'
+  //       );
+  //       if (!confirmed) {
+  //         // If the user clicks "Cancel", we push the current path back to the history.
+  //         // This effectively cancels the "back" navigation.
+  //         window.history.pushState(null, '', pathname);
+  //       }
+  //     }
+  //   };
+  
+  //   // Add both listeners
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  //   window.addEventListener('popstate', handlePopState);
+  
+  //   // Cleanup function to remove both listeners
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //     window.removeEventListener('popstate', handlePopState);
+  //   };
+  // }, [hasUnsavedChanges, pathname]); // Depend on both state and current path
+  
   // Auto-save when nodes or edges change
   // useEffect(() => {
   //   if (nodes.length > 0 || edges.length > 0) {
@@ -172,7 +237,12 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
         
         {/* Status info */}
         <div className='absolute bottom-4 left-4 bg-white p-3 rounded z-20 text-sm border shadow'>
-          <div>Nodes: {nodes.length} | Edges: {edges.length} | Global: {globalNodes.length}</div>
+          <div className="flex items-center gap-2">
+            <span>Nodes: {nodes.length} | Edges: {edges.length} | Global: {globalNodes.length}</span>
+            {hasUnsavedChanges && (
+              <span className="text-amber-600 font-medium">• Unsaved</span>
+            )}
+          </div>
           {lastSaved && (
             <div className="text-xs text-gray-500">
               Last saved: {lastSaved.toLocaleTimeString()}

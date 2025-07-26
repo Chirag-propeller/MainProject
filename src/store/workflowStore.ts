@@ -2,6 +2,7 @@ import { create } from 'zustand'
 // import { temporal } from 'zustand/middleware' 
 import { Node, Edge, Connection, applyNodeChanges, applyEdgeChanges } from 'reactflow'
 import { saveWorkflow, loadWorkflow as loadWorkflowUtil, convertMongoDataToFlow, createWorkflow } from '@/utils/workflow'
+import _ from 'lodash'
 
 // Base interfaces for extensible node types
 interface BaseNodeData {
@@ -148,6 +149,18 @@ interface WorkflowState {
   currentWorkflowId: string | null
   workflowName: string
   
+  // Unsaved changes tracking
+  hasUnsavedChanges: boolean
+  initialState: {
+    nodes: Node<NodeData>[]
+    edges: Edge<EdgeData>[]
+    globalPrompt: string
+    globalNodes: string[]
+    globalVariables: Record<string, string>
+    config: WorkflowState['config']
+    workflowName: string
+  } | null
+  
   // Setters
   setNodes: (nodes: Node<NodeData>[]) => void
   setEdges: (edges: Edge<EdgeData>[]) => void
@@ -164,6 +177,11 @@ interface WorkflowState {
   setActiveNode: (activeNode: string | null) => void
   setNodeData: (nodeId: string, data: NodeData) => void;
   
+  // Unsaved changes functions
+  setInitialState: () => void
+  checkForUnsavedChanges: () => void
+  setHasUnsavedChanges: (hasChanges: boolean) => void
+  
   // Workflow creation
   createWorkflow: (name?: string) => Promise<any>
   
@@ -175,6 +193,7 @@ interface WorkflowState {
   updateNode: (nodeId: string, data: Partial<NodeData> | Record<string, any>) => void
   updateNodeGlobal: (nodeId: string, globalData: Record<string, any>) => void
   selectApiForNode: (nodeId: string, api: any) => void
+  deleteNode: (nodeId: string) => void
   clearNodes: () => void
   
   // Edge actions
@@ -416,19 +435,44 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   workflowName: '',
   activeNode: null,
   
+  // Unsaved changes tracking
+  hasUnsavedChanges: false,
+  initialState: null,
+  
   // Setters
-  setNodes: (nodes) => set({ nodes }),
-  setEdges: (edges) => set({ edges }),
-  setGlobalPrompt: (globalPrompt) => set({ globalPrompt }),
-  setGlobalNodes: (globalNodes) => set({ globalNodes }),
-  setGlobalVariables: (globalVariables: Record<string, string>) => set({ globalVariables }),
-  setConfig: (config) => set({ config }),
+  setNodes: (nodes) => {
+    set({ nodes });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  setEdges: (edges) => {
+    set({ edges });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  setGlobalPrompt: (globalPrompt) => {
+    set({ globalPrompt });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  setGlobalNodes: (globalNodes) => {
+    set({ globalNodes });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  setGlobalVariables: (globalVariables: Record<string, string>) => {
+    set({ globalVariables });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  setConfig: (config) => {
+    set({ config });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
   setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null }),
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
   setIsGlobalPromptOpen: (isGlobalPromptOpen) => set({ isGlobalPromptOpen }),
   setUserId: (userId) => set({ userId }),
   setCurrentWorkflowId: (currentWorkflowId) => set({ currentWorkflowId }),
-  setWorkflowName: (workflowName) => set({ workflowName }),
+  setWorkflowName: (workflowName) => {
+    set({ workflowName });
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
   setActiveNode: (activeNode) => set({ activeNode }),
   setNodeData: (nodeId, data) => {
     set((state) => {
@@ -441,7 +485,47 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         selectedNode: updatedSelected || state.selectedNode,
       };
     });
-    // setTimeout(() => get().autoSave(), 500);
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  // Unsaved changes functions
+  setInitialState: () => {
+    const currentState = {
+      nodes: _.cloneDeep(get().nodes),
+      edges: _.cloneDeep(get().edges),
+      globalPrompt: get().globalPrompt,
+      globalNodes: _.cloneDeep(get().globalNodes),
+      globalVariables: _.cloneDeep(get().globalVariables),
+      config: _.cloneDeep(get().config),
+      workflowName: get().workflowName,
+    };
+    
+    set({
+      initialState: currentState,
+      hasUnsavedChanges: false, // Always reset to false when setting initial state
+    });
+  },
+  checkForUnsavedChanges: () => {
+    const currentState = {
+      nodes: _.cloneDeep(get().nodes),
+      edges: _.cloneDeep(get().edges),
+      globalPrompt: get().globalPrompt,
+      globalNodes: _.cloneDeep(get().globalNodes),
+      globalVariables: _.cloneDeep(get().globalVariables),
+      config: _.cloneDeep(get().config),
+      workflowName: get().workflowName,
+    };
+    const initial = get().initialState;
+    
+    if (initial) {
+      const hasChanges = !_.isEqual(currentState, initial);
+      set({ hasUnsavedChanges: hasChanges });
+    } else {
+      // If no initial state is set, assume no changes
+      set({ hasUnsavedChanges: false });
+    }
+  },
+  setHasUnsavedChanges: (hasChanges: boolean) => {
+    set({ hasUnsavedChanges: hasChanges });
   },
   // Workflow creation
   createWorkflow: async (name?: string) => {
@@ -462,8 +546,15 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           globalVariables: {},
           config: {},
           selectedNode: null,
-          selectedEdge: null
+          selectedEdge: null,
+          hasUnsavedChanges: false // Reset unsaved changes when creating new workflow
         })
+        
+        // Set the baseline after creating new workflow
+        setTimeout(() => {
+          get().setInitialState()
+        }, 0)
+        
         console.log('Workflow created successfully!')
         return result
       } else {
@@ -495,7 +586,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
   
   // Node actions
-  addNode: (nodeType) => {
+  addNode: (nodeType: string) => {
     const { nodes, nodeCounter } = get()
     const nodeCount = nodes.length
     
@@ -509,6 +600,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     }))
     
     console.log('Creating new node:', newNode)
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   updateNode: (nodeId, data) => {
@@ -525,8 +617,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       }
     })
     
-    // Trigger auto-save after updating node
-    // setTimeout(() => get().autoSave(), 500)
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   updateNodeGlobal: (nodeId, globalData) => {
@@ -561,8 +652,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       }
     })
     
-    // Trigger auto-save after updating node global data
-    // setTimeout(() => get().autoSave(), 500)
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   selectApiForNode: (nodeId, api) => {
@@ -599,21 +689,26 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       }
     })
     
-    // Trigger auto-save after selecting API
-    // setTimeout(() => get().autoSave(), 500)
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  
+  deleteNode: (nodeId: string) => {
+    set((state) => ({
+      nodes: state.nodes.filter(node => node.id !== nodeId),
+      edges: state.edges.filter(edge => edge.source !== nodeId && edge.target !== nodeId),
+      selectedNode: state.selectedNode?.id === nodeId ? null : state.selectedNode,
+    }))
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   clearNodes: () => {
-    set({
-      nodes: [],
-      edges: [],
-      globalNodes: [],
-      selectedNode: null,
-      selectedEdge: null,
-      nodeCounter: 1,
-      edgeCounter: 1
+    set({ 
+      nodes: [], 
+      edges: [], 
+      selectedNode: null, 
+      selectedEdge: null 
     })
-    console.log('Clearing all nodes and edges')
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   // Edge actions
@@ -635,6 +730,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       edges: [...state.edges, newEdge],
       edgeCounter: state.edgeCounter + 1
     }))
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   updateEdge: (edgeId, data) => {
@@ -650,6 +746,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         selectedEdge: updatedSelected || state.selectedEdge
       }
     })
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   // Workflow actions
@@ -686,6 +783,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       
       if (result.success) {
         set({ lastSaved: new Date() })
+        get().setInitialState() // Set the baseline after successful save
         console.log('Workflow saved successfully!')
         return result
       } else {
@@ -719,8 +817,15 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           globalVariables: result.data.globalVariables || {},
           config: result.data.config || {},
           selectedNode: null,
-          selectedEdge: null
+          selectedEdge: null,
+          hasUnsavedChanges: false // Reset unsaved changes when loading
         })
+        
+        // Set the baseline after successful load - use setTimeout to ensure state is updated first
+        setTimeout(() => {
+          get().setInitialState()
+        }, 0)
+        
         console.log('Workflow loaded successfully!')
         return result
       } else {
@@ -785,25 +890,41 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   // ReactFlow handlers
   onNodesChange: (changes) => {
-    const { nodes } = get()
-    
-    // Only log important changes, not every drag event
-    const importantChanges = changes.filter((c: any) => c.type !== 'position')
-    if (importantChanges.length > 0) {
-      console.log('onNodesChange (important changes):', importantChanges)
-    }
-    
-    set({ nodes: applyNodeChanges(changes, nodes) })
+    set((state) => ({ 
+      nodes: applyNodeChanges(changes, state.nodes) 
+    }))
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
   onEdgesChange: (changes) => {
-    const { edges } = get()
-    set({ edges: applyEdgeChanges(changes, edges) })
+    set((state) => ({ 
+      edges: applyEdgeChanges(changes, state.edges) 
+    }))
+    setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
   
-  onConnect: (params) => {
-    if ('source' in params && 'target' in params) {
-      get().addEdge(params as Connection)
+  onConnect: (params: Connection | Edge) => {
+    if ('source' in params && 'target' in params && !('id' in params)) {
+      // This is a Connection
+      const connection = params as Connection
+      const { edgeCounter } = get()
+      const newEdge: Edge<EdgeData> = {
+        id: `edge-${edgeCounter}`,
+        source: connection.source!,
+        target: connection.target!,
+        sourceHandle: connection.sourceHandle || null,
+        targetHandle: connection.targetHandle || null,
+        type: 'custom',
+        data: {
+          label: `Edge ${edgeCounter}`,
+        }
+      }
+      
+      set((state) => ({
+        edges: [...state.edges, newEdge],
+        edgeCounter: state.edgeCounter + 1,
+      }))
+      setTimeout(() => get().checkForUnsavedChanges(), 100);
     }
   },
   
