@@ -13,6 +13,7 @@ import ConversationNode from './CustomNodes/ConversationNode'
 import EndCallNode from './CustomNodes/EndCallNode'
 import ApiRequestNode from './CustomNodes/ApiRequestNode'
 import RagNode from './CustomNodes/RagNode';
+import TransferNode from './CustomNodes/TransferNode';
 import LabeledEdge from './CustomEdges/LabeledEdge'
 import { useWorkflowStore } from '@/store/workflowStore'
 
@@ -33,6 +34,7 @@ const MainCanvas: React.FC = () => {
     endcall: EndCallNode,
     api: ApiRequestNode,
     rag: RagNode,
+    transfer: TransferNode,
   }), []);
 
   // Memoize edgeTypes to prevent React Flow warnings

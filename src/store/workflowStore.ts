@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 // import { temporal } from 'zustand/middleware' 
 import { Node, Edge, Connection, applyNodeChanges, applyEdgeChanges } from 'reactflow'
-import { saveWorkflow, loadWorkflow as loadWorkflowUtil, convertMongoDataToFlow, autoSaveWorkflow, createWorkflow } from '@/utils/workflow'
+import { saveWorkflow, loadWorkflow as loadWorkflowUtil, convertMongoDataToFlow, createWorkflow } from '@/utils/workflow'
 
 // Base interfaces for extensible node types
 interface BaseNodeData {
@@ -65,6 +65,12 @@ interface APINodeData extends BaseNodeData {
   preFetchRequired?: boolean // Toggle for pre-fetch requirement
 }
 
+interface TransferNodeData extends BaseNodeData {
+  phoneNumber: string
+  type: 'transfer'
+  transferMessage?: string
+}
+
 interface ConditionalNodeData extends BaseNodeData {
   condition: string
   type: 'Conditional'
@@ -84,7 +90,7 @@ interface RagNodeData extends BaseNodeData {
 }
 
 // Union type for all possible node data types
-type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCallNodeData | RagNodeData;
+type NodeData = ConversationNodeData | APINodeData | ConditionalNodeData | EndCallNodeData | RagNodeData | TransferNodeData;
 
 interface EdgeData {
   label?: string
@@ -179,7 +185,7 @@ interface WorkflowState {
   saveWorkflow: () => Promise<any>
   loadWorkflow: (workflowId: string) => Promise<any>
   updateWorkflowName: (name: string) => Promise<any>
-  autoSave: () => void
+  // autoSave: () => void
   
   // ReactFlow handlers
   onNodesChange: (changes: any) => void
@@ -336,6 +342,32 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
         style: baseStyle,
       }
     
+    case 'Transfer Node':
+    case 'transfer':
+      return {
+        id: `N${nodeCounter}`,
+        type: 'transfer',
+        position: basePosition,
+        data: {
+          name: 'Transfer Node',
+          type: 'transfer',
+          phoneNumber: '',
+          transferMessage: 'Transferring your call...',
+          global: {
+            isGlobal: false,
+            pathwayCondition: '',
+            pathwayDescription: '',
+            autoGoBackToPrevious: true,
+            createPathwayLabelToPrevious: false,
+            previousNodePathwayLabel: '',
+            previousNodePathwayDescription: '',
+            redirectToNode: false,
+            redirectTargetNodeId: ''
+          }
+        } as TransferNodeData,
+        style: baseStyle,
+      }
+    
     default:
       // Default to conversation node
       return {
@@ -409,7 +441,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         selectedNode: updatedSelected || state.selectedNode,
       };
     });
-    setTimeout(() => get().autoSave(), 500);
+    // setTimeout(() => get().autoSave(), 500);
   },
   // Workflow creation
   createWorkflow: async (name?: string) => {
@@ -494,7 +526,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     })
     
     // Trigger auto-save after updating node
-    setTimeout(() => get().autoSave(), 500)
+    // setTimeout(() => get().autoSave(), 500)
   },
   
   updateNodeGlobal: (nodeId, globalData) => {
@@ -530,7 +562,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     })
     
     // Trigger auto-save after updating node global data
-    setTimeout(() => get().autoSave(), 500)
+    // setTimeout(() => get().autoSave(), 500)
   },
   
   selectApiForNode: (nodeId, api) => {
@@ -568,7 +600,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     })
     
     // Trigger auto-save after selecting API
-    setTimeout(() => get().autoSave(), 500)
+    // setTimeout(() => get().autoSave(), 500)
   },
   
   clearNodes: () => {
@@ -734,21 +766,21 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   },
   
   autoSave: () => {
-    const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, globalVariables, currentWorkflowId, config } = get()
+    // const { nodes, edges, nodeCounter, edgeCounter, globalPrompt, globalNodes, globalVariables, currentWorkflowId, config } = get()
     
-    if (currentWorkflowId && (nodes.length > 0 || edges.length > 0)) {
-      autoSaveWorkflow({
-        workflowId: currentWorkflowId,
-        nodes,
-        edges,
-        nodeCounter,
-        edgeCounter,
-        globalPrompt,
-        globalNodes,
-        globalVariables,
-        config
-      })
-    }
+    // if (currentWorkflowId && (nodes.length > 0 || edges.length > 0)) {
+    //   autoSaveWorkflow({
+    //     workflowId: currentWorkflowId,
+    //     nodes,
+    //     edges,
+    //     nodeCounter,
+    //     edgeCounter,
+    //     globalPrompt,
+    //     globalNodes,
+    //     globalVariables,
+    //     config
+    //   })
+    // }
   },
   
   // ReactFlow handlers

@@ -144,6 +144,8 @@ const WorkflowSchema = new Schema<IWorkflow>({
       knowledgeBaseAttached: { type: Boolean, default: false },
       knowledgeBaseUrl: { type: String, default: '' },
       whenToCallRag: { type: String, default: '' },
+      phoneNumber: { type: String, default: '' },
+      transferMessage: { type: String, default: '' },
       variables: { 
         type: Object, 
         default: {} 

@@ -7,6 +7,7 @@ import ConversationNodeSidebar from './Canvas/CustomComponentSidebar/Conversatio
 import ApiRequestNodeSidebar from './Canvas/CustomComponentSidebar/ApiRequestNodeSidebar'
 import EndCallNodeSidebar from './Canvas/CustomComponentSidebar/EndCallNodeSidebar'
 import RagSidebar from './Canvas/CustomComponentSidebar/RagSidebar'
+import TransferNodeSidebar from './Canvas/CustomComponentSidebar/TransferNodeSidebar'
 import EdgeSidebar from './Canvas/CustomComponentSidebar/EdgeSidebar'
 import WorkflowTopBar from './WorkflowTopBar'
 import { useWorkflowStore } from '@/store/workflowStore'
@@ -30,7 +31,7 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
     loadWorkflow,
     saveWorkflow,
     clearNodes,
-    autoSave,
+    // autoSave,
     setCurrentWorkflowId,
     initializeUser,
     updateWorkflowName
@@ -54,26 +55,26 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
   }, [loadWorkflow, workflowId, searchParams, setCurrentWorkflowId, initializeUser])
 
   // Auto-save when nodes or edges change
-  useEffect(() => {
-    if (nodes.length > 0 || edges.length > 0) {
-      autoSave()
-    }
-  }, [nodes, edges, autoSave])
+  // useEffect(() => {
+  //   if (nodes.length > 0 || edges.length > 0) {
+  //     autoSave()
+  //   }
+  // }, [nodes, edges, autoSave])
 
   // Auto-save every 5 minutes
-  useEffect(() => {
-    const autoSaveInterval = setInterval(() => {
-      if (nodes.length > 0 || edges.length > 0) {
-        saveWorkflow().then(() => {
-          console.log('Auto-saved workflow at:', new Date().toLocaleTimeString())
-        }).catch(error => {
-          console.error('Auto-save failed:', error)
-        })
-      }
-    }, 5 * 60 * 1000) // 5 minutes in milliseconds
+  // useEffect(() => {
+  //   const autoSaveInterval = setInterval(() => {
+  //     if (nodes.length > 0 || edges.length > 0) {
+  //       saveWorkflow().then(() => {
+  //         console.log('Auto-saved workflow at:', new Date().toLocaleTimeString())
+  //       }).catch(error => {
+  //         console.error('Auto-save failed:', error)
+  //       })
+  //     }
+  //   }, 5 * 60 * 1000) // 5 minutes in milliseconds
 
-    return () => clearInterval(autoSaveInterval)
-  }, [saveWorkflow, nodes.length, edges.length])
+  //   return () => clearInterval(autoSaveInterval)
+  // }, [saveWorkflow, nodes.length, edges.length])
 
   const handleManualSave = async () => {
     try {
@@ -163,6 +164,7 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
               {selectedNode && selectedNode.data.type === 'API' && <ApiRequestNodeSidebar />}
               {selectedNode && selectedNode.data.type === 'endcall' && <EndCallNodeSidebar />}
               {selectedNode && selectedNode.data.type === 'RAG' && <RagSidebar />}
+              {selectedNode && selectedNode.data.type === 'transfer' && <TransferNodeSidebar />}
               {selectedEdge && <EdgeSidebar />}
             </div>
           )}

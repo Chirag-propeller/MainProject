@@ -182,7 +182,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => {
           <SidebarLink
             key={item.href}
             href={item.href}
-            name={collapsed ? "" : item.name}
+            name={item.name}
             icon={item.icon}
             collapsed={collapsed}
           />

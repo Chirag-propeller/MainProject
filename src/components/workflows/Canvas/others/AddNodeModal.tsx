@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { useWorkflowStore } from '@/store/workflowStore'
-import { MessageSquare, PhoneOff, Globe, X, Book } from 'lucide-react'
+import { MessageSquare, PhoneOff, Globe, X, Book, PhoneForwarded } from 'lucide-react'
 
 interface AddNodeModalProps {
   isOpen: boolean
@@ -64,6 +64,17 @@ const AddNodeModal: React.FC<AddNodeModalProps> = ({ isOpen, onClose }) => {
       borderColor: 'border-red-200',
       textColor: 'text-red-600',
       hoverColor: 'hover:bg-red-100'
+    },
+    {
+      type: 'Transfer Node',
+      title: 'Transfer Node',
+      description: 'Transfer the call to another phone number',
+      icon: PhoneForwarded,
+      color: 'orange',
+      bgColor: 'bg-orange-50',
+      borderColor: 'border-orange-200',
+      textColor: 'text-orange-600',
+      hoverColor: 'hover:bg-orange-100'
     }
   ]
 

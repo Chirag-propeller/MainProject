@@ -18,9 +18,11 @@ const SidebarLink = ({
   const pathname = usePathname();
   const isActive = pathname?.includes(href);
 
+
   return (
     <Link
       href={href}
+      title={collapsed ? name : undefined}
       className={`flex group items-center transition-colors ${
         !collapsed ? "gap-2 p-1 rounded-[6px]" : "gap-2 p-2 pl-3 rounded-full"
       } 
