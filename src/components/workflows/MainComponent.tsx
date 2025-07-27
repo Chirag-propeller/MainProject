@@ -170,40 +170,7 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
     }
   }
 
-  const printSystemData = () => {
-    const systemData = {
-      nodes,
-      edges,
-      globalPrompt,
-      globalNodes,
-      metadata: {
-        nodeCount: nodes.length,
-        edgeCount: edges.length,
-        globalNodeCount: globalNodes.length,
-        exportedAt: new Date().toISOString(),
-        lastSaved: lastSaved?.toISOString()
-      }
-    }
 
-    console.log('=== COMPLETE SYSTEM DATA ===')
-    console.log(JSON.stringify(systemData, null, 2))
-    console.log('=== SUMMARY ===')
-    console.log(`Nodes: ${nodes.length}`)
-    console.log(`Edges: ${edges.length}`)
-    console.log(`Global Nodes: ${globalNodes.length}`)
-    
-    // Also copy to clipboard if possible
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(JSON.stringify(systemData, null, 2)).then(() => {
-        console.log('System data copied to clipboard!')
-        alert('Complete system data (nodes + edges) copied to clipboard!')
-      }).catch(() => {
-        alert('System data printed to console (clipboard failed)')
-      })
-    } else {
-      alert('System data printed to console')
-    }
-  }
 
   if (isLoading) {
     return (
@@ -248,6 +215,7 @@ const MainComponent = ({ workflowId }: MainComponentProps) => {
               Last saved: {lastSaved.toLocaleTimeString()}
             </div>
           )}
+
         </div>
       </div>
     </div>

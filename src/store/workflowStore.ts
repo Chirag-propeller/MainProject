@@ -199,6 +199,7 @@ interface WorkflowState {
   // Edge actions
   addEdge: (connection: Connection) => void
   updateEdge: (edgeId: string, data: Partial<EdgeData>) => void
+  fixEdgeTypes: () => void
   
   // Workflow actions
   saveWorkflow: () => Promise<any>
@@ -821,8 +822,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
           hasUnsavedChanges: false // Reset unsaved changes when loading
         })
         
-        // Set the baseline after successful load - use setTimeout to ensure state is updated first
+        // Fix edge types and set the baseline after successful load
         setTimeout(() => {
+          get().fixEdgeTypes()
           get().setInitialState()
         }, 0)
         
@@ -914,9 +916,11 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
         target: connection.target!,
         sourceHandle: connection.sourceHandle || null,
         targetHandle: connection.targetHandle || null,
-        type: 'custom',
+        type: 'labeled',
         data: {
           label: `Edge ${edgeCounter}`,
+          labelPosition: 'center',
+          pathOffset: 0
         }
       }
       
@@ -926,6 +930,28 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
       }))
       setTimeout(() => get().checkForUnsavedChanges(), 100);
     }
+  },
+
+  // Fix existing edges that might have wrong type
+  fixEdgeTypes: () => {
+    set((state) => {
+      const updatedEdges = state.edges.map((edge) => {
+        if (edge.type !== 'labeled') {
+          return {
+            ...edge,
+            type: 'labeled',
+            data: {
+              label: edge.data?.label || 'Custom Edge',
+              labelPosition: edge.data?.labelPosition || 'center',
+              pathOffset: edge.data?.pathOffset || 0
+            }
+          }
+        }
+        return edge
+      })
+      
+      return { edges: updatedEdges }
+    })
   },
   
   onNodeClick: (event, node) => {
