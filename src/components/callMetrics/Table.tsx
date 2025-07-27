@@ -71,6 +71,7 @@ function CustomAudioPlayer({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -181,6 +182,28 @@ function CustomAudioPlayer({
     return `${min}:${sec}`;
   };
 
+  // Download function that opens the file URL in a new tab
+  const handleDownload = () => {
+    if (!sasUrl) {
+      console.log('No sasUrl available');
+      return;
+    }
+    
+    console.log('Opening download URL in new tab:', sasUrl);
+    setDownloading(true);
+    
+    try {
+      // Open the SAS URL in a new tab - user can then download manually
+      window.open(sasUrl, '_blank', 'noopener,noreferrer');
+      console.log('Opened download URL in new tab');
+    } catch (error: any) {
+      console.error('Failed to open download URL:', error);
+      setError(`Failed to open download URL: ${error?.message || 'Unknown error'}`);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="flex items-center gap-3 rounded-full bg-gray-100 dark:bg-gray-800 px-4 py-1 shadow w-full max-w-[360px]">
@@ -252,16 +275,22 @@ function CustomAudioPlayer({
             )}
           </div>
         </div>
-        <a
+        <button
           title="Download Recording"
-          href={sasUrl || undefined}
-          download={sasUrl ? `call_recording_${callId}.mp3` : undefined}
-          className={`flex items-center justify-center text-green-600 hover:text-green-80 px-2 py-1 text-xs ${!sasUrl ? "pointer-events-none opacity-50" : ""}`}
-          tabIndex={sasUrl ? 0 : -1}
-          aria-disabled={!sasUrl}
+          onClick={handleDownload}
+          disabled={!sasUrl || downloading}
+          className={`flex items-center justify-center px-2 py-1 text-xs transition-colors ${
+            !sasUrl || downloading 
+              ? "text-gray-400 cursor-not-allowed opacity-50" 
+              : "text-green-600 hover:text-green-700"
+          }`}
         >
-          <MdOutlineFileDownload className="w-4 h-4" />
-        </a>
+          {downloading ? (
+            <FaSpinner className="w-4 h-4 animate-spin" />
+          ) : (
+            <MdOutlineFileDownload className="w-4 h-4" />
+          )}
+        </button>
       </div>
       <audio
         ref={audioRef}
@@ -415,7 +444,7 @@ export default function CallAnalysisTable({
             compliance_risk_score: callAnalysis.COMPLIANCE_RISK_SCORE,
             keyword_alert_count: callAnalysis.KEYWORD_ALERT_COUNT,
             pci_dss_sensitive_data_detected:
-              callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
+            callAnalysis.PCI_DSS_SENSITIVE_DATA_DETECTED,
             gdpr_data_request: callAnalysis.GDPR_DATA_REQUEST,
             customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
             interruption_count: callAnalysis.INTERRUPTION_COUNT,
@@ -425,7 +454,8 @@ export default function CallAnalysisTable({
             call_direction: item.call_direction,
             call_duration: call_duration,
             call_type: item.call_type,
-            recording: item.recording,
+            recording: item.recording_url,
+            // recording: "https://storage4mongodbdatabase.blob.core.windows.net/recordings/room-2e5dc428-a5fc-45c0-adb7-4b3328eda4fa.mp3",
             transcript: item.call_transcript,
             llm_cost: Number(item.llm_cost_rupees?.$numberDecimal).toFixed(2),
             stt_cost: Number(item.stt_cost_rupees?.$numberDecimal).toFixed(2),

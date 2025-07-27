@@ -126,6 +126,7 @@ export async function getCallRecordingUrl(container: string, filename: string): 
   const containerClient = blobServiceClient.getContainerClient(container);
   try {
     const blockBlobClient = containerClient.getBlockBlobClient(filename);
+    console.log("container",container,filename)
     if (await blockBlobClient.exists()) {
       const permissions = new BlobSASPermissions();
       permissions.read = true;

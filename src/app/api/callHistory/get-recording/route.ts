@@ -20,7 +20,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const sasUrl = await getCallRecordingUrl(container,filename);
+    let sasUrl = await getCallRecordingUrl(container,filename);
+    // sasUrl = "https://storage4mongodbdatabase.blob.core.windows.net/recordings/my_first_room.mp3.ogg"
 
     if (!sasUrl) {
     return NextResponse.json({ error: "Recording file not found in storage" }, { status: 404 });
