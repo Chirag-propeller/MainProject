@@ -4,6 +4,7 @@ import RagSidebar from './RagSidebar';
 import ApiRequestNodeSidebar from './ApiRequestNodeSidebar';
 import ConversationNodeSidebar from './ConversationNodeSidebar';
 import EndCallNodeSidebar from './EndCallNodeSidebar';
+import TransferNodeSidebar from './TransferNodeSidebar';
 import EdgeSidebar from './EdgeSidebar';
 
 const CustomComponentSidebar: React.FC = () => {
@@ -24,6 +25,8 @@ const CustomComponentSidebar: React.FC = () => {
       return <ConversationNodeSidebar />;
     case 'endcall':
       return <EndCallNodeSidebar />;
+    case 'transfer':
+      return <TransferNodeSidebar />;
     default:
       return null;
   }

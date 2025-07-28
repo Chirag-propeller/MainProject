@@ -70,16 +70,19 @@ interface TransferNodeData extends BaseNodeData {
   phoneNumber: string
   type: 'transfer'
   transferMessage?: string
+  prompt?: string
 }
 
 interface ConditionalNodeData extends BaseNodeData {
   condition: string
   type: 'Conditional'
+  prompt?: string
 }
 
 interface EndCallNodeData extends BaseNodeData {
   type: 'endcall'
   message?: string
+  prompt?: string
 }
 
 // Add RagNodeData interface
@@ -88,6 +91,7 @@ interface RagNodeData extends BaseNodeData {
   knowledgeBaseAttached?: boolean;
   knowledgeBaseUrl?: string;
   whenToCallRag?: string;
+  prompt?: string;
 }
 
 // Union type for all possible node data types
@@ -297,6 +301,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           knowledgeBaseAttached: false,
           knowledgeBaseUrl: '',
           whenToCallRag: '',
+          prompt: '',
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -347,6 +352,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'End Call Node',
           type: 'endcall',
           message: 'Thank you for calling. Have a great day!',
+          prompt: '',
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -373,6 +379,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           type: 'transfer',
           phoneNumber: '',
           transferMessage: 'Transferring your call...',
+          prompt: '',
           global: {
             isGlobal: false,
             pathwayCondition: '',
