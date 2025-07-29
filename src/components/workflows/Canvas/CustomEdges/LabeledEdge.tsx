@@ -5,6 +5,7 @@ import {
   EdgeLabelRenderer,
   BaseEdge,
 } from 'reactflow';
+import { useWorkflowStore } from '@/store/workflowStore';
 
 interface LabeledEdgeData {
   label?: string;
@@ -32,6 +33,8 @@ const LabeledEdge: React.FC<EdgeProps<LabeledEdgeData>> = ({
   markerEnd,
   selected,
 }) => {
+  const { connectedEdges } = useWorkflowStore();
+  const isConnected = connectedEdges.includes(id);
   // Use getSmoothStepPath for orthogonal routing with 90-degree angles
   const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
@@ -68,10 +71,10 @@ const LabeledEdge: React.FC<EdgeProps<LabeledEdgeData>> = ({
         markerEnd={markerEnd} 
         style={{
           ...style,
-          strokeWidth: 2,
-          stroke: '#6366f1', // indigo-500
-          opacity: selected ? 1 : 0.4,
-          transition: 'opacity 0.2s',
+          strokeWidth: isConnected ? 2.5 : 2,
+          stroke: isConnected ? '#4ade80' : '#6366f1', // green-400 for connected (lighter), indigo-500 for normal
+          opacity: selected ? 1 : isConnected ? 0.75 : 0.4,
+          transition: 'opacity 0.2s, stroke-width 0.2s, stroke 0.2s',
         }} 
       />
 
@@ -80,10 +83,10 @@ const LabeledEdge: React.FC<EdgeProps<LabeledEdgeData>> = ({
         <path
           key={`particle-${i}`}
           d="M -6 -6 L 6 0 L -6 6 Z"  // Larger triangle arrow shape
-          fill="#6366f1" // indigo-500 to match edge color
+          fill={isConnected ? "#4ade80" : "#6366f1"} // green-400 for connected, indigo-500 for normal
           style={{
-            transition: 'opacity 0.2s',
-            opacity: selected ? 0.9 : 0.25
+            transition: 'opacity 0.2s, fill 0.2s',
+            opacity: selected ? 0.9 : isConnected ? 0.6 : 0.25
           }}
         >
           <animateMotion
@@ -107,9 +110,12 @@ const LabeledEdge: React.FC<EdgeProps<LabeledEdgeData>> = ({
           }}
           className="nodrag nopan"
         >
-          <div className={`border-2 border-indigo-200 px-3 py-2 shadow-lg text-sm font-medium min-w-[60px] text-center text-wrap max-w-50 rounded-[8px]  ${
-            selected ? 'text-indigo-700 border-indigo-800 bg-indigo-200' : 'text-indigo-400 border-indigo-100 bg-indigo-50'
-            // selected ? 'text-indigo-50 border-indigo-100 bg-indigo-500' : 'text-indigo-400 border-indigo-100 bg-indigo-50'
+          <div className={`border px-3 py-2 shadow-sm text-sm font-medium min-w-[60px] text-center text-wrap max-w-50 rounded-[8px] ${
+            isConnected 
+              ? 'text-green-600 border-green-300 bg-green-50' 
+              : selected 
+                ? 'text-indigo-700 border-indigo-800 bg-indigo-200' 
+                : 'text-indigo-400 border-indigo-100 bg-indigo-50'
           }`}>
             {data?.label || 'Click to edit'}
           </div>

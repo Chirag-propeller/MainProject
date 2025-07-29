@@ -223,6 +223,9 @@ const RagSidebar: React.FC = () => {
           />
         </div>
 
+
+
+
         {/* Variable Extraction Section */}
         <VariableExtractSection
           variables={selectedNode.data.variables || {}}

@@ -1,0 +1,2202 @@
+{
+    "llm_models": ["OpenAI", "Groq", "Cerebras", "Azure"],
+    "llm_providers": [
+      {
+        "name": "OpenAI",
+        "value": "OpenAI",
+        "models": [
+          { "name": "GPT-4.1", "value": "gpt-4.1", "pricing": { "input": 2.0e-6, "output": 8.0e-6, "cache": 0.5e-6 } },
+          { "name": "GPT-4.1 Mini", "value": "gpt-4.1-mini", "pricing": { "input": 0.4e-6, "output": 1.6e-6, "cache": 0.1e-6 } },
+          { "name": "GPT-4.1 Nano", "value": "gpt-4.1-nano", "pricing": { "input": 0.1e-6, "output": 0.4e-6, "cache": 0.025e-6 } },
+          { "name": "GPT-4o", "value": "gpt-4o", "pricing": { "input": 2.5e-6, "output": 10.0e-6, "cache": 1.25e-6 } },
+          { "name": "Gpt-4o 2024-05-13", "value": "gpt-4o-2024-05-13", "pricing": { "input": 2.5e-6, "output": 10.0e-6, "cache": 1.25e-6 } },
+          { "name": "GPT-4o Mini", "value": "gpt-4o-mini", "pricing": { "input": 0.15e-6, "output": 0.6e-6, "cache": 0.075e-6 } },
+          { "name": "GPT-4o Mini 2024-07-18", "value": "gpt-4o-mini-2024-07-18", "pricing": { "input": 0.15e-6, "output": 0.6e-6, "cache": 0.075e-6 } },
+          { "name": "Gpt-4 Turbo", "value": "gpt-4-turbo", "pricing": { "input": 10.0e-6, "output": 30.0e-6, "cache": 5.0e-6 } },
+          { "name": "Gpt-4 Turbo 2024-04-09", "value": "gpt-4-turbo-2024-04-09", "pricing": { "input": 10.0e-6, "output": 30.0e-6, "cache": 5.0e-6 } }
+        ]
+      },
+      {
+        "name": "Azure",
+        "value": "azure",
+        "models": [
+          { "name": "GPT-4.1", "value": "gpt-4.1", "pricing": { "input": 2.0e-6, "output": 8.0e-6 } },
+          { "name": "GPT-4.1 Mini", "value": "gpt-4.1-mini", "pricing": { "input": 0.4e-6, "output": 1.6e-6 } },
+          { "name": "GPT-4.1 Nano", "value": "gpt-4.1-nano", "pricing": { "input": 0.1e-6, "output": 0.4e-6 } },
+          { "name": "GPT-4o", "value": "gpt-4o", "pricing": { "input": 5.0e-6, "output": 15.0e-6 } },
+          { "name": "GPT-4o 2024-05-13", "value": "gpt-4o-2024-05-13", "pricing": { "input": 5.0e-6, "output": 15.0e-6 } },
+          { "name": "GPT-4o Mini", "value": "gpt-4o-mini", "pricing": { "input": 0.15e-6, "output": 0.6e-6 } },
+          { "name": "GPT-4o Mini 2024-07-18", "value": "gpt-4o-mini-2024-07-18", "pricing": { "input": 0.15e-6, "output": 0.6e-6 } },
+          { "name": "GPT-4 Turbo", "value": "gpt-4-turbo", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          { "name": "GPT-4 Turbo 2024-04-09", "value": "gpt-4-turbo-2024-04-09", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          { "name": "GPT-4 Turbo Preview", "value": "gpt-4-turbo-preview", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          { "name": "GPT-4 0125 Preview", "value": "gpt-4-0125-preview", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          { "name": "GPT-4 1106 Preview", "value": "gpt-4-1106-preview", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          { "name": "GPT-4 Vision Preview", "value": "gpt-4-vision-preview", "pricing": { "input": 10.0e-6, "output": 30.0e-6 } },
+          {
+            "name": "GPT-4 1106 Vision Preview",
+            "value": "gpt-4-1106-vision-preview",
+            "pricing": { "input": 10.0e-6, "output": 30.0e-6 }
+          },
+          { "name": "GPT-4", "value": "gpt-4", "pricing": { "input": 30.0e-6, "output": 60.0e-6 } },
+          { "name": "GPT-4 0314", "value": "gpt-4-0314", "pricing": { "input": 30.0e-6, "output": 60.0e-6 } },
+          { "name": "GPT-4 0613", "value": "gpt-4-0613", "pricing": { "input": 30.0e-6, "output": 60.0e-6 } },
+          { "name": "GPT-4 32K", "value": "gpt-4-32k", "pricing": { "input": 60.0e-6, "output": 120.0e-6 } },
+          { "name": "GPT-4 32K 0314", "value": "gpt-4-32k-0314", "pricing": { "input": 60.0e-6, "output": 120.0e-6 } },
+          { "name": "GPT-4 32K 0613", "value": "gpt-4-32k-0613", "pricing": { "input": 60.0e-6, "output": 120.0e-6 } },
+          { "name": "GPT-3.5 Turbo", "value": "gpt-3.5-turbo", "pricing": { "input": 1.5e-6, "output": 2.0e-6 } },
+          { "name": "GPT-3.5 Turbo 16K", "value": "gpt-3.5-turbo-16k", "pricing": { "input": 3.0e-6, "output": 4.0e-6 } },
+          { "name": "GPT-3.5 Turbo 0301", "value": "gpt-3.5-turbo-0301", "pricing": { "input": 1.5e-6, "output": 2.0e-6 } },
+          { "name": "GPT-3.5 Turbo 0613", "value": "gpt-3.5-turbo-0613", "pricing": { "input": 1.5e-6, "output": 2.0e-6 } },
+          { "name": "GPT-3.5 Turbo 1106", "value": "gpt-3.5-turbo-1106", "pricing": { "input": 1.0e-6, "output": 2.0e-6 } },
+          { "name": "GPT-3.5 Turbo 16K 0613", "value": "gpt-3.5-turbo-16k-0613", "pricing": { "input": 3.0e-6, "output": 4.0e-6 } }
+        ]
+      }
+    ],
+    "providers": [
+      {
+        "name": "Google",
+        "value": "Google",
+        "models": [
+          {
+            "name": "Chirp3-HD",
+            "value": "Chirp3-HD",
+            "pricing": { "per_character": 30.0e-6 },
+            "languages": [
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Achernar", "value": "en-IN-Chirp3-HD-Achernar" },
+                      { "name": "Aoede", "value": "en-IN-Chirp3-HD-Aoede" },
+                      { "name": "Autonoe", "value": "en-IN-Chirp3-HD-Autonoe" },
+                      {
+                        "name": "Callirrhoe",
+                        "value": "en-IN-Chirp3-HD-Callirrhoe"
+                      },
+                      { "name": "Despina", "value": "en-IN-Chirp3-HD-Despina" },
+                      { "name": "Erinome", "value": "en-IN-Chirp3-HD-Erinome" },
+                      { "name": "Gacrux", "value": "en-IN-Chirp3-HD-Gacrux" },
+                      { "name": "Kore", "value": "en-IN-Chirp3-HD-Kore" },
+                      {
+                        "name": "Laomedeia",
+                        "value": "en-IN-Chirp3-HD-Laomedeia"
+                      },
+                      { "name": "Leda", "value": "en-IN-Chirp3-HD-Leda" },
+                      {
+                        "name": "Pulcherrima",
+                        "value": "en-IN-Chirp3-HD-Pulcherrima"
+                      },
+                      { "name": "Sulafat", "value": "en-IN-Chirp3-HD-Sulafat" },
+                      {
+                        "name": "Vindemiatrix",
+                        "value": "en-IN-Chirp3-HD-Vindemiatrix"
+                      },
+                      { "name": "Zephyr", "value": "en-IN-Chirp3-HD-Zephyr" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Achird", "value": "en-IN-Chirp3-HD-Achird" },
+                      { "name": "Algenib", "value": "en-IN-Chirp3-HD-Algenib" },
+                      { "name": "Algieba", "value": "en-IN-Chirp3-HD-Algieba" },
+                      { "name": "Alnilam", "value": "en-IN-Chirp3-HD-Alnilam" },
+                      { "name": "Charon", "value": "en-IN-Chirp3-HD-Charon" },
+                      {
+                        "name": "Enceladus",
+                        "value": "en-IN-Chirp3-HD-Enceladus"
+                      },
+                      { "name": "Fenrir", "value": "en-IN-Chirp3-HD-Fenrir" },
+                      { "name": "Iapetus", "value": "en-IN-Chirp3-HD-Iapetus" },
+                      { "name": "Orus", "value": "en-IN-Chirp3-HD-Orus" },
+                      { "name": "Puck", "value": "en-IN-Chirp3-HD-Puck" },
+                      {
+                        "name": "Rasalgethi",
+                        "value": "en-IN-Chirp3-HD-Rasalgethi"
+                      },
+                      {
+                        "name": "Sadachbia",
+                        "value": "en-IN-Chirp3-HD-Sadachbia"
+                      },
+                      {
+                        "name": "Sadaltager",
+                        "value": "en-IN-Chirp3-HD-Sadaltager"
+                      },
+                      { "name": "Schedar", "value": "en-IN-Chirp3-HD-Schedar" },
+                      { "name": "Umbriel", "value": "en-IN-Chirp3-HD-Umbriel" },
+                      {
+                        "name": "Zubenelgenubi",
+                        "value": "en-IN-Chirp3-HD-Zubenelgenubi"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (UK)",
+                "value": "en-GB",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Achernar", "value": "en-GB-Chirp3-HD-Achernar" },
+                      { "name": "Aoede", "value": "en-GB-Chirp3-HD-Aoede" },
+                      { "name": "Autonoe", "value": "en-GB-Chirp3-HD-Autonoe" },
+                      {
+                        "name": "Callirrhoe",
+                        "value": "en-GB-Chirp3-HD-Callirrhoe"
+                      },
+                      { "name": "Despina", "value": "en-GB-Chirp3-HD-Despina" },
+                      { "name": "Erinome", "value": "en-GB-Chirp3-HD-Erinome" },
+                      { "name": "Gacrux", "value": "en-GB-Chirp3-HD-Gacrux" },
+                      { "name": "Kore", "value": "en-GB-Chirp3-HD-Kore" },
+                      {
+                        "name": "Laomedeia",
+                        "value": "en-GB-Chirp3-HD-Laomedeia"
+                      },
+                      { "name": "Leda", "value": "en-GB-Chirp3-HD-Leda" },
+                      {
+                        "name": "Pulcherrima",
+                        "value": "en-GB-Chirp3-HD-Pulcherrima"
+                      },
+                      { "name": "Sulafat", "value": "en-GB-Chirp3-HD-Sulafat" },
+                      {
+                        "name": "Vindemiatrix",
+                        "value": "en-GB-Chirp3-HD-Vindemiatrix"
+                      },
+                      { "name": "Zephyr", "value": "en-GB-Chirp3-HD-Zephyr" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Achird", "value": "en-GB-Chirp3-HD-Achird" },
+                      { "name": "Algenib", "value": "en-GB-Chirp3-HD-Algenib" },
+                      { "name": "Algieba", "value": "en-GB-Chirp3-HD-Algieba" },
+                      { "name": "Alnilam", "value": "en-GB-Chirp3-HD-Alnilam" },
+                      { "name": "Charon", "value": "en-GB-Chirp3-HD-Charon" },
+                      {
+                        "name": "Enceladus",
+                        "value": "en-GB-Chirp3-HD-Enceladus"
+                      },
+                      { "name": "Fenrir", "value": "en-GB-Chirp3-HD-Fenrir" },
+                      { "name": "Iapetus", "value": "en-GB-Chirp3-HD-Iapetus" },
+                      { "name": "Orus", "value": "en-GB-Chirp3-HD-Orus" },
+                      { "name": "Puck", "value": "en-GB-Chirp3-HD-Puck" },
+                      {
+                        "name": "Rasalgethi",
+                        "value": "en-GB-Chirp3-HD-Rasalgethi"
+                      },
+                      {
+                        "name": "Sadachbia",
+                        "value": "en-GB-Chirp3-HD-Sadachbia"
+                      },
+                      {
+                        "name": "Sadaltager",
+                        "value": "en-GB-Chirp3-HD-Sadaltager"
+                      },
+                      { "name": "Schedar", "value": "en-GB-Chirp3-HD-Schedar" },
+                      { "name": "Umbriel", "value": "en-GB-Chirp3-HD-Umbriel" },
+                      {
+                        "name": "Zubenelgenubi",
+                        "value": "en-GB-Chirp3-HD-Zubenelgenubi"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Achernar", "value": "en-US-Chirp3-HD-Achernar" },
+                      { "name": "Aoede", "value": "en-US-Chirp3-HD-Aoede" },
+                      { "name": "Autonoe", "value": "en-US-Chirp3-HD-Autonoe" },
+                      {
+                        "name": "Callirrhoe",
+                        "value": "en-US-Chirp3-HD-Callirrhoe"
+                      },
+                      { "name": "Despina", "value": "en-US-Chirp3-HD-Despina" },
+                      { "name": "Erinome", "value": "en-US-Chirp3-HD-Erinome" },
+                      { "name": "Gacrux", "value": "en-US-Chirp3-HD-Gacrux" },
+                      { "name": "Kore", "value": "en-US-Chirp3-HD-Kore" },
+                      {
+                        "name": "Laomedeia",
+                        "value": "en-US-Chirp3-HD-Laomedeia"
+                      },
+                      { "name": "Leda", "value": "en-US-Chirp3-HD-Leda" },
+                      {
+                        "name": "Pulcherrima",
+                        "value": "en-US-Chirp3-HD-Pulcherrima"
+                      },
+                      { "name": "Sulafat", "value": "en-US-Chirp3-HD-Sulafat" },
+                      {
+                        "name": "Vindemiatrix",
+                        "value": "en-US-Chirp3-HD-Vindemiatrix"
+                      },
+                      { "name": "Zephyr", "value": "en-US-Chirp3-HD-Zephyr" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Achird", "value": "en-US-Chirp3-HD-Achird" },
+                      { "name": "Algenib", "value": "en-US-Chirp3-HD-Algenib" },
+                      { "name": "Algieba", "value": "en-US-Chirp3-HD-Algieba" },
+                      { "name": "Alnilam", "value": "en-US-Chirp3-HD-Alnilam" },
+                      { "name": "Charon", "value": "en-US-Chirp3-HD-Charon" },
+                      {
+                        "name": "Enceladus",
+                        "value": "en-US-Chirp3-HD-Enceladus"
+                      },
+                      { "name": "Fenrir", "value": "en-US-Chirp3-HD-Fenrir" },
+                      { "name": "Iapetus", "value": "en-US-Chirp3-HD-Iapetus" },
+                      { "name": "Orus", "value": "en-US-Chirp3-HD-Orus" },
+                      { "name": "Puck", "value": "en-US-Chirp3-HD-Puck" },
+                      {
+                        "name": "Rasalgethi",
+                        "value": "en-US-Chirp3-HD-Rasalgethi"
+                      },
+                      {
+                        "name": "Sadachbia",
+                        "value": "en-US-Chirp3-HD-Sadachbia"
+                      },
+                      {
+                        "name": "Sadaltager",
+                        "value": "en-US-Chirp3-HD-Sadaltager"
+                      },
+                      { "name": "Schedar", "value": "en-US-Chirp3-HD-Schedar" },
+                      { "name": "Umbriel", "value": "en-US-Chirp3-HD-Umbriel" },
+                      {
+                        "name": "Zubenelgenubi",
+                        "value": "en-US-Chirp3-HD-Zubenelgenubi"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Achernar", "value": "hi-IN-Chirp3-HD-Achernar" },
+                      { "name": "Aoede", "value": "hi-IN-Chirp3-HD-Aoede" },
+                      { "name": "Autonoe", "value": "hi-IN-Chirp3-HD-Autonoe" },
+                      {
+                        "name": "Callirrhoe",
+                        "value": "hi-IN-Chirp3-HD-Callirrhoe"
+                      },
+                      { "name": "Despina", "value": "hi-IN-Chirp3-HD-Despina" },
+                      { "name": "Erinome", "value": "hi-IN-Chirp3-HD-Erinome" },
+                      { "name": "Gacrux", "value": "hi-IN-Chirp3-HD-Gacrux" },
+                      { "name": "Kore", "value": "hi-IN-Chirp3-HD-Kore" },
+                      {
+                        "name": "Laomedeia",
+                        "value": "hi-IN-Chirp3-HD-Laomedeia"
+                      },
+                      { "name": "Leda", "value": "hi-IN-Chirp3-HD-Leda" },
+                      {
+                        "name": "Pulcherrima",
+                        "value": "hi-IN-Chirp3-HD-Pulcherrima"
+                      },
+                      { "name": "Sulafat", "value": "hi-IN-Chirp3-HD-Sulafat" },
+                      {
+                        "name": "Vindemiatrix",
+                        "value": "hi-IN-Chirp3-HD-Vindemiatrix"
+                      },
+                      { "name": "Zephyr", "value": "hi-IN-Chirp3-HD-Zephyr" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Achird", "value": "hi-IN-Chirp3-HD-Achird" },
+                      { "name": "Algenib", "value": "hi-IN-Chirp3-HD-Algenib" },
+                      { "name": "Algieba", "value": "hi-IN-Chirp3-HD-Algieba" },
+                      { "name": "Alnilam", "value": "hi-IN-Chirp3-HD-Alnilam" },
+                      { "name": "Charon", "value": "hi-IN-Chirp3-HD-Charon" },
+                      {
+                        "name": "Enceladus",
+                        "value": "hi-IN-Chirp3-HD-Enceladus"
+                      },
+                      { "name": "Fenrir", "value": "hi-IN-Chirp3-HD-Fenrir" },
+                      { "name": "Iapetus", "value": "hi-IN-Chirp3-HD-Iapetus" },
+                      { "name": "Orus", "value": "hi-IN-Chirp3-HD-Orus" },
+                      { "name": "Puck", "value": "hi-IN-Chirp3-HD-Puck" },
+                      {
+                        "name": "Rasalgethi",
+                        "value": "hi-IN-Chirp3-HD-Rasalgethi"
+                      },
+                      {
+                        "name": "Sadachbia",
+                        "value": "hi-IN-Chirp3-HD-Sadachbia"
+                      },
+                      {
+                        "name": "Sadaltager",
+                        "value": "hi-IN-Chirp3-HD-Sadaltager"
+                      },
+                      { "name": "Schedar", "value": "hi-IN-Chirp3-HD-Schedar" },
+                      { "name": "Umbriel", "value": "hi-IN-Chirp3-HD-Umbriel" },
+                      {
+                        "name": "Zubenelgenubi",
+                        "value": "hi-IN-Chirp3-HD-Zubenelgenubi"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Neural2",
+            "value": "Neural2",
+            "pricing": { "per_character": 16.0e-6 },
+            "languages": [
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Neural2-A", "value": "en-IN-Neural2-A" },
+                      { "name": "Neural2-D", "value": "en-IN-Neural2-D" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Neural2-B", "value": "en-IN-Neural2-B" },
+                      { "name": "Neural2-C", "value": "en-IN-Neural2-C" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (UK)",
+                "value": "en-GB",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Neural2-A", "value": "en-GB-Neural2-A" },
+                      { "name": "Neural2-C", "value": "en-GB-Neural2-C" },
+                      { "name": "Neural2-F", "value": "en-GB-Neural2-F" },
+                      { "name": "Neural2-N", "value": "en-GB-Neural2-N" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Neural2-B", "value": "en-GB-Neural2-B" },
+                      { "name": "Neural2-D", "value": "en-GB-Neural2-D" },
+                      { "name": "Neural2-O", "value": "en-GB-Neural2-O" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Neural2-C", "value": "en-US-Neural2-C" },
+                      { "name": "Neural2-E", "value": "en-US-Neural2-E" },
+                      { "name": "Neural2-F", "value": "en-US-Neural2-F" },
+                      { "name": "Neural2-G", "value": "en-US-Neural2-G" },
+                      { "name": "Neural2-H", "value": "en-US-Neural2-H" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Neural2-A", "value": "en-US-Neural2-A" },
+                      { "name": "Neural2-D", "value": "en-US-Neural2-D" },
+                      { "name": "Neural2-I", "value": "en-US-Neural2-I" },
+                      { "name": "Neural2-J", "value": "en-US-Neural2-J" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Neural2-A", "value": "hi-IN-Neural2-A" },
+                      { "name": "Neural2-D", "value": "hi-IN-Neural2-D" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Neural2-B", "value": "hi-IN-Neural2-B" },
+                      { "name": "Neural2-C", "value": "hi-IN-Neural2-C" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Standard",
+            "value": "Standard",
+            "pricing": { "per_character": 4.0e-6 },
+            "languages": [
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Standard-A", "value": "en-IN-Standard-A" },
+                      { "name": "Standard-D", "value": "en-IN-Standard-D" },
+                      { "name": "Standard-E", "value": "en-IN-Standard-E" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Standard-B", "value": "en-IN-Standard-B" },
+                      { "name": "Standard-C", "value": "en-IN-Standard-C" },
+                      { "name": "Standard-F", "value": "en-IN-Standard-F" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (UK)",
+                "value": "en-GB",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Standard-A", "value": "en-GB-Standard-A" },
+                      { "name": "Standard-C", "value": "en-GB-Standard-C" },
+                      { "name": "Standard-F", "value": "en-GB-Standard-F" },
+                      { "name": "Standard-N", "value": "en-GB-Standard-N" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Standard-B", "value": "en-GB-Standard-B" },
+                      { "name": "Standard-D", "value": "en-GB-Standard-D" },
+                      { "name": "Standard-O", "value": "en-GB-Standard-O" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Standard-C", "value": "en-US-Standard-C" },
+                      { "name": "Standard-E", "value": "en-US-Standard-E" },
+                      { "name": "Standard-F", "value": "en-US-Standard-F" },
+                      { "name": "Standard-G", "value": "en-US-Standard-G" },
+                      { "name": "Standard-H", "value": "en-US-Standard-H" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Standard-A", "value": "en-US-Standard-A" },
+                      { "name": "Standard-B", "value": "en-US-Standard-B" },
+                      { "name": "Standard-D", "value": "en-US-Standard-D" },
+                      { "name": "Standard-I", "value": "en-US-Standard-I" },
+                      { "name": "Standard-J", "value": "en-US-Standard-J" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Standard-A", "value": "hi-IN-Standard-A" },
+                      { "name": "Standard-D", "value": "hi-IN-Standard-D" },
+                      { "name": "Standard-E", "value": "hi-IN-Standard-E" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Standard-B", "value": "hi-IN-Standard-B" },
+                      { "name": "Standard-C", "value": "hi-IN-Standard-C" },
+                      { "name": "Standard-F", "value": "hi-IN-Standard-F" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Wavenet",
+            "value": "Wavenet",
+            "pricing": { "per_character": 16.0e-6 },
+            "languages": [
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Wavenet-A", "value": "en-IN-Wavenet-A" },
+                      { "name": "Wavenet-D", "value": "en-IN-Wavenet-D" },
+                      { "name": "Wavenet-E", "value": "en-IN-Wavenet-E" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Wavenet-B", "value": "en-IN-Wavenet-B" },
+                      { "name": "Wavenet-C", "value": "en-IN-Wavenet-C" },
+                      { "name": "Wavenet-F", "value": "en-IN-Wavenet-F" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (UK)",
+                "value": "en-GB",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Wavenet-A", "value": "en-GB-Wavenet-A" },
+                      { "name": "Wavenet-C", "value": "en-GB-Wavenet-C" },
+                      { "name": "Wavenet-F", "value": "en-GB-Wavenet-F" },
+                      { "name": "Wavenet-N", "value": "en-GB-Wavenet-N" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Wavenet-B", "value": "en-GB-Wavenet-B" },
+                      { "name": "Wavenet-D", "value": "en-GB-Wavenet-D" },
+                      { "name": "Wavenet-O", "value": "en-GB-Wavenet-O" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Wavenet-C", "value": "en-US-Wavenet-C" },
+                      { "name": "Wavenet-E", "value": "en-US-Wavenet-E" },
+                      { "name": "Wavenet-F", "value": "en-US-Wavenet-F" },
+                      { "name": "Wavenet-G", "value": "en-US-Wavenet-G" },
+                      { "name": "Wavenet-H", "value": "en-US-Wavenet-H" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Wavenet-A", "value": "en-US-Wavenet-A" },
+                      { "name": "Wavenet-B", "value": "en-US-Wavenet-B" },
+                      { "name": "Wavenet-D", "value": "en-US-Wavenet-D" },
+                      { "name": "Wavenet-I", "value": "en-US-Wavenet-I" },
+                      { "name": "Wavenet-J", "value": "en-US-Wavenet-J" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Wavenet-A", "value": "hi-IN-Wavenet-A" },
+                      { "name": "Wavenet-D", "value": "hi-IN-Wavenet-D" },
+                      { "name": "Wavenet-E", "value": "hi-IN-Wavenet-E" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Wavenet-B", "value": "hi-IN-Wavenet-B" },
+                      { "name": "Wavenet-C", "value": "hi-IN-Wavenet-C" },
+                      { "name": "Wavenet-F", "value": "hi-IN-Wavenet-F" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sarvam",
+        "value": "sarvam",
+        "models": [
+          {
+            "name": "Bulbul v2",
+            "value": "bulbul:v2",
+            "pricing": { "per_character": 0.18e-4 },
+            "languages": [
+              {
+                "name": "Bengali (India)",
+                "value": "bn-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Gujarati (India)",
+                "value": "gu-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Kannada (India)",
+                "value": "kn-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Malayalam (India)",
+                "value": "ml-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Marathi (India)",
+                "value": "mr-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Odia (India)",
+                "value": "od-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Punjabi (India)",
+                "value": "pa-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Tamil (India)",
+                "value": "ta-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Telugu (India)",
+                "value": "te-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Anushka", "value": "anushka" },
+                      { "name": "Manisha", "value": "manisha" },
+                      { "name": "Vidya", "value": "vidya" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Arya", "value": "arya" },
+                      { "name": "Abhilash", "value": "abhilash" },
+                      { "name": "Karun", "value": "karun" },
+                      { "name": "Hitesh", "value": "hitesh" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ElevenLabs",
+        "value": "elevenlabs",
+        "premium": true,
+        "models": [
+          {
+            "name": "Eleven Multilingual v1",
+            "value": "eleven_multilingual_v1",
+            "pricing": { "per_character": 0.00022 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
+                      { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
+                      { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
+                      { "name": "Carlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                      { "name": "Charlotte", "value": "XB0fDUnXU5powFXDhCwa" },
+                      { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
+                      { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
+                      { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" },
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
+                      { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
+                      { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
+                      { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                      { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" },
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
+                      { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Eleven Turbo v2",
+            "value": "eleven_turbo_v2",
+            "pricing": { "per_character": 0.00011 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Aria", "value": "9BWtsMINqrJLrRacOk9x" },
+                      { "name": "Sarah", "value": "EXAVITQu4vr4xnSDxMaL" },
+                      { "name": "Laura", "value": "FGY2WhTYpPnrIDTdsKH5" },
+                      { "name": "Carlie", "value": "IKne3meq5aSn9XLyUdCD" },
+                      { "name": "Charlotte", "value": "XB0fDUnXU5powFXDhCwa" },
+                      { "name": "Alice", "value": "Xb7hH8MSUJpSbSDYk0k2" },
+                      { "name": "Matilda", "value": "XrExE9yKIg1WjnnlVkGX" },
+                      { "name": "Jessica", "value": "cgSgspJ2msm6clMCkdW9" }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "George", "value": "JBFqnCBsd6RMkjVDRZzb" },
+                      { "name": "Callum", "value": "N2lVS1w4EtoT3dr4eOWO" },
+                      { "name": "River", "value": "SAz9YHcvj6GT2YYXdXww" },
+                      { "name": "Liam", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Chris", "value": "iP95p4xoKVk53GoZ742B" },
+                      { "name": "Brian", "value": "nPczCjzI2devNBz1zQrb" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Eleven Multilingual v2",
+            "value": "eleven_multilingual_v2",
+            "pricing": { "per_character": 0.00022 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "English (India)",
+                "value": "en-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
+                      { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                      { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cartesia",
+        "value": "cartesia",
+        "premium": true,
+        "models": [
+          {
+            "name": "Sonic",
+            "value": "sonic",
+            "pricing": { "per_character": 0.00005 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Savannah",
+                        "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2"
+                      },
+                      {
+                        "name": "Zia",
+                        "value": "32b3f3c5-7171-46aa-abe7-b598964aa793"
+                      },
+                      {
+                        "name": "Brooke",
+                        "value": "6f84f4b8-58a2-430c-8c79-688dad597532"
+                      },
+                      {
+                        "name": "Wise Lady",
+                        "value": "c8605446-247c-4d39-acd4-8f4c28aa363c"
+                      },
+                      {
+                        "name": "Sophie",
+                        "value": "bf0a246a-8642-498a-9950-80c35e9276b5"
+                      },
+                      {
+                        "name": "Southern Woman",
+                        "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94"
+                      },
+                      {
+                        "name": "Welcoming Lady",
+                        "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Griffin",
+                        "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306"
+                      },
+  
+                      {
+                        "name": "Carson",
+                        "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe"
+                      },
+                      {
+                        "name": "Ethan",
+                        "value": "00967b2f-88a6-4a31-8153-110a92134b9f"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Aadhya",
+                        "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222"
+                      },
+                      {
+                        "name": "Apoorva",
+                        "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12"
+                      },
+                      {
+                        "name": "Ananya",
+                        "value": "28ca2041-5dda-42df-8123-f58ea9c3da00"
+                      },
+                      {
+                        "name": "Parvati",
+                        "value": "bec003e2-3cb3-429c-8468-206a393c67ad"
+                      },
+                      {
+                        "name": "Astha",
+                        "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c"
+                      },
+                      {
+                        "name": "Janvi",
+                        "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                      },
+                      {
+                        "name": "Priya",
+                        "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                      },
+                      {
+                        "name": "Kiara",
+                        "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                      },
+                      {
+                        "name": "Maya",
+                        "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Swiggy",
+                        "value": "e7dd4e4f-dd26-40c6-ba81-28cf0e05fdb5"
+                      },
+                      {
+                        "name": "Mihir",
+                        "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
+                      },
+                      {
+                        "name": "Ayush",
+                        "value": "791d5162-d5eb-40f0-8189-f19db44611d8"
+                      },
+                      {
+                        "name": "Amit",
+                        "value": "9b953e7b-86a8-42f0-b625-1434fb15392b"
+                      },
+                      {
+                        "name": "Ishan",
+                        "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3"
+                      },
+                      {
+                        "name": "Hindi Reporter Man",
+                        "value": "bdab08ad-4137-4548-b9db-6142854c7525"
+                      },
+                      {
+                        "name": "Hindi Narrator Man",
+                        "value": "7f423809-0011-4658-ba48-a411f5e516ba"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sonic-2",
+            "value": "sonic-2",
+            "pricing": { "per_character": 0.00005 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Savannah",
+                        "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2"
+                      },
+                      {
+                        "name": "Zia",
+                        "value": "32b3f3c5-7171-46aa-abe7-b598964aa793"
+                      },
+                      {
+                        "name": "Brooke",
+                        "value": "6f84f4b8-58a2-430c-8c79-688dad597532"
+                      },
+                      {
+                        "name": "Wise Lady",
+                        "value": "c8605446-247c-4d39-acd4-8f4c28aa363c"
+                      },
+                      {
+                        "name": "Sophie",
+                        "value": "bf0a246a-8642-498a-9950-80c35e9276b5"
+                      },
+                      {
+                        "name": "Southern Woman",
+                        "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94"
+                      },
+                      {
+                        "name": "Welcoming Lady",
+                        "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Griffin",
+                        "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306"
+                      },
+                      {
+                        "name": "Carson",
+                        "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe"
+                      },
+                      {
+                        "name": "Ethan",
+                        "value": "00967b2f-88a6-4a31-8153-110a92134b9f"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Aadhya",
+                        "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222"
+                      },
+                      {
+                        "name": "Apoorva",
+                        "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12"
+                      },
+                      {
+                        "name": "Ananya",
+                        "value": "28ca2041-5dda-42df-8123-f58ea9c3da00"
+                      },
+                      {
+                        "name": "Parvati",
+                        "value": "bec003e2-3cb3-429c-8468-206a393c67ad"
+                      },
+                      {
+                        "name": "Astha",
+                        "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c"
+                      },
+                      {
+                        "name": "Janvi",
+                        "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                      },
+                      {
+                        "name": "Priya",
+                        "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                      },
+                      {
+                        "name": "Kiara",
+                        "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                      },
+                      {
+                        "name": "Maya",
+                        "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Mihir",
+                        "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
+                      },
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Swiggy",
+                        "value": "e7dd4e4f-dd26-40c6-ba81-28cf0e05fdb5"
+                      },
+                      {
+                        "name": "Ayush",
+                        "value": "791d5162-d5eb-40f0-8189-f19db44611d8"
+                      },
+                      {
+                        "name": "Amit",
+                        "value": "9b953e7b-86a8-42f0-b625-1434fb15392b"
+                      },
+                      {
+                        "name": "Ishan",
+                        "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3"
+                      },
+                      {
+                        "name": "Hindi Reporter Man",
+                        "value": "bdab08ad-4137-4548-b9db-6142854c7525"
+                      },
+                      {
+                        "name": "Hindi Narrator Man",
+                        "value": "7f423809-0011-4658-ba48-a411f5e516ba"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sonic Lite",
+            "value": "sonic-lite",
+            "pricing": { "per_character": 0.00005 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Savannah",
+                        "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2"
+                      },
+                      {
+                        "name": "Zia",
+                        "value": "32b3f3c5-7171-46aa-abe7-b598964aa793"
+                      },
+                      {
+                        "name": "Brooke",
+                        "value": "6f84f4b8-58a2-430c-8c79-688dad597532"
+                      },
+                      {
+                        "name": "Wise Lady",
+                        "value": "c8605446-247c-4d39-acd4-8f4c28aa363c"
+                      },
+                      {
+                        "name": "Sophie",
+                        "value": "bf0a246a-8642-498a-9950-80c35e9276b5"
+                      },
+                      {
+                        "name": "Southern Woman",
+                        "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94"
+                      },
+                      {
+                        "name": "Welcoming Lady",
+                        "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Griffin",
+                        "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306"
+                      },
+                      {
+                        "name": "Carson",
+                        "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe"
+                      },
+                      {
+                        "name": "Ethan",
+                        "value": "00967b2f-88a6-4a31-8153-110a92134b9f"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Aadhya",
+                        "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222"
+                      },
+                      {
+                        "name": "Apoorva",
+                        "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12"
+                      },
+                      {
+                        "name": "Ananya",
+                        "value": "28ca2041-5dda-42df-8123-f58ea9c3da00"
+                      },
+                      {
+                        "name": "Parvati",
+                        "value": "bec003e2-3cb3-429c-8468-206a393c67ad"
+                      },
+                      {
+                        "name": "Astha",
+                        "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c"
+                      },
+                      {
+                        "name": "Janvi",
+                        "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                      },
+                      {
+                        "name": "Priya",
+                        "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                      },
+                      {
+                        "name": "Kiara",
+                        "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                      },
+                      {
+                        "name": "Maya",
+                        "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Swiggy",
+                        "value": "e7dd4e4f-dd26-40c6-ba81-28cf0e05fdb5"
+                      },
+                      {
+                        "name": "Mihir",
+                        "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
+                      },
+                      {
+                        "name": "Ayush",
+                        "value": "791d5162-d5eb-40f0-8189-f19db44611d8"
+                      },
+                      {
+                        "name": "Amit",
+                        "value": "9b953e7b-86a8-42f0-b625-1434fb15392b"
+                      },
+                      {
+                        "name": "Ishan",
+                        "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3"
+                      },
+                      {
+                        "name": "Hindi Reporter Man",
+                        "value": "bdab08ad-4137-4548-b9db-6142854c7525"
+                      },
+                      {
+                        "name": "Hindi Narrator Man",
+                        "value": "7f423809-0011-4658-ba48-a411f5e516ba"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sonic Preview",
+            "value": "sonic-preview",
+            "pricing": { "per_character": 0.00005 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Savannah",
+                        "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2"
+                      },
+                      {
+                        "name": "Zia",
+                        "value": "32b3f3c5-7171-46aa-abe7-b598964aa793"
+                      },
+                      {
+                        "name": "Brooke",
+                        "value": "6f84f4b8-58a2-430c-8c79-688dad597532"
+                      },
+                      {
+                        "name": "Wise Lady",
+                        "value": "c8605446-247c-4d39-acd4-8f4c28aa363c"
+                      },
+                      {
+                        "name": "Sophie",
+                        "value": "bf0a246a-8642-498a-9950-80c35e9276b5"
+                      },
+                      {
+                        "name": "Southern Woman",
+                        "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94"
+                      },
+                      {
+                        "name": "Welcoming Lady",
+                        "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Griffin",
+                        "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306"
+                      },
+                      {
+                        "name": "Carson",
+                        "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe"
+                      },
+                      {
+                        "name": "Ethan",
+                        "value": "00967b2f-88a6-4a31-8153-110a92134b9f"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Aadhya",
+                        "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222"
+                      },
+                      {
+                        "name": "Apoorva",
+                        "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12"
+                      },
+                      {
+                        "name": "Ananya",
+                        "value": "28ca2041-5dda-42df-8123-f58ea9c3da00"
+                      },
+                      {
+                        "name": "Parvati",
+                        "value": "bec003e2-3cb3-429c-8468-206a393c67ad"
+                      },
+                      {
+                        "name": "Astha",
+                        "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c"
+                      },
+                      {
+                        "name": "Janvi",
+                        "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                      },
+                      {
+                        "name": "Priya",
+                        "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                      },
+                      {
+                        "name": "Kiara",
+                        "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                      },
+                      {
+                        "name": "Maya",
+                        "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Mihir",
+                        "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
+                      },
+                      {
+                        "name": "Ayush",
+                        "value": "791d5162-d5eb-40f0-8189-f19db44611d8"
+                      },
+                      {
+                        "name": "Amit",
+                        "value": "9b953e7b-86a8-42f0-b625-1434fb15392b"
+                      },
+                      {
+                        "name": "Ishan",
+                        "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3"
+                      },
+                      {
+                        "name": "Hindi Reporter Man",
+                        "value": "bdab08ad-4137-4548-b9db-6142854c7525"
+                      },
+                      {
+                        "name": "Hindi Narrator Man",
+                        "value": "7f423809-0011-4658-ba48-a411f5e516ba"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sonic Turbo",
+            "value": "sonic-turbo",
+            "pricing": { "per_character": 0.00005 },
+            "languages": [
+              {
+                "name": "English (US)",
+                "value": "en-US",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Savannah",
+                        "value": "78ab82d5-25be-4f7d-82b3-7ad64e5b85b2"
+                      },
+                      {
+                        "name": "Zia",
+                        "value": "32b3f3c5-7171-46aa-abe7-b598964aa793"
+                      },
+                      {
+                        "name": "Brooke",
+                        "value": "6f84f4b8-58a2-430c-8c79-688dad597532"
+                      },
+                      {
+                        "name": "Wise Lady",
+                        "value": "c8605446-247c-4d39-acd4-8f4c28aa363c"
+                      },
+                      {
+                        "name": "Sophie",
+                        "value": "bf0a246a-8642-498a-9950-80c35e9276b5"
+                      },
+                      {
+                        "name": "Southern Woman",
+                        "value": "f9836c6e-a0bd-460e-9d3c-f7299fa60f94"
+                      },
+                      {
+                        "name": "Welcoming Lady",
+                        "value": "f80e7298-93f5-46d0-86f2-b8f29cfc88bd"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Griffin",
+                        "value": "c99d36f3-5ffd-4253-803a-535c1bc9c306"
+                      },
+                      {
+                        "name": "Carson",
+                        "value": "4df027cb-2920-4a1f-8c34-f21529d5c3fe"
+                      },
+                      {
+                        "name": "Ethan",
+                        "value": "00967b2f-88a6-4a31-8153-110a92134b9f"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "Hindi (India)",
+                "value": "hi-IN",
+                "gender": [
+                  {
+                    "name": "Female",
+                    "value": "Female",
+                    "voices": [
+                      {
+                        "name": "Aadhya",
+                        "value": "f91ab3e6-5071-4e15-b016-cde6f2bcd222"
+                      },
+                      {
+                        "name": "Apoorva",
+                        "value": "faf0731e-dfb9-4cfc-8119-259a79b27e12"
+                      },
+                      {
+                        "name": "Ananya",
+                        "value": "28ca2041-5dda-42df-8123-f58ea9c3da00"
+                      },
+                      {
+                        "name": "Parvati",
+                        "value": "bec003e2-3cb3-429c-8468-206a393c67ad"
+                      },
+                      {
+                        "name": "Astha",
+                        "value": "9cebb910-d4b7-4a4a-85a4-12c79137724c"
+                      },
+                      {
+                        "name": "Janvi",
+                        "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                      },
+                      {
+                        "name": "Priya",
+                        "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                      },
+                      {
+                        "name": "Kiara",
+                        "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                      },
+                      {
+                        "name": "Maya",
+                        "value": "95d51f79-c397-46f9-b49a-23763d3eaa2d"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Male",
+                    "value": "Male",
+                    "voices": [
+                      {
+                        "name": "Ashish Clone",
+                        "value": "372d97c3-9e50-4eeb-a0a2-0fd57ac05532"
+                      },
+                      {
+                        "name": "Shivendra",
+                        "value": "a546c96c-606f-4ce3-964a-7245fe8b1693"
+                      },
+                      {
+                        "name": "Mihir",
+                        "value": "be79f378-47fe-4f9c-b92b-f02cefa62ccf"
+                      },
+                      {
+                        "name": "Ayush",
+                        "value": "791d5162-d5eb-40f0-8189-f19db44611d8"
+                      },
+                      {
+                        "name": "Amit",
+                        "value": "9b953e7b-86a8-42f0-b625-1434fb15392b"
+                      },
+                      {
+                        "name": "Ishan",
+                        "value": "fd2ada67-c2d9-4afe-b474-6386b87d8fc3"
+                      },
+                      {
+                        "name": "Hindi Reporter Man",
+                        "value": "bdab08ad-4137-4548-b9db-6142854c7525"
+                      },
+                      {
+                        "name": "Hindi Narrator Man",
+                        "value": "7f423809-0011-4658-ba48-a411f5e516ba"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "stt": [
+      {
+        "name": "Deepgram",
+        "value": "Deepgram",
+        "models": [
+          {
+            "name": "Nova-2-General",
+            "value": "nova-2-general",
+            "pricing": { "per_second": 0.000071667 },
+            "languages": [
+              { "name": "Multilingual (Spanish + English)", "value": "multi" },
+              { "name": "Bulgarian", "value": "bg" },
+              { "name": "Chinese (Mandarin, Simplified)", "value": "zh-CN" },
+              { "name": "Chinese (Cantonese, Traditional)", "value": "zh-HK" },
+              { "name": "English-US", "value": "en-US" },
+              { "name": "English-AUS", "value": "en-AU" },
+              { "name": "English-UK", "value": "en-GB" },
+              { "name": "English-IN", "value": "en-IN" },
+              { "name": "English-NZ", "value": "en-NZ" },
+              { "name": "French", "value": "fr" },
+              { "name": "German", "value": "de" },
+              { "name": "German (Switzerland)", "value": "de-CH" },
+              { "name": "Greek", "value": "el" },
+              { "name": "Hindi", "value": "hi" },
+              { "name": "Hungarian", "value": "hu" },
+              { "name": "Indonesian", "value": "id" },
+              { "name": "Italian", "value": "it" },
+              { "name": "Japanese", "value": "ja" },
+              { "name": "Korean", "value": "ko-KR" },
+              { "name": "Norwegian", "value": "no" },
+              { "name": "Polish", "value": "pl" },
+              { "name": "Portuguese", "value": "pt-PT" },
+              { "name": "Russian", "value": "ru" },
+              { "name": "Spanish", "value": "es" },
+              { "name": "Swedish", "value": "sv" },
+              { "name": "Thai", "value": "th" },
+              { "name": "Vietnamese", "value": "vi" }
+            ]
+          },
+          {
+            "name": "Nova-3",
+            "value": "nova-3",
+            "pricing": { "per_second": 0.000071667 },
+            "languages": [
+              { "name": "English General", "value": "en" },
+              { "name": "English-US", "value": "en-US" },
+              { "name": "Multilingual (English & Hindi)", "value": "multi" }
+            ]
+          },
+          {
+            "name": "Nova-3-Medical",
+            "value": "nova-3-medical",
+            "pricing": { "per_second": 0.000071667 },
+            "languages": [
+              { "name": "English General", "value": "en" },
+              { "name": "English-US", "value": "en-US" }
+            ]
+          },
+          {
+            "name": "Nova-2-Phonecall",
+            "value": "nova-2-phonecall",
+            "pricing": { "per_second": 0.000071667 },
+            "languages": [
+              { "name": "English General", "value": "en" },
+              { "name": "English-US", "value": "en-US" }
+            ]
+          },
+          {
+            "name": "Nova-2-Conversational AI",
+            "value": "nova-2-conversationalai",
+            "pricing": { "per_second": 0.000071667 },
+            "languages": [
+              { "name": "English General", "value": "en" },
+              { "name": "English-US", "value": "en-US" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Google",
+        "value": "Google",
+        "models": [
+          {
+            "name": "Chirp-2",
+            "value": "chirp_2",
+            "pricing": { "per_second": 0.0004 },
+            "languages": [
+              { "name": "Assamese (India)", "value": "as-IN" },
+              { "name": "Bengali (India)", "value": "bn-IN" },
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Gujarati (India)", "value": "gu-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" },
+              { "name": "Kannada (India)", "value": "kn-IN" },
+              { "name": "Malayalam (India)", "value": "ml-IN" },
+              { "name": "Marathi (India)", "value": "mr-IN" },
+              { "name": "Oriya (India)", "value": "or-IN" },
+              { "name": "Punjabi (Gurmukhi India)", "value": "pa-Guru-IN" },
+              { "name": "Sindhi (India)", "value": "sd-IN" },
+              { "name": "Tamil (India)", "value": "ta-IN" },
+              { "name": "Telugu (India)", "value": "te-IN" }
+            ]
+          },
+          {
+            "name": "Long",
+            "value": "long",
+            "pricing": { "per_second": 0.0004 },
+            "languages": [
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" },
+              { "name": "Kannada (India)", "value": "kn-IN" },
+              { "name": "Malayalam (India)", "value": "ml-IN" },
+              { "name": "Marathi (India)", "value": "mr-IN" },
+              { "name": "Tamil (India)", "value": "ta-IN" },
+              { "name": "Telugu (India)", "value": "te-IN" }
+            ]
+          },
+          {
+            "name": "Telephony",
+            "value": "telephony",
+            "pricing": { "per_second": 0.0004 },
+            "languages": [
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sarvam",
+        "value": "sarvam",
+        "models": [
+          {
+            "name": "Saarika v1",
+            "value": "saarika:v1",
+            "pricing": { "per_second": 0.000138333 },
+            "languages": [
+              { "name": "Bengali (India)", "value": "bn-IN" },
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Gujarati (India)", "value": "gu-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" },
+              { "name": "Kannada (India)", "value": "kn-IN" },
+              { "name": "Malayalam (India)", "value": "ml-IN" },
+              { "name": "Marathi (India)", "value": "mr-IN" },
+              { "name": "Odia (India)", "value": "od-IN" },
+              { "name": "Punjabi (India)", "value": "pa-IN" },
+              { "name": "Tamil (India)", "value": "ta-IN" },
+              { "name": "Telugu (India)", "value": "te-IN" }
+            ]
+          },
+          {
+            "name": "Saarika v2",
+            "value": "saarika:v2",
+            "pricing": { "per_second": 0.000138333 },
+            "languages": [
+              { "name": "Bengali (India)", "value": "bn-IN" },
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Gujarati (India)", "value": "gu-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" },
+              { "name": "Kannada (India)", "value": "kn-IN" },
+              { "name": "Malayalam (India)", "value": "ml-IN" },
+              { "name": "Marathi (India)", "value": "mr-IN" },
+              { "name": "Odia (India)", "value": "od-IN" },
+              { "name": "Punjabi (India)", "value": "pa-IN" },
+              { "name": "Tamil (India)", "value": "ta-IN" },
+              { "name": "Telugu (India)", "value": "te-IN" }
+            ]
+          },
+          {
+            "name": "Saarika Flash",
+            "value": "saarika:flash",
+            "pricing": { "per_second": 0.000138333 },
+            "languages": [
+              { "name": "Bengali (India)", "value": "bn-IN" },
+              { "name": "English (India)", "value": "en-IN" },
+              { "name": "Gujarati (India)", "value": "gu-IN" },
+              { "name": "Hindi (India)", "value": "hi-IN" },
+              { "name": "Kannada (India)", "value": "kn-IN" },
+              { "name": "Malayalam (India)", "value": "ml-IN" },
+              { "name": "Marathi (India)", "value": "mr-IN" },
+              { "name": "Odia (India)", "value": "od-IN" },
+              { "name": "Punjabi (India)", "value": "pa-IN" },
+              { "name": "Tamil (India)", "value": "ta-IN" },
+              { "name": "Telugu (India)", "value": "te-IN" }
+            ]
+          }
+        ]
+      }
+    ],
+    "stt_languages": [
+      "English-US",
+      "English-UK",
+      "English-IN",
+      "Hindi",
+      "Multilingual(English & Hindi)"
+    ],
+    "tts_languages": [
+      "English-US",
+      "English-UK",
+      "English-IN",
+      "Arabic",
+      "Hindi",
+      "Marathi"
+    ]
+  }
+  

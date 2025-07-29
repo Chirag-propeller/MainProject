@@ -61,7 +61,7 @@ interface STTModel {
 }
 
 const ConversationNodeSidebar: React.FC = () => {
-  const { selectedNode, updateNodeGlobal, updateNode, nodes, setSelectedNode } = useWorkflowStore()
+  const { selectedNode, updateNodeGlobal, updateNode, nodes, setSelectedNode,  edges} = useWorkflowStore()
   const { llmProviders, ttsOptions, sttModels, ttsLanguageOptions, loading } = useLLMConfig()
   const sidebarRef = useRef<HTMLDivElement>(null)
   
@@ -183,6 +183,7 @@ const ConversationNodeSidebar: React.FC = () => {
           stt: sttConfig
         })
       }
+
     }
   }, [selectedNode?.id]) // Only depend on node ID to avoid infinite loops
 

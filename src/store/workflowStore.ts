@@ -141,6 +141,7 @@ interface WorkflowState {
   // Selection state
   selectedNode: Node<NodeData> | null
   selectedEdge: Edge<EdgeData> | null
+  connectedEdges: string[] // Array of edge IDs connected to selected node
   
 
   //Active Node
@@ -174,6 +175,7 @@ interface WorkflowState {
   setConfig: (config: Partial<WorkflowState['config']>) => void
   setSelectedNode: (node: Node<NodeData> | null) => void
   setSelectedEdge: (edge: Edge<EdgeData> | null) => void
+  setConnectedEdges: (edgeIds: string[]) => void
   setIsGlobalPromptOpen: (open: boolean) => void
   setUserId: (userId: string) => void
   setCurrentWorkflowId: (workflowId: string | null) => void
@@ -194,6 +196,7 @@ interface WorkflowState {
   
   // Node actions
   addNode: (nodeType: string) => void
+  getConnectedEdges: (nodeId: string) => string[]
   updateNode: (nodeId: string, data: Partial<NodeData> | Record<string, any>) => void
   updateNodeGlobal: (nodeId: string, globalData: Record<string, any>) => void
   selectApiForNode: (nodeId: string, api: any) => void
@@ -221,13 +224,20 @@ interface WorkflowState {
 }
 
 // Helper function to create node based on type
-const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: number): Node<NodeData> => {
-  const basePosition = {
+const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: number, selectedNode: Node<NodeData> | null): Node<NodeData> => {
+  console.log('selectedNode', selectedNode)
+  let basePosition = {
     x: 100 + (nodeCount * 50),
     y: 100 + (nodeCount * 50)
   }
-  
+  if(selectedNode) {
+    basePosition = {
+      x: selectedNode.position.x + 300,
+      y: selectedNode.position.y
+    }
+  }
   const baseStyle = { width: 220, height: 120 }
+  console.log('basePosition', basePosition)
   
   switch (nodeType) {
     case 'Conversation Node':
@@ -435,6 +445,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   edgeCounter: 1,
   selectedNode: null,
   selectedEdge: null,
+  connectedEdges: [],
   isGlobalPromptOpen: false,
   isLoading: false,
   lastSaved: null,
@@ -472,8 +483,9 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     set({ config });
     setTimeout(() => get().checkForUnsavedChanges(), 100);
   },
-  setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null }),
+  setSelectedNode: (selectedNode) => set({ selectedNode, selectedEdge: null, connectedEdges: selectedNode ? get().getConnectedEdges(selectedNode.id) : [] }),
   setSelectedEdge: (selectedEdge) => set({ selectedEdge, selectedNode: null }),
+  setConnectedEdges: (connectedEdges) => set({ connectedEdges }),
   setIsGlobalPromptOpen: (isGlobalPromptOpen) => set({ isGlobalPromptOpen }),
   setUserId: (userId) => set({ userId }),
   setCurrentWorkflowId: (currentWorkflowId) => set({ currentWorkflowId }),
@@ -597,8 +609,10 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   addNode: (nodeType: string) => {
     const { nodes, nodeCounter } = get()
     const nodeCount = nodes.length
-    
-    const newNode = createNodeByType(nodeType, nodeCounter, nodeCount)
+    const selectedNode = get().selectedNode
+    console.log('selectedNode', selectedNode)
+
+    const newNode = createNodeByType(nodeType, nodeCounter,nodeCount, selectedNode)
     
     set((state) => ({
       nodes: [...state.nodes, newNode],
@@ -609,6 +623,14 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
     
     console.log('Creating new node:', newNode)
     setTimeout(() => get().checkForUnsavedChanges(), 100);
+  },
+  
+  // Calculate connected edges for a given node
+  getConnectedEdges: (nodeId: string) => {
+    const { edges } = get()
+    return edges
+      .filter(edge => edge.source === nodeId || edge.target === nodeId)
+      .map(edge => edge.id)
   },
   
   updateNode: (nodeId, data) => {
@@ -963,16 +985,20 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   
   onNodeClick: (event, node) => {
     console.log('Node clicked:', node)
+    const connectedEdgeIds = get().getConnectedEdges(node.id)
     get().setSelectedNode(node as Node<NodeData>)
+    get().setConnectedEdges(connectedEdgeIds)
   },
   
   onEdgeClick: (event, edge) => {
     console.log('Edge clicked:', edge)
     get().setSelectedEdge(edge as Edge<EdgeData>)
+    get().setConnectedEdges([]) // Clear connected edges when edge is clicked
   },
   
   onPaneClick: () => {
     get().setSelectedNode(null)
+    get().setConnectedEdges([])
   }
 }))
 
