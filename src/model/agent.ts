@@ -7,6 +7,7 @@ export interface IAgent extends Document {
   backgroundSound?: string;
   callHangup: boolean;
   callHangupPhase: string[];
+  hangupMessage?: string;
   createdAt: Date;
   gender?: string;
   inputLanguage?: string;
@@ -42,6 +43,7 @@ const AgentSchema: Schema = new Schema({
   agentName: { type: String, required: false, default: "Agent 1" },
   callHangup: { type: Boolean, default: false },
   callHangupPhase: [{ type: String, default: [] }],
+  hangupMessage: { type: String },
   backgroundSound: { type: String },
   gender: { type: String },
   inputLanguage: { type: String },

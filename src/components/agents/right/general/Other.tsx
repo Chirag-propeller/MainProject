@@ -40,6 +40,9 @@ const OtherContent = ({
     agent.callHangupPhase || []
   );
   const [inputPhrase, setInputPhrase] = useState<string>("");
+  const [hangupMessage, setHangupMessage] = useState<string>(
+    agent.hangupMessage || ""
+  );
   const [userAwayTimeOut, setUserAwayTimeOut] = useState<number>(
     agent.userAwayTimeOut || 5
   );
@@ -63,6 +66,10 @@ const OtherContent = ({
   useEffect(
     () => setSelectedPhases(agent.callHangupPhase || []),
     [agent.callHangupPhase]
+  );
+  useEffect(
+    () => setHangupMessage(agent.hangupMessage || ""),
+    [agent.hangupMessage]
   );
   useEffect(
     () => setIsLanguageFillersActive(agent.isLanguageFillersActive || false),
@@ -333,6 +340,30 @@ const OtherContent = ({
             <p className="text-gray-500 dark:text-gray-300 font-light text-xs">
               {`Common phrases: "bye", "goodbye", "that's it", "stop calling"`}
             </p>
+            
+            {/* Hangup Message */}
+            <div className="mt-4">
+              <TooltipLabel
+                label="Hangup Message"
+                fieldKey="HangupMessage"
+                htmlFor="hangupMessage"
+                className="font-semibold"
+              />
+              <textarea
+                id="hangupMessage"
+                placeholder="Enter the message that will be said to the user before hanging up..."
+                value={hangupMessage}
+                onChange={(e) => {
+                  setHangupMessage(e.target.value);
+                  setAgent({ ...agent, hangupMessage: e.target.value });
+                }}
+                rows={3}
+                className="w-full p-2 rounded-[6px] border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white text-sm"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-300 mt-1">
+                This message will be spoken to the user before the call ends
+              </p>
+            </div>
           </div>
         )}
       </div>

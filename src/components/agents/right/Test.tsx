@@ -146,6 +146,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         apis: apis,
         callHangup: agent.callHangup || false,
         callHangupPhase: agent.callHangupPhase || [],
+        hangupMessage: agent.hangupMessage || "",
         maxCallDuration: agent.maxCallDuration,
         numberTransfer: agent.numberTransfer || false,
         numberTransferNumber: agent.numberTransferNumber || "",

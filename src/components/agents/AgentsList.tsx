@@ -201,6 +201,14 @@ const AgentsList = ({
         gender: "Female",
         ttsLanguage: "en-IN",
         languageFillers: languageFillers,
+        callHangup: false,
+        callHangupPhase: [],
+        hangupMessage: "",
+        maxCallDuration: 1200,
+        numberTransfer: false,
+        numberTransferNumber: "",
+        userAwayTimeOut: 10,
+        isLanguageFillersActive: false,
       });
 
       setAgents([res.data, ...agents]);

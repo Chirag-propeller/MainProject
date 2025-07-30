@@ -22,6 +22,14 @@ interface AgentPayload {
   gender?: string;
   ttsLanguage?: string;
   languageFillers?: object;
+  callHangup?: boolean;
+  callHangupPhase?: string[];
+  hangupMessage?: string;
+  maxCallDuration?: number;
+  numberTransfer?: boolean;
+  numberTransferNumber?: string;
+  userAwayTimeOut?: number;
+  isLanguageFillersActive?: boolean;
 }
 
 export const fetchAgents = async (): Promise<Agent[]> => {
