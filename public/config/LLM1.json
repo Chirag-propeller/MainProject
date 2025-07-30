@@ -1536,6 +1536,23 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Cartesia",
+      "value": "cartesia",
+      "models": [
+        {
+          "name": "Ink Whisper",
+          "value": "ink-whisper",
+          "pricing": { "per_second": 0.000071667 },
+          "languages": [
+            { "name": "English", "value": "en" },
+            { "name": "Hindi", "value": "hi" },
+            { "name": "Marathi", "value": "mr" },
+            { "name": "Kannada", "value": "kn" }
+          ]
+        }
+      ]
     }
   ],
   "stt_languages": [
