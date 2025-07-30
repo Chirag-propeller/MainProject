@@ -239,7 +239,7 @@ const VariableItem: React.FC<VariableItemProps> = ({
                 value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
                 rows={2}
-                className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
+                className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500"
               />
             ) : (
               <div className="px-2 py-1 bg-gray-50 rounded text-sm">

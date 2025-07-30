@@ -256,7 +256,7 @@ const RagSidebar: React.FC = () => {
                   onChange={e => handleGlobalFieldChange('pathwayCondition', e.target.value)}
                   placeholder="Enter pathway condition"
                   rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
                 />
               </div>
               <div>
@@ -266,8 +266,8 @@ const RagSidebar: React.FC = () => {
                   onChange={e => handleGlobalFieldChange('pathwayDescription', e.target.value)}
                   placeholder="Enter pathway description"
                   rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
-                />
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                />  
               </div>
             </div>
           )}

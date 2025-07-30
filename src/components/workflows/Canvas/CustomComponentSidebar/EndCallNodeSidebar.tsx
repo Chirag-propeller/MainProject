@@ -131,7 +131,7 @@ const EndCallNodeSidebar: React.FC = () => {
                   onChange={(e) => handleGlobalFieldChange('pathwayCondition', e.target.value)}
                   placeholder="Enter the condition for this global node pathway..."
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                 />
               </div>
 
@@ -144,7 +144,7 @@ const EndCallNodeSidebar: React.FC = () => {
                   onChange={(e) => handleGlobalFieldChange('pathwayDescription', e.target.value)}
                   placeholder="Describe the purpose and behavior of this global node pathway..."
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                 />
               </div>
 
@@ -191,7 +191,7 @@ const EndCallNodeSidebar: React.FC = () => {
                             onChange={(e) => handleGlobalFieldChange('previousNodePathwayLabel', e.target.value)}
                             placeholder="Condition to path to the previous node, before coming to this global node..."
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                           />
                         </div>
 
@@ -204,7 +204,7 @@ const EndCallNodeSidebar: React.FC = () => {
                             onChange={(e) => handleGlobalFieldChange('previousNodePathwayDescription', e.target.value)}
                             placeholder="Additional Description for when to choose this pathway..."
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
                           />
                         </div>
                       </div>
