@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useWorkflowStore } from '@/store/workflowStore';
 import { Button } from '@/components/ui/button';
 import Toggle from '@/components/ui/toggle';
-import { Upload, Trash2, Download, X, ChevronDown, ChevronRight } from 'lucide-react';
+import { Upload, Trash2, Download, X, ChevronDown, ChevronRight, Plus } from 'lucide-react';
 import VariableExtractSection from './VariableExtractSection';
 
 const RagSidebar: React.FC = () => {
@@ -252,11 +252,74 @@ const RagSidebar: React.FC = () => {
                   </span>
                   <Toggle
                     checked={selectedNode.data.fillerWords || false}
-                    onChange={(checked) => handleFieldChange('fillerWords', checked)}
+                    onChange={(checked) => {
+                      handleFieldChange('fillerWords', checked)
+                      // Clear filler phrases when disabling filler words
+                      if (!checked) {
+                        handleFieldChange('fillerPhrases', [])
+                      }
+                    }}
                     size="small"
                   />
                 </div>
               </div>
+
+              {/* Filler Phrases - only show if filler words is enabled */}
+              {selectedNode.data.fillerWords && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Filler Phrases
+                  </label>
+                  <div className="space-y-3">
+                    <div className="text-sm text-gray-600 mb-2">
+                      Add phrases that will be used as filler words during conversation
+                    </div>
+                    
+                    {/* Filler Phrases List */}
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {(selectedNode.data.fillerPhrases || []).map((phrase: string, index: number) => (
+                        <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
+                          <input
+                            type="text"
+                            value={phrase}
+                            onChange={(e) => {
+                              const updatedPhrases = [...(selectedNode.data.fillerPhrases || [])]
+                              updatedPhrases[index] = e.target.value
+                              handleFieldChange('fillerPhrases', updatedPhrases)
+                            }}
+                            placeholder="Enter filler phrase..."
+                            className="flex-1 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                          />
+                          <button
+                            onClick={() => {
+                              const updatedPhrases = (selectedNode.data.fillerPhrases || []).filter((_: string, i: number) => i !== index)
+                              handleFieldChange('fillerPhrases', updatedPhrases)
+                            }}
+                            className="p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+                            title="Remove phrase"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Add New Phrase Button */}
+                    <Button
+                      onClick={() => {
+                        const currentPhrases = selectedNode.data.fillerPhrases || []
+                        handleFieldChange('fillerPhrases', [...currentPhrases, ''])
+                      }}
+                      variant="secondary"
+                      size="sm"
+                      className="w-full flex items-center justify-center gap-2 text-sm border border-gray-300"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Add Filler Phrase
+                    </Button>
+                  </div>
+                </div>
+              )}
 
               {/* Background Audio Toggle */}
               <div>

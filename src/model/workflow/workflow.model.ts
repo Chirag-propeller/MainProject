@@ -15,6 +15,7 @@ interface IWorkflowNode {
       type: string;
       variables?: Record<string, string>;
       fillerWords?: boolean;
+      fillerPhrases?: string[];
       backgroundAudio?: boolean;
       llm?: {
         provider: string;
@@ -158,6 +159,7 @@ const WorkflowSchema = new Schema<IWorkflow>({
         default: {} 
       },
       fillerWords: { type: Boolean, default: false },
+      fillerPhrases: { type: [String], default: [] },
       backgroundAudio: { type: Boolean, default: false },
       llm: {
         provider: { type: String, default: 'OpenAI' },

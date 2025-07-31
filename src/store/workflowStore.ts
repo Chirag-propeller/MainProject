@@ -27,6 +27,7 @@ interface BaseNodeData {
   variables?: Record<string, string>
   // Audio settings for all nodes
   fillerWords?: boolean
+  fillerPhrases?: string[]
   backgroundAudio?: boolean
   global?: {
     isGlobal?: boolean
