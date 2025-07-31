@@ -1344,6 +1344,48 @@
                   ]
                 }
               ]
+            },
+            {
+              "name": "English (India)",
+              "value": "en-IN",
+              "gender": [
+                {
+                  "name": "Female",
+                  "value": "Female",
+                  "voices": [
+                    {
+                      "name": "Janvi",
+                      "value": "7ea5e9c2-b719-4dc3-b870-5ba5f14d31d8"
+                    },
+                    {
+                      "name": "Priya",
+                      "value": "f6141af3-5f94-418c-80ed-a45d450e7e2e"
+                    },
+                    {
+                      "name": "Kiara",
+                      "value": "f8f5f1b2-f02d-4d8e-a40d-fd850a487b3d"
+                    },
+                    {
+                      "name": "Indian Lady",
+                      "value": "3b554273-4299-48b9-9aaf-eefd438e3941"
+                    }
+                  ]
+                },
+                {
+                  "name": "Male",
+                  "value": "Male",
+                  "voices": [
+                    {
+                      "name": "Devansh",
+                      "value": "1259b7e3-cb8a-43df-9446-30971a46b8b0"
+                    },
+                    {
+                      "name": "Indian Man",
+                      "value": "638efaaa-4d0c-442e-b701-3fae16aad012"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }

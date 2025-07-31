@@ -25,6 +25,9 @@ interface BaseNodeData {
     language: string
   }
   variables?: Record<string, string>
+  // Audio settings for all nodes
+  fillerWords?: boolean
+  backgroundAudio?: boolean
   global?: {
     isGlobal?: boolean
     pathwayCondition?: string
@@ -250,6 +253,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Custom Node',
           prompt: '',
           type: 'Conversation',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -284,6 +289,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           params: [],
           response: {},
           preFetchRequired: false,
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -312,6 +319,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           knowledgeBaseUrl: '',
           whenToCallRag: '',
           prompt: '',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -337,6 +346,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Conditional Node',
           condition: '',
           type: 'Conditional',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -363,6 +374,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           type: 'endcall',
           message: 'Thank you for calling. Have a great day!',
           prompt: '',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -390,6 +403,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           phoneNumber: '',
           transferMessage: 'Transferring your call...',
           prompt: '',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',
@@ -415,6 +430,8 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           name: 'Custom Node',
           prompt: '',
           type: 'Conversation',
+          fillerWords: false,
+          backgroundAudio: false,
           global: {
             isGlobal: false,
             pathwayCondition: '',

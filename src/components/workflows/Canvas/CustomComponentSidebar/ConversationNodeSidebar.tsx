@@ -5,7 +5,8 @@ import SelectionDropdown from '@/components/agents/SelectionDropdown'
 import TooltipLabel from '@/components/ui/tooltip'
 import VariableExtractSection from './VariableExtractSection'
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
+import Toggle from '@/components/ui/toggle'
+import { X, ChevronDown, ChevronRight, Edit3 } from 'lucide-react'
 
 // Define interfaces matching the LLM1.json structure
 interface LLMProvider {
@@ -67,6 +68,17 @@ const ConversationNodeSidebar: React.FC = () => {
   
   // Cast ttsOptions to the correct type
   const ttsProviders = (ttsOptions as any) as TtsProvider[]
+
+  // State for collapsible sections
+  const [isLLMCollapsed, setIsLLMCollapsed] = useState(true)
+  const [isTTSCollapsed, setIsTTSCollapsed] = useState(true)
+  const [isSTTCollapsed, setIsSTTCollapsed] = useState(true)
+  const [isAudioCollapsed, setIsAudioCollapsed] = useState(true)
+
+  // State for name editing
+  const [isNameEditing, setIsNameEditing] = useState(false)
+  const [editingName, setEditingName] = useState('')
+  const nameInputRef = useRef<HTMLInputElement>(null)
 
   // State for LLM options
   const [selectedLLMProvider, setSelectedLLMProvider] = useState<string>('')
@@ -419,17 +431,81 @@ const ConversationNodeSidebar: React.FC = () => {
     handleConfigFieldChange('stt', 'language', newValue)
   }, [handleConfigFieldChange, selectedSTTLanguage])
 
+  // Name editing handlers
+  const handleNameEdit = useCallback(() => {
+    setEditingName(selectedNode?.data.name || '')
+    setIsNameEditing(true)
+  }, [selectedNode?.data.name])
+
+  const handleNameSave = useCallback(() => {
+    if (editingName.trim()) {
+      handleNodeFieldChange('name', editingName.trim())
+    }
+    setIsNameEditing(false)
+  }, [editingName, handleNodeFieldChange])
+
+  const handleNameCancel = useCallback(() => {
+    setEditingName(selectedNode?.data.name || '')
+    setIsNameEditing(false)
+  }, [selectedNode?.data.name])
+
+  const handleNameKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleNameSave()
+    } else if (e.key === 'Escape') {
+      handleNameCancel()
+    }
+  }, [handleNameSave, handleNameCancel])
+
+  // Focus input when editing starts
+  useEffect(() => {
+    if (isNameEditing && nameInputRef.current) {
+      nameInputRef.current.focus()
+      nameInputRef.current.select()
+    }
+  }, [isNameEditing])
+
   return (
     <div 
       ref={sidebarRef}
       className="w-120 h-[calc(100vh-4rem)] bg-white border-l border-gray-200 p-4 pt-0 overflow-y-auto rounded-lg shadow-lg scrollbar-hide"
     >
-      <div className="mb-4 sticky top-0 pt-2 bg-white z-10 flex items-center justify-between">
-        <div className="">  
-        <h2 className="text-xl font-bold text-gray-800">Conversation Node Properties</h2>
-        <div className="text-sm text-gray-500 rounded-lg mb-2">
-          <strong>ID:</strong> {selectedNode.id}
-        </div>
+      <div className="mb-4 sticky top-0 pt-2 bg-white z-10 flex items-center justify-between pb-2">
+        <div className="flex-1">  
+          <div className="flex items-center gap-2 mb-2">
+            {isNameEditing ? (
+              <input
+                ref={nameInputRef}
+                type="text"
+                value={editingName}
+                onChange={(e) => setEditingName(e.target.value)}
+                onKeyDown={handleNameKeyDown}
+                onBlur={handleNameSave}
+                className="text-xl font-bold text-gray-800 bg-transparent border-b border-gray-300 focus:outline-none focus:border-indigo-500 px-1 py-1"
+                placeholder="Enter node name"
+              />
+            ) : (
+              <h2 className="text-xl font-bold text-gray-800">
+                {selectedNode.data.name || 'Untitled Node'}
+              </h2>
+            )}
+            {!isNameEditing && (
+              <button
+                onClick={handleNameEdit}
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
+              >
+                <Edit3 className="w-4 h-4 text-gray-500 hover:text-gray-700" />
+              </button>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              Conversation Node
+            </span>
+            <span className="text-sm text-gray-500">
+              ID: {selectedNode.id}
+            </span>
+          </div>
         </div>
         <Button
           variant="ghost"
@@ -442,33 +518,6 @@ const ConversationNodeSidebar: React.FC = () => {
       </div>
 
       <div className="space-y-6">
-        {/* Type Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Type
-          </label>
-          <select
-            value={selectedNode.data.type || 'Conversation'}
-            onChange={(e) => handleNodeFieldChange('type', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          >
-            <option value="Conversation">Conversation</option>
-          </select>
-        </div>
-
-        {/* Name Field */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Node Name (Editable)
-          </label>
-          <input
-            type="text"
-            value={selectedNode.data.name || ''}
-            onChange={(e) => handleNodeFieldChange('name', e.target.value)}
-            placeholder="Enter custom node name"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-          />
-        </div>
 
         {/* Prompt Field - only show for conversation nodes */}
         {isConversationNode(selectedNode) && (
@@ -480,7 +529,7 @@ const ConversationNodeSidebar: React.FC = () => {
               value={getConversationData()?.prompt || ''}
               onChange={(e) => handleNodeFieldChange('prompt', e.target.value)}
               placeholder="Enter your prompt here..."
-              rows={6}
+              rows={11}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
             />
           </div>
@@ -488,133 +537,222 @@ const ConversationNodeSidebar: React.FC = () => {
 
         {/* LLM Configuration */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
-            🤖 LLM Configuration
-          </h3>
+          <button
+            onClick={() => setIsLLMCollapsed(!isLLMCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>🤖 LLM Configuration</span>
+            {isLLMCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
           
-          {/* LLM Provider */}
-          <div>
-            <TooltipLabel label="LLM Provider" fieldKey="llmProvider" />
-            <SelectionDropdown
-              options={llmProviderOptions}
-              selectedOption={selectedLLMProvider}
-              setOption={handleLLMProviderChange}
-              loading={loading}
-            />
-          </div>
+          {!isLLMCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* LLM Provider */}
+              <div>
+                <TooltipLabel label="LLM Provider" fieldKey="llmProvider" />
+                <SelectionDropdown
+                  options={llmProviderOptions}
+                  selectedOption={selectedLLMProvider}
+                  setOption={handleLLMProviderChange}
+                  loading={loading}
+                />
+              </div>
 
-          {/* LLM Model */}
-          <div>
-            <TooltipLabel label="LLM Model" fieldKey="llmModel" />
-            <SelectionDropdown
-              options={llmModels}
-              selectedOption={selectedLLMModel}
-              setOption={handleLLMModelChange}
-              loading={loading}
-            />
-          </div>
+              {/* LLM Model */}
+              <div>
+                <TooltipLabel label="LLM Model" fieldKey="llmModel" />
+                <SelectionDropdown
+                  options={llmModels}
+                  selectedOption={selectedLLMModel}
+                  setOption={handleLLMModelChange}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* TTS Configuration */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
-            🔊 TTS Configuration
-          </h3>
+          <button
+            onClick={() => setIsTTSCollapsed(!isTTSCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>🔊 TTS Configuration</span>
+            {isTTSCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
           
-          {/* TTS Provider & Model */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <TooltipLabel label="Provider" fieldKey="ttsProvider" />
-              <SelectionDropdown
-                options={ttsProviderOptions}
-                selectedOption={selectedTTSProvider}
-                setOption={handleTTSProviderChange}
-                loading={loading}
-              />
-            </div>
-            <div>
-              <TooltipLabel label="Model" fieldKey="ttsModel" />
-              <SelectionDropdown
-                options={ttsModels}
-                selectedOption={selectedTTSModel}
-                setOption={handleTTSModelChange}
-                loading={loading}
-              />
-            </div>
-          </div>
+          {!isTTSCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* TTS Provider & Model */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <TooltipLabel label="Provider" fieldKey="ttsProvider" />
+                  <SelectionDropdown
+                    options={ttsProviderOptions}
+                    selectedOption={selectedTTSProvider}
+                    setOption={handleTTSProviderChange}
+                    loading={loading}
+                  />
+                </div>
+                <div>
+                  <TooltipLabel label="Model" fieldKey="ttsModel" />
+                  <SelectionDropdown
+                    options={ttsModels}
+                    selectedOption={selectedTTSModel}
+                    setOption={handleTTSModelChange}
+                    loading={loading}
+                  />
+                </div>
+              </div>
 
-          {/* TTS Language & Gender */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <TooltipLabel label="Language" fieldKey="ttsLanguage" />
-              <SelectionDropdown
-                options={availableTTSLanguages}
-                selectedOption={selectedTTSLanguage}
-                setOption={handleTTSLanguageChange}
-                loading={loading}
-              />
-            </div>
-            <div>
-              <TooltipLabel label="Gender" fieldKey="ttsGender" />
-              <SelectionDropdown
-                options={availableTTSGenders.map(g => ({ name: g, value: g }))}
-                selectedOption={selectedTTSGender}
-                setOption={handleTTSGenderChange}
-                loading={loading}
-              />
-            </div>
-          </div>
+              {/* TTS Language & Gender */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <TooltipLabel label="Language" fieldKey="ttsLanguage" />
+                  <SelectionDropdown
+                    options={availableTTSLanguages}
+                    selectedOption={selectedTTSLanguage}
+                    setOption={handleTTSLanguageChange}
+                    loading={loading}
+                  />
+                </div>
+                <div>
+                  <TooltipLabel label="Gender" fieldKey="ttsGender" />
+                  <SelectionDropdown
+                    options={availableTTSGenders.map(g => ({ name: g, value: g }))}
+                    selectedOption={selectedTTSGender}
+                    setOption={handleTTSGenderChange}
+                    loading={loading}
+                  />
+                </div>
+              </div>
 
-          {/* TTS Voice */}
-          <div>
-            <TooltipLabel label="Voice" fieldKey="ttsVoice" />
-            <SelectionDropdown
-              options={ttsVoices}
-              selectedOption={selectedTTSVoice}
-              setOption={handleTTSVoiceChange}
-              loading={loading}
-            />
-          </div>
+              {/* TTS Voice */}
+              <div>
+                <TooltipLabel label="Voice" fieldKey="ttsVoice" />
+                <SelectionDropdown
+                  options={ttsVoices}
+                  selectedOption={selectedTTSVoice}
+                  setOption={handleTTSVoiceChange}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* STT Configuration */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
-            🎙️ STT Configuration
-          </h3>
+          <button
+            onClick={() => setIsSTTCollapsed(!isSTTCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>🎙️ STT Configuration</span>
+            {isSTTCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
           
-          {/* STT Provider & Model */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <TooltipLabel label="Provider" fieldKey="sttProvider" />
-              <SelectionDropdown
-                options={sttProviderOptions}
-                selectedOption={selectedSTTProvider}
-                setOption={handleSTTProviderChange}
-                loading={loading}
-              />
-            </div>
-            <div>
-              <TooltipLabel label="Model" fieldKey="sttModel" />
-              <SelectionDropdown
-                options={sttModelsOptions}
-                selectedOption={selectedSTTModel}
-                setOption={handleSTTModelChange}
-                loading={loading}
-              />
-            </div>
-          </div>
+          {!isSTTCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* STT Provider & Model */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <TooltipLabel label="Provider" fieldKey="sttProvider" />
+                  <SelectionDropdown
+                    options={sttProviderOptions}
+                    selectedOption={selectedSTTProvider}
+                    setOption={handleSTTProviderChange}
+                    loading={loading}
+                  />
+                </div>
+                <div>
+                  <TooltipLabel label="Model" fieldKey="sttModel" />
+                  <SelectionDropdown
+                    options={sttModelsOptions}
+                    selectedOption={selectedSTTModel}
+                    setOption={handleSTTModelChange}
+                    loading={loading}
+                  />
+                </div>
+              </div>
 
-          {/* STT Language */}
-          <div>
-            <TooltipLabel label="Language" fieldKey="sttLanguage" />
-            <SelectionDropdown
-              options={sttLanguages}
-              selectedOption={selectedSTTLanguage}
-              setOption={handleSTTLanguageChange}
-              loading={loading}
-            />
-          </div>
+              {/* STT Language */}
+              <div>
+                <TooltipLabel label="Language" fieldKey="sttLanguage" />
+                <SelectionDropdown
+                  options={sttLanguages}
+                  selectedOption={selectedSTTLanguage}
+                  setOption={handleSTTLanguageChange}
+                  loading={loading}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Other Settings */}
+        <div className="space-y-4">
+          <button
+            onClick={() => setIsAudioCollapsed(!isAudioCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>⚙️ Other Settings</span>
+            {isAudioCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
+          
+          {!isAudioCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* Filler Words Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Filler Words
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable filler words in conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.fillerWords || false}
+                    onChange={(checked) => handleNodeFieldChange('fillerWords', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
+
+              {/* Background Audio Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Background Audio
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable background audio during conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.backgroundAudio || false}
+                    onChange={(checked) => handleNodeFieldChange('backgroundAudio', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Variable Extraction Section */}
@@ -785,16 +923,7 @@ const ConversationNodeSidebar: React.FC = () => {
           )}
         </div>
 
-        {/* Additional Fields */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Position
-          </label>
-          <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-            <div>X: {Math.round(selectedNode.position.x)}</div>
-            <div>Y: {Math.round(selectedNode.position.y)}</div>
-          </div>
-        </div>
+
       </div>
     </div>
   );

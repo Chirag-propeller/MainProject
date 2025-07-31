@@ -1,175 +1,58 @@
-LLM_PRICES = {
-    "openai": {
-        "gpt-4.1": {"input": 2.0e-6, "output": 8.0e-6, "cache": 0.5e-6},
-        "gpt-4.1-mini": {"input": 0.4e-6, "output": 1.6e-6, "cache": 0.1e-6},
-        "gpt-4.1-nano": {"input": 0.1e-6, "output": 0.4e-6, "cache": 0.025e-6},
-        "gpt-4.5-preview": {"input": 75.0e-6, "output": 150.0e-6, "cache": 37.5e-6},
-        "gpt-4o": {"input": 2.5e-6, "output": 10.0e-6, "cache": 1.25e-6},
-        "gpt-4o-mini": {"input": 0.15e-6, "output": 0.6e-6, "cache": 0.075e-6},
-        "o1": {"input": 15.0e-6, "output": 60.0e-6, "cache": 7.5e-6},
-        "o1-pro": {"input": 150.0e-6, "output": 600.0e-6, "cache": 0},
-        "o3": {"input": 10.0e-6, "output": 40.0e-6, "cache": 2.5e-6},
-        "o1-mini": {"input": 1.1e-6, "output": 4.4e-6, "cache": 0.55e-6},
-        "gpt-image-1": {"input": 10.0e-6, "output": 40.0e-6, "cache": 0},
-    },
-    "cerebras": {
-        "llama-4-scout-17b-16e-instruct": {"input": 0.65e-6, "output": 0.85e-6},
-        "llama3.1-8b": {"input": 0.1e-6, "output": 0.1e-6},
-        "llama-3.3-70b": {"input": 0.85e-6, "output": 1.2e-6},
-        "Qwen-3-32B": {"input": 0.4e-6, "output": 0.8e-6},
-        "deepseek-r1-distill-llama-70b": {"input": 2.2e-6, "output": 2.5e-6},
-    },
-    "groq": {
-        "meta-llama/llama-4-scout-17b-16e-instruct": {
-            "input": 0.11e-6,
-            "output": 0.34e-6,
-        },
-        "meta-llama/llama-4-maverick-17b-128e-instruct": {
-            "input": 0.2e-6,
-            "output": 0.6e-6,
-        },
-        # "llama-guard-4-12b-128k": {"input": 0.2e-6, "output": 0.2e-6},
-        "deepseek-r1-distill-llama-70b": {"input": 0.75e-6, "output": 0.99e-6},
-        # "qwen-qwq-32b-preview-128k": {"input": 0.29e-6, "output": 0.39e-6},
-        # "mistral-saba-24b": {"input": 0.79e-6, "output": 0.79e-6},
-        "llama-3.3-70b-versatile": {"input": 0.59e-6, "output": 0.79e-6},
-        "llama-3.1-8b-instant": {"input": 0.05e-6, "output": 0.08e-6},
-        "llama3-70b-8192": {"input": 0.59e-6, "output": 0.79e-6},
-        "llama3-8b-8192": {"input": 0.05e-6, "output": 0.08e-6},
-        # "gemma-2-9b-8k": {"input": 0.2e-6, "output": 0.2e-6},
-        "llama-guard-3-8b": {"input": 0.2e-6, "output": 0.2e-6},
-    },
-    "azure": {
-        # GPT-4.1 series (Note: these seem to be newer models, pricing derived from a third-party source listing both OpenAI and Azure pricing)
-        "gpt-4.1": {"input": 2.0e-6, "output": 8.0e-6},
-        "gpt-4.1-mini": {"input": 0.4e-6, "output": 1.6e-6},
-        "gpt-4.1-nano": {"input": 0.1e-6, "output": 0.4e-6},
- 
-        # GPT-4o series
-        "gpt-4o": {"input": 5.0e-6, "output": 15.0e-6},
-        "gpt-4o-2024-05-13": {"input": 5.0e-6, "output": 15.0e-6}, # Often same as gpt-4o
-        "gpt-4o-mini": {"input": 0.15e-6, "output": 0.6e-6},
-        "gpt-4o-mini-2024-07-18": {"input": 0.15e-6, "output": 0.6e-6}, # Often same as gpt-4o-mini
- 
-        # GPT-4 Turbo series
-        "gpt-4-turbo": {"input": 10.0e-6, "output": 30.0e-6},
-        "gpt-4-turbo-2024-04-09": {"input": 10.0e-6, "output": 30.0e-6}, # Often same as gpt-4-turbo
-        "gpt-4-turbo-preview": {"input": 10.0e-6, "output": 30.0e-6},
-        "gpt-4-0125-preview": {"input": 10.0e-6, "output": 30.0e-6},
-        "gpt-4-1106-preview": {"input": 10.0e-6, "output": 30.0e-6},
-        "gpt-4-vision-preview": {"input": 10.0e-6, "output": 30.0e-6}, # Text token pricing for vision models
-        "gpt-4-1106-vision-preview": {"input": 10.0e-6, "output": 30.0e-6}, # Text token pricing for vision models
- 
-        # GPT-4
-        "gpt-4": {"input": 30.0e-6, "output": 60.0e-6},
-        "gpt-4-0314": {"input": 30.0e-6, "output": 60.0e-6},
-        "gpt-4-0613": {"input": 30.0e-6, "output": 60.0e-6},
-        "gpt-4-32k": {"input": 60.0e-6, "output": 120.0e-6},
-        "gpt-4-32k-0314": {"input": 60.0e-6, "output": 120.0e-6},
-        "gpt-4-32k-0613": {"input": 60.0e-6, "output": 120.0e-6},
- 
-        # GPT-3.5 Turbo series
-        "gpt-3.5-turbo": {"input": 1.5e-6, "output": 2.0e-6},
-        "gpt-3.5-turbo-16k": {"input": 3.0e-6, "output": 4.0e-6},
-        "gpt-3.5-turbo-0301": {"input": 1.5e-6, "output": 2.0e-6},
-        "gpt-3.5-turbo-0613": {"input": 1.5e-6, "output": 2.0e-6},
-        "gpt-3.5-turbo-1106": {"input": 1.0e-6, "output": 2.0e-6},
-        "gpt-3.5-turbo-16k-0613": {"input": 3.0e-6, "output": 4.0e-6},
-    }
-}
- 
- 
-for llm based on input tokens and output tokens (also cashed token for gpt)
- 
-STT_PRICES = {
-    "deepgram": {
-        "nova-general": 0.0043 / 60,  
-        "nova-2-general": 0.0043 / 60,  
-        "nova-2-phonecall": 0.0043 / 60,  
-        "nova-2-conversationalai": 0.0043 / 60,
-        "nova-2":0.0043 / 60,
-        "nova-3": 0.0043 / 60,  
-        "nova-3-medical": 0.0043 / 60,  
-        "nova_3_multilingual": 0.0052 / 60,    
-    },
-    # "amazon": {
-    #     "tier_1_first_250k": 0.024 / 60,
-    #     "tier_2_next_750k": 0.015 / 60,
-    #     "tier_3_over_1m": 0.0108 / 60,
-    # },
-    "google":{
-        "chirp_2": 0.024 / 60,
-        "long":0.024 / 60,
-        "telephony":0.024 / 60,
-    },
-    "sarvam":{
-        "saarika:v1": 0.0083 / 60,
-        "saarika:v2":0.0083/ 60,
-        "saarika:flash":0.0083 / 60,
-    }
- 
-}
- 
- 
-for stt based on  total audio duration
- 
-# USD per character (based on per 1 million character pricing), using .xe-6-style formatting
- 
-# This file contains the TTS prices for different models and providers.
-# The prices are defined in a dictionary format, where each provider has its own set of models and their respective costs.
-# The prices are defined in dollars per character.
-TTS_PRICES = {
-    "amazon": {
-        "standard": 4.0e-6,
-        "neural": 16.0e-6,
-        "generative": 30.0e-6,
-        "long_form": 100.0e-6,
-    },
-    # "elevenlabs": {
-    #     "flash": 5/60000,
-    #     "multilingual_v2": 5/30000,
-    # },
-    # "deepgram": {
-    #     "aura_1": 1e-6,
-    #     "aura_2": 1e-6,
-    # },
-    # "openai": {
-    #     "gpt-4o-mini-tts": 12.0e-6,
-    # },
-    # "smallest_ai": {
-    #     "lightning": 20.1e-6,
-    #     "lightning_multi": 20.1e-6,
-    #     "lightning_large": 80.6e-6,
-    # },
-    "google": {
-        "standard": 4.0e-6,
-        "wavenet": 16.0e-6,
-        "neural2": 16.0e-6,
-        "chirp3-hd": 30.0e-6,
-    },
-    "sarvam":{
-        "bulbul:v2":0.18e-4
-    },
-    "elevenlabs":{
-        'eleven_monolingual_v1':22/200000,
-        'eleven_multilingual_v1':22/100000,
-        'eleven_multilingual_v2':22/100000,
-        'eleven_turbo_v2':22/200000,
-        'eleven_turbo_v2_5':22/200000,
-        'eleven_flash_v2_5':22/200000,
-        'eleven_flash_v2':22/200000,
-        'eleven_v3':22/200000,
-    },
-    "cartesia":{
-        'sonic':5 / 100000,
-        'sonic-2':5 / 100000,
-        'sonic-lite':5 / 100000,
-        'sonic-preview':5 / 100000,
-        'sonic-turbo':5 / 100000,
-    },
-    "baseten":{
-        "orpheus":5/100000,
-    }
- 
-}
- 
+Female Voices
+Name: Rupali
+
+ID: 56e35e2d-6eb6-4226-ab8b-9776515a7094
+
+Name: Aadhya
+
+ID: f91ab3e6-5071-4e15-b016-cde6f2bcd222
+
+Name: Indian Conversational Woman
+
+ID: 9cebb910-d4b7-4a4a-85a4-12c79137724c
+
+Name: Apoorva
+
+ID: faf0731e-dfb9-4cfc-8119-259a79b27e12
+
+Name: Ananya
+
+ID: 28ca2041-5dda-42df-8123-f58ea9c3da00
+
+Name: Parvati
+
+ID: bec003e2-3cb3-429c-8468-206a393c67ad
+
+Name: Hinglish Speaking Woman
+
+ID: 95d51f79-c397-46f9-b49a-23763d3eaa2d
+
+🚹 Male Voices
+Name: Ayush
+
+ID: 791d5162-d5eb-40f0-8189-f19db44611d8
+
+Name: Amit
+
+ID: 9b953e7b-86a8-42f0-b625-1434fb15392b
+
+Name: Ishan
+
+ID: fd2ada67-c2d9-4afe-b474-6386b87d8fc3
+
+Name: Mihir
+
+ID: be79f378-47fe-4f9c-b92b-f02cefa62ccf
+
+Name: Hindi Reporter Man
+
+ID: bdab08ad-4137-4548-b9db-6142854c7525
+
+Name: Hindi Narrator Man
+
+ID: 7f423809-0011-4658-ba48-a411f5e516ba
+
+❔ Gender Not Specified
+Name: New_Voice - Chongz
+
+ID: 4ebdd8b5-21ff-4824-be01-6da629c6f523

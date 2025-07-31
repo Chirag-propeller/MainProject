@@ -14,6 +14,8 @@ interface IWorkflowNode {
       method?: string;
       type: string;
       variables?: Record<string, string>;
+      fillerWords?: boolean;
+      backgroundAudio?: boolean;
       llm?: {
         provider: string;
         model: string;
@@ -29,6 +31,11 @@ interface IWorkflowNode {
         provider: string;
         model: string;
         language: string;
+      };
+      // Audio settings for all nodes
+      audioSettings?: {
+        fillerWords?: boolean;
+        backgroundAudio?: boolean;
       };
       global?: {
         isGlobal?: boolean;
@@ -150,6 +157,8 @@ const WorkflowSchema = new Schema<IWorkflow>({
         type: Object, 
         default: {} 
       },
+      fillerWords: { type: Boolean, default: false },
+      backgroundAudio: { type: Boolean, default: false },
       llm: {
         provider: { type: String, default: 'OpenAI' },
         model: { type: String, default: 'gpt-4o-mini' }

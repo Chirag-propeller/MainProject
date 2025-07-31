@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useWorkflowStore } from '@/store/workflowStore';
 import { Button } from '@/components/ui/button';
-import { Upload, Trash2, Download, X } from 'lucide-react';
+import Toggle from '@/components/ui/toggle';
+import { Upload, Trash2, Download, X, ChevronDown, ChevronRight } from 'lucide-react';
 import VariableExtractSection from './VariableExtractSection';
 
 const RagSidebar: React.FC = () => {
@@ -11,6 +12,7 @@ const RagSidebar: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isAudioCollapsed, setIsAudioCollapsed] = useState(true);
 
   // Handle click outside to close sidebar
   useEffect(() => {
@@ -223,8 +225,58 @@ const RagSidebar: React.FC = () => {
           />
         </div>
 
+        {/* Other Settings */}
+        <div className="space-y-4">
+          <button
+            onClick={() => setIsAudioCollapsed(!isAudioCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>⚙️ Other Settings</span>
+            {isAudioCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
+          
+          {!isAudioCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* Filler Words Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Filler Words
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable filler words in conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.fillerWords || false}
+                    onChange={(checked) => handleFieldChange('fillerWords', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
 
-
+              {/* Background Audio Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Background Audio
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable background audio during conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.backgroundAudio || false}
+                    onChange={(checked) => handleFieldChange('backgroundAudio', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Variable Extraction Section */}
         <VariableExtractSection

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useWorkflowStore } from '@/store/workflowStore'
 import { Api } from '@/components/apiTool/types'
 import { Button } from '@/components/ui/button'
-import { Plus, Trash2, X } from 'lucide-react'
+import Toggle from '@/components/ui/toggle'
+import { Plus, Trash2, X, ChevronDown, ChevronRight } from 'lucide-react'
 import VariableExtractSection from './VariableExtractSection'
 import TestApiModal from './TestApiModal'
 
@@ -61,6 +62,7 @@ const ApiRequestNodeSidebar: React.FC = () => {
   const [promptToExtractVariable, setPromptToExtractVariable] = useState("")
   const [preFetchRequired, setPreFetchRequired] = useState(false)
   const [isTestModalOpen, setIsTestModalOpen] = useState(false)
+  const [isAudioCollapsed, setIsAudioCollapsed] = useState(true)
 
   if (!selectedNode) {
     return null
@@ -536,6 +538,59 @@ const ApiRequestNodeSidebar: React.FC = () => {
             rows={2}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
+        </div>
+
+        {/* Other Settings */}
+        <div className="space-y-4">
+          <button
+            onClick={() => setIsAudioCollapsed(!isAudioCollapsed)}
+            className="flex items-center justify-between w-full text-left text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 hover:bg-gray-50 rounded-t-lg px-2 py-1 transition-colors"
+          >
+            <span>⚙️ Other Settings</span>
+            {isAudioCollapsed ? (
+              <ChevronRight className="w-5 h-5 text-gray-500" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-500" />
+            )}
+          </button>
+          
+          {!isAudioCollapsed && (
+            <div className="space-y-4 pl-2">
+              {/* Filler Words Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Filler Words
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable filler words in conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.fillerWords || false}
+                    onChange={(checked) => handleNodeFieldChange('fillerWords', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
+
+              {/* Background Audio Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Background Audio
+                </label>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">
+                    Enable background audio during conversation
+                  </span>
+                  <Toggle
+                    checked={selectedNode.data.backgroundAudio || false}
+                    onChange={(checked) => handleNodeFieldChange('backgroundAudio', checked)}
+                    size="small"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Variable Extraction Section */}
