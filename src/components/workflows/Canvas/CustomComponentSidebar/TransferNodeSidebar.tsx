@@ -31,7 +31,7 @@ const TransferNodeSidebar: React.FC = () => {
     updateNodeGlobal(selectedNode.id, { [field]: value })
   }
 
-  const handleNodeFieldChange = (field: string, value: string) => {
+  const handleNodeFieldChange = (field: string, value: string | boolean) => {
     updateNode(selectedNode.id, { [field]: value })
   }
 
