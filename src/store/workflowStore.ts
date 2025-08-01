@@ -170,6 +170,9 @@ interface WorkflowState {
     workflowName: string
   } | null
   
+  // Utility functions
+  checkFillerWords: (fillerPhrases: string[] | undefined) => boolean
+  
   // Setters
   setNodes: (nodes: Node<NodeData>[]) => void
   setEdges: (edges: Edge<EdgeData>[]) => void
@@ -475,6 +478,21 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
   // Unsaved changes tracking
   hasUnsavedChanges: false,
   initialState: null,
+  
+  // Utility functions
+  /**
+   * Checks if fillerWords should be true based on the fillerPhrases array.
+   * Returns true if the array has some non-empty string (after trimming),
+   * false if all elements are empty or spaces, or if the array is empty.
+   * @param fillerPhrases - Array of filler phrases to check
+   * @returns boolean - true if there are valid phrases, false otherwise
+   */
+  checkFillerWords: (fillerPhrases: string[] | undefined) => {
+    if (!fillerPhrases || fillerPhrases.length === 0) {
+      return false;
+    }
+    return fillerPhrases.some(phrase => phrase.trim() !== '');
+  },
   
   // Setters
   setNodes: (nodes) => {
