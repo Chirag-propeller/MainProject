@@ -1,58 +1,17 @@
-Female Voices
-Name: Rupali
+Raju - zT03pEAEi0VHKciJODfn
+Viraj - iWNf11sz1GrUE4ppxTOL
+Vihan - bUTE2M5LdnqaUCd5tJB3
+Seer Morganna - 7NsaqHdLuKNFvEfjpUno
 
-ID: 56e35e2d-6eb6-4226-ab8b-9776515a7094
 
-Name: Aadhya
-
-ID: f91ab3e6-5071-4e15-b016-cde6f2bcd222
-
-Name: Indian Conversational Woman
-
-ID: 9cebb910-d4b7-4a4a-85a4-12c79137724c
-
-Name: Apoorva
-
-ID: faf0731e-dfb9-4cfc-8119-259a79b27e12
-
-Name: Ananya
-
-ID: 28ca2041-5dda-42df-8123-f58ea9c3da00
-
-Name: Parvati
-
-ID: bec003e2-3cb3-429c-8468-206a393c67ad
-
-Name: Hinglish Speaking Woman
-
-ID: 95d51f79-c397-46f9-b49a-23763d3eaa2d
-
-🚹 Male Voices
-Name: Ayush
-
-ID: 791d5162-d5eb-40f0-8189-f19db44611d8
-
-Name: Amit
-
-ID: 9b953e7b-86a8-42f0-b625-1434fb15392b
-
-Name: Ishan
-
-ID: fd2ada67-c2d9-4afe-b474-6386b87d8fc3
-
-Name: Mihir
-
-ID: be79f378-47fe-4f9c-b92b-f02cefa62ccf
-
-Name: Hindi Reporter Man
-
-ID: bdab08ad-4137-4548-b9db-6142854c7525
-
-Name: Hindi Narrator Man
-
-ID: 7f423809-0011-4658-ba48-a411f5e516ba
-
-❔ Gender Not Specified
-Name: New_Voice - Chongz
-
-ID: 4ebdd8b5-21ff-4824-be01-6da629c6f523
+Anjali - gHu9GtaHOXcSqFTK06ux
+Saira - vghiSqG5ezdhd8F3tKAD
+Nikita - SZfY4K69FwXus87eayHK
+Tarini - kiaJRdXJzloFWi6AtFBf
+Sia(friendly customer care) - KYiVPerWcenyBTIvWbfY
+Sia(casual and comforting) - ryIIztHPLYSJ74ueXxnO
+Monika( natural Conversations) - EaBs7G1VibMrNAuz2Na7
+Shivi - BYoWSRudHCnfmjFrtcSW
+Tia - OUBnvvuqEKdDWtapoJFn
+Shanaya - ZeK6O9RfGNGj0cJT2HoJ
+Monika( professional customer care) - ZUrEGyu8GFMwnHbvLhv2

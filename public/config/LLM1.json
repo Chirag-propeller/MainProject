@@ -1028,7 +1028,19 @@
                   "value": "Female",
                   "voices": [
                     { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                    { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"},
+                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" },
+                    { "name": "Seer Morganna", "value": "7NsaqHdLuKNFvEfjpUno" },
+                    { "name": "Anjali", "value": "gHu9GtaHOXcSqFTK06ux" },
+                    { "name": "Saira", "value": "vghiSqG5ezdhd8F3tKAD" },
+                    { "name": "Nikita", "value": "SZfY4K69FwXus87eayHK" },
+                    { "name": "Tarini", "value": "kiaJRdXJzloFWi6AtFBf" },
+                    { "name": "Sia (Friendly Customer Care)", "value": "KYiVPerWcenyBTIvWbfY" },
+                    { "name": "Monika (Natural Conversations)", "value": "EaBs7G1VibMrNAuz2Na7" },
+                    { "name": "Shivi", "value": "BYoWSRudHCnfmjFrtcSW" },
+                    { "name": "Tia", "value": "OUBnvvuqEKdDWtapoJFn" },
+                    { "name": "Shanaya", "value": "ZeK6O9RfGNGj0cJT2HoJ" },
+                    { "name": "Monika (Professional Customer Care)", "value": "ZUrEGyu8GFMwnHbvLhv2" }
                   ]
                 },
                 {
@@ -1036,7 +1048,10 @@
                   "value": "Male",
                   "voices": [
                     { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
-                    { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" }
+                    { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
+                    { "name": "Raju", "value": "zT03pEAEi0VHKciJODfn" },
+                    { "name": "Viraj", "value": "iWNf11sz1GrUE4ppxTOL" },
+                    { "name": "Vihan", "value": "bUTE2M5LdnqaUCd5tJB3" }
                   ]
                 }
               ]
@@ -1050,7 +1065,19 @@
                   "value": "Female",
                   "voices": [
                     { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
-                    { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"}
+                    { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"},
+                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" },
+                    { "name": "Seer Morganna", "value": "7NsaqHdLuKNFvEfjpUno" },
+                    { "name": "Anjali", "value": "gHu9GtaHOXcSqFTK06ux" },
+                    { "name": "Saira", "value": "vghiSqG5ezdhd8F3tKAD" },
+                    { "name": "Nikita", "value": "SZfY4K69FwXus87eayHK" },
+                    { "name": "Tarini", "value": "kiaJRdXJzloFWi6AtFBf" },
+                    { "name": "Sia (Friendly Customer Care)", "value": "KYiVPerWcenyBTIvWbfY" },
+                    { "name": "Monika (Natural Conversations)", "value": "EaBs7G1VibMrNAuz2Na7" },
+                    { "name": "Shivi", "value": "BYoWSRudHCnfmjFrtcSW" },
+                    { "name": "Tia", "value": "OUBnvvuqEKdDWtapoJFn" },
+                    { "name": "Shanaya", "value": "ZeK6O9RfGNGj0cJT2HoJ" },
+                    { "name": "Monika (Professional Customer Care)", "value": "ZUrEGyu8GFMwnHbvLhv2" }
                   ]
                 },
                 {
@@ -1058,7 +1085,10 @@
                   "value": "Male",
                   "voices": [
                     { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
-                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
+                    { "name": "Raju", "value": "zT03pEAEi0VHKciJODfn" },
+                    { "name": "Viraj", "value": "iWNf11sz1GrUE4ppxTOL" },
+                    { "name": "Vihan", "value": "bUTE2M5LdnqaUCd5tJB3" }
                   ]
                 }
               ]
@@ -1142,7 +1172,18 @@
                   "voices": [
                     { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
                     { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"},
-                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" }
+                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" },
+                    { "name": "Seer Morganna", "value": "7NsaqHdLuKNFvEfjpUno" },
+                    { "name": "Anjali", "value": "gHu9GtaHOXcSqFTK06ux" },
+                    { "name": "Saira", "value": "vghiSqG5ezdhd8F3tKAD" },
+                    { "name": "Nikita", "value": "SZfY4K69FwXus87eayHK" },
+                    { "name": "Tarini", "value": "kiaJRdXJzloFWi6AtFBf" },
+                    { "name": "Sia (Friendly Customer Care)", "value": "KYiVPerWcenyBTIvWbfY" },
+                    { "name": "Monika (Natural Conversations)", "value": "EaBs7G1VibMrNAuz2Na7" },
+                    { "name": "Shivi", "value": "BYoWSRudHCnfmjFrtcSW" },
+                    { "name": "Tia", "value": "OUBnvvuqEKdDWtapoJFn" },
+                    { "name": "Shanaya", "value": "ZeK6O9RfGNGj0cJT2HoJ" },
+                    { "name": "Monika (Professional Customer Care)", "value": "ZUrEGyu8GFMwnHbvLhv2" }
                   ]
                 },
                 {
@@ -1150,7 +1191,10 @@
                   "value": "Male",
                   "voices": [
                     { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
-                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
+                    { "name": "Raju", "value": "zT03pEAEi0VHKciJODfn" },
+                    { "name": "Viraj", "value": "iWNf11sz1GrUE4ppxTOL" },
+                    { "name": "Vihan", "value": "bUTE2M5LdnqaUCd5tJB3" }
                   ]
                 }
               ]
@@ -1165,7 +1209,18 @@
                   "voices": [
                     { "name": "Riya", "value": "mfMM3ijQgz8QtMeKifko" },
                     { "name": "Anika" , "value": "Sm1seazb4gs7RSlUVw7c"},
-                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" }
+                    { "name": "Sia", "value": "ryIIztHPLYSJ74ueXxnO" },
+                    { "name": "Seer Morganna", "value": "7NsaqHdLuKNFvEfjpUno" },
+                    { "name": "Anjali", "value": "gHu9GtaHOXcSqFTK06ux" },
+                    { "name": "Saira", "value": "vghiSqG5ezdhd8F3tKAD" },
+                    { "name": "Nikita", "value": "SZfY4K69FwXus87eayHK" },
+                    { "name": "Tarini", "value": "kiaJRdXJzloFWi6AtFBf" },
+                    { "name": "Sia (Friendly Customer Care)", "value": "KYiVPerWcenyBTIvWbfY" },
+                    { "name": "Monika (Natural Conversations)", "value": "EaBs7G1VibMrNAuz2Na7" },
+                    { "name": "Shivi", "value": "BYoWSRudHCnfmjFrtcSW" },
+                    { "name": "Tia", "value": "OUBnvvuqEKdDWtapoJFn" },
+                    { "name": "Shanaya", "value": "ZeK6O9RfGNGj0cJT2HoJ" },
+                    { "name": "Monika (Professional Customer Care)", "value": "ZUrEGyu8GFMwnHbvLhv2" }
                   ]
                 },
                 {
@@ -1173,7 +1228,10 @@
                   "value": "Male",
                   "voices": [
                     { "name": "Aryan", "value": "TX3LPaxmHKxFdv7VOQHJ" },
-                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" }
+                    { "name": "Krishna", "value": "m5qndnI7u4OAdXhH0Mr5" },
+                    { "name": "Raju", "value": "zT03pEAEi0VHKciJODfn" },
+                    { "name": "Viraj", "value": "iWNf11sz1GrUE4ppxTOL" },
+                    { "name": "Vihan", "value": "bUTE2M5LdnqaUCd5tJB3" }
                   ]
                 }
               ]

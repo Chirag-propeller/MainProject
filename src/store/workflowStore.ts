@@ -58,6 +58,7 @@ interface APINodeData extends BaseNodeData {
   urlParams?: Record<string, string>
   variableToExtract?: string
   promptToExtractVariable?: string
+  prompt?: string // General prompt for the API node
   params?: Array<{
     name: string
     type: string
@@ -290,6 +291,7 @@ const createNodeByType = (nodeType: string, nodeCounter: number, nodeCount: numb
           urlParams: {},
           variableToExtract: '',
           promptToExtractVariable: '',
+          prompt: '', // Initialize empty prompt
           params: [],
           response: {},
           preFetchRequired: false,

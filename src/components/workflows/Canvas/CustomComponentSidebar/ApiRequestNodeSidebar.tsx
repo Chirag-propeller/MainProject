@@ -512,6 +512,28 @@ const ApiRequestNodeSidebar: React.FC = () => {
           />
         </div>
 
+        {/* General Prompt Configuration */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+          <div className="mb-3">
+            <label className="block text-sm font-semibold text-blue-800 mb-1">
+              General Prompt
+            </label>
+            <p className="text-xs text-blue-600 mb-2">
+              This prompt will be sent to the LLM along with the API response to generate the final answer for the user. Use this to instruct the LLM on how to process and present the API data.
+            </p>
+          </div>
+          <textarea
+            value={selectedNode.data.prompt || ''}
+            onChange={(e) => handleNodeFieldChange('prompt', e.target.value)}
+            // placeholder="Enter your custom prompt here. You can use variables like {'{{variable_name}}'} to reference dynamic values..."
+            rows={4}
+            className="w-full px-1 py-0 text-sm border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+          />
+          {/* <div className="mt-2 text-xs text-blue-600">
+            <strong>Tip:</strong> Use {'{{variable_name}}'} syntax to reference variables from previous nodes or extracted data.
+          </div> */}
+        </div>
+
         {/* Variable Extraction Configuration */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -539,6 +561,8 @@ const ApiRequestNodeSidebar: React.FC = () => {
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
           />
         </div>
+
+
 
         {/* Other Settings */}
         <div className="space-y-4">
