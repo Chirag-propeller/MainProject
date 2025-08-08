@@ -194,7 +194,7 @@ export default function ContactForm() {
 
         {/* To Number */}
         <div className="flex items-center gap-4">
-          <label className="w-32 text-sm font-medium text-gray-700">To Number</label>
+          <label className="w-32 text-sm font-medium text-gray-700" htmlFor="to-number" >To Number</label>
           <input
             type="text"
             placeholder="Enter phone number"
@@ -204,6 +204,9 @@ export default function ContactForm() {
             style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
             required
             disabled={isSending}  // Disable while sending
+            autoComplete="tel" // Enable browser autocomplete for phone numbers
+            name="to-number"   // Give a stable name for browser memory
+            id="to-number"
           />
         </div>
 

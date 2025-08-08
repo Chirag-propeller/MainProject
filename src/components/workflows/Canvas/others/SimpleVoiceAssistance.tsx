@@ -34,17 +34,9 @@ const SimpleVoiceAssistance = () => {
 
   // Use the useDataChannel hook to listen for messages on the 'flow_updates' topic.
   useDataChannel('flow_updates', (msg) => {
-    // The hook automatically decodes the payload. We just need to check its content.
+
     console.log("msg", msg);
     const payload = msg.payload;
-    // const encoded = Buffer.from(payload).toString('base64');
-    // console.log("encoded", encoded);
-    // const decoded = Buffer.from(encoded, 'base64').toString('utf-8');
-    // console.log("decoded", decoded);
-    // const parsed = JSON.parse(decoded);
-    // console.log("parsed", parsed);
-    // const currentNode = parsed.current_node;
-    // console.log("currentNode", currentNode);
     const nodeName = JSON.parse(Buffer.from(payload).toString('utf-8')).current_node;
     console.log("nodeName", nodeName);
     console.log("activeNode", activeNode);
