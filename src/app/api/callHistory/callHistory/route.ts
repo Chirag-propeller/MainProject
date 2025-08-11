@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
     ];
 
     // const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
-    const result = await OutBoundCall.aggregate(pipeline as any)
+    const result = await OutBoundCall.aggregate(pipeline as any, { allowDiskUse: true })
     const totalCount = result[0].totalCount[0]?.count || 0;
     const data = result[0].data || [];
 

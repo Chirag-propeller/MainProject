@@ -203,9 +203,9 @@ export default function ContactForm() {
             className="w-[375px] p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
             style={{ width: '375px', maxWidth: '375px', minWidth: '375px' }}
             required
-            disabled={isSending}  // Disable while sending
-            autoComplete="tel" // Enable browser autocomplete for phone numbers
-            name="to-number"   // Give a stable name for browser memory
+            disabled={isSending} 
+            autoComplete="tel" 
+            name="to-number"  
             id="to-number"
           />
         </div>
