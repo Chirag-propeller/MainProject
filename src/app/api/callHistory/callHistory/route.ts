@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
       //   }
       // },
       // },
+      { $match: matchStage },
       {
         $addFields: {
           started_at_date: {
@@ -88,8 +89,8 @@ export async function POST(req: NextRequest) {
           }
         }
       },
-      { $match: matchStage },
-      { $sort: { started_at_date: -1 as const } },
+      
+      // { $sort: { started_at_date: -1 as const } },
 
       // Lookup to join with AggregatedMetrics collection
       {
@@ -133,6 +134,7 @@ export async function POST(req: NextRequest) {
           ],
           // Get paginated data
           data: [
+            { $sort: { started_at_date: -1 as const } },
             { $skip: (page - 1) * limit },
             { $limit: limit }
           ]
@@ -143,7 +145,10 @@ export async function POST(req: NextRequest) {
     ];
 
     // const data = await OutBoundCall.aggregate(pipeline).skip((page - 1) * limit).limit(limit);
-    const result = await OutBoundCall.aggregate(pipeline as any, { allowDiskUse: true })
+    // const result = await OutBoundCall.aggregate(pipeline as any, { allowDiskUse: true })
+    const result = await OutBoundCall.aggregate(pipeline)
+                                 .option({ allowDiskUse: true });
+
     const totalCount = result[0].totalCount[0]?.count || 0;
     const data = result[0].data || [];
 
