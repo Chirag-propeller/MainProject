@@ -126,7 +126,7 @@ const page = () => {
           <h1 className="text-lg  self-center text-indigo-600">Call History</h1>
         </div>
 
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-between gap-2 w-full">
           <FunctionalityBar
             customiseField={customiseField}
             setCustomiseField={setCustomiseField}

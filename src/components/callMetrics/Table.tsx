@@ -480,6 +480,7 @@ export default function CallAnalysisTable({
 
   return (
     <div className="w-full max-w-[80vw]  overflow-hidden relative">
+    {/* <div className="w-full overflow-hidden relative"> */}
       {loading ? (
         <>
           {/* Skeleton Table */}

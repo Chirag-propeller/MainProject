@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Campaign, Agent } from "../types";
+import { Campaign, Agent, TrackingField, DataField } from "../types";
+import { Button } from "@/components/ui/button";
 import {
   ChevronDown,
   ChevronUp,
@@ -566,89 +567,241 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
 
         {/* Goals Section */}
         <CollapsibleSection
-          title="Goals"
+          title="Call Setup"
           icon={LuGoal}
           iconClassname="text-cyan-950 dark:text-cyan-500"
           isOpen={openSections.goals}
-          description="Set and track the success metrics for your campaign"
+          description="Configure goals and data collection for your calls"
           onToggle={() => toggleSection("goals")}
         >
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-0.5">
-                Campaign Goal{" "}
-                <span className="italic text-gray-500 text-sm">
-                  (Define what the AI voice agent should achieve in a single
-                  sentence.)
-                </span>
-              </label>
-              <div className="text-gray-500 dark:text-gray-500 text-xs mb-2">
-                💡 Example: "Remind users to renew their subscription"
+          <div className="space-y-8">
+            {/* Call Tracking Setup */}
+            <div className="border border-gray-200 dark:border-gray-700 rounded-[6px]">
+              <div className="p-4">
+                <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1">
+                  Call Tracking Setup
+                </h4>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">
+                  Define tracking criteria for post-call analysis and success measurement
+                </p>
+
+                {isEditable ? (
+                  <div className="space-y-3">
+                    {(campaign.trackingSetup || []).map((field: TrackingField, index: number) => (
+                      <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+                        <div className="md:col-span-3">
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Field Name</label>
+                          <input
+                            type="text"
+                            value={field.fieldName}
+                            onChange={(e) => {
+                              const next = [...(campaign.trackingSetup || [])];
+                              next[index] = { ...next[index], fieldName: e.target.value };
+                              handleInputChange('trackingSetup', next);
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                            placeholder="e.g., Subscription Renewal Goal"
+                          />
+                        </div>
+
+                        <div className="md:col-span-5">
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Definition</label>
+                          <input
+                            type="text"
+                            value={field.definition}
+                            onChange={(e) => {
+                              const next = [...(campaign.trackingSetup || [])];
+                              next[index] = { ...next[index], definition: e.target.value };
+                              handleInputChange('trackingSetup', next);
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                            placeholder="Define what this tracking field measures"
+                          />
+                        </div>
+
+                        <div className="md:col-span-3">
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Success Criteria</label>
+                          <select
+                            value={field.successCriteria}
+                            onChange={(e) => {
+                              const next = [...(campaign.trackingSetup || [])];
+                              next[index] = { ...next[index], successCriteria: e.target.value as TrackingField['successCriteria'] };
+                              handleInputChange('trackingSetup', next);
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm bg-white dark:bg-gray-900"
+                          >
+                            {[
+                              'Achieved/Not Achieved',
+                              'Yes/No',
+                              '0-10 Scale',
+                              'Percentage',
+                              'Count',
+                            ].map((o) => (
+                              <option key={o} value={o}>{o}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="md:col-span-1 flex items-end">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="danger"
+                            onClick={() => {
+                              const next = [...(campaign.trackingSetup || [])];
+                              next.splice(index, 1);
+                              handleInputChange('trackingSetup', next);
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        const next: TrackingField[] = [
+                          ...(campaign.trackingSetup || []),
+                          {
+                            fieldName: '',
+                            definition: '',
+                            successCriteria: 'Achieved/Not Achieved',
+                          },
+                        ];
+                        handleInputChange('trackingSetup', next);
+                      }}
+                    >
+                      + Add Tracking Field
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {campaign.trackingSetup && campaign.trackingSetup.length > 0 ? (
+                      campaign.trackingSetup.map((f, i) => (
+                        <div key={i} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-200 dark:border-gray-700 rounded-[6px] p-3">
+                          <div className="text-sm font-medium">{f.fieldName}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400 md:flex-1 md:mx-4">{f.definition}</div>
+                          <div className="text-xs ">{f.successCriteria}</div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-sm text-gray-500">No tracking fields configured</div>
+                    )}
+                  </div>
+                )}
               </div>
-              {isEditable ? (
-                <textarea
-                  ref={goalInputRef}
-                  value={campaign.goal || ""}
-                  onChange={handleGoalChange}
-                  rows={2}
-                  className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm placeholder:text-gray-400"
-                  placeholder="Describe the main objective of this campaign..."
-                />
-              ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-[6px] text-sm min-h-[60px]">
-                  {campaign.goal || "No goal specified"}
-                </div>
-              )}
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2">
-                Data to Collect
-              </label>
-              {isEditable ? (
-                <textarea
-                  ref={dataTextareaRef}
-                  value={campaign.dataToCollect?.join("\n") || ""}
-                  onChange={handleDataCollectChange}
-                  rows={3}
-                  className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm"
-                  placeholder="Specify what information you want to gather (one per line)..."
-                />
-              ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-[6px] text-sm min-h-[60px]">
-                  {campaign.dataToCollect &&
-                  campaign.dataToCollect.length > 0 ? (
-                    <ul className="list-disc list-inside">
-                      {campaign.dataToCollect.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    "No data collection specified"
-                  )}
-                </div>
-              )}
-            </div>
+            {/* Data to Collect */}
+            <div className="border border-gray-200 dark:border-gray-700 rounded-[6px]">
+              <div className="p-4">
+                <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-300 mb-1">Data to Collect</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mb-4">
+                  Specify information to gather during calls for LLM extraction
+                </p>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-500 mb-2">
-                Mandatory Adherence
-              </label>
-              {isEditable ? (
-                <textarea
-                  ref={mandatoryAdherenceTextareaRef}
-                  value={campaign.mandatoryAdherence || ""}
-                  onChange={handleMandatoryAdherenceChange}
-                  rows={3}
-                  className="w-full px-3 pt-2 border border-gray-300 rounded-[6px] text-sm"
-                  placeholder="Define compliance requirements and mandatory protocols..."
-                />
-              ) : (
-                <div className="p-2 bg-gray-50 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-[6px] text-sm min-h-[60px]">
-                  {campaign.mandatoryAdherence ||
-                    "No mandatory adherence specified"}
-                </div>
-              )}
+                {isEditable ? (
+                  <div className="space-y-3">
+                    {(campaign.dataFields || []).map((field: DataField, index: number) => (
+                      <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+                        <div className="md:col-span-4">
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Field Name</label>
+                          <input
+                            type="text"
+                            value={field.fieldName}
+                            onChange={(e) => {
+                              const next = [...(campaign.dataFields || [])];
+                              next[index] = { ...next[index], fieldName: e.target.value };
+                              // Update both structured fields and legacy array of names for compatibility
+                              if (!isEditable) return;
+                              setCampaign({
+                                ...campaign,
+                                dataFields: next,
+                                dataToCollect: next.map((f) => f.fieldName).filter(Boolean),
+                              });
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                            placeholder="e.g., Customer Feedback"
+                          />
+                        </div>
+                        <div className="md:col-span-7">
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Description for LLM</label>
+                          <input
+                            type="text"
+                            value={field.description}
+                            onChange={(e) => {
+                              const next = [...(campaign.dataFields || [])];
+                              next[index] = { ...next[index], description: e.target.value };
+                              if (!isEditable) return;
+                              setCampaign({
+                                ...campaign,
+                                dataFields: next,
+                                dataToCollect: next.map((f) => f.fieldName).filter(Boolean),
+                              });
+                            }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
+                            placeholder="e.g., Extract customer satisfaction rating"
+                          />
+                        </div>
+                        <div className="md:col-span-1 flex items-end">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="danger"
+                            onClick={() => {
+                              const next = [...(campaign.dataFields || [])];
+                              next.splice(index, 1);
+                              if (!isEditable) return;
+                              setCampaign({
+                                ...campaign,
+                                dataFields: next,
+                                dataToCollect: next.map((f) => f.fieldName).filter(Boolean),
+                              });
+                            }}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        const next: DataField[] = [
+                          ...(campaign.dataFields || []),
+                          { fieldName: '', description: '' },
+                        ];
+                        if (!isEditable) return;
+                        setCampaign({
+                          ...campaign,
+                          dataFields: next,
+                          dataToCollect: next.map((f) => f.fieldName).filter(Boolean),
+                        });
+                      }}
+                    >
+                      + Add Data Field
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {campaign.dataFields && campaign.dataFields.length > 0 ? (
+                      campaign.dataFields.map((f, i) => (
+                        <div key={i} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-200 dark:border-gray-700 rounded-[6px] p-3">
+                          <div className="text-sm font-medium">{f.fieldName}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400 md:flex-1 md:mx-4">{f.description}</div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-sm text-gray-500">No data fields configured</div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </CollapsibleSection>

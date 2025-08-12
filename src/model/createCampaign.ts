@@ -67,6 +67,31 @@ const CampaignCallSchema = new mongoose.Schema({
   dataToCollect:{
     type: Array,
   },
+  // New: structured call tracking setup (array of subdocuments)
+  trackingSetup: [
+    {
+      fieldName: { type: String, default: '' },
+      definition: { type: String, default: '' },
+      successCriteria: {
+        type: String,
+        enum: [
+          'Achieved/Not Achieved',
+          'Yes/No',
+          '0-10 Scale',
+          'Percentage',
+          'Count',
+        ],
+        default: 'Achieved/Not Achieved',
+      },
+    },
+  ],
+  // New: structured list of data fields to collect during call
+  dataFields: [
+    {
+      fieldName: { type: String, default: '' },
+      description: { type: String, default: '' },
+    },
+  ],
   mandatoryAdherence:{
     type: String,
   },

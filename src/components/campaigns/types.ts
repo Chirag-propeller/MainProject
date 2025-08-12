@@ -1,3 +1,14 @@
+export interface TrackingField {
+  fieldName: string;
+  definition: string;
+  successCriteria: 'Achieved/Not Achieved' | 'Yes/No' | '0-10 Scale' | 'Percentage' | 'Count';
+}
+
+export interface DataField {
+  fieldName: string;
+  description: string;
+}
+
 export interface Campaign {
   _id: string;
   campaignCallId: string;
@@ -27,6 +38,10 @@ export interface Campaign {
   callTimezone?: string;
   callScheduledOrNot?: boolean;
   callTime?: string;
+
+  // New analytics configuration
+  trackingSetup?: TrackingField[];
+  dataFields?: DataField[];
   
   // Recipient provider fields
   recipientFile?: string;
