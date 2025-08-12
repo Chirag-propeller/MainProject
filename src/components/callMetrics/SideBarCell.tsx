@@ -10,7 +10,7 @@ const SideBarCell = ({
   const isSummary = title === "Summary";
   return (
     <div className="flex flex-row gap-1">
-      <h2 className="text-xs text-black dark:text-gray-300">{title}: </h2>
+      <h2 className="text-xs text-black dark:text-gray-300 whitespace-nowrap">{title}: </h2>
       <p className={`text-xs ${isSummary ? "italic" : ""} dark:text-gray-300`}>
         {value === false ? "false" : value}
       </p>

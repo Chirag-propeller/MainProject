@@ -315,6 +315,9 @@ export default function CallAnalysisTable({
   limit,
   setHasNextPage,
   setHasPreviousPage,
+  campaignId,
+  embedded = false,
+  fluid = false,
 }: {
   customiseField: string[];
   filters: FilterState;
@@ -325,6 +328,9 @@ export default function CallAnalysisTable({
   setHasNextPage: (hasNextPage: boolean) => void;
   setHasPreviousPage: (hasPreviousPage: boolean) => void;
   setTotalPages: (totalPages: number) => void;
+  campaignId?: string;
+  embedded?: boolean;
+  fluid?: boolean;
 }) {
   const [callData, setCallData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -359,6 +365,23 @@ export default function CallAnalysisTable({
     return "Bad";
   }
 
+  // Normalize API values that might be arrays or plain objects to an array of { key, value }
+  function normalizeToArray(value: any): Array<{ key: string; value: any }> | null {
+    if (!value) return null;
+    if (Array.isArray(value)) return value;
+    if (typeof value === "object") {
+      try {
+        return Object.entries(value).map(([key, val]) => ({ key, value: val }));
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  const isDynamicField = (key: string) => key.startsWith("dataFields.") || key.startsWith("trackingSetup.");
+  const getDynamicKey = (key: string) => key.split(".").slice(1).join(".");
+
   useEffect(() => {
     const fetchData = async () => {
       // router.push(`/callHistory?page=${1}&limit=${10}`);
@@ -367,6 +390,7 @@ export default function CallAnalysisTable({
         {
           filters: filters,
           dateRange: dateRange,
+          campaignId: campaignId,
         }
       );
 
@@ -402,6 +426,9 @@ export default function CallAnalysisTable({
               call_duration = `${seconds.toFixed(0)}s`;
             }
           }
+
+          const normalizedDataFields = normalizeToArray(item?.dataFields || item?.call_analysis?.dataFields || null);
+          const normalizedTrackingSetup = normalizeToArray(item?.trackingSetup || item?.trackingsetup || null);
 
           return {
             // Root-level
@@ -449,7 +476,9 @@ export default function CallAnalysisTable({
             customer_engagement_score: callAnalysis.CUSTOMER_ENGAGEMENT_SCORE,
             interruption_count: callAnalysis.INTERRUPTION_COUNT,
             reviewer_comments: callAnalysis.REVIEWER_COMMENTS,
-            violations: callAnalysis.VIOLATIONS.length,
+            violations: Array.isArray(callAnalysis.VIOLATIONS)
+              ? callAnalysis.VIOLATIONS.length
+              : (typeof callAnalysis.VIOLATIONS === 'number' ? callAnalysis.VIOLATIONS : 0),
             cost: item.cost,
             call_direction: item.call_direction,
             call_duration: call_duration,
@@ -460,13 +489,16 @@ export default function CallAnalysisTable({
             llm_cost: Number(item.llm_cost_rupees?.$numberDecimal).toFixed(2),
             stt_cost: Number(item.stt_cost_rupees?.$numberDecimal).toFixed(2),
             tts_cost: Number(item.tts_cost_rupees?.$numberDecimal).toFixed(2),
+            // Normalized captured structures (array of { key, value } or array of structured items)
+            dataFields: normalizedDataFields,
+            trackingSetup: normalizedTrackingSetup,
           };
         });
       setCallData(mappedData);
       setLoading(false);
     };
     fetchData();
-  }, [filters, agentOptions, dateRange, page, limit]);
+  }, [filters, agentOptions, dateRange, page, limit, campaignId]);
 
   const handleRowClick = (call: any) => {
     setSelectedCall(call);
@@ -479,7 +511,7 @@ export default function CallAnalysisTable({
   };
 
   return (
-    <div className="w-full max-w-[80vw]  overflow-hidden relative">
+    <div className={`${fluid ? "w-full" : embedded ? "w-full max-w-[900px] mx-auto" : "w-full max-w-[80vw]"} overflow-hidden relative`}>
     {/* <div className="w-full overflow-hidden relative"> */}
       {loading ? (
         <>
@@ -561,8 +593,8 @@ export default function CallAnalysisTable({
         </>
       ) : (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[70vh] shadow-md rounded-[4px] border border-gray-200 custom-scrollbar dark:bg-gray-900 dark:border-gray-700">
-            <table className="min-w-full divide-y divide-gray-200 text-sm dark:bg-gray-900 dark:text-gray-100">
+          <div className={`overflow-x-auto overflow-y-auto max-h-[70vh] shadow-md rounded-[4px] border border-gray-200 custom-scrollbar dark:bg-gray-900 dark:border-gray-700 ${fluid ? "" : embedded ? "mx-auto max-w-[900px]" : ""}`}>
+            <table className={`divide-y divide-gray-200 text-sm dark:bg-gray-900 dark:text-gray-100 ${fluid ? "min-w-full" : embedded ? "w-full" : "min-w-full"}`}>
               <thead className="bg-gray-50 sticky top-0 dark:bg-gray-900">
                 <tr>
                   <th className="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 tracking-wider">
@@ -600,14 +632,33 @@ export default function CallAnalysisTable({
                     <td className="px-3 py-2 whitespace-nowrap text-gray-700 dark:text-gray-100 font-medium text-nowrap dark:bg-gray-900">
                       {(page - 1) * limit + index + 1}
                     </td>
-                    {customiseField.map((key) => (
-                      <CallAnalysisCell
-                        key={key}
-                        value={call?.[key]}
-                        field={key}
-                        callId={call?.id}
-                      />
-                    ))}
+                    {customiseField.map((key) => {
+                      if (isDynamicField(key)) {
+                        const group = key.startsWith("dataFields.") ? call.dataFields : call.trackingSetup;
+                        const dynKey = getDynamicKey(key);
+                        let val: any = "-";
+                        if (Array.isArray(group)) {
+                          const found = group.find((g: any) => (g.fieldName || g.key) === dynKey);
+                          val = found ? (found.value ?? found.description ?? "-") : "-";
+                        }
+                        return (
+                          <CallAnalysisCell
+                            key={key}
+                            value={val}
+                            field={key}
+                            callId={call?.id}
+                          />
+                        );
+                      }
+                      return (
+                        <CallAnalysisCell
+                          key={key}
+                          value={call?.[key]}
+                          field={key}
+                          callId={call?.id}
+                        />
+                      );
+                    })}
                   </tr>
                 ))}
                 {callData.length === 0 && (
@@ -627,7 +678,7 @@ export default function CallAnalysisTable({
           {selectedCall && (
             <div
               ref={containerRef}
-              className="fixed top-0 right-0 h-full w-[54%] bg-white dark:bg-gray-900 shadow-lg border-l border-gray-200 dark:border-gray-700 z-150 overflow-y-auto custom-scrollbar"
+              className={`fixed top-0 right-0 h-full bg-white dark:bg-gray-900 shadow-lg border-l border-gray-200 dark:border-gray-700 z-150 overflow-y-auto custom-scrollbar ${fluid ? "w-1/2" : embedded ? "w-[48%]" : "w-[54%]"}`}
             >
               <div className="px-2 p-1 flex justify-between items-center border-b border-gray-200 dark:border-gray-400 sticky top-0 bg-white dark:bg-gray-900">
                 {/* Left: Date/Time and Call ID */}
@@ -811,7 +862,7 @@ export default function CallAnalysisTable({
                 </div>
               </div>
 
-              <div className="">
+              {/* <div className="">
                 <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">
                   Compliance
                 </h1>
@@ -843,7 +894,35 @@ export default function CallAnalysisTable({
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
+              {/* Data Fields (Captured key-value from call) */}
+              {selectedCall.dataFields && Array.isArray(selectedCall.dataFields) && selectedCall.dataFields.length > 0 && (
+                <div className="">
+                  <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">Data Fields</h1>
+                  <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                    {(selectedCall.dataFields as any[]).map((df: any, idx: number) => {
+                      const keyLabel = df.fieldName || df.key;
+                      const val = df.value ?? df.description ?? '-';
+                      return <SideBarCell key={`df-${idx}`} title={keyLabel} value={String(val)} />;
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tracking Setup Results */}
+              {selectedCall.trackingSetup && Array.isArray(selectedCall.trackingSetup) && selectedCall.trackingSetup.length > 0 && (
+                <div className="">
+                  <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">Goal Tracking</h1>
+                  <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+                    {(selectedCall.trackingSetup as any[]).map((tf: any, idx: number) => {
+                      const keyLabel = tf.fieldName || tf.key;
+                      const val = tf.value ?? tf.description ?? '-';
+                      return <SideBarCell key={`ts-${idx}`} title={keyLabel} value={String(val)} />;
+                    })}
+                  </div>
+                </div>
+              )}
+
 
               <div className="">
                 <h1 className="text-sm font-semibold bg-indigo-100 dark:bg-gray-400 p-4 py-1 shadow-sm">

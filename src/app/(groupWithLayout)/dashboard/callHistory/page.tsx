@@ -11,31 +11,6 @@ import { ChevronLeft, ChevronRight, History } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-const allFields = [
-  "started_at",
-  "call_type",
-  "call_direction",
-  "call_duration",
-  "status",
-  "agent",
-  "average_latency",
-  "phonenumber",
-  "from_phonenumber",
-  "cost",
-  "sentiment",
-  "goal_completion_status",
-  "call_quality_score",
-  "script_adherence_score",
-  "ai_confidence_score",
-  "compliance_risk_score",
-  "llm",
-  "stt",
-  "tts",
-  "llm_cost",
-  "stt_cost",
-  "tts_cost",
-  "download_transcript",
-];
 
 // Sample data for filters
 
@@ -153,6 +128,7 @@ const page = () => {
         setTotalPages={setTotalPages}
         setHasNextPage={setHasNextPage}
         setHasPreviousPage={setHasPreviousPage}
+        embedded={false}
       />
       <div className="flex justify-center gap-2 p-1 pt-2">
         {

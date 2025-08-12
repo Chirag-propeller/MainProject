@@ -12,6 +12,8 @@ import Analytics from "./analytics/Analytics";
 import { FaRegEdit } from "react-icons/fa";
 import _ from "lodash";
 import { useCampaignStore } from "@/store/campaignStore";
+import CampaignCallHistoryEmbedded from "./callHistory/CampaignCallHistoryEmbedded";
+import FlexibleCallHistory from "@/components/callHistory/FlexibleCallHistory";
 
 interface CampaignDetailsPanelProps {
   campaign: Campaign;
@@ -68,6 +70,7 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
   const tabs = [
     { id: "general", label: "General" },
     { id: "analytics", label: "Analytics" },
+    { id: "call-history", label: "Call History" },
   ];
 
   const statusStyles: Record<string, string> = {
@@ -452,6 +455,12 @@ const CampaignDetailsPanel: React.FC<CampaignDetailsPanelProps> = ({
             handleUpdate={handleUpdate}
             status={currentCampaign.status}
           />
+        )}
+
+        {activeTab === "call-history" && (
+          <div className="p-4 pt-2">
+            <FlexibleCallHistory campaignId={currentCampaign._id} />
+          </div>
         )}
       </div>
     </div>

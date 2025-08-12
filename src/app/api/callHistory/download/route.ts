@@ -12,18 +12,36 @@ export async function POST(req: NextRequest) {
 
   try {
     const user = await getUserFromRequest(req);
-    const { filters, dateRange, selectedFields } = await req.json();
+    const { filters, dateRange, selectedFields, campaignId } = await req.json();
     
     const userId = new mongoose.Types.ObjectId(user.userId);
 
     // Start building the match object
-    const matchStage: any = {
+    let matchStage: any = {
       $or: [
         { user_id: userId },
         { user_id: user.userId }
       ]
     };
     matchStage.call_analysis = { $exists: true, $ne: null };
+
+    // Optional campaign filter
+    if (campaignId) {
+      const userOr = matchStage.$or && Array.isArray(matchStage.$or) ? matchStage.$or : [];
+      const campaignOr = [
+        { "metadata.campaign_id": campaignId },
+        { "metadata.campaignid": campaignId },
+        { campaign_id: campaignId },
+        { campaignid: campaignId },
+      ];
+      matchStage = {
+        $and: [
+          { $or: userOr },
+          { $or: campaignOr },
+          { call_analysis: { $exists: true, $ne: null } },
+        ],
+      } as any;
+    }
 
     // Agent ID is inside metadata.agentid
     if (filters.agent && filters.agent.length > 0) {
@@ -175,6 +193,22 @@ export async function POST(req: NextRequest) {
           }
         }
 
+        // Normalize dataFields/trackingSetup structures to arrays of {key,value}
+        const normalizeToArray = (value: any): Array<{ key: string; value: any }> | null => {
+          if (!value) return null;
+          if (Array.isArray(value)) return value;
+          if (typeof value === "object") {
+            try {
+              return Object.entries(value).map(([key, val]) => ({ key, value: val }));
+            } catch {
+              return null;
+            }
+          }
+          return null;
+        };
+        const normalizedDataFields = normalizeToArray(item?.dataFields || item?.call_analysis?.dataFields || null);
+        const normalizedTrackingSetup = normalizeToArray(item?.trackingSetup || item?.trackingsetup || null);
+
         return {
           // Root-level
           id: item._id,
@@ -231,6 +265,8 @@ export async function POST(req: NextRequest) {
           stt_cost: item.stt_cost_rupees ? Number(item.stt_cost_rupees.toString()).toFixed(2) : "0.00", 
           tts_cost: item.tts_cost_rupees ? Number(item.tts_cost_rupees.toString()).toFixed(2) : "0.00",
           goal_completion_status: callAnalysis.GOAL_COMPLETION_STATUS,
+          dataFields: normalizedDataFields,
+          trackingSetup: normalizedTrackingSetup,
         };
       });
 
@@ -240,7 +276,17 @@ export async function POST(req: NextRequest) {
       finalData = mappedData.map(item => {
         const filteredItem: any = {};
         selectedFields.forEach((field: string) => {
-          if (item.hasOwnProperty(field)) {
+          if (field.startsWith('dataFields.') || field.startsWith('trackingSetup.')) {
+            const isDF = field.startsWith('dataFields.');
+            const dynKey = field.split('.').slice(1).join('.');
+            const group = isDF ? item.dataFields : item.trackingSetup;
+            if (Array.isArray(group)) {
+              const found = group.find((g: any) => (g.fieldName || g.key) === dynKey);
+              filteredItem[field] = found ? (found.value ?? '') : '';
+            } else {
+              filteredItem[field] = '';
+            }
+          } else if (item.hasOwnProperty(field)) {
             filteredItem[field] = (item as any)[field];
           }
         });

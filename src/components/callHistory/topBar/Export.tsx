@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FilterState } from "./Filter";
 import { DateRangeFilter } from "./DateFilter";
 import axios from "axios";
@@ -43,6 +43,14 @@ const EXPORT_FIELDS = {
       escalation_flag: "Escalation Flag",
     },
   },
+  dataFields: {
+    title: "Data Fields",
+    fields: {},
+  },
+  trackingSetup: {
+    title: "Goal Tracking",
+    fields: {},
+  },
   compliance: {
     title: "Compliance",
     fields: {
@@ -63,18 +71,23 @@ const EXPORT_FIELDS = {
 interface ExportProps {
   filters: FilterState;
   dateRange: DateRangeFilter;
+  campaignId?: string;
 }
 
-const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
+const Export: React.FC<ExportProps> = ({ filters, dateRange, campaignId }) => {
   const [showModal, setShowModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState({
     callOverview: false,
     agentPerformance: false,
+    dataFields: false,
+    trackingSetup: false,
     compliance: false,
     transcript: false,
   });
+  const [dynamicDataFields, setDynamicDataFields] = useState<string[]>([]);
+  const [dynamicTrackingFields, setDynamicTrackingFields] = useState<string[]>([]);
 
   // Initialize with all fields selected
   const initializeSelectedFields = () => {
@@ -111,6 +124,11 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
     Object.keys(section.fields).forEach((field) => {
       updates[field] = true;
     });
+    if (sectionKey === "dataFields") {
+      dynamicDataFields.forEach((k) => (updates[`dataFields.${k}`] = true));
+    } else if (sectionKey === "trackingSetup") {
+      dynamicTrackingFields.forEach((k) => (updates[`trackingSetup.${k}`] = true));
+    }
     setSelectedFields((prev) => ({ ...prev, ...updates }));
   };
 
@@ -120,6 +138,11 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
     Object.keys(section.fields).forEach((field) => {
       updates[field] = false;
     });
+    if (sectionKey === "dataFields") {
+      dynamicDataFields.forEach((k) => (updates[`dataFields.${k}`] = false));
+    } else if (sectionKey === "trackingSetup") {
+      dynamicTrackingFields.forEach((k) => (updates[`trackingSetup.${k}`] = false));
+    }
     setSelectedFields((prev) => ({ ...prev, ...updates }));
   };
 
@@ -138,6 +161,7 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
           filters,
           dateRange,
           selectedFields: selectedFieldsList,
+          campaignId,
         },
         {
           responseType: "blob",
@@ -168,6 +192,37 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
     setExportError(null);
     setIsExporting(false);
     setShowModal(true);
+    // fetch dynamic keys for dataFields/trackingSetup for current context
+    void (async () => {
+      try {
+        const res = await axios.post(`/api/callHistory/callHistory?page=1&limit=1`, {
+          filters,
+          dateRange,
+          campaignId,
+        });
+        const first = res.data?.data?.find((x: any) => x?.call_analysis) || res.data?.data?.[0];
+        const dataFieldsRaw = first?.dataFields || first?.call_analysis?.dataFields || null;
+        const trackingRaw = first?.trackingSetup || first?.trackingsetup || null;
+        const normalize = (val: any): Record<string, any> => {
+          if (!val) return {};
+          if (Array.isArray(val)) {
+            const obj: Record<string, any> = {};
+            val.forEach((item: any, idx: number) => {
+              const k = item?.fieldName || item?.key || `field_${idx + 1}`;
+              obj[k] = item?.value ?? item?.description ?? "";
+            });
+            return obj;
+          }
+          if (typeof val === "object") return val as Record<string, any>;
+          return {};
+        };
+        setDynamicDataFields(Object.keys(normalize(dataFieldsRaw)));
+        setDynamicTrackingFields(Object.keys(normalize(trackingRaw)));
+      } catch {
+        setDynamicDataFields([]);
+        setDynamicTrackingFields([]);
+      }
+    })();
   };
 
   return (
@@ -185,8 +240,11 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
 
       {/* Export Selection Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-gray-900/60 flex items-center justify-center">
-          <div className="bg-white dark:bg-gray-900 dark:text-white rounded-[6px] shadow-xl p-6 w-full max-w-lg max-h-[80vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-gray-900/70" onClick={() => setShowModal(false)} />
+          {/* Modal */}
+          <div className="relative bg-white dark:bg-gray-900 dark:text-white rounded-[6px] shadow-xl p-6 w-full max-w-lg max-h-[80vh] flex flex-col">
             {/* Header */}
             <div className="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -220,8 +278,7 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
                       ) : (
                         <ChevronRight className="w-4 h-4" />
                       )}
-                      {section.title} ({Object.keys(section.fields).length}{" "}
-                      fields)
+                      {section.title}
                     </button>
                     <div className="flex gap-2">
                       <button
@@ -259,6 +316,34 @@ const Export: React.FC<ExportProps> = ({ filters, dateRange }) => {
                           </span>
                         </label>
                       ))}
+                      {sectionKey === "dataFields" && dynamicDataFields.map((k) => {
+                        const fk = `dataFields.${k}`;
+                        return (
+                          <label key={fk} className="flex items-center gap-2 text-sm cursor-pointer py-1">
+                            <input
+                              type="checkbox"
+                              checked={selectedFields[fk] || false}
+                              onChange={() => toggleField(fk)}
+                              className="rounded"
+                            />
+                            <span className="text-gray-700 dark:text-gray-300">{k}</span>
+                          </label>
+                        );
+                      })}
+                      {sectionKey === "trackingSetup" && dynamicTrackingFields.map((k) => {
+                        const fk = `trackingSetup.${k}`;
+                        return (
+                          <label key={fk} className="flex items-center gap-2 text-sm cursor-pointer py-1">
+                            <input
+                              type="checkbox"
+                              checked={selectedFields[fk] || false}
+                              onChange={() => toggleField(fk)}
+                              className="rounded"
+                            />
+                            <span className="text-gray-700 dark:text-gray-300">{k}</span>
+                          </label>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

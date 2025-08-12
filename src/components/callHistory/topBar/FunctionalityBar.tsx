@@ -22,6 +22,7 @@ const FunctionalityBar = ({
   agentOptions,
   statusOptions,
   sentimentOptions,
+  campaignId,
 }: {
   customiseField: string[];
   setCustomiseField: (field: string[]) => void;
@@ -34,6 +35,7 @@ const FunctionalityBar = ({
   agentOptions: Agent[];
   statusOptions: FilterOption[];
   sentimentOptions: FilterOption[];
+  campaignId?: string;
 }) => {
   const [page, setPage] = useState(1);
 
@@ -83,7 +85,7 @@ const FunctionalityBar = ({
       </div>
 
       <div className="flex mr-20 self-center dark:bg-gray-900">
-        <Export filters={filters} dateRange={dateRange} />
+        <Export filters={filters} dateRange={dateRange} campaignId={campaignId} />
       </div>
     </div>
   );

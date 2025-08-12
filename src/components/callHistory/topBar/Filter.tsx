@@ -27,6 +27,7 @@ interface FilterProps {
   agentOptions: Agent[];
   statusOptions: FilterOption[];
   sentimentOptions: FilterOption[];
+  hideAgent?: boolean;
 }
 
 const Filter: React.FC<FilterProps> = ({
@@ -35,6 +36,7 @@ const Filter: React.FC<FilterProps> = ({
   agentOptions,
   statusOptions,
   sentimentOptions,
+  hideAgent = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
@@ -138,6 +140,7 @@ const Filter: React.FC<FilterProps> = ({
           {/* Filter categories */}
           <div className="p-1">
             {/* Agent filter */}
+            {!hideAgent && (
             <div className="">
               <button
                 className="w-full flex items-center justify-between p-2 py-1 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
@@ -189,6 +192,7 @@ const Filter: React.FC<FilterProps> = ({
                 </div>
               )}
             </div>
+            )}
 
             {/* Status filter */}
             <div className="">

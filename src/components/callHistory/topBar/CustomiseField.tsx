@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -41,15 +42,23 @@ const SELECT_FIELDS = {
       escalation_flag: "Escalation Flag",
     },
   },
-  compliance: {
-    title: "Compliance",
-    fields: {
-      compliance_risk_score: "Compliance Risk Score",
-      keyword_alert_count: "Keyword Alert Count",
-      pci_dss_sensitive_data_detected: "PCI DSS Sensitive Data Detected",
-      gdpr_data_request: "GDPR Data Request",
-    },
+  dataFields: {
+    title: "Data Fields",
+    fields: {},
   },
+  trackingSetup: {
+    title: "Goal Tracking",
+    fields: {},
+  },
+  // compliance: {
+  //   title: "Compliance",
+  //   fields: {
+  //     compliance_risk_score: "Compliance Risk Score",
+  //     keyword_alert_count: "Keyword Alert Count",
+  //     pci_dss_sensitive_data_detected: "PCI DSS Sensitive Data Detected",
+  //     gdpr_data_request: "GDPR Data Request",
+  //   },
+  // },
   transcript: {
     title: "Transcript",
     fields: {
@@ -61,12 +70,22 @@ const SELECT_FIELDS = {
 const CustomiseField = ({
   customiseField,
   setCustomiseField,
+  filters,
+  dateRange,
+  campaignId,
+  persist = true,
 }: {
   customiseField: string[];
   setCustomiseField: (field: string[]) => void;
+  filters: any;
+  dateRange: any;
+  campaignId?: string;
+  persist?: boolean;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [checkedFields, setCheckedFields] = useState<string[]>(customiseField);
+  const [dynamicDataFields, setDynamicDataFields] = useState<string[]>([]);
+  const [dynamicTrackingFields, setDynamicTrackingFields] = useState<string[]>([]);
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
   >(() =>
@@ -84,6 +103,47 @@ const CustomiseField = ({
   useEffect(() => {
     setCheckedFields(customiseField);
   }, [customiseField]);
+  // Fetch sample to derive dynamic keys
+  useEffect(() => {
+    const loadKeys = async () => {
+      try {
+        const res = await axios.post(
+          `/api/callHistory/callHistory?page=1&limit=1`,
+          {
+            filters,
+            dateRange,
+            campaignId,
+          }
+        );
+        const first = res.data?.data?.find((x: any) => x?.call_analysis) || res.data?.data?.[0];
+        const dataFieldsRaw = first?.dataFields || first?.call_analysis?.dataFields || null;
+        const trackingRaw = first?.trackingSetup || first?.trackingsetup || null;
+        const normalize = (val: any): Record<string, any> => {
+          if (!val) return {};
+          if (Array.isArray(val)) {
+            // Try to convert array of {fieldName, value} or {key, value}
+            const obj: Record<string, any> = {};
+            val.forEach((item: any, idx: number) => {
+              const k = item?.fieldName || item?.key || `field_${idx + 1}`;
+              obj[k] = item?.value ?? item?.description ?? "";
+            });
+            return obj;
+          }
+          if (typeof val === "object") return val as Record<string, any>;
+          return {};
+        };
+        const dfObj = normalize(dataFieldsRaw);
+        const tsObj = normalize(trackingRaw);
+        setDynamicDataFields(Object.keys(dfObj));
+        setDynamicTrackingFields(Object.keys(tsObj));
+      } catch {
+        setDynamicDataFields([]);
+        setDynamicTrackingFields([]);
+      }
+    };
+    loadKeys();
+  }, [filters, dateRange, campaignId]);
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,23 +172,38 @@ const CustomiseField = ({
 
   const selectAllSection = (sectionKey: keyof typeof SELECT_FIELDS) => {
     const section = SELECT_FIELDS[sectionKey];
-    const newFields = Object.keys(section.fields);
+    const baseFields = Object.keys(section.fields);
+    const dynFields =
+      sectionKey === "dataFields"
+        ? dynamicDataFields.map((k) => `dataFields.${k}`)
+        : sectionKey === "trackingSetup"
+        ? dynamicTrackingFields.map((k) => `trackingSetup.${k}`)
+        : [];
+    const newFields = [...baseFields, ...dynFields];
     setCheckedFields((prev) => Array.from(new Set([...prev, ...newFields])));
   };
 
   const clearAllSection = (sectionKey: keyof typeof SELECT_FIELDS) => {
     const section = SELECT_FIELDS[sectionKey];
+    const base = Object.keys(section.fields);
     setCheckedFields((prev) =>
-      prev.filter((field) => !Object.keys(section.fields).includes(field))
+      prev.filter((field) => {
+        if (base.includes(field)) return false;
+        if (sectionKey === "dataFields" && field.startsWith("dataFields.")) return false;
+        if (sectionKey === "trackingSetup" && field.startsWith("trackingSetup.")) return false;
+        return true;
+      })
     );
   };
 
   const applyHandler = async () => {
     setCustomiseField(checkedFields);
-    await fetch("/api/user/post", {
-      method: "POST",
-      body: JSON.stringify({ callHistoryFields: checkedFields }),
-    });
+    if (persist) {
+      await fetch("/api/user/post", {
+        method: "POST",
+        body: JSON.stringify({ callHistoryFields: checkedFields }),
+      });
+    }
     setIsOpen(false);
   };
 
@@ -181,6 +256,35 @@ const CustomiseField = ({
                       {label}
                     </label>
                   ))}
+                  {/* Dynamic keys for dataFields/trackingSetup */}
+                  {sectionKey === "dataFields" && dynamicDataFields.map((k) => {
+                    const fk = `dataFields.${k}`;
+                    return (
+                      <label key={fk} className="text-xs flex items-center gap-2 hover:bg-gray-50 rounded px-1 py-0.5 dark:hover:bg-gray-800 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checkedFields.includes(fk)}
+                          onChange={() => toggleField(fk)}
+                          className="rounded"
+                        />
+                        {k}
+                      </label>
+                    );
+                  })}
+                  {sectionKey === "trackingSetup" && dynamicTrackingFields.map((k) => {
+                    const fk = `trackingSetup.${k}`;
+                    return (
+                      <label key={fk} className="text-xs flex items-center gap-2 hover:bg-gray-50 rounded px-1 py-0.5 dark:hover:bg-gray-800 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checkedFields.includes(fk)}
+                          onChange={() => toggleField(fk)}
+                          className="rounded"
+                        />
+                        {k}
+                      </label>
+                    );
+                  })}
                 </div>
               )}
             </div>

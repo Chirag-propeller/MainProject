@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const user = await getUserFromRequest(req);
-    const { filters, dateRange } = await req.json();
+    const { filters, dateRange, campaignId } = await req.json();
     const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
     const limit = parseInt(req.nextUrl.searchParams.get("limit") || "20");
     // console.log(page, limit);
@@ -18,13 +18,38 @@ export async function POST(req: NextRequest) {
     const userId = new mongoose.Types.ObjectId(user.userId);
 
     // Start building the match object
-    const matchStage: any = {
+    let matchStage: any = {
       $or: [
         { user_id: userId },
         { user_id: user.userId }
       ]
     };
     matchStage.call_analysis = { $exists: true, $ne: null };
+
+    // Filter by campaign if provided (stored in metadata.campaign_id or campaignid)
+    if (campaignId) {
+      matchStage.$or = [
+        ...(matchStage.$or || []),
+      ];
+      // Attach campaignId match; preserve existing $or by wrapping with $and
+      const baseMatch = { ...matchStage };
+      delete (baseMatch as any).$or;
+      const userOr = matchStage.$or && Array.isArray(matchStage.$or) ? matchStage.$or : [];
+      const campaignOr = [
+        { "metadata.campaign_id": campaignId },
+        { "metadata.campaignid": campaignId },
+        { campaign_id: campaignId },
+        { campaignid: campaignId },
+      ];
+      // Recompose with $and to keep both user and campaign filters
+      matchStage = {
+        $and: [
+          { $or: userOr },
+          { $or: campaignOr },
+          { call_analysis: { $exists: true, $ne: null } },
+        ],
+      } as any;
+    }
 
     // Agent ID is inside metadata.agentid
     if (filters.agent && filters.agent.length > 0) {
