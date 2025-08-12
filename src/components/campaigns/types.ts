@@ -1,6 +1,6 @@
 export interface TrackingField {
   fieldName: string;
-  definition: string;
+  description: string;
   successCriteria: 'Achieved/Not Achieved' | 'Yes/No' | '0-10 Scale' | 'Percentage' | 'Count';
 }
 

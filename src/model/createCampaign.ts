@@ -71,7 +71,7 @@ const CampaignCallSchema = new mongoose.Schema({
   trackingSetup: [
     {
       fieldName: { type: String, default: '' },
-      definition: { type: String, default: '' },
+      description: { type: String, default: '' },
       successCriteria: {
         type: String,
         enum: [

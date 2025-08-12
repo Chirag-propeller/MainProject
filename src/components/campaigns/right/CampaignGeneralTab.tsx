@@ -585,7 +585,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   Define tracking criteria for post-call analysis and success measurement
                 </p>
 
-                {isEditable ? (
+              {isEditable ? (
                   <div className="space-y-3">
                     {(campaign.trackingSetup || []).map((field: TrackingField, index: number) => (
                       <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
@@ -602,20 +602,20 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                             className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
                             placeholder="e.g., Subscription Renewal Goal"
                           />
-                        </div>
+            </div>
 
                         <div className="md:col-span-5">
-                          <label className="text-xs text-gray-600 dark:text-gray-500">Definition</label>
+                          <label className="text-xs text-gray-600 dark:text-gray-500">Description</label>
                           <input
                             type="text"
-                            value={field.definition}
+                            value={field.description}
                             onChange={(e) => {
                               const next = [...(campaign.trackingSetup || [])];
-                              next[index] = { ...next[index], definition: e.target.value };
+                              next[index] = { ...next[index], description: e.target.value };
                               handleInputChange('trackingSetup', next);
                             }}
                             className="w-full px-3 py-2 border border-gray-300 rounded-[6px] text-sm"
-                            placeholder="Define what this tracking field measures"
+                            placeholder="Describe what this tracking field measures"
                           />
                         </div>
 
@@ -667,7 +667,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                           ...(campaign.trackingSetup || []),
                           {
                             fieldName: '',
-                            definition: '',
+                            description: '',
                             successCriteria: 'Achieved/Not Achieved',
                           },
                         ];
@@ -683,14 +683,14 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                       campaign.trackingSetup.map((f, i) => (
                         <div key={i} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-200 dark:border-gray-700 rounded-[6px] p-3">
                           <div className="text-sm font-medium">{f.fieldName}</div>
-                          <div className="text-sm text-gray-600 dark:text-gray-400 md:flex-1 md:mx-4">{f.definition}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400 md:flex-1 md:mx-4">{f.description}</div>
                           <div className="text-xs ">{f.successCriteria}</div>
                         </div>
                       ))
                     ) : (
                       <div className="text-sm text-gray-500">No tracking fields configured</div>
-                    )}
-                  </div>
+                  )}
+                </div>
                 )}
               </div>
             </div>
@@ -703,7 +703,7 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                   Specify information to gather during calls for LLM extraction
                 </p>
 
-                {isEditable ? (
+              {isEditable ? (
                   <div className="space-y-3">
                     {(campaign.dataFields || []).map((field: DataField, index: number) => (
                       <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
@@ -794,11 +794,11 @@ const CampaignGeneralTab: React.FC<CampaignGeneralTabProps> = ({
                         <div key={i} className="flex flex-col md:flex-row md:items-center md:justify-between border border-gray-200 dark:border-gray-700 rounded-[6px] p-3">
                           <div className="text-sm font-medium">{f.fieldName}</div>
                           <div className="text-sm text-gray-600 dark:text-gray-400 md:flex-1 md:mx-4">{f.description}</div>
-                        </div>
+                </div>
                       ))
                     ) : (
                       <div className="text-sm text-gray-500">No data fields configured</div>
-                    )}
+              )}
                   </div>
                 )}
               </div>
