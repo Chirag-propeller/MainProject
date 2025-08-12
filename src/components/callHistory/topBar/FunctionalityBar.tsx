@@ -23,6 +23,8 @@ const FunctionalityBar = ({
   statusOptions,
   sentimentOptions,
   campaignId,
+  persistSelection = true,
+  hideAgentFilter = false,
 }: {
   customiseField: string[];
   setCustomiseField: (field: string[]) => void;
@@ -36,6 +38,8 @@ const FunctionalityBar = ({
   statusOptions: FilterOption[];
   sentimentOptions: FilterOption[];
   campaignId?: string;
+  persistSelection?: boolean;
+  hideAgentFilter?: boolean;
 }) => {
   const [page, setPage] = useState(1);
 
@@ -53,10 +57,15 @@ const FunctionalityBar = ({
           agentOptions={agentOptions}
           statusOptions={statusOptions}
           sentimentOptions={sentimentOptions}
+          hideAgent={hideAgentFilter}
         />
         <CustomiseField
           customiseField={customiseField}
           setCustomiseField={setCustomiseField}
+          filters={filters}
+          dateRange={dateRange}
+          campaignId={campaignId}
+          persist={persistSelection}
         />
         {/* Add your selector here */}
         <div className="flex items-center gap-1 ml-2">
