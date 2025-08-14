@@ -51,6 +51,22 @@
         { "name": "GPT-3.5 Turbo 1106", "value": "gpt-3.5-turbo-1106", "pricing": { "input": 1.0e-6, "output": 2.0e-6 } },
         { "name": "GPT-3.5 Turbo 16K 0613", "value": "gpt-3.5-turbo-16k-0613", "pricing": { "input": 3.0e-6, "output": 4.0e-6 } }
       ]
+    },
+    {
+      "name": "Cerebras",
+      "value": "Cerebras",
+      "models": [
+        { "name": "GPT OSS 120B", "value": "gpt-oss-120b", "pricing": { "input": 0.25e-6, "output": 0.69e-6 } },
+        { "name": "Llama 4 Scout", "value": "llama-4-scout-17b-16e-instruct", "pricing": { "input": 0.65e-6, "output": 0.85e-6 } },
+        { "name": "Llama 4 Maverick", "value": "llama-4-maverick-17b-128e-instruct", "pricing": { "input": 0.20e-6, "output": 0.60e-6 } },
+        { "name": "Llama 3.1 8B", "value": "llama3.1-8b", "pricing": { "input": 0.10e-6, "output": 0.10e-6 } },
+        { "name": "Llama 3.3 70B", "value": "llama-3.3-70b", "pricing": { "input": 0.85e-6, "output": 1.20e-6 } },
+        { "name": "Qwen 3 32B", "value": "qwen-3-32b", "pricing": { "input": 0.40e-6, "output": 0.80e-6 } },
+        { "name": "Qwen 3 235B", "value": "qwen-3-235b", "pricing": { "input": 0.60e-6, "output": 1.20e-6 } },
+        { "name": "Qwen 3 235B Instruct", "value": "qwen-3-235b-instruct", "pricing": { "input": 0.60e-6, "output": 1.20e-6 } },
+        { "name": "Qwen 3 235B Thinking", "value": "qwen-3-235b-thinking", "pricing": { "input": 0.60e-6, "output": 1.20e-6 } },
+        { "name": "Qwen 3 480B Coder", "value": "qwen-3-480b-coder", "pricing": { "input": 2.00e-6, "output": 2.00e-6 } }
+      ]
     }
   ],
   "providers": [
