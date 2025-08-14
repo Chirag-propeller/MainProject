@@ -154,6 +154,7 @@ const Test: React.FC<TestProps> = ({ isOpen, onClose, agent }) => {
         languageFillers: languageFillers,
         isLanguageFillersActive: agent.isLanguageFillersActive || true,
         whenToCallRag: agent.whenToCallRag || "",
+        welcomeMessageInteruption: agent.welcomeMessageInteruption || true,
       };
       console.log(dataToSend);
       console.log("run");

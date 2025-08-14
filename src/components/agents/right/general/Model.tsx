@@ -180,6 +180,9 @@ const Model = ({
     agent.welcomeMessage || ""
   );
   const [systemPrompt, setSystemPrompt] = useState<string>(agent.prompt || "");
+  const [welcomeMessageInteruption, setWelcomeMessageInteruption] = useState<boolean>(
+    agent.welcomeMessageInteruption || false
+  );
 
   // Effect 1: Update models when provider changes (similar to Voice.tsx Effect 1)
   useEffect(() => {
@@ -246,6 +249,10 @@ const Model = ({
   useEffect(() => {
     setSystemPrompt(agent.prompt || "");
   }, [agent.prompt]);
+
+  useEffect(() => {
+    setWelcomeMessageInteruption(agent.welcomeMessageInteruption || false);
+  }, [agent.welcomeMessageInteruption]);
 
   // Update agent when dropdown selections change (immediate updates for dropdowns)
   useEffect(() => {
@@ -333,6 +340,30 @@ const Model = ({
                 value={firstMessage}
                 onChange={(e) => setFirstMessage(e.target.value)}
               />
+            </div>
+
+            {/* Welcome Message Interruption Toggle */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Allow Welcome Message Interruption</h4>
+                <p className="font-light text-gray-600 dark:text-gray-300 text-sm">Let the user interrupt the initial greeting</p>
+              </div>
+              <div
+                className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors ${
+                  welcomeMessageInteruption ? "bg-indigo-600" : "bg-gray-200 dark:bg-gray-700"
+                }`}
+                onClick={() => {
+                  const newValue = !welcomeMessageInteruption;
+                  setWelcomeMessageInteruption(newValue);
+                  setAgent({ ...agent, welcomeMessageInteruption: newValue });
+                }}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-900 transition-transform ${
+                    welcomeMessageInteruption ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </div>
             </div>
 
             {/* Provider & Model dropdowns - side by side */}

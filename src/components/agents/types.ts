@@ -36,4 +36,5 @@ export interface Agent {
   languageFillers?: object;
   isLanguageFillersActive?: boolean;
   whenToCallRag?: string;
+  welcomeMessageInteruption?: boolean;
 } 

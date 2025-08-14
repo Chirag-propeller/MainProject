@@ -30,10 +30,11 @@ export interface IAgent extends Document {
   ttsModel?: string;
   apis: mongoose.Types.ObjectId[];
   userId: mongoose.Types.ObjectId;
-  welcomeMessage?: string;
   userAwayTimeOut?: number;
   languageFillers?: object;
   isLanguageFillersActive?: boolean;
+  welcomeMessage?: string;
+  welcomeMessageInteruption?: boolean;
   whenToCallRag?: string;
 }
 
@@ -71,6 +72,7 @@ const AgentSchema: Schema = new Schema({
   languageFillers: { type: Object, default: {} },
   isLanguageFillersActive: { type: Boolean, default: true },
   whenToCallRag: { type: String },
+  welcomeMessageInteruption: { type: Boolean, default: true },
 }, { timestamps: true });
 
 export default models.Agent || model<IAgent>('Agent', AgentSchema);
